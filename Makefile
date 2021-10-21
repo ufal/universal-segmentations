@@ -1,4 +1,4 @@
-.PHONY: all clean
+.PHONY: all lint clean
 .SECONDARY:
 
 all: udmurt/udmurt.useg
@@ -11,6 +11,9 @@ udmurt/wordlist_analyzed.txt: | udmurt
 
 udmurt:
 	mkdir -p '$@'
+
+lint:
+	pylint src/
 
 clean:
 	rm -f udmurt/udmurt.useg udmurt/udmurt.log
