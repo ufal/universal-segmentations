@@ -1,0 +1,87 @@
+Poznámky k datasetům pro morfologickou segmentaci:
+
+- co všechno chceme zachycovat:
+  1. hranice (třeba včetně nějaké pravděpodobnosti – nejpřímočařejší reprezentace pro predikci; umožňuje mi mít kus slova už segmentovaný jednou metodou a zbytek zatím nechat ladem, aniž bych musel řešit to, že ten zbytek je tedy nějaký implicitní morfém – když ta implicitní část reprezentuje kmen, tak to ještě jde, ale když najdu kořen a nechám nesegmentované předponové a příponové části, je to horší)
+  2. morfy (snadno anotovatelné – prefix / root / suffix / ending / interfix atd.; derivační / flektivní / kompoziční atd.; příslušný morfém; sémantika)
+  - tyhle reprezentace na sebe nejsou moc dobře převoditelné – pokud přidám hranici, ke které části patří anotace původního morfému? Jakmile mám slovo úplně segmentované, tak se na sebe obě reprezentace dají převést docela dobře, ale dokud není segmentace úplná, tak to dře na obě strany.
+  - když si vyberu morfy, chci, aby slovo bylo posloupnost morfů, nebo množina? Může jeden znak ležet ve víc morfech (morfematické uzly)? Může nějaký znak ležet mimo všechny morfy (třeba při částečné segmentaci)? Co s templativní morfologií, infixací (absobloodylutely) a cirkumfixací – může být morf nespojitý?
+
+- reprezentace: lineární, hierarchická, (množinová?)
+
+
+- formát z ÚČNK je obtížně rozšiřitelný, ale zase stručný
+
+chceme lemma, pos, featury, segmentace (chceme umožnit víc alternativních a i parciálních segmentací) a asi i další věci. Každý morf chceme mít anotovaný typem (prefix, root …), morfémem, …
+- místo begin a end mít span; tam může být i Span=3,5,7  -- nekonkatenativní morfologie; pak se morfémy mohou i překrývat
+- ideální by bylo adaptovat DeriNetí formát a rozšířit ho
+- zaměření na konkatenativní morfologii, ale kdyby to umělo ostatní, tak by to bylo fajn
+
+Do příště: Zkusit navrhnout několik příkladů formátů, ať je můžeme 14. 10. porovnat.
+
+
+
+Chceme mít segmentační informaci uloženou jako Span (Range, Coverage, Covers, Scope, Extent, nějaký jiný název který neevokuje souvislost) – pro cirkumfixy je to tedy třeba Span=0-2,5-7
+
+Možnosti: JSON, TSV
+
+Potřeba: escaping symbolů (TAB asi můžeme úplně zakázat, ale &,|,[,] musíme escapovat uvnitř seznamů.
+	Nebo, když použijeme pro seznamy na 1. úrovni ;, nemusíme v nich escapovat , a můžeme ji použít pro oddělování seznamů 2. úrovně. Ale možná je to zbytečně složité.
+	Možnosti: CSV escaping pomocí ", Unix-like escaping pomocí \.
+	JSON to řeší za nás.
+
+nejkulaťoulinkatější	ADJ	nejkulaťoulinkatější-1#ADJ	0,0,0,1,1,1,2,2,3,3,4,4,4,4,5,6,6,6,7,7	m=nej&s=superlative&t=prefix;m=koul&t=root;m=at&type=suffix;m=ou&type=suffix;…|…
+
+nejkulaťoulinkatější	ADJ	nejkulaťoulinkatější-1#ADJ	Span=0-3&Morpheme=nej&Semantics=Superlative&Type=prefix;Span=3-6&Morpheme=koul&Type=Root;Span=6-8&Morpheme=at&Type=Suffix;Span=8-10&Morpheme=ou&Type=Suffix;…|…
+sladit	VERB	sladit-1#VERB	Span=0&Morpheme=s&Type=Prefix;Span=1-4&Morpheme=lad&Type=Root;Span=4&Morpheme=i&Type=Suffix;Span=5&Morpheme=t&Type=Ending|Span=0&Morpheme=s&Type=Prefix;Span=1-4&Morpheme=lad&Type=Root;Span=4-6&Morpheme=it&Type=Suffix|Span=0-4&Morpheme=slad&Type=Root;Span=4-6&Morpheme=it&Type=Suffix
+
+
+[{"lemma": "nejkulaťoulinkatější",
+  "lemid": "…",
+  "part-of-speech": "ADJ",
+  "segmentation": [[{"span": [0, 1, 2],
+                     "morpheme": "nej",
+                     "semantics": "superlative",
+                     "type": "prefix"},
+                    {"span": [3, 4, 5],
+                     "morpheme": "koul",
+                     "type": "root"},
+                    {"span": [6, 7],
+                     "morpheme": "at",
+                     "type": "suffix"},
+                    {"span": [8, 9],
+                     "morpheme": "ou",
+                     "type": "suffix"},
+                    {"span": [10, 11, 12, 13],
+                     "morpheme": "link",
+                     "type": "suffix"},
+                    {"span": [14, 15],
+                     "morpheme": "at",
+                     "type": "suffix"}
+                    …]]},
+ {"lemma": "sladit",
+  "lemid": "…",
+  "part-of-speech": "VERB",
+  "segmentation": [[{"span": [0],
+                     "morpheme": "s",
+                     "type": "prefix"},
+                    {"span": [1, 2, 3],
+                     "morpheme": "lad",
+                     "type": "root"},
+                    {"span": [4, 5],
+                     "morpheme": "it",
+                     "type": "suffix"}],
+                   [{"span": [0, 1, 2, 3],
+                     "morpheme": "slad",
+                     "type": "root"},
+                    {"span": [4, 5],
+                     "morpheme": "it",
+                     "type": "suffix"}]]}]
+
+
+Schůzka 19. 10. 2021:
+	DeriNetí formát zatím NE, budeme si to dělat u sebe a případně to pak vyexportujeme do formátu DN20.
+
+	Dokument s příklady a dohodami:
+	https://docs.google.com/document/d/1wI5Tg5y7uhxStQo6TBqqSC_MiZ85W3pEbVOEbsxuUWc/edit
+	
+	do příště: vybrat si dva jazyky, zpracovat je (němčina a udmurtština – je to zapsané v tabulce jazyků)
