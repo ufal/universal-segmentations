@@ -1,6 +1,7 @@
 from collections import namedtuple
 
 Lexeme = namedtuple("Lexeme", ["lex_id", "form", "lemma", "pos", "features", "morphs"])
+Morph = namedtuple("Morph", ["span", "features"])
 
 class SegLex:
     """
@@ -72,7 +73,37 @@ class SegLex:
         annotation `features` is saved together with the newly-created
         morph.
         """
-        raise NotImplementedError()
+        self.add_morph(lex_id, annot_name, list(range(start, end)), features)
+
+    def add_morph(self, lex_id, annot_name, span, features):
+        """
+        Subdivide the lexeme with `lex_id` using a new morpheme spanning
+        integer positions enumerated in `span` on annotation layer
+        `annot_name`. The annotation `features` is saved together with the
+        newly-created morph.
+        """
+
+        # Check that the morph span actually exists in the lexeme.
+        span = frozenset(span)
+        for pos in span:
+            if pos < 0:
+                raise ValueError("Morph span position {} is out-of-bounds in lexeme {}".format(pos, self.print_lexeme(lex_id)))
+            if pos > len(self.form(lex_id)):
+                raise ValueError("Morph span position {} is out-of-bounds in lexeme {}".format(pos, self.print_lexeme(lex_id)))
+
+        # The string form of the morph.
+        morph = "".join([self.form(lex_id)[i] for i in sorted(span)])
+
+        if features is None:
+            features = {}
+
+        # Add the morph.
+        morph = Morph(span, features)
+
+        if annot_name not in self._lexemes[lex_id].morphs:
+            self._lexemes[lex_id].morphs[annot_name] = [morph]
+        else:
+            self._lexemes[lex_id].morphs[annot_name].append(morph)
 
     def get_morphs(self, lex_id, annot_name):
         """
