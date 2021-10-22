@@ -26,7 +26,7 @@ class SegLex:
         # TODO Sort the lexicon and iterate over it, producing the
         #  TSV output.
 
-    def create_lexeme(self, form, lemma, pos, features=None):
+    def add_lexeme(self, form, lemma, pos, features=None):
         """
         Create a new lexeme with the specified form, lemma and
         morphological features. Returns an ID of the created lexeme.

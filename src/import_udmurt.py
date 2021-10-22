@@ -125,7 +125,7 @@ def main():
                 "trans_ru": trans_ru
             }
 
-            lexeme = lexicon.create_lexeme(form, lex, pos=pos, features=features)
+            lexeme = lexicon.add_lexeme(form, lex, pos=pos, features=features)
 
             end = 0
             for morph, morpheme in zip(morphs, morphemes):
