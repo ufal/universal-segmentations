@@ -130,6 +130,8 @@ def main():
             end = 0
             nr_stems = sum(m == "STEM" for m in morphemes)
             seen_stems = 0
+            stem_morph_span = []
+
             for morph, morpheme in zip(morphs, morphemes):
                 if form[end] == "-" and not morph.startswith("-"):
                     # The word form starts with a dash, indicating its
@@ -155,7 +157,10 @@ def main():
 
                 if morpheme == "STEM":
                     seen_stems += 1
-                    morpheme_type = "stem"
+                    stem_morph_span += list(range(start, end))
+                    # We add the stem last, to account for discontiguous
+                    #  stems.
+                    continue
                 elif seen_stems == nr_stems:
                     morpheme_type = "suffix"
                 elif seen_stems == 0:
@@ -173,6 +178,18 @@ def main():
                     end,
                     features={"morpheme": morpheme, "type": morpheme_type}
                 )
+
+            if stem_morph_span:
+                # Add the (potentially discontiguous) stem morpheme.
+                lexicon.add_morph(
+                    lexeme,
+                    "Uniparser UDM",
+                    stem_morph_span,
+                    features={"morpheme": "STEM", "type": "stem"}
+                )
+            else:
+                assert nr_stems == 0
+                print("Stemless word form '{}' detected".format(form), file=sys.stderr)
 
     lexicon.save(sys.stdout)
 
