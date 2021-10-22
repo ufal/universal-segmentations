@@ -132,7 +132,13 @@ def main():
                 start = end
                 end += len(morph)
 
-                lexicon.add_contiguous_morph(lexeme, "Uniparser UDM", start, end, features={"morpheme": morpheme})
+                lexicon.add_contiguous_morph(
+                    lexeme,
+                    "Uniparser UDM",
+                    start,
+                    end,
+                    features={"morpheme": morpheme}
+                )
 
     lexicon.save(sys.stdout)
 
