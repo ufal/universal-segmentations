@@ -1,5 +1,7 @@
 from collections import namedtuple
 
+import seg_tsv
+
 Lexeme = namedtuple("Lexeme", ["lex_id", "form", "lemma", "pos", "features", "morphs"])
 Morph = namedtuple("Morph", ["span", "features"])
 
@@ -25,13 +27,40 @@ class SegLex:
         """
         raise NotImplementedError()
 
+    def _as_records(self):
+        """
+        Iterate over the lexicon as a sequence of SegRecords (not sorted).
+        """
+        for lexeme in self._lexemes:
+            for annot_name in lexeme.morphs:
+                annot = lexeme.features.copy()
+                assert "segmentation" not in annot and "" not in annot
+                annot["annot_name"] = annot_name
+                # TODO Ensure span is not already defined.
+                annot["segmentation"] = [morph.features | {"span": morph.span} for morph in lexeme.morphs[annot_name]]
+
+                morphs = sorted(lexeme.morphs[annot_name], key=lambda m: tuple(sorted(m.span)))
+                simple_seg = []
+                for morph in morphs:
+                    letters = [lexeme.form[i] for i in sorted(morph.span)]
+                    simple_seg.append("".join(letters))
+
+                yield seg_tsv.SegRecord(lexeme.form, lexeme.lemma, lexeme.pos, simple_seg, annot)
+
     def save(self, f):
         """
         Save the lexicon to the open file-like object `f`.
         """
-        raise NotImplementedError()
-        # TODO Sort the lexicon and iterate over it, producing the
-        #  TSV output.
+        # Sort the lexicon and iterate over it, producing the TSV output.
+        # TODO include the keys and values of features in the sorting as
+        #  well.
+        records = sorted(self._as_records(), key=lambda r: (r.lemma, r.pos, r.form, r.simple_seg, len(r.annot)))
+
+        for record in records:
+            f.write(seg_tsv.format_record(record))
+
+        f.flush()
+
 
     def add_lexeme(self, form, lemma, pos, features=None):
         """
