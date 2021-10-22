@@ -3,7 +3,7 @@
 
 all: udmurt/udmurt.useg
 
-udmurt/udmurt.useg: udmurt/wordlist_analyzed.txt src/import_udmurt.py
+udmurt/udmurt.useg: udmurt/wordlist_analyzed.txt src/import_udmurt.py src/seg_lex.py src/seg_tsv.py
 	./src/import_udmurt.py < '$<' 2>&1 > '$@' | tee '$(basename $@).log' >&2
 
 udmurt/wordlist_analyzed.txt: | udmurt
