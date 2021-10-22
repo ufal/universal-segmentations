@@ -52,6 +52,18 @@ class SegLex:
         """
         raise NotImplementedError()
 
+    def form(self, lex_id):
+        return self._lexemes[lex_id].form
+
+    def lemma(self, lex_id):
+        return self._lexemes[lex_id].lemma
+
+    def pos(self, lex_id):
+        return self._lexemes[lex_id].pos
+
+    def print_lexeme(self, lex_id):
+        return "{}({}#{})".format(self.form(lex_id), self.lemma(lex_id), self.pos(lex_id))
+
     def add_contiguous_morph(self, lex_id, annot_name, start, end, annot=None):
         """
         Subdivide the lexeme with `lex_id` using a new morpheme starting
