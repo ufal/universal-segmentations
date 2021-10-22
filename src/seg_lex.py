@@ -105,16 +105,24 @@ class SegLex:
         else:
             self._lexemes[lex_id].morphs[annot_name].append(morph)
 
-    def morphs(self, lex_id, annot_name):
+    def morphs(self, lex_id, annot_name, position=None):
         """
         Get a list of all morphs of lexeme with ID `lex_id` on
-        annotation layer `annot_name`.
+        annotation layer `annot_name`. If `position` is filled in,
+        return only those covering that position. If there are no
+        morphs or none cover the position, an empty list is returned.
         """
         if annot_name not in self._lexemes[lex_id].morphs:
             return []
-        else:
+        elif position is None:
             # Return a copy to prevent accidental mangling.
             return list(self._lexemes[lex_id].morphs[annot_name])
+        else:
+            m = []
+            for morph in self._lexemes[lex_id].morphs[annot_name]:
+                if position in morph.span:
+                    m.append(morph)
+            return m
 
     def morph(self, lex_id, annot_name, position):
         """
