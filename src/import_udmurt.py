@@ -129,8 +129,30 @@ def main():
 
             end = 0
             for morph, morpheme in zip(morphs, morphemes):
-                start = end
-                end += len(morph)
+                if form[end] == "-" and not morph.startswith("-"):
+                    # The word form starts with a dash, indicating its
+                    #  affixal nature; or contains a dash, representing
+                    #  a connector. The dash is not part of the
+                    #  segmentation, and should not be (at least in the
+                    #  first case). Skip it.
+                    lexicon.add_contiguous_morph(
+                        lexeme,
+                        "Uniparser UDM",
+                        end,
+                        end + 1,
+                        # FIXME the type should be different when it is
+                        #  at the beginning or end of the word – attachment
+                        #  point, maybe?
+                        features={"morpheme": "-", "type": "connector"}
+                    )
+                    start = end + 1
+                else:
+                    start = end
+
+                end = start + len(morph)
+
+                # TODO There appears to be some infixation, in which case
+                #  there are multiple stems with an infix in between them.
 
                 lexicon.add_contiguous_morph(
                     lexeme,
