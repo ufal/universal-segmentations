@@ -21,6 +21,12 @@ def parse_line(line):
         annot
     )
 
+class SpanEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, frozenset):
+            return list(sorted(obj))
+        return json.JSONEncoder.default(self, obj)
+
 def format_record(record):
     joined_morphs = "".join(record.simple_seg)
     assert record.form == joined_morphs, "The segmentation {} doesn't match the word form '{}'".format(record.simple_seg, record.form)
@@ -29,6 +35,6 @@ def format_record(record):
         record.form,
         record.lemma,
         record.pos,
-        " + ".join(TODO),
-        json.dumps(record.annot, ensure_ascii=False, allow_nan=False, indent=None, sort_keys=True)
+        " + ".join(record.simple_seg),
+        json.dumps(record.annot, ensure_ascii=False, allow_nan=False, indent=None, sort_keys=True, cls=SpanEncoder)
     )
