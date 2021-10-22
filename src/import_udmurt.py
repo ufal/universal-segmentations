@@ -128,7 +128,8 @@ def main():
             lexeme = lexicon.add_lexeme(form, lex, pos=pos, features=features)
 
             end = 0
-            seen_stem = False
+            nr_stems = sum(m == "STEM" for m in morphemes)
+            seen_stems = 0
             for morph, morpheme in zip(morphs, morphemes):
                 if form[end] == "-" and not morph.startswith("-"):
                     # The word form starts with a dash, indicating its
@@ -153,12 +154,14 @@ def main():
                 end = start + len(morph)
 
                 if morpheme == "STEM":
-                    seen_stem = True
+                    seen_stems += 1
                     morpheme_type = "stem"
-                elif seen_stem:
+                elif seen_stems == nr_stems:
                     morpheme_type = "suffix"
-                else
+                elif seen_stems == 0:
                     morpheme_type = "prefix"
+                else:
+                    morpheme_type = "infix"
 
                 # TODO There appears to be some infixation, in which case
                 #  there are multiple stems with an infix in between them.
