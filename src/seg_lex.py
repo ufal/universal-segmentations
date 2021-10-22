@@ -105,12 +105,12 @@ class SegLex:
         else:
             self._lexemes[lex_id].morphs[annot_name].append(morph)
 
-    def get_morphs(self, lex_id, annot_name):
+    def morphs(self, lex_id, annot_name):
         """
         Get a list of all morphs of lexeme with ID `lex_id` on
         annotation layer `annot_name`.
         """
         raise NotImplementedError()
 
-    def get_morph(self, lex_id, annot_name, position):
+    def morph(self, lex_id, annot_name, position):
         raise NotImplementedError()
