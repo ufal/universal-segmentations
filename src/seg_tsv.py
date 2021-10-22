@@ -22,6 +22,9 @@ def parse_line(line):
     )
 
 def format_record(record):
+    joined_morphs = "".join(record.simple_seg)
+    assert record.form == joined_morphs, "The segmentation {} doesn't match the word form '{}'".format(record.simple_seg, record.form)
+
     return "{}\t{}\t{}\t{}\t{}\n".format(
         record.form,
         record.lemma,
