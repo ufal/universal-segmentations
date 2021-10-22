@@ -64,12 +64,12 @@ class SegLex:
     def print_lexeme(self, lex_id):
         return "{}({}#{})".format(self.form(lex_id), self.lemma(lex_id), self.pos(lex_id))
 
-    def add_contiguous_morph(self, lex_id, annot_name, start, end, annot=None):
+    def add_contiguous_morph(self, lex_id, annot_name, start, end, features=None):
         """
         Subdivide the lexeme with `lex_id` using a new morpheme starting
         at 0-indexed position `start` (inclusive) and continuing through
         position `end` (exclusive) on annotation layer `annot_name`. The
-        annotation `annot` is saved together with the newly-created
+        annotation `features` is saved together with the newly-created
         morph.
         """
         raise NotImplementedError()
