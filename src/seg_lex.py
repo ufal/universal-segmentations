@@ -110,7 +110,22 @@ class SegLex:
         Get a list of all morphs of lexeme with ID `lex_id` on
         annotation layer `annot_name`.
         """
-        raise NotImplementedError()
+        if annot_name not in self._lexemes[lex_id].morphs:
+            return []
+        else:
+            # Return a copy to prevent accidental mangling.
+            return list(self._lexemes[lex_id].morphs[annot_name])
 
     def morph(self, lex_id, annot_name, position):
-        raise NotImplementedError()
+        """
+        Return one of the morphs found at `position` of annotation layer
+        `annot_name` in lexeme `lex_id`. If there are multiple morphs at
+        this position, silently choose one. Return none if no such morphs
+        exist.
+        """
+        if annot_name in self._lexemes[lex_id].morphs:
+            for morph in self._lexemes[lex_id].morphs[annot_name]:
+                if position in morph.span:
+                    return morph
+
+        return None
