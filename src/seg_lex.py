@@ -1,3 +1,7 @@
+from collections import namedtuple
+
+Lexeme = namedtuple("Lexeme", ["lex_id", "form", "lemma", "pos", "features", "morphs"])
+
 class SegLex:
     """
     A lexicon of segmentations.
@@ -7,8 +11,10 @@ class SegLex:
     subdivisions are possible, each identified by an annotation name.
     """
 
+    __slots__ = "_lexemes"
+
     def __init__(self):
-        raise NotImplementedError()
+        self._lexemes = []
 
     def load(self, f):
         """
@@ -31,7 +37,14 @@ class SegLex:
         Create a new lexeme with the specified form, lemma and
         morphological features. Returns an ID of the created lexeme.
         """
-        raise NotImplementedError()
+        if features is None:
+            features = {}
+
+        lex_id = len(self._lexemes)
+        lexeme = Lexeme(lex_id, form, lemma, pos, features, {})
+        self._lexemes.append(lexeme)
+
+        return lex_id
 
     def delete_lexeme(self, lex_id):
         """
