@@ -128,6 +128,7 @@ def main():
             lexeme = lexicon.add_lexeme(form, lex, pos=pos, features=features)
 
             end = 0
+            seen_stem = False
             for morph, morpheme in zip(morphs, morphemes):
                 if form[end] == "-" and not morph.startswith("-"):
                     # The word form starts with a dash, indicating its
@@ -151,6 +152,14 @@ def main():
 
                 end = start + len(morph)
 
+                if morpheme == "STEM":
+                    seen_stem = True
+                    morpheme_type = "stem"
+                elif seen_stem:
+                    morpheme_type = "suffix"
+                else
+                    morpheme_type = "prefix"
+
                 # TODO There appears to be some infixation, in which case
                 #  there are multiple stems with an infix in between them.
 
@@ -159,7 +168,7 @@ def main():
                     "Uniparser UDM",
                     start,
                     end,
-                    features={"morpheme": morpheme}
+                    features={"morpheme": morpheme, "type": morpheme_type}
                 )
 
     lexicon.save(sys.stdout)
