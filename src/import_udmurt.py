@@ -191,6 +191,24 @@ def main():
                 assert nr_stems == 0
                 print("Stemless word form '{}' detected".format(form), file=sys.stderr)
 
+            if end == len(form) - 1 and form[end] == "-":
+                # The word ends with a dash, which we didn't process before.
+                #  Add it as a connector now.
+                lexicon.add_contiguous_morph(
+                    lexeme,
+                    "Uniparser UDM",
+                    end,
+                    end + 1,
+                    # FIXME the type should be different when it is
+                    #  at the beginning or end of the word – attachment
+                    #  point, maybe?
+                    features={"morpheme": "-", "type": "connector"}
+                )
+
+                end += 1
+
+            assert end == len(form), "We didn't process the whole word '{}'".format(form)
+
     lexicon.save(sys.stdout)
 
 if __name__ == "__main__":
