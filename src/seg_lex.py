@@ -39,11 +39,18 @@ class SegLex:
                 # TODO Ensure span is not already defined.
                 annot["segmentation"] = [morph.features | {"span": morph.span} for morph in lexeme.morphs[annot_name]]
 
-                morphs = sorted(lexeme.morphs[annot_name], key=lambda m: tuple(sorted(m.span)))
                 simple_seg = []
-                for morph in morphs:
-                    letters = [lexeme.form[i] for i in sorted(morph.span)]
-                    simple_seg.append("".join(letters))
+                last_morpheme = self.morph(lexeme.lex_id, annot_name, 0)
+                morph_str = ""
+                for i in range(len(lexeme.form)):
+                    morpheme = self.morph(lexeme.lex_id, annot_name, i)
+                    if morpheme == last_morpheme:
+                        morph_str += lexeme.form[i]
+                    else:
+                        last_morpheme = morpheme
+                        simple_seg.append(morph_str)
+                        morph_str = lexeme.form[i]
+                simple_seg.append(morph_str)
 
                 yield seg_tsv.SegRecord(lexeme.form, lexeme.lemma, lexeme.pos, simple_seg, annot)
 
