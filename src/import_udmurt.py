@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+Read the Udmurt XML-like file with analyses from STDIN, convert it to the
+Universal Segmentations format and print it to STDOUT.
+"""
 
 import sys
 import xml.etree.ElementTree as ET

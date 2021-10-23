@@ -98,15 +98,31 @@ class SegLex:
         raise NotImplementedError()
 
     def form(self, lex_id):
+        """
+        Return the string form of the lexeme with ID `lex_id`.
+        """
         return self._lexemes[lex_id].form
 
     def lemma(self, lex_id):
+        """
+        Return the string lemma of the lexeme with ID `lex_id`.
+        """
         return self._lexemes[lex_id].lemma
 
     def pos(self, lex_id):
+        """
+        Return the part-of-speech tag of the lexeme with ID `lex_id`.
+        """
         return self._lexemes[lex_id].pos
 
     def print_lexeme(self, lex_id):
+        """
+        Return a stringified form of the lexeme with ID `lex_id`.
+
+        This method is meant to be used for pretty-printing the lexeme
+        in logs, not as a serialization format – for that, use the
+        method `SegLex.save` instead.
+        """
         return "{}({}#{})".format(self.form(lex_id), self.lemma(lex_id), self.pos(lex_id))
 
     def add_contiguous_morph(self, lex_id, annot_name, start, end, features=None):

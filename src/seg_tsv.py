@@ -4,6 +4,10 @@ import json
 SegRecord = namedtuple("SegRecord", ["form", "lemma", "pos", "simple_seg", "annot"])
 
 def parse_line(line):
+    """
+    Parse an Universal-Segmentations-formatted `line` and return
+    a direct object representation of its contents as a namedtuple.
+    """
     line = line.rstrip("\n")
     fields = line.split("\t", maxsplit=4)
 
@@ -22,12 +26,21 @@ def parse_line(line):
     )
 
 class SpanEncoder(json.JSONEncoder):
+    """
+    Properly serialize morph spans, which are represented using
+    frozensets, as ordered lists.
+    """
     def default(self, o):
         if isinstance(o, frozenset):
             return list(sorted(o))
         return json.JSONEncoder.default(self, o)
 
 def format_record(record):
+    """
+    Serialize the SegRecord namedtuple `record` into its TSV format and
+    return the string of the line, with the line-terminating newline
+    already attached.
+    """
     joined_morphs = "".join(record.simple_seg)
     assert record.form == joined_morphs, \
         "The segmentation {} doesn't match the word form '{}'".format(record.simple_seg, record.form)
