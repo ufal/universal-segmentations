@@ -22,10 +22,10 @@ def parse_line(line):
     )
 
 class SpanEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, frozenset):
-            return list(sorted(obj))
-        return json.JSONEncoder.default(self, obj)
+    def default(self, o):
+        if isinstance(o, frozenset):
+            return list(sorted(o))
+        return json.JSONEncoder.default(self, o)
 
 def format_record(record):
     joined_morphs = "".join(record.simple_seg)
