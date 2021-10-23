@@ -8,8 +8,8 @@ udmurt/udmurt.useg: udmurt/wordlist_analyzed_fixed.txt src/import_udmurt.py src/
 
 udmurt/wordlist_analyzed_fixed.txt: udmurt/wordlist_analyzed.txt
 	# There are some spurious underscores in some word forms;
-	#  get rid of them.
-	sed -e 's/__//; s/_</</' < '$<' > '$@'
+	#  get rid of them. Also, fix STEMSTEM -> STEM
+	sed -e 's/__//; s/_</</; s/"STEMSTEM"/"STEM"/' < '$<' > '$@'
 
 udmurt/wordlist_analyzed.txt: | udmurt
 	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-udm/raw/master/wordlists/wordlist_analyzed.txt'
