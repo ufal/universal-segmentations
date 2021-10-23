@@ -161,9 +161,6 @@ class SegLex:
                     )
                 )
 
-        # The string form of the morph.
-        morph = "".join([self.form(lex_id)[i] for i in sorted(span)])
-
         if features is None:
             features = {}
 
