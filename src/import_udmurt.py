@@ -110,9 +110,6 @@ def main():
                         else:
                             prefix += morph
                             i += 1
-
-                    #print("Unparseable dashed word '{}' found, skipping.".format(form), file=sys.stderr)
-                    #continue
             else:
                 morphs = parts.split("-")
 
