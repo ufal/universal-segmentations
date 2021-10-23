@@ -127,8 +127,14 @@ def main():
             lexeme = lexicon.add_lexeme(form, lex, pos=pos, features=features)
 
             end = 0
+            # There is some infixation, in which case there are multiple
+            #  stems with an infix in between them. Detect infixes by
+            #  counting stems and considering everything between them an
+            #  infix.
             nr_stems = sum(m == "STEM" for m in morphemes)
             seen_stems = 0
+            # Remember the span of the stem, which may be discontiguous
+            #  due to the infixes.
             stem_morph_span = []
 
             for morph, morpheme in zip(morphs, morphemes):
@@ -166,9 +172,6 @@ def main():
                     morpheme_type = "prefix"
                 else:
                     morpheme_type = "infix"
-
-                # TODO There appears to be some infixation, in which case
-                #  there are multiple stems with an infix in between them.
 
                 lexicon.add_contiguous_morph(
                     lexeme,
