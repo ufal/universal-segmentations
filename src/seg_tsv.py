@@ -29,12 +29,20 @@ class SpanEncoder(json.JSONEncoder):
 
 def format_record(record):
     joined_morphs = "".join(record.simple_seg)
-    assert record.form == joined_morphs, "The segmentation {} doesn't match the word form '{}'".format(record.simple_seg, record.form)
+    assert record.form == joined_morphs, \
+        "The segmentation {} doesn't match the word form '{}'".format(record.simple_seg, record.form)
 
     return "{}\t{}\t{}\t{}\t{}\n".format(
         record.form,
         record.lemma,
         record.pos,
         " + ".join(record.simple_seg),
-        json.dumps(record.annot, ensure_ascii=False, allow_nan=False, indent=None, sort_keys=True, cls=SpanEncoder)
+        json.dumps(
+            record.annot,
+            ensure_ascii=False,
+            allow_nan=False,
+            indent=None,
+            sort_keys=True,
+            cls=SpanEncoder
+        )
     )

@@ -37,7 +37,8 @@ class SegLex:
                 assert "segmentation" not in annot and "" not in annot
                 annot["annot_name"] = annot_name
                 # TODO Ensure span is not already defined.
-                annot["segmentation"] = [morph.features | {"span": morph.span} for morph in lexeme.morphs[annot_name]]
+                annot["segmentation"] = [morph.features | {"span": morph.span}
+                                         for morph in lexeme.morphs[annot_name]]
 
                 simple_seg = []
                 last_morpheme = self.morph(lexeme.lex_id, annot_name, 0)
@@ -61,7 +62,10 @@ class SegLex:
         # Sort the lexicon and iterate over it, producing the TSV output.
         # TODO include the keys and values of features in the sorting as
         #  well.
-        records = sorted(self._as_records(), key=lambda r: (r.lemma, r.pos, r.form, r.simple_seg, len(r.annot)))
+        records = sorted(
+            self._as_records(),
+            key=lambda r: (r.lemma, r.pos, r.form, r.simple_seg, len(r.annot))
+        )
 
         for record in records:
             f.write(seg_tsv.format_record(record))
@@ -123,9 +127,19 @@ class SegLex:
         span = frozenset(span)
         for pos in span:
             if pos < 0:
-                raise ValueError("Morph span position {} is out-of-bounds in lexeme {}".format(pos, self.print_lexeme(lex_id)))
+                raise ValueError(
+                    "Morph span position {} is out-of-bounds in lexeme {}".format(
+                        pos,
+                        self.print_lexeme(lex_id)
+                    )
+                )
             if pos > len(self.form(lex_id)):
-                raise ValueError("Morph span position {} is out-of-bounds in lexeme {}".format(pos, self.print_lexeme(lex_id)))
+                raise ValueError(
+                    "Morph span position {} is out-of-bounds in lexeme {}".format(
+                        pos,
+                        self.print_lexeme(lex_id)
+                    )
+                )
 
         # The string form of the morph.
         morph = "".join([self.form(lex_id)[i] for i in sorted(span)])

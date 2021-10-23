@@ -91,7 +91,8 @@ def main():
                     prefix = ""
                     i = 0
                     while i < len(morphs):
-                        assert form.startswith(prefix), "Prefix '{}' not in form '{}'".format(prefix, form)
+                        assert form.startswith(prefix), \
+                            "Prefix '{}' not in form '{}'".format(prefix, form)
 
                         morph = morphs[i]
 
@@ -115,7 +116,8 @@ def main():
             else:
                 morphs = parts.split("-")
 
-            assert len(morphs) == len(morphemes), "The morph and morpheme lists don't match for line '{}'".format(line)
+            assert len(morphs) == len(morphemes), \
+                "The morph and morpheme lists don't match for line '{}'".format(line)
 
             morpho_tags = gr.split(",")
             pos = gr_to_upos(morpho_tags)
