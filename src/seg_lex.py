@@ -38,7 +38,11 @@ class SegLex:
                 annot["annot_name"] = annot_name
                 # TODO Ensure span is not already defined.
                 annot["segmentation"] = [morph.features | {"span": morph.span}
-                                         for morph in lexeme.morphs[annot_name]]
+                                         for morph in self.morphs(
+                                             lexeme.lex_id,
+                                             annot_name,
+                                             sort=True
+                                         )]
 
                 simple_seg = []
                 last_morpheme = self.morph(lexeme.lex_id, annot_name, 0)
