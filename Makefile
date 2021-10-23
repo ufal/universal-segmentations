@@ -1,4 +1,4 @@
-.PHONY: all lint clean
+.PHONY: all lint profile clean
 .SECONDARY:
 
 all: udmurt/udmurt.useg
@@ -19,6 +19,11 @@ udmurt:
 
 lint:
 	pylint src/
+
+profile: udmurt/wordlist_analyzed_fixed.txt src/import_udmurt.py src/seg_lex.py src/seg_tsv.py
+# 	python3 -m scalene --cpu-only --outfile '$@' src/import_udmurt.py < '$<' > /dev/null
+	python3 -m cProfile --outfile '$@' src/import_udmurt.py < '$<' > /dev/null
+	snakeviz '$@'
 
 clean:
 	rm -f udmurt/wordlist_analyzed_fixed.txt
