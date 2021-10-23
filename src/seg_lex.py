@@ -14,7 +14,7 @@ class SegLex:
     subdivisions are possible, each identified by an annotation name.
     """
 
-    __slots__ = "_lexemes"
+    __slots__ = ("_lexemes", )
 
     def __init__(self):
         self._lexemes = []
