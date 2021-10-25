@@ -212,3 +212,37 @@ class SegLex:
                     return morpheme
 
         return None
+
+    def morph(self, lex_id, annot_name, position):
+        """
+        Return the string form of one of the morphemes found at
+        `position` of annotation layer `annot_name` in lexeme `lex_id`,
+        or None if no such morpheme exists.
+
+        FIXME this API is really unwieldy, come up with something
+        better? Maybe introduce morpheme IDs, like we have lex IDs?
+        """
+        morpheme = self.morpheme(lex_id, annot_name, position)
+
+        if morpheme is None:
+            return None
+
+        if morpheme.span:
+            form = self.form(lex_id)
+            span = sorted(morpheme.span)
+
+            last_idx = span[0]
+            morph = form[last_idx]
+
+            for idx in span[1:]:
+                if idx == last_idx + 1:
+                    # This part of the morph is contiguous.
+                    morph += form[idx]
+                else:
+                    morph += " + " + form[idx]
+                last_idx = idx
+
+            return morph
+        else:
+            # Empty morpheme spans are weird, but support them anyway.
+            return ""
