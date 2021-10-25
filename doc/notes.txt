@@ -85,3 +85,14 @@ Schůzka 19. 10. 2021:
 	https://docs.google.com/document/d/1wI5Tg5y7uhxStQo6TBqqSC_MiZ85W3pEbVOEbsxuUWc/edit
 	
 	do příště: vybrat si dva jazyky, zpracovat je (němčina a udmurtština – je to zapsané v tabulce jazyků)
+
+
+Poznámky ze schůzky v pondělí 25. 10. 2021:
+	Předělat spany na kompaktnější zápis – místo vyjmenovaných pozic tam dát string ve stylu "0-5,7-8".
+	Třídění předělat, aby bylo podle formy.
+	Při zápisu pohlídat, aby byl soubor blokově bufferovaný, ne řádkově bufferovaný (při přesměrování do souboru asi STDOUT by default je).
+	Zkusit líp sortit morfémy, aby to netrvalo tak dlouho (třeba sortit při vytváření morfémů – a hlídat, jestli je nově přidávaný poslední a v tom případě vůbec nesortit).
+	Dopsat dokumentaci. Zmínit tam, jak se nastaví PYTHONPATH, aby všichni používali verzi z repozitáře a pravidelně si ji aktualizovali.
+	Napsat nějaké testy? Verifikátor formátu?
+	Zdeněk navrhne adresářovou strukturu, ve čtvrtek by ji mohl mít.
+	Podívat se na tabulku zdrojů a vybrat si další jazyky ke konverzi (Nyati umí francouzsky, já s Honzou německy).
