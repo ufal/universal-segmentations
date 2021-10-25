@@ -146,14 +146,7 @@ class SegLex:
         # Check that the morpheme span actually exists in the lexeme.
         span = frozenset(span)
         for pos in span:
-            if pos < 0:
-                raise ValueError(
-                    "Morpheme span position {} is out-of-bounds in lexeme {}".format(
-                        pos,
-                        self.print_lexeme(lex_id)
-                    )
-                )
-            if pos >= len(self.form(lex_id)):
+            if pos < 0 or pos >= len(self.form(lex_id)):
                 raise ValueError(
                     "Morpheme span position {} is out-of-bounds in lexeme {}".format(
                         pos,
