@@ -1,0 +1,14 @@
+= Universal Segmentations
+
+This repository servers as the main storage of scripts and documentation
+of the Universal Segmentations project, which aims to convert existing
+resources for morphological segmentation into a common format and, in
+the future, to develop new resources.
+
+
+== API
+
+A Python API for working with morphological segmentation is available
+in link:src/useg/seg_lex.py[].
+
+NOTE: TODO Add documentation.
