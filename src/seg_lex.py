@@ -153,7 +153,7 @@ class SegLex:
                         self.print_lexeme(lex_id)
                     )
                 )
-            if pos > len(self.form(lex_id)):
+            if pos >= len(self.form(lex_id)):
                 raise ValueError(
                     "Morpheme span position {} is out-of-bounds in lexeme {}".format(
                         pos,
