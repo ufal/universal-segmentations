@@ -3,7 +3,7 @@
 
 all: udmurt/udmurt.useg
 
-udmurt/udmurt.useg: udmurt/wordlist_analyzed_fixed.txt src/import_udmurt.py src/seg_lex.py src/seg_tsv.py
+udmurt/udmurt.useg: udmurt/wordlist_analyzed_fixed.txt src/import_udmurt.py src/useg/seg_lex.py src/useg/seg_tsv.py
 	./src/import_udmurt.py < '$<' 2>&1 > '$@' | tee '$(basename $@).log' >&2
 
 udmurt/wordlist_analyzed_fixed.txt: udmurt/wordlist_analyzed.txt
@@ -20,7 +20,7 @@ udmurt:
 lint:
 	pylint src/
 
-profile: udmurt/wordlist_analyzed_fixed.txt src/import_udmurt.py src/seg_lex.py src/seg_tsv.py
+profile: udmurt/wordlist_analyzed_fixed.txt src/import_udmurt.py src/useg/seg_lex.py src/useg/seg_tsv.py
 # 	python3 -m scalene --cpu-only --outfile '$@' src/import_udmurt.py < '$<' > /dev/null
 	python3 -m cProfile --outfile '$@' src/import_udmurt.py < '$<' > /dev/null
 	snakeviz '$@'
