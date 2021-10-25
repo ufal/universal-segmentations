@@ -197,7 +197,7 @@ class SegLex:
         """
         Return one of the morphemes found at `position` of annotation
         layer `annot_name` in lexeme `lex_id`. If there are multiple
-        morphemes at this position, silently choose one. Return none
+        morphemes at this position, silently choose one. Return None
         if no such morphemes exist.
         """
         if annot_name in self._lexemes[lex_id].morphemes:
