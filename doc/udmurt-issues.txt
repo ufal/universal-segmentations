@@ -1,0 +1,46 @@
+Issues to check and verify correct conversion:
+
+Stemless word form 'марке' detected
+Stemless word form 'кинке' detected
+Stemless word form 'кыӵеке' detected
+Stemless word form 'марке-' detected
+(had STEMSTEM)
+
+Two stems in малыке
+Two stems in маяке
+Two stems in марлыке
+Two stems in кинлыке
+Two stems in кинлэське
+Two stems in маеке
+Two stems in марыське
+(have an interfix)
+
+ёжгуртысь
+
+-бӧдьяосты
+
+ог-
+(ends with a dash, has 2 analyses)
+
+тодон-
+(ends with a dash, has 2 morphemes)
+
+
+POSes:
+A
+ADJ
+ADJPRO
+ADV
+ADVPRO
+CNJ
+IMIT
+INTRJ
+N
+NUM
+PARENTH
+PART
+POST
+PREDIC
+PREP
+PRO
+V
