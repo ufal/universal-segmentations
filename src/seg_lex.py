@@ -135,7 +135,7 @@ class SegLex:
         """
         self.add_morpheme(lex_id, annot_name, list(range(start, end)), features)
 
-    def add_morpheme(self, lex_id, annot_name, span, features):
+    def add_morpheme(self, lex_id, annot_name, span, features=None):
         """
         Subdivide the lexeme with `lex_id` using a new morpheme spanning
         integer positions enumerated in `span` on annotation layer
