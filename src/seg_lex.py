@@ -183,6 +183,9 @@ class SegLex:
             else:
                 return list(morphemes)
         else:
+            if position < 0 or position >= len(self.form(lex_id)):
+                raise ValueError("Invalid position {} in lexeme {}; is out of bounds in the form".format(position, self.print_lexeme(lex_id)))
+
             m = []
             for morpheme in self._lexemes[lex_id].morphemes[annot_name]:
                 if position in morpheme.span:
@@ -200,6 +203,9 @@ class SegLex:
         morphemes at this position, silently choose one. Return None
         if no such morphemes exist.
         """
+        if position < 0 or position >= len(self.form(lex_id)):
+            raise ValueError("Invalid position {} in lexeme {}; is out of bounds in the form".format(position, self.print_lexeme(lex_id)))
+
         if annot_name in self._lexemes[lex_id].morphemes:
             for morpheme in self._lexemes[lex_id].morphemes[annot_name]:
                 if position in morpheme.span:
