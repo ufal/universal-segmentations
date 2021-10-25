@@ -2,15 +2,15 @@ from collections import namedtuple
 
 import seg_tsv
 
-Lexeme = namedtuple("Lexeme", ["lex_id", "form", "lemma", "pos", "features", "morphs"])
-Morph = namedtuple("Morph", ["span", "features"])
+Lexeme = namedtuple("Lexeme", ["lex_id", "form", "lemma", "pos", "features", "morphemes"])
+Morpheme = namedtuple("Morpheme", ["span", "features"])
 
 class SegLex:
     """
     A lexicon of segmentations.
 
     Lexemes are identified using their IDs. Each lexeme has a string
-    form, which can be subdivided into morphs. Multiple alternative
+    form, which can be subdivided into morph(eme)s. Multiple alternative
     subdivisions are possible, each identified by an annotation name.
     """
 
@@ -32,23 +32,23 @@ class SegLex:
         Iterate over the lexicon as a sequence of SegRecords (not sorted).
         """
         for lexeme in self._lexemes:
-            for annot_name in lexeme.morphs:
+            for annot_name in lexeme.morphemes:
                 annot = lexeme.features.copy()
                 assert "segmentation" not in annot and "" not in annot
                 annot["annot_name"] = annot_name
                 # TODO Ensure span is not already defined.
-                annot["segmentation"] = [morph.features | {"span": morph.span}
-                                         for morph in self.morphs(
+                annot["segmentation"] = [morpheme.features | {"span": morpheme.span}
+                                         for morpheme in self.morphemes(
                                              lexeme.lex_id,
                                              annot_name,
                                              sort=True
                                          )]
 
                 simple_seg = []
-                last_morpheme = self.morph(lexeme.lex_id, annot_name, 0)
+                last_morpheme = self.morpheme(lexeme.lex_id, annot_name, 0)
                 morph_str = ""
                 for i in range(len(lexeme.form)):
-                    morpheme = self.morph(lexeme.lex_id, annot_name, i)
+                    morpheme = self.morpheme(lexeme.lex_id, annot_name, i)
                     if morpheme == last_morpheme:
                         morph_str += lexeme.form[i]
                     else:
@@ -125,37 +125,37 @@ class SegLex:
         """
         return "{}({}#{})".format(self.form(lex_id), self.lemma(lex_id), self.pos(lex_id))
 
-    def add_contiguous_morph(self, lex_id, annot_name, start, end, features=None):
+    def add_contiguous_morpheme(self, lex_id, annot_name, start, end, features=None):
         """
         Subdivide the lexeme with `lex_id` using a new morpheme starting
         at 0-indexed position `start` (inclusive) and continuing through
         position `end` (exclusive) on annotation layer `annot_name`. The
         annotation `features` is saved together with the newly-created
-        morph.
+        morpheme.
         """
-        self.add_morph(lex_id, annot_name, list(range(start, end)), features)
+        self.add_morpheme(lex_id, annot_name, list(range(start, end)), features)
 
-    def add_morph(self, lex_id, annot_name, span, features):
+    def add_morpheme(self, lex_id, annot_name, span, features):
         """
         Subdivide the lexeme with `lex_id` using a new morpheme spanning
         integer positions enumerated in `span` on annotation layer
         `annot_name`. The annotation `features` is saved together with the
-        newly-created morph.
+        newly-created morpheme.
         """
 
-        # Check that the morph span actually exists in the lexeme.
+        # Check that the morpheme span actually exists in the lexeme.
         span = frozenset(span)
         for pos in span:
             if pos < 0:
                 raise ValueError(
-                    "Morph span position {} is out-of-bounds in lexeme {}".format(
+                    "Morpheme span position {} is out-of-bounds in lexeme {}".format(
                         pos,
                         self.print_lexeme(lex_id)
                     )
                 )
             if pos > len(self.form(lex_id)):
                 raise ValueError(
-                    "Morph span position {} is out-of-bounds in lexeme {}".format(
+                    "Morpheme span position {} is out-of-bounds in lexeme {}".format(
                         pos,
                         self.print_lexeme(lex_id)
                     )
@@ -164,52 +164,52 @@ class SegLex:
         if features is None:
             features = {}
 
-        # Add the morph.
-        morph = Morph(span, features)
+        # Add the morpheme.
+        morpheme = Morpheme(span, features)
 
-        if annot_name not in self._lexemes[lex_id].morphs:
-            self._lexemes[lex_id].morphs[annot_name] = [morph]
+        if annot_name not in self._lexemes[lex_id].morphemes:
+            self._lexemes[lex_id].morphemes[annot_name] = [morpheme]
         else:
-            self._lexemes[lex_id].morphs[annot_name].append(morph)
+            self._lexemes[lex_id].morphemes[annot_name].append(morpheme)
 
-    def morphs(self, lex_id, annot_name, sort=False, position=None):
+    def morphemes(self, lex_id, annot_name, sort=False, position=None):
         """
-        Get a list of all morphs of lexeme with ID `lex_id` on
+        Get a list of all morphemes of lexeme with ID `lex_id` on
         annotation layer `annot_name`. If `position` is filled in,
         return only those covering that position. If there are no
-        morphs or none cover the position, an empty list is returned.
-        If `sort` is True, sort the morphs by their span.
+        morphemes or none cover the position, an empty list is returned.
+        If `sort` is True, sort the morphemes by their span.
         """
-        if annot_name not in self._lexemes[lex_id].morphs:
+        if annot_name not in self._lexemes[lex_id].morphemes:
             return []
         elif position is None:
             # Return a copy to prevent accidental mangling.
-            morphs = self._lexemes[lex_id].morphs[annot_name]
+            morphemes = self._lexemes[lex_id].morphemes[annot_name]
             if sort:
-                return sorted(morphs, key=lambda morph: tuple(sorted(morph.span)))
+                return sorted(morphemes, key=lambda morpheme: tuple(sorted(morpheme.span)))
             else:
-                return list(morphs)
+                return list(morphemes)
         else:
             m = []
-            for morph in self._lexemes[lex_id].morphs[annot_name]:
-                if position in morph.span:
-                    m.append(morph)
+            for morpheme in self._lexemes[lex_id].morphemes[annot_name]:
+                if position in morpheme.span:
+                    m.append(morpheme)
 
             if sort:
-                return sorted(m, key=lambda morph: tuple(sorted(morph.span)))
+                return sorted(m, key=lambda morpheme: tuple(sorted(morpheme.span)))
             else:
                 return m
 
-    def morph(self, lex_id, annot_name, position):
+    def morpheme(self, lex_id, annot_name, position):
         """
-        Return one of the morphs found at `position` of annotation layer
-        `annot_name` in lexeme `lex_id`. If there are multiple morphs at
-        this position, silently choose one. Return none if no such morphs
-        exist.
+        Return one of the morphemes found at `position` of annotation
+        layer `annot_name` in lexeme `lex_id`. If there are multiple
+        morphemes at this position, silently choose one. Return none
+        if no such morphemes exist.
         """
-        if annot_name in self._lexemes[lex_id].morphs:
-            for morph in self._lexemes[lex_id].morphs[annot_name]:
-                if position in morph.span:
-                    return morph
+        if annot_name in self._lexemes[lex_id].morphemes:
+            for morpheme in self._lexemes[lex_id].morphemes[annot_name]:
+                if position in morpheme.span:
+                    return morpheme
 
         return None

@@ -148,7 +148,7 @@ def main():
                     #  a connector. The dash is not part of the
                     #  segmentation, and should not be (at least in the
                     #  first case). Skip it.
-                    lexicon.add_contiguous_morph(
+                    lexicon.add_contiguous_morpheme(
                         lexeme,
                         "Uniparser UDM",
                         end,
@@ -177,7 +177,7 @@ def main():
                 else:
                     morpheme_type = "infix"
 
-                lexicon.add_contiguous_morph(
+                lexicon.add_contiguous_morpheme(
                     lexeme,
                     "Uniparser UDM",
                     start,
@@ -187,7 +187,7 @@ def main():
 
             if stem_morph_span:
                 # Add the (potentially discontiguous) stem morpheme.
-                lexicon.add_morph(
+                lexicon.add_morpheme(
                     lexeme,
                     "Uniparser UDM",
                     stem_morph_span,
@@ -200,7 +200,7 @@ def main():
             if end == len(form) - 1 and form[end] == "-":
                 # The word ends with a dash, which we didn't process before.
                 #  Add it as a connector now.
-                lexicon.add_contiguous_morph(
+                lexicon.add_contiguous_morpheme(
                     lexeme,
                     "Uniparser UDM",
                     end,
