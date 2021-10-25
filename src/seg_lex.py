@@ -49,7 +49,7 @@ class SegLex:
                 morph_str = ""
                 for i in range(len(lexeme.form)):
                     morpheme = self.morpheme(lexeme.lex_id, annot_name, i)
-                    if morpheme == last_morpheme:
+                    if morpheme is last_morpheme:
                         morph_str += lexeme.form[i]
                     else:
                         last_morpheme = morpheme
