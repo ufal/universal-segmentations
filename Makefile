@@ -1,7 +1,10 @@
 .PHONY: all lint profile clean
 .SECONDARY:
 
-all: udmurt/udmurt.useg
+DERINET_API_DIR:=./derinet2
+UDER_DIR:=./UDer-1.1
+
+all: udm/udmurt.useg ces/czech.useg deu/german.useg
 
 udm/udmurt.useg: udm/wordlist_analyzed_fixed.txt src/import_udmurt.py src/useg/seg_lex.py src/useg/seg_tsv.py
 	./src/import_udmurt.py < '$<' 2>&1 > '$@' | tee '$(basename $@).log' >&2
@@ -16,6 +19,19 @@ udm/wordlist_analyzed.txt: | udm
 
 udm:
 	mkdir -p '$@'
+ces:
+	mkdir -p '$@'
+deu:
+	mkdir -p '$@'
+
+ces/czech.useg: $(UDER_DIR)/cs-DeriNet/UDer-1.1-cs-DeriNet.tsv | $(DERINET_API_DIR) ces
+	PYTHONPATH='$(DERINET_API_DIR)' ./src/import_derinet.py < '$<' > '$@'
+
+deu/german.useg: $(UDER_DIR)/de-GCelex/UDer-1.1-de-GCelex.tsv | $(DERINET_API_DIR) deu
+	PYTHONPATH='$(DERINET_API_DIR)' ./src/import_derinet.py < '$<' > '$@'
+
+$(DERINET_API_DIR):
+	@printf 'Please, point the DERINET_API_DIR variable at a directory with the DeriNet 2.0 Python API. Current value "%s" is not valid.\n' '$(DERINET_API_DIR)' >&2; exit 1
 
 lint:
 	pylint src/
