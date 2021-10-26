@@ -37,7 +37,7 @@ class SegLex:
                 assert "segmentation" not in annot and "" not in annot
                 annot["annot_name"] = annot_name
                 # TODO Ensure span is not already defined.
-                annot["segmentation"] = [morpheme.features | {"span": morpheme.span}
+                annot["segmentation"] = [{**morpheme.features, "span": morpheme.span}
                                          for morpheme in self.morphemes(
                                              lexeme.lex_id,
                                              annot_name,
