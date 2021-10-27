@@ -5,14 +5,21 @@ it, convert it to the Universal Segmentations format and print it to
 STDOUT.
 """
 
+import argparse
 import sys
 
 from derinet import Lexicon
 from useg.seg_lex import SegLex
 
-def main():
-    annot_name = "DeriNet 2.0"
+def parse_args():
+    parser = argparse.ArgumentParser(
+        allow_abbrev=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser.add_argument("--annot-name", required=True, help="The name to use for storing the segmentation annotation.")
+    return parser.parse_args()
 
+def main(args):
     der_lexicon = Lexicon()
     der_lexicon.load(sys.stdin)
 
@@ -26,9 +33,9 @@ def main():
             if "Type" in morpheme:
                 features["type"] = morpheme["Type"].lower()
 
-            seg_lexicon.add_contiguous_morpheme(seg_lexeme, annot_name, morpheme["Start"], morpheme["End"], features=features)
+            seg_lexicon.add_contiguous_morpheme(seg_lexeme, args.annot_name, morpheme["Start"], morpheme["End"], features=features)
 
     seg_lexicon.save(sys.stdout)
 
 if __name__ == "__main__":
-    main()
+    main(parse_args())

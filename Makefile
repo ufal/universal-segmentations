@@ -25,10 +25,10 @@ deu:
 	mkdir -p '$@'
 
 ces/czech.useg: $(UDER_DIR)/cs-DeriNet/UDer-1.1-cs-DeriNet.tsv | $(DERINET_API_DIR) ces
-	PYTHONPATH='$(DERINET_API_DIR)' ./src/import_derinet.py < '$<' > '$@'
+	PYTHONPATH='$(DERINET_API_DIR)' ./src/import_derinet.py --annot-name "DeriNet 2.1" < '$<' > '$@'
 
 deu/german.useg: $(UDER_DIR)/de-GCelex/UDer-1.1-de-GCelex.tsv | $(DERINET_API_DIR) deu
-	PYTHONPATH='$(DERINET_API_DIR)' ./src/import_derinet.py < '$<' > '$@'
+	PYTHONPATH='$(DERINET_API_DIR)' ./src/import_derinet.py --annot-name "GCelex" < '$<' > '$@'
 
 $(DERINET_API_DIR):
 	@printf 'Please, point the DERINET_API_DIR variable at a directory with the DeriNet 2.0 Python API. Current value "%s" is not valid.\n' '$(DERINET_API_DIR)' >&2; exit 1
