@@ -21,7 +21,7 @@ def parse_args():
 
 def main(args):
     der_lexicon = Lexicon()
-    der_lexicon.load(sys.stdin)
+    der_lexicon.load(sys.stdin, on_err="continue")
 
     seg_lexicon = SegLex()
 
