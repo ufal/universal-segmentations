@@ -4,7 +4,7 @@
 DERINET_API_DIR:=./derinet2
 UDER_DIR:=./UDer-1.1
 
-all: udm/udmurt.useg ces/czech.useg deu/german.useg
+all: udm/udmurt.useg ces/czech.useg deu/german.useg eng/english.useg
 
 eng/MorphoLEX_en.xlsx: | eng
 	curl --location --compressed -o '$@' 'https://github.com/hugomailhot/MorphoLex-en/raw/master/MorphoLEX_en.xlsx'
@@ -40,6 +40,9 @@ ces/czech.useg: $(UDER_DIR)/cs-DeriNet/UDer-1.1-cs-DeriNet.tsv | $(DERINET_API_D
 deu/german.useg: $(UDER_DIR)/de-GCelex/UDer-1.1-de-GCelex.tsv | $(DERINET_API_DIR) deu
 	PYTHONPATH='$(DERINET_API_DIR)' ./src/import_derinet.py --annot-name "GCelex" < '$<' > '$@'
 
+eng/english.useg: eng/MorphoLEX_en.xlsx src/import_morpholex.py | eng
+	./src/import_morpholex.py --annot-name '$(basename $<)' '$<' > '$@' 2> '$(basename $@).log'
+
 $(DERINET_API_DIR):
 	@printf 'Please, point the DERINET_API_DIR variable at a directory with the DeriNet 2.0 Python API. Current value "%s" is not valid.\n' '$(DERINET_API_DIR)' >&2; exit 1
 
@@ -56,4 +59,5 @@ clean:
 	rm -f udm/udmurt.useg udm/udmurt.log
 	#rm -f udm/wordlist_analyzed.txt
 	#rm -f eng/MorphoLEX_en.xlsx
+	rm -f eng/english.useg eng/english.log
 	#rm -f fra/MorphoLEX_fr.xlsx
