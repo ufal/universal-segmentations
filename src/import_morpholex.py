@@ -20,6 +20,68 @@ def parse_args():
     parser.add_argument("--annot-name", required=True, help="The name to use for storing the segmentation annotation.")
     return parser.parse_args()
 
+def parse_segmentation(s):
+    morphemes = []
+    rest = s
+
+    while rest:
+        if rest[0] == "<":
+            # Prefix.
+            t = "prefix"
+            end = rest.index("<", 1)
+        elif rest[0] == ">":
+            # Suffix.
+            t = "suffix"
+            end = rest.index(">", 1)
+        elif rest[0] == "(":
+            # Root.
+            t = "root"
+            end = rest.index(")", 1)
+        elif rest[0] == "{":
+            # Stem.
+            # There can be recursive substems, so we have to parse the
+            #  brackets by counting, making sure to skip over any inner
+            #  matching pairs.
+            depth = 1
+            for i in range(1, len(rest)):
+                if rest[i] == "{":
+                    depth += 1
+                elif rest[i] == "}":
+                    depth -= 1
+
+                if depth == 0:
+                    end = i
+                    break
+
+            stem = rest[1:end]
+            # TODO Somehow record stem information and return it.
+            morphemes.extend(parse_segmentation(stem))
+            rest = rest[end + 1:]
+            continue
+        else:
+            # Possibly an error? Try to recover.
+            #raise ValueError("Unparseable segmentation '{}'".format(s))
+            t = "unknown"
+            match = re.search(r"[><({]", rest)
+            if match is None:
+                end = len(rest)
+            else:
+                end = match.start()
+
+            morpheme = rest[0:end]
+            morphemes.append((morpheme, t))
+            rest = rest[end:]
+            continue
+
+        morpheme = rest[1:end]
+        morphemes.append((morpheme, t))
+        rest = rest[end + 1:]
+
+    for m, t in morphemes:
+        assert m.replace("'", "").isalpha(), "Morpheme '{}' of segmentation {} is not purely alphabetical.".format(m, s)
+
+    return morphemes
+
 def main(args):
     lexicon = SegLex()
 
@@ -43,7 +105,7 @@ def main(args):
 
                 poses = set(line.POS.split("|"))
                 segmentation = line.MorphoLexSegm
-                split_segmentation = re.split("[<>\(\)\{\}]+", segmentation.strip("<>()\{\}"))
+                split_segmentation = [m[0] for m in parse_segmentation(segmentation)]
                 #print(form, poses, segmentation, split_segmentation, sep="\t")
 
                 joined_segmentation = "".join(split_segmentation)
