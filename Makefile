@@ -6,6 +6,12 @@ UDER_DIR:=./UDer-1.1
 
 all: udm/udmurt.useg ces/czech.useg deu/german.useg
 
+eng/MorphoLEX_en.xlsx: | eng
+	curl --location --compressed -o '$@' 'https://github.com/hugomailhot/MorphoLex-en/raw/master/MorphoLEX_en.xlsx'
+
+fra/MorphoLEX_fr.xlsx: | fra
+	curl --location --compressed -o '$@' 'https://github.com/hugomailhot/morpholex-fr/raw/master/xlsx/Morpholex_FR.xlsx'
+
 udm/udmurt.useg: udm/wordlist_analyzed_fixed.txt src/import_udmurt.py src/useg/seg_lex.py src/useg/seg_tsv.py
 	./src/import_udmurt.py < '$<' 2>&1 > '$@' | tee '$(basename $@).log' >&2
 
@@ -22,6 +28,10 @@ udm:
 ces:
 	mkdir -p '$@'
 deu:
+	mkdir -p '$@'
+eng:
+	mkdir -p '$@'
+fra:
 	mkdir -p '$@'
 
 ces/czech.useg: $(UDER_DIR)/cs-DeriNet/UDer-1.1-cs-DeriNet.tsv | $(DERINET_API_DIR) ces
@@ -45,3 +55,5 @@ clean:
 	rm -f udm/wordlist_analyzed_fixed.txt
 	rm -f udm/udmurt.useg udm/udmurt.log
 	#rm -f udm/wordlist_analyzed.txt
+	#rm -f eng/MorphoLEX_en.xlsx
+	#rm -f fra/MorphoLEX_fr.xlsx
