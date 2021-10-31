@@ -77,6 +77,11 @@ def parse_segmentation(s):
         morphemes.append((morpheme, t))
         rest = rest[end + 1:]
 
+    # Check that there are no stray punctuation symbols (typically
+    #  misplaced parentheses or braces) in the morpheme. That would
+    #  indicate an error in the annotation. But apostrophes are
+    #  naturally found in the English data and underscores are used to
+    #  distinguish homonyms, so ignore those.
     for m, t in morphemes:
         assert m.replace("'", "").replace("_", "").isalpha(), "Morpheme '{}' of segmentation {} is not purely alphabetical.".format(m, s)
 
