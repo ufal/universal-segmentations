@@ -184,6 +184,23 @@ def main(args):
                 #  spor-es
                 #  premier-es
                 #  segmentation in, spir, ion, al of 'inspirational'   (missing -ate-)
+                #  segmentation re, class, ify, ion of 'reclassification'   (dtto)
+
+                # Unparseable segmentation:
+                # DALY (9355 in 0-1-0)
+                # gotten (23448 in 0-1-0)
+                # FLOCCULATED (3764 in 0-1-1) has recursive stems
+                # backboard (6361 in 0-2-0) and a few immediately following lexemes have switched brackets
+                # complexions (2004 in 1-1-0) is in a wrong sheet and misses a bracket
+                # impunity (4305 in 1-1-0) dtto
+                # complexion (5085 in 1-1-0) dtto
+                # staminate (6506 in 0-1-1) have an extra bracket
+                # quintet (7767 in 0-1-1) and following 2 words
+                # alternating (13198 in 0-1-1)
+                # backyard (6382 in 0-2-0) and backyards (next line)
+                # triplicated (4 in 1-2-1) and following several lexemes have a recursive root
+                # intermediaries (18 in 1-2-1) and following
+                #  and several others in that sheet
 
 if __name__ == "__main__":
     main(parse_args())
