@@ -59,19 +59,7 @@ def parse_segmentation(s):
             rest = rest[end + 1:]
             continue
         else:
-            # Possibly an error? Try to recover.
-            #raise ValueError("Unparseable segmentation '{}'".format(s))
-            t = "unknown"
-            match = re.search(r"[><({]", rest)
-            if match is None:
-                end = len(rest)
-            else:
-                end = match.start()
-
-            morpheme = rest[0:end]
-            morphemes.append((morpheme, t))
-            rest = rest[end:]
-            continue
+            raise ValueError("Unparseable segmentation '{}'".format(s))
 
         morpheme = rest[1:end]
         morphemes.append((morpheme, t))
