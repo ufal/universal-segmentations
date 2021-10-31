@@ -78,7 +78,7 @@ def parse_segmentation(s):
         rest = rest[end + 1:]
 
     for m, t in morphemes:
-        assert m.replace("'", "").isalpha(), "Morpheme '{}' of segmentation {} is not purely alphabetical.".format(m, s)
+        assert m.replace("'", "").replace("_", "").isalpha(), "Morpheme '{}' of segmentation {} is not purely alphabetical.".format(m, s)
 
     return morphemes
 
