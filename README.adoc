@@ -5,11 +5,88 @@ of the Universal Segmentations project, which aims to convert existing
 resources for morphological segmentation into a common format and, in
 the future, to develop new resources.
 
+Currently, we focus on extracting information from existing resources
+and putting into a file format specifically designed for the
+segmentation task.
+
 
 == API
 
 A Python API for working with morphological segmentation is available
-in link:src/useg/seg_lex.py[].
+in link:src/useg/seg_lex.py[]. For a simple usage example, see
+link:src/import_derinet.py[], which converts segmentation present in
+DeriNet-2.0-formatted files to our format.
+
+The basic usage is as follows:
+
+1. Create a lexicon. The lexicon is the main object you'll be
+interacting with.
++
+[source,python]
+----
+from useg import SegLex
+lexicon = SegLex()
+----
+
+2. Create any number of lexemes using the `lexicon.add_lexeme()`
+method, which requires a word form, lemma and a part-of-speech tag and
+returns an ID of the created lexeme. This ID is used to work with the
+lexeme using other methods.
++
+The last argument is (optional) features of the lexeme. Pass a dict
+with the required items, such as `{"gender": "Masc"}`. Keys are not yet
+standardized, we'll have to talk about it.
++
+The POS tag can be replaced by an empty string if you don't have it.
+Form should be always filled in – it is expected that a lemma is one
+of the word forms, so if you only have a lemma, specify it both as
+the lemma and as the form.
++
+Try to use Universal POS tags for the part of speech, if possible.
++
+[source,python]
+----
+lex_id = lexicon.add_lexeme("counterexamples", "counterexample", "NOUN")
+----
+
+3. Add segmentation by using the `lexicon.add_morpheme()` method, or
+one of the convenience methods `lexicon.add_contiguous_morpheme()` or
+`lexicon.add_morphemes_from_list()` (see below).
++
+The `lexicon.add_morphemes_from_list()` method is the simplest one to
+use, but it requires that the morphs of the word, when concatenated,
+correspond exactly to the word form. Therefore, it doesn't work with
+allomorphs and doesn't allow you to add further annotation to the
+morphemes. Simply pass a list of morphs as the argument.
++
+[source,python]
+----
+lexicon.add_morphemes_from_list(lex_id, "test_1", ["count", "er", "example", "s"])
+----
++
+The `lexicon.add_contiguous_morpheme()` allows you to add morphemes
+one by one and manually resolve allomorphy and annotate the individual
+morphemes. Pass start and end indices of the morpheme, as if they were
+slice indices that select the morph from the form.
++
+[source,python]
+----
+lexicon.add_contiguous_morpheme(lex_id, "test_2", 0, 5, {"type": "root", "morpheme": "contra"})
+lexicon.add_contiguous_morpheme(lex_id, "test_2", 5, 7, {"type": "suffix", "morpheme": "er"})
+----
++
+The `lexicon.add_contiguous_morpheme()` method is the lowest level one.
+It requires you to manually specify, which positions in the form the
+morph corresponds to using a list of integer indices, therefore
+allowing to mark non-contiguous morphemes such as circumfixes.
++
+[source,python]
+----
+lexicon.add_morpheme(lex_id, "test_2", [7, 8, 9, 10, 11, 12, 13], {"type": "root", "morpheme": "example"})
+lexicon.add_morpheme(lex_id, "test_2", [14], {"type": "suffix", "morpheme": "PLURAL"})
+----
+
+
 
 NOTE: TODO Add documentation.
 
@@ -34,3 +111,8 @@ NOTE: TODO Add documentation.
 * Document deleting morphemes (not implemented yet)
 * Document morpheme properties; what are you expected to fill out
 ** And how to query and obtain the properties
+
+
+== File format
+
+NOTE: TODO Add documentation.
