@@ -42,6 +42,8 @@ def parse_segmentation(s):
             # There can be recursive substems, so we have to parse the
             #  brackets by counting, making sure to skip over any inner
             #  matching pairs.
+            # The recursive stems are probably an error in the original
+            #  data.
             depth = 1
             for i in range(1, len(rest)):
                 if rest[i] == "{":
