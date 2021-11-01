@@ -17,7 +17,8 @@ in link:src/useg/seg_lex.py[]. For a simple usage example, see
 link:src/import_derinet.py[], which converts segmentation present in
 DeriNet-2.0-formatted files to our format.
 
-The basic usage is as follows:
+
+=== Basic usage
 
 1. Create a lexicon. The lexicon is the main object you'll be
 interacting with.
@@ -94,6 +95,36 @@ with open("output.useg", "wt", encoding="utf-8") as f:
     lexicon.save(f)
 ----
 
+
+=== Loading and using pre-created lexicons
+
+In addition to creating the lexicon from scratch, it is also possible
+to load an existing resource from a file using the `lexicon.load()`
+method, analogously to saving:
+
+[source,python]
+----
+lexicon = SegLex()
+with open("input.useg", "rt", encoding="utf-8") as f:
+    lexicon.load(f)
+----
+
+The lexicon now contains lexemes and their segmentation. The lexemes
+can be enumerated using the `lexicon.iter_lexemes()` method. When
+passed no arguments, it will iterate over the whole lexicon, returning
+IDs of all lexemes. When passed the string arguments `form`, `lemma`
+or `pos`, it will iterate only over lexeme IDs with the specified
+properties.
+
+The methods `lexicon.form()`, `.lemma()` and `.pos()` can be used to
+obtain these strings.
+
+[source,python]
+----
+# Print lemmas of all nouns.
+for lex_id in lexicon.iter_lexemes(pos="NOUN"):
+    print(lexicon.lemma(lex_id))
+----
 
 NOTE: TODO Add documentation.
 
