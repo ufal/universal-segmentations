@@ -106,6 +106,21 @@ def main(args):
                 split_segmentation = [m[0] for m in parse_segmentation(segmentation)]
                 #print(form, poses, segmentation, split_segmentation, sep="\t")
 
+                end = 0
+                for morph in split_segmentation:
+                    start = end
+                    if lform.startswith(morph, start):
+                        # Success!
+                        # TODO
+                        pass
+                    else:
+                        # TODO
+                        pass
+
+                # If there are unconsumed chars left, they may be one of
+                #  the inflectional morphemes: {"s", "'s", "ed", "ing", "ings", "n't", "'d", "'ll", "'re", "'ve"}
+
+                # FIXME old code below.
                 joined_segmentation = "".join(split_segmentation)
 
                 if joined_segmentation == lform:
