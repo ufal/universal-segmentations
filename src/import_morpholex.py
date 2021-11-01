@@ -143,6 +143,9 @@ def main(args):
                         print("Mismatched deletion of e in segmentation {} of '{}'".format(", ".join(split_segmentation), form), file=sys.stderr)
                 else:
                     print("Mismatched segmentation {} of '{}'.".format(", ".join(split_segmentation), form), file=sys.stderr)
+                    continue
+
+                print(form, " + ".join(split_segmentation), sep="\t", end="\n")
 
                 # If NN, then it may end in plural "s" or "es".
                 # If VB, it may end in 3rd person present singular "s" or "es".
