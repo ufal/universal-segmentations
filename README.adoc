@@ -117,13 +117,15 @@ or `pos`, it will iterate only over lexeme IDs with the specified
 properties.
 
 The methods `lexicon.form()`, `.lemma()` and `.pos()` can be used to
-obtain these strings.
+obtain these strings, and `lexicon.features()` retrieves the features
+dict. The returned dictionary is shared with the API, so any edits will
+be visible in future calls.
 
 [source,python]
 ----
-# Print lemmas of all nouns.
+# Print lemmas and features of all nouns.
 for lex_id in lexicon.iter_lexemes(pos="NOUN"):
-    print(lexicon.lemma(lex_id))
+    print(lexicon.lemma(lex_id), lexicon.features(lex_id))
 ----
 
 ////
