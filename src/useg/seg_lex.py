@@ -192,6 +192,13 @@ class SegLex:
         """
         return self._lexemes[lex_id].pos
 
+    def features(self, lex_id):
+        """
+        Return the `features` dict of lexeme with ID `lex_id`. You can
+        freely edit the information therein.
+        """
+        return self._lexemes[lex_id].features
+
     def print_lexeme(self, lex_id):
         """
         Return a stringified form of the lexeme with ID `lex_id`.
