@@ -99,6 +99,9 @@ def main(args):
                     print("Word '{}' changes length when lowercasing; this will cause issues.".format(form), file=sys.stderr)
 
                 poses = set(line.POS.split("|"))
+
+                lexeme = lexicon.add_lexeme(form, form, line.POS, {"elp_id": int(line.ELP_ItemID)})
+
                 segmentation = line.MorphoLexSegm
                 split_segmentation = [m[0] for m in parse_segmentation(segmentation)]
                 #print(form, poses, segmentation, split_segmentation, sep="\t")
@@ -194,6 +197,8 @@ def main(args):
                 # triplicated (4 in 1-2-1) and following several lexemes have a recursive root
                 # intermediaries (18 in 1-2-1) and following
                 #  and several others in that sheet
+
+    #lexicon.save(sys.stdout)
 
 if __name__ == "__main__":
     main(parse_args())
