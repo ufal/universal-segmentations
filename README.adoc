@@ -126,6 +126,7 @@ for lex_id in lexicon.iter_lexemes(pos="NOUN"):
     print(lexicon.lemma(lex_id))
 ----
 
+////
 NOTE: TODO Add documentation.
 
 * Document setting the PYTHONPATH
@@ -149,7 +150,7 @@ NOTE: TODO Add documentation.
 * Document deleting morphemes (not implemented yet)
 * Document morpheme properties; what are you expected to fill out
 ** And how to query and obtain the properties
-
+////
 
 == File format
 
