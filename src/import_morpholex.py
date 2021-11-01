@@ -18,6 +18,7 @@ def parse_args():
     )
     parser.add_argument("morpholex", type=argparse.FileType("rb"), help="The name to use for storing the segmentation annotation.")
     parser.add_argument("--annot-name", required=True, help="The name to use for storing the segmentation annotation.")
+    parser.add_argument("--allomorphs", type=argparse.FileType("rt", encoding="utf-8", errors="strict"), help="A file to load allomorphy information from.")
     return parser.parse_args()
 
 def parse_segmentation(s):
@@ -77,8 +78,44 @@ def parse_segmentation(s):
 
     return morphemes
 
+def load_allomorphs(f):
+    m = {}
+
+    for line in f:
+        allomorphs = line.rstrip().split("\t")
+        morpheme = allomorphs[0]
+        m[morpheme] = allomorphs
+
+    return m
+
+def gen_morphs(allomorphs, morpheme)
+    m, t = morpheme
+    morphs = allomorphs[m]
+
+    g_morphs = list(morphs)
+    for morph in morphs:
+        if len(morph) >= 2 and morph[-1] == "e":
+            g_morphs.append(morph[:-1])
+
+        if morph and morph[0] in {"m", "p", "s", "z"}:
+            # Reduplication at the start.
+            g_morphs.append(morph[0] + morph)
+        if morph and morph[0] == "k":
+            # Reduplication of c + k at the start.
+            g_morphs.append("c" + morph)
+
+        if morph and morph[-1] in {"m", "p", "s", "z"}:
+            # Reduplication at the end.
+            g_morphs.append(morph + morph[-1])
+        if morph and morph[0] == "c":
+            # Reduplication of c + k at the end.
+            g_morphs.append(morph + "k")
+
+    return (g_morphs, t)
+
 def main(args):
     lexicon = SegLex()
+    allomorphs = load_allomorphs(args.allomorphs)
 
     sheets = pd.read_excel(args.morpholex, sheet_name=None, header=0, dtype=str, engine="openpyxl", na_filter=False)
     for sheet_name, sheet in sheets.items():
@@ -103,7 +140,7 @@ def main(args):
                 lexeme = lexicon.add_lexeme(form, form, line.POS, {"elp_id": int(line.ELP_ItemID)})
 
                 segmentation = line.MorphoLexSegm
-                split_segmentation = [m[0] for m in parse_segmentation(segmentation)]
+                split_segmentation = [gen_morphs(allomorphs, morpheme)[0][0] for morpheme in parse_segmentation(segmentation)]
                 #print(form, poses, segmentation, split_segmentation, sep="\t")
 
                 end = 0
