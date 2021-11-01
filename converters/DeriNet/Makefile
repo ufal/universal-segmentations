@@ -33,4 +33,4 @@ convert: $(OUT_DIR)/all.useg
 # TODO Generate train / dev / test split.
 
 $(OUT_DIR)/all.useg: $(IN_DIR)/cs-DeriNet/UDer-1.1-cs-DeriNet.tsv | $(OUT_DIR)
-	./import_derinet.py < '$<' 2>&1 > '$@' | tee '$(basename $@).log' >&2
+	./import_derinet.py --annot-name 'DeriNet-2.1' < '$<' 2>&1 > '$@' | tee '$(basename $@).log' >&2
