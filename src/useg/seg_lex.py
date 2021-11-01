@@ -25,7 +25,18 @@ class SegLex:
         information contained therein to the internal lexicon of this
         object.
         """
-        raise NotImplementedError()
+        for line in f:
+            record = seg_tsv.parse_line(line)
+            features = {k: v for k, v in record.annot.items() if k not in {"annot_name", "segmentation"}}
+            annot_name = record.annot["annot_name"]
+            segmentation = record.annot["segmentation"]
+
+            lexeme = self.add_lexeme(record.form, record.lemma, record.pos, features)
+
+            for segment in segmentation:
+                span = segment["span"]
+                del segment["span"]
+                self.add_morpheme(lexeme, annot_name, span, segment)
 
     def _as_records(self):
         """
