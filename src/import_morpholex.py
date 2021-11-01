@@ -140,25 +140,27 @@ def main(args):
                 lexeme = lexicon.add_lexeme(form, form, line.POS, {"elp_id": int(line.ELP_ItemID)})
 
                 segmentation = line.MorphoLexSegm
-                split_segmentation = [gen_morphs(allomorphs, morpheme)[0][0] for morpheme in parse_segmentation(segmentation)]
-                #print(form, poses, segmentation, split_segmentation, sep="\t")
+                morphemes = [gen_morphs(allomorphs, morpheme) for morpheme in parse_segmentation(segmentation)]
 
-                end = 0
-                for morph in split_segmentation:
+                # Generate the initial parses.
+                parses = []
+
+                # Try to lengthen each parse, until we consume all morphemes.
+                for morphs, t in morphemes:
                     start = end
-                    if lform.startswith(morph, start):
-                        # Success!
-                        # TODO
-                        pass
-                    else:
-                        # TODO
-                        pass
+                    for morph in morphs:
+                        if lform.startswith(morph, start):
+                            # Success!
+                            # TODO
+                            pass
+                        else:
+                            # TODO
+                            pass
 
                 # If there are unconsumed chars left, they may be one of
                 #  the inflectional morphemes: {"s", "'s", "ed", "ing", "ings", "n't", "'d", "'ll", "'re", "'ve"}
 
                 # FIXME old code below.
-                joined_segmentation = "".join(split_segmentation)
 
                 if joined_segmentation == lform:
                     # Success!
