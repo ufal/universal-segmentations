@@ -86,6 +86,13 @@ lexicon.add_morpheme(lex_id, "test_2", [7, 8, 9, 10, 11, 12, 13], {"type": "root
 lexicon.add_morpheme(lex_id, "test_2", [14], {"type": "suffix", "morpheme": "PLURAL"})
 ----
 
+4. When you're done, you can save the lexicon to a file:
++
+[source,python]
+----
+with open("output.useg", "wt", encoding="utf-8") as f:
+    lexicon.save(f)
+----
 
 
 NOTE: TODO Add documentation.
