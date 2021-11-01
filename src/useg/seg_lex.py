@@ -242,6 +242,34 @@ class SegLex:
         else:
             self._lexemes[lex_id].morphemes[annot_name].append(morpheme)
 
+    def add_morphemes_from_list(self, lex_id, annot_name, morphemes):
+        """
+        If `morphemes` is a list of morph strings which, when
+        concatenated, produce exactly the form of lexeme `lex_id`, add
+        morphemes corresponding to the morphs.
+
+        If any morphs don't correspond to their respective piece
+        of the form, add no morphemes and raise an error.
+        """
+        form = self.form(lex_id)
+        to_add = []
+        end = 0
+        for morpheme in morphemes:
+            start = end
+            if isinstance(morpheme, str):
+                morph = morpheme
+            else:
+                raise NotImplementedError("Only strings are supported as morphemes, {} given.".format(morpheme.__class__))
+
+            if form.startswith(morph, start):
+                end = start + len(morph)
+                to_add.append((start, end, None))
+            else:
+                raise ValueError("Morph '{}' not found in form '{}' at position {} (possibly because an earlier morph blocked it).".format(morph, form, start))
+
+        for start, end, features in to_add:
+            self.add_contiguous_morpheme(lex_id, annot_name, start, end, features)
+
     def morphemes(self, lex_id, annot_name, sort=False, position=None):
         """
         Get a list of all morphemes of lexeme with ID `lex_id` on
