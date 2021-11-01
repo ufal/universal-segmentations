@@ -14,10 +14,12 @@ class SegLex:
     subdivisions are possible, each identified by an annotation name.
     """
 
-    __slots__ = ("_lexemes", )
+    __slots__ = ("_lexemes", "_poses", "_forms")
 
     def __init__(self):
         self._lexemes = []
+        self._poses = {}
+        self._forms = {}
 
     def load(self, f):
         """
@@ -99,6 +101,20 @@ class SegLex:
         lex_id = len(self._lexemes)
         lexeme = Lexeme(lex_id, form, lemma, pos, features, {})
         self._lexemes.append(lexeme)
+
+        # Add the lexeme to the lookup dicts.
+        if pos in self._poses:
+            if lemma in self._poses[pos]:
+                self._poses[pos][lemma].append(lex_id)
+            else:
+                self._poses[pos][lemma] = [lex_id]
+        else:
+            self._poses[pos] = {lemma: [lex_id]}
+
+        if form in self._forms:
+            self._forms[form].append(lex_id)
+        else:
+            self._forms[form] = [lex_id]
 
         return lex_id
 
