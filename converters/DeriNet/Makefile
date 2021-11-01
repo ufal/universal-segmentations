@@ -11,8 +11,11 @@ export PYTHONPATH
 
 download: $(IN_DIR)/cs-DeriNet/UDer-1.1-cs-DeriNet.tsv
 
-$(IN_DIR)/cs-DeriNet/UDer-1.1-cs-DeriNet.tsv: $(IN_DIR)/UDer-1.1.tgz
-	tar -xvf '$<'
+$(IN_DIR)/cs-DeriNet/UDer-1.1-cs-DeriNet.tsv.gz: $(IN_DIR)/UDer-1.1.tgz
+	tar -xvf '$<' --directory='$(IN_DIR)' --strip-components=1 --touch 'UDer-1.1/cs-DeriNet/UDer-1.1-cs-DeriNet.tsv.gz'
+
+$(IN_DIR)/cs-DeriNet/UDer-1.1-cs-DeriNet.tsv: $(IN_DIR)/cs-DeriNet/UDer-1.1-cs-DeriNet.tsv.gz
+	gzip -dkf '$<'
 
 $(IN_DIR)/UDer-1.1.tgz: | $(IN_DIR)
 	curl -o '$@' 'https://lindat.mff.cuni.cz/repository/xmlui/bitstream/handle/11234/1-3247/UDer-1.1.tgz'
