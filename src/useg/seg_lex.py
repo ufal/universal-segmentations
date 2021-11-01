@@ -118,6 +118,56 @@ class SegLex:
 
         return lex_id
 
+    def iter_lexemes(self, form=None, lemma=None, pos=None):
+        """
+        Find all lexemes with the specified properties. If neither
+        `form`, `lemma` or `pos` are specified, iterate over all
+        lexemes in the lexicon.
+
+        Return an iterator over IDs of matching lexemes.
+        """
+        if form is not None:
+            # Use the `form` dict for lookup.
+            if form in self._forms:
+                for lex_id in self._forms[form]:
+                    if (form is None or self.form(lex_id) == form) \
+                       and (pos is None or self.pos(lex_id) == pos):
+                        yield lex_id
+                return
+            else:
+                return
+
+        # `form` is None, so use the `pos` dict for lookup.
+
+        if pos is None and lemma is None:
+            # No constraints specified, iterate over the whole lexicon.
+            # TODO when deleting lexemes, what happens to the
+            #  slot in the _lexemes?
+            yield from range(len(self._lexemes))
+            return
+
+        # Either POS or lemma is specified. Find all applicable POSes
+        #  (there may be multiple if `pos` is None).
+        if pos is None:
+            poses = self._poses.values()
+        elif pos in self._poses:
+            poses = (self._poses[pos], )
+        else:
+            # A POS was specified, but is not found.
+            return
+
+        if lemma is None:
+            # Yield all lexemes with the specified POS.
+            for lemmas in poses:
+                for lexemes in lemmas.values():
+                    yield from lexemes
+        else:
+            # We have a dictionary for the applicable part-of-speech and
+            #  a given lemma to search for.
+            for lemmas in poses:
+                if lemma in lemmas:
+                    yield from lemmas[lemma]
+
     def delete_lexeme(self, lex_id):
         """
         Deletes the lexeme with the specified ID from the lexicon.
