@@ -9,7 +9,7 @@ import pandas as pd
 import re
 import sys
 
-from useg.seg_lex import SegLex
+from useg import SegLex
 
 def parse_args():
     parser = argparse.ArgumentParser(

@@ -7,7 +7,7 @@ Universal Segmentations format and print it to STDOUT.
 import sys
 import xml.etree.ElementTree as ET
 
-from useg.seg_lex import SegLex
+from useg import SegLex
 
 gr_upos_table = {
     "A": "X", # TODO

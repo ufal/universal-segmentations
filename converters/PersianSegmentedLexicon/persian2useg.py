@@ -2,7 +2,7 @@
 
 import sys
 sys.path.append('../../src/')
-from useg.seg_lex import SegLex
+from useg import SegLex
 
 
 import logging

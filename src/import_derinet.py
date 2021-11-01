@@ -9,7 +9,7 @@ import argparse
 import sys
 
 from derinet import Lexicon
-from useg.seg_lex import SegLex
+from useg import SegLex
 
 def parse_args():
     parser = argparse.ArgumentParser(
