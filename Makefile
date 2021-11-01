@@ -54,6 +54,9 @@ profile: udm/wordlist_analyzed_fixed.txt src/import_udmurt.py src/useg/seg_lex.p
 	python3 -m cProfile --outfile '$@' src/import_udmurt.py < '$<' > /dev/null
 	snakeviz '$@'
 
+README.xhtml: README.adoc
+	asciidoc --backend=xhtml11 -o '$@' '$<'
+
 clean:
 	rm -f udm/wordlist_analyzed_fixed.txt
 	rm -f udm/udmurt.useg udm/udmurt.log
@@ -61,3 +64,4 @@ clean:
 	#rm -f eng/MorphoLEX_en.xlsx
 	rm -f eng/english.useg eng/english.log
 	#rm -f fra/MorphoLEX_fr.xlsx
+	rm -f README.xhtml
