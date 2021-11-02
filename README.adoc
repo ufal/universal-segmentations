@@ -139,7 +139,7 @@ importing from `useg`. That is, either:
 ----
 PYTHONPATH=/path/to/universal-segmentations/src python3 script.py
 ----
-+
+
 or:
 [source,python]
 ----
