@@ -155,9 +155,14 @@ def main(args):
     for sheet_name, sheet in sheets.items():
         match = re.fullmatch("[0-9]+-[0-9]+-[0-9]+", sheet_name)
         if match is not None:
-            for line in sheet.itertuples(name="MorphoLEX"):
+            for line_no, line in enumerate(sheet.itertuples(name="MorphoLEX")):
                 # Note: some words are in uppercase, for whatever reason.
                 form = line.Word
+
+                if not form:
+                    print("No form found at sheet {}, line {}.".format(sheet_name, line_no), file=sys.stderr)
+                    continue
+
                 lform = form.lower()
 
                 # This test is imperfect – if one character contracts
