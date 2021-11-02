@@ -1,5 +1,6 @@
 .PHONY: all lint profile test test-all clean
 .SECONDARY:
+.SUFFIXES:
 
 all: README.xhtml
 
