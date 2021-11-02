@@ -12,7 +12,11 @@ lint:
 #	snakeviz '$@'
 
 test:
-	PYTHONPATH=src/ nosetests -w test/
+	@if command -v nosetests > /dev/null; then \
+		PYTHONPATH=src/ nosetests -w test/ ; \
+	else \
+		PYTHONPATH=src/ python -m unittest discover test/ ; \
+	fi
 
 README.xhtml: README.adoc
 	asciidoc --backend=xhtml11 -o '$@' '$<'
