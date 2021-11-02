@@ -94,13 +94,23 @@ def gen_morphs(allomorphs, morpheme):
     m, t = morpheme
 
     if m in allomorphs:
-        morphs = allomorphs[m]
+        morphs = list(allomorphs[m])
     else:
         morphs = [m]
 
     g_morphs = list(morphs)
-    for morph in morphs:
+    # Iterate over the list in a weird way, because we need to change
+    #  it while iterating and have the new elements be visible in the
+    #  loop.
+    i = 0
+    while i < len(morphs):
+        morph = morphs[i]
+        i += 1
+
         if len(morph) >= 2 and morph[-1] == "e":
+            # Append to the source list, because e.g. "reassured" needs
+            #  both e-deletion and reduplication.
+            morphs.append(morph[:-1])
             g_morphs.append(morph[:-1])
 
         if morph and morph[0] in {"m", "p", "s", "z"}:
