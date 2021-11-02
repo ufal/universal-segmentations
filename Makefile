@@ -13,8 +13,8 @@ lint:
 #	snakeviz '$@'
 
 test:
-	@if command -v nosetests > /dev/null; then \
-		PYTHONPATH=src/ nosetests -w test/ ; \
+	@if command -v pytest > /dev/null; then \
+		PYTHONPATH=src/ pytest test/ ; \
 	else \
 		PYTHONPATH=src/ python -m unittest discover test/ ; \
 	fi
