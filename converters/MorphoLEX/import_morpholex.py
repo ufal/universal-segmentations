@@ -90,7 +90,7 @@ def load_allomorphs(f):
 
     return m
 
-def gen_morphs(allomorphs, morpheme)
+def gen_morphs(allomorphs, morpheme):
     m, t = morpheme
     morphs = allomorphs[m]
 
