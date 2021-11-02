@@ -22,8 +22,18 @@ test:
 test-all: data/converted/udm-Uniparser/all.useg test test/test_round_trip.sh test/test_round_trip.py
 	./test/test_round_trip.sh '$<'
 
+coverage: htmlcov/index.html
+# 	xdg-open '$<'
+
+htmlcov/index.html: .coverage
+	coverage html
+
+.coverage: $(wildcard test/*.py) $(wildcard src/useg/*.py)
+	PYTHONPATH=src/ coverage run --branch -m pytest test/
+
 README.xhtml: README.adoc
 	asciidoc --backend=xhtml11 -o '$@' '$<'
 
 clean:
 	rm -f README.xhtml
+	rm -f .coverage htmlcov/index.html
