@@ -128,31 +128,31 @@ for lex_id in lexicon.iter_lexemes(pos="NOUN"):
     print(lexicon.lemma(lex_id), lexicon.features(lex_id))
 ----
 
-////
-NOTE: TODO Add documentation.
 
-* Document setting the PYTHONPATH
-* Document importing and creating the lexicon
-* Document creating new lexemes
-* Document working with lexemes
-** Getting form, lemma, POS tag, other morphological info
-** Deleting lexemes
-** Changing morphological info
-** What to do when we need to change the lemma or POS (A: Create a new lexeme instead and delete the old one.)
-** Getting lexemes by lemma, form, pos etc. (not implemented yet)
-* Document basic concepts of morphemes
-** They are bound to the form of the lexeme
-** Spans index, where in the form is the morph of the morpheme located
-** Ideally, each lexeme has its form perfectly subdivided between morphemes with no gaps nor overlap
-*** But you don't need to fully segment the word if you don't know all the morphemes
-*** And edge cases (overlaps – morfémové uzly) are supported too
-** Each lexeme can have multiple alternative segmentations
-*** These are distinguished using annotation layer names
-* Document creating new morphemes (contiguous or not)
-* Document deleting morphemes (not implemented yet)
-* Document morpheme properties; what are you expected to fill out
-** And how to query and obtain the properties
-////
+=== TODO
+Add documentation.
+
+* [ ] Document setting the PYTHONPATH
+* [x] Document importing and creating the lexicon
+* [x] Document creating new lexemes
+* [ ] Document working with lexemes
+** [x] Getting form, lemma, POS tag, other morphological info
+** [ ] Deleting lexemes
+** [x] Changing morphological info
+** [ ] What to do when we need to change the lemma or POS (A: Create a new lexeme instead and delete the old one.)
+** [x] Getting lexemes by lemma, form, pos etc.
+* [ ] Document basic concepts of morphemes
+** [ ] They are bound to the form of the lexeme
+** [ ] Spans index, where in the form is the morph of the morpheme located
+** [ ] Ideally, each lexeme has its form perfectly subdivided between morphemes with no gaps nor overlap
+*** [ ] But you don't need to fully segment the word if you don't know all the morphemes
+*** [ ] And edge cases (overlaps – morfémové uzly) are supported too
+** [ ] Each lexeme can have multiple alternative segmentations
+*** [ ] These are distinguished using annotation layer names
+* [x] Document creating new morphemes (contiguous or not)
+* [ ] Document deleting morphemes (not implemented yet)
+* [ ] Document morpheme properties; what are you expected to fill out
+** [ ] And how to query and obtain the properties
 
 == File format
 
