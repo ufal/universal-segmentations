@@ -170,7 +170,7 @@ def main(args):
                     features = {"elp_id": int(line.ELP_ItemID)}
                 else:
                     features = None
-                lexeme = lexicon.add_lexeme(form, form, line.POS, features)
+                lex_id = lexicon.add_lexeme(form, form, line.POS, features)
 
                 segmentation = parse_segmentation(line.MorphoLexSegm)
                 morphemes = [gen_morphs(allomorphs, morpheme) for morpheme in segmentation]
