@@ -204,7 +204,7 @@ def main(args):
                 if not parses:
                     # Error, no possible parses found.
                     # TODO
-                    print("Err-stem", form, " + ".join([m for m, t in segmentation]), sep="\t", end="\n")
+                    print("Err-stem", form, " + ".join([m for m, t in segmentation]), sep="\t", end="\n", file=sys.stderr)
                     continue
 
                 # If there are unconsumed chars left, they may be one of
@@ -240,11 +240,11 @@ def main(args):
                 if not final_parses:
                     # Error, no possible parses found.
                     # TODO
-                    print("Err-suffix", form, " + ".join([m for m, t in segmentation]), sep="\t", end="\n")
+                    print("Err-suffix", form, " + ".join([m for m, t in segmentation]), sep="\t", end="\n", file=sys.stderr)
                     continue
 
-                for i, parse in enumerate(final_parses):
-                    print("OK-{}".format(i), form, " + ".join([morph for morph, t in parse]), sep="\t", end="\n")
+                #for i, parse in enumerate(final_parses):
+                    #print("OK-{}".format(i), form, " + ".join([morph for morph, t in parse]), sep="\t", end="\n")
 
                 parse = final_parses[0]
                 end = 0
@@ -312,7 +312,7 @@ def main(args):
                 # intermediaries (18 in 1-2-1) and following
                 #  and several others in that sheet
 
-    #lexicon.save(sys.stdout)
+    lexicon.save(sys.stdout)
 
 if __name__ == "__main__":
     main(parse_args())
