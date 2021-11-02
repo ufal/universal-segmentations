@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-#TODO Add word 2
 #TODO Add more features
 
 import sys
@@ -65,18 +64,13 @@ def get_lexeme_features(grace_tag):
     return features
 
 
-for line in infile:
-    entries = line.split(',')
-    lexeme = entries[0].strip('"')
-    grace_tag = entries[4].strip('"')
-    type = entries[10].strip('"')
-    suffix = entries[11].strip('"')
-
+def add_lexeme(lexicon, lexeme, grace_tag, type, suffix):
+    '''Adds lexeme to lexicon object'''
     upos = assign_upos(grace_tag)
     features = get_lexeme_features(grace_tag)
     #radical = entries[26]
     if set(lexicon.iter_lexemes(form=lexeme, lemma=lexeme, pos=upos)):
-        continue
+        return
     lex_id = lexicon.add_lexeme(lexeme, lexeme, upos, features=features)
     if suffix != "":
         stem = lexeme[:-len(suffix)]
@@ -87,6 +81,21 @@ for line in infile:
     else:
         lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, len(lexeme))
 
+for line in infile:
+    entries = line.split(',')
+    lexeme = entries[0].strip('"')
+    grace_tag = entries[4].strip('"')
+    type = entries[10].strip('"')
+    suffix = entries[11].strip('"')
+
+    add_lexeme(lexicon, lexeme, grace_tag, type, suffix)
+
+    lexeme = entries[2].strip('"')
+    grace_tag = entries[6].strip('"')
+    type = entries[13].strip('"')
+    suffix = entries[14].strip('"')
+
+    add_lexeme(lexicon, lexeme, grace_tag, type, suffix)
 
 outfile = open(sys.argv[2], 'w')
 lexicon.save(outfile)
