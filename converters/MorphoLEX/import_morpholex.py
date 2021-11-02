@@ -246,6 +246,21 @@ def main(args):
                 for i, parse in enumerate(final_parses):
                     print("OK-{}".format(i), form, " + ".join([morph for morph, t in parse]), sep="\t", end="\n")
 
+                parse = final_parses[0]
+                end = 0
+                for i in range(len(parse)):
+                    morph, t = parse[i]
+                    start = end
+                    end = start + len(morph)
+
+                    if i < len(segmentation):
+                        features = {"morpheme": segmentation[i][0],
+                                    "type": t}
+                    else:
+                        features = {"type": t}
+
+                    lexicon.add_contiguous_morpheme(lex_id, args.annot_name, start, end, features)
+
                 # FIXME multiple parses caused by deletion of e + -es.
                 #  Triple parse in e.g. licensees, refugees
 
