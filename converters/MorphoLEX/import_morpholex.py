@@ -139,9 +139,11 @@ def gen_morphs(allomorphs, morpheme):
             g_morphs.append(morph[:-1] + "v")
 
         # Change o -> ou.
-        ou = re.sub(r"o([^u])", r"ou\1", morph)
-        if ou != morph:
-            g_morphs.append(ou)
+        # FIXME if there are multiple o's, generate the last one? Or all possibilities?
+        last_o = morph.rfind("o")
+        if last_o != -1 and (last_o == len(morph) - 1 or morph[last_o + 1] != "u"):
+            morph_ou = morph[:last_o] + "ou" + morph[last_o + 1:]
+            g_morphs.append(morph_ou)
 
     return (g_morphs, t)
 
