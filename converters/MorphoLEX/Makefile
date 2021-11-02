@@ -22,4 +22,4 @@ convert: $(OUT_DIR)/all.useg
 # TODO Generate train / dev / test split.
 
 $(OUT_DIR)/all.useg: $(IN_DIR)/MorphoLEX_en.xlsx | $(OUT_DIR)
-	./import_morpholex.py --annot-name '$(basename $<)' --allomorphs allomorphs.tsv '$<' > '$@' 2> '$(basename $@).log'
+	./import_morpholex.py --annot-name '$(basename $(notdir $<))' --allomorphs allomorphs.tsv '$<' > '$@' 2> '$(basename $@).log'
