@@ -173,65 +173,66 @@ def main(args):
 
                 # Generate the initial parses.
                 parses = []
+                morphs, t = morphemes[0]
+                for morph in morphs:
+                    if lform.startswith(morph):
+                        # Record the initial parse.
+                        parses.append(([(morph, t)], len(morph)))
 
                 # Try to lengthen each parse, until we consume all morphemes.
-                for morphs, t in morphemes:
-                    start = end
+                for morphs, t in morphemes[1:]:
+                    next_parses = []
+
                     for morph in morphs:
-                        if lform.startswith(morph, start):
-                            # Success!
-                            # TODO
-                            pass
-                        else:
-                            # TODO
-                            pass
+                        for parse, end in parses:
+                            start = end
+
+                            if lform.startswith(morph, start):
+                                # Success!
+                                # Record the successful potential parse in next_parses.
+                                next_parses.append((parse + [(morph, t)], start + len(morph)))
+                            else:
+                                # This parse failed, discard it.
+                                pass
+
+                    parses = next_parses
+
+                if not parses:
+                    # Error, no possible parses found.
+                    # TODO
+                    print("Err-stem", form, segmentation, sep="\t", end="\n")
+                    continue
 
                 # If there are unconsumed chars left, they may be one of
                 #  the inflectional morphemes: {"s", "'s", "ed", "ing", "ings", "n't", "'d", "'ll", "'re", "'ve"}
+                final_parses = []
+                for parse, end in parses:
+                    if end == len(lform):
+                        final_parses.append(parse)
+                    elif end < len(lform):
+                        unmatched_suffix = lform[end:]
 
-                # FIXME old code below.
-
-                if joined_segmentation == lform:
-                    # Success!
-                    pass
-                elif lform.startswith(joined_segmentation):
-                    # Some suffixes were missed.
-                    unmatched_suffix = lform[len(joined_segmentation):]
-                    last_matched_char = lform[len(joined_segmentation) - 1]
-                    first_unmatched_char = unmatched_suffix[0]
-
-                    # c-k because of e.g. trafficking, which has reduplication of c -> k.
-                    reduplicated = (last_matched_char == first_unmatched_char) or (last_matched_char == "c" and first_unmatched_char == "k")
-
-                    # FIXME quizzes has reduplication and -es instead of -s.
-                    # FIXME -es doesn't always go after "h", only after "sh".
-                    if unmatched_suffix in {"s", "'s", "ed", "ing", "ings", "n't", "'d", "'ll", "'re", "'ve"} or (reduplicated and unmatched_suffix[1:] in {"ed", "ing", "ings"}) or (last_matched_char in {"s", "z", "h", "o", "r", "x"} and (unmatched_suffix == "es" or (reduplicated and unmatched_suffix[1:] == "es"))) or (last_matched_char == "e" and unmatched_suffix == "d"):
-                        # FIXME ings is two suffixes.
-                        split_segmentation.append(unmatched_suffix)
-                        print("Added suffix '{}' in segmentation {} of '{}'.".format(form[len(joined_segmentation):], ", ".join(split_segmentation), form), file=sys.stderr)
+                        if unmatched_suffix == "ings":
+                            parse.append(("ing", "suffix"))
+                            parse.append(("s", "suffix"))
+                            final_parses.append(parse)
+                        elif unmatched_suffix in {"s", "'s", "es", "ed", "ing", "n't", "'d", "'ll", "'re", "'ve"}:
+                            parse.append((unmatched_suffix, "suffix"))
+                            final_parses.append(parse)
                     else:
-                        print("Missed suffix '{}' in segmentation {} of '{}'.".format(form[len(joined_segmentation):], ", ".join(split_segmentation), form), file=sys.stderr)
-                elif joined_segmentation[-1] == "y" and lform.startswith(joined_segmentation[:-1]):
-                    # Try to change the word-final -y to -i (try tries, lay laid).
-                    unmatched_suffix = lform[len(joined_segmentation):]
-                    if unmatched_suffix in {"ed", "es"} or joined_segmentation.endswith("ay") and unmatched_suffix == "d":
-                        split_segmentation.append(unmatched_suffix)
-                        print("Stem-final y->i change in segmentation {} of '{}'".format(", ".join(split_segmentation), form), file=sys.stderr)
-                    else:
-                        print("Mismatched stem-final y->i change in segmentation {} of '{}'".format(", ".join(split_segmentation), form), file=sys.stderr)
-                elif joined_segmentation[-1] == "e" and lform.startswith(joined_segmentation[:-1]):
-                    # Try to remove word-final -e (plague plaguing).
-                    unmatched_suffix = lform[len(joined_segmentation) - 1:]
-                    if unmatched_suffix in {"ing", "ings"}:
-                        split_segmentation.append(unmatched_suffix)
-                        print("Deletion of e in segmentation {} of '{}'".format(", ".join(split_segmentation), form), file=sys.stderr)
-                    else:
-                        print("Mismatched deletion of e in segmentation {} of '{}'".format(", ".join(split_segmentation), form), file=sys.stderr)
-                else:
-                    print("Mismatched segmentation {} of '{}'.".format(", ".join(split_segmentation), form), file=sys.stderr)
+                        raise Exception("We've parsed text longer than the form. ERROR!")
+
+                if not final_parses:
+                    # Error, no possible parses found.
+                    # TODO
+                    print("Err-suffix", form, segmentation, sep="\t", end="\n")
                     continue
 
-                print(form, " + ".join(split_segmentation), sep="\t", end="\n")
+                for i, parse in enumerate(final_parses):
+                    print("OK-{}".format(i), form, " + ".join([morph for morph, t in parse]), sep="\t", end="\n")
+
+                # FIXME multiple parses caused by deletion of e + -es.
+                #  Triple parse in e.g. licensees, refugees
 
                 # If NN, then it may end in plural "s" or "es".
                 # If VB, it may end in 3rd person present singular "s" or "es".
