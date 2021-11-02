@@ -168,8 +168,8 @@ def main(args):
 
                 lexeme = lexicon.add_lexeme(form, form, line.POS, {"elp_id": int(line.ELP_ItemID)})
 
-                segmentation = line.MorphoLexSegm
-                morphemes = [gen_morphs(allomorphs, morpheme) for morpheme in parse_segmentation(segmentation)]
+                segmentation = parse_segmentation(line.MorphoLexSegm)
+                morphemes = [gen_morphs(allomorphs, morpheme) for morpheme in segmentation]
 
                 # Generate the initial parses.
                 parses = []
@@ -200,7 +200,7 @@ def main(args):
                 if not parses:
                     # Error, no possible parses found.
                     # TODO
-                    print("Err-stem", form, segmentation, sep="\t", end="\n")
+                    print("Err-stem", form, " + ".join([m for m, t in segmentation]), sep="\t", end="\n")
                     continue
 
                 # If there are unconsumed chars left, they may be one of
@@ -225,7 +225,7 @@ def main(args):
                 if not final_parses:
                     # Error, no possible parses found.
                     # TODO
-                    print("Err-suffix", form, segmentation, sep="\t", end="\n")
+                    print("Err-suffix", form, " + ".join([m for m, t in segmentation]), sep="\t", end="\n")
                     continue
 
                 for i, parse in enumerate(final_parses):
