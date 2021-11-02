@@ -21,5 +21,10 @@ $(OUT_DIR):
 convert: $(OUT_DIR)/all.useg
 # TODO Generate train / dev / test split.
 
-$(OUT_DIR)/all.useg: $(IN_DIR)/MorphoLEX_en.xlsx | $(OUT_DIR)
-	./import_morpholex.py --annot-name '$(basename $(notdir $<))' --allomorphs allomorphs.tsv '$<' > '$@' 2> '$(basename $@).log'
+$(OUT_DIR)/all.useg: $(IN_DIR)/MorphoLEX_en.xlsx python-venv/bin/activate | $(OUT_DIR)
+	. python-venv/bin/activate && ./import_morpholex.py --annot-name '$(basename $(notdir $<))' --allomorphs allomorphs.tsv '$<' > '$@' 2> '$(basename $@).log'
+
+python-venv/bin/activate: requirements.txt
+	rm -rf python-venv
+	virtualenv -p python3 python-venv/
+	. python-venv/bin/activate && pip install -r '$<'
