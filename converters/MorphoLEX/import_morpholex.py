@@ -236,6 +236,7 @@ def main(args):
 
                         if unmatched_suffix == "es":
                             parse.append(("es", "suffix"))
+                            final_parses.append(parse)
 
                 if not final_parses:
                     # Error, no possible parses found.
@@ -260,9 +261,6 @@ def main(args):
                         features = {"type": t}
 
                     lexicon.add_contiguous_morpheme(lex_id, args.annot_name, start, end, features)
-
-                # FIXME multiple parses caused by deletion of e + -es.
-                #  Triple parse in e.g. licensees, refugees
 
                 # If NN, then it may end in plural "s" or "es".
                 # If VB, it may end in 3rd person present singular "s" or "es".
