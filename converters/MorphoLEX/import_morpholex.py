@@ -92,7 +92,11 @@ def load_allomorphs(f):
 
 def gen_morphs(allomorphs, morpheme):
     m, t = morpheme
-    morphs = allomorphs[m]
+
+    if m in allomorphs:
+        morphs = allomorphs[m]
+    else:
+        morphs = [m]
 
     g_morphs = list(morphs)
     for morph in morphs:
