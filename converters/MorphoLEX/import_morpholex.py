@@ -107,23 +107,28 @@ def gen_morphs(allomorphs, morpheme):
         morph = morphs[i]
         i += 1
 
+        # All the tests below require nonempty morph string.
+        if not morph:
+            print("Warning: empty allomorph of morpheme '{}' detected.".format(m), file=sys.stderr)
+            continue
+
         if len(morph) >= 2 and morph[-1] == "e":
             # Append to the source list, because e.g. "reassured" needs
             #  both e-deletion and reduplication.
             morphs.append(morph[:-1])
             g_morphs.append(morph[:-1])
 
-        if morph and morph[0] in {"m", "p", "s", "z"}:
+        if morph[0] in {"m", "p", "s", "z"}:
             # Reduplication at the start.
             g_morphs.append(morph[0] + morph)
-        if morph and morph[0] == "k":
+        if morph[0] == "k":
             # Reduplication of c + k at the start.
             g_morphs.append("c" + morph)
 
-        if morph and morph[-1] in {"m", "p", "s", "z"}:
+        if morph[-1] in {"m", "p", "s", "z"}:
             # Reduplication at the end.
             g_morphs.append(morph + morph[-1])
-        if morph and morph[0] == "c":
+        if morph[-1] == "c":
             # Reduplication of c + k at the end.
             g_morphs.append(morph + "k")
 
