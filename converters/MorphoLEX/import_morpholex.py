@@ -151,11 +151,8 @@ def main(args):
 
     sheets = pd.read_excel(args.morpholex, sheet_name=None, header=0, dtype=str, engine="openpyxl", na_filter=False)
     for sheet_name, sheet in sheets.items():
-        match = re.fullmatch("([0-9]+)-([0-9]+)-([0-9]+)", sheet_name)
+        match = re.fullmatch("[0-9]+-[0-9]+-[0-9]+", sheet_name)
         if match is not None:
-            # The sheet contains the segmentation data.
-            num_prefixes, num_roots, num_suffixes = match.groups()
-
             for line in sheet.itertuples(name="MorphoLEX"):
                 # Note: some words are in uppercase, for whatever reason.
                 form = line.Word
