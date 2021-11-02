@@ -118,19 +118,30 @@ def gen_morphs(allomorphs, morpheme):
             morphs.append(morph[:-1])
             g_morphs.append(morph[:-1])
 
-        if morph[0] in {"m", "p", "s", "z"}:
+        if morph[0] in {"f", "m", "p", "s", "z"}:
             # Reduplication at the start.
             g_morphs.append(morph[0] + morph)
         if morph[0] == "k":
             # Reduplication of c + k at the start.
             g_morphs.append("c" + morph)
 
-        if morph[-1] in {"m", "p", "s", "z"}:
+        if morph[-1] in {"b", "d", "g", "k", "l", "m", "n", "p", "r", "s", "t", "v", "z"}:
             # Reduplication at the end.
             g_morphs.append(morph + morph[-1])
         if morph[-1] == "c":
             # Reduplication of c + k at the end.
             g_morphs.append(morph + "k")
+        if morph[-1] == "y":
+            # Change of y->i at the end (e.g. anchovy - anchovies).
+            g_morphs.append(morph[:-1] + "i")
+        if morph[-1] == "f":
+            # Change of f->v at the end (e.g. wolf - wolves).
+            g_morphs.append(morph[:-1] + "v")
+
+        # Change o -> ou.
+        ou = re.sub(r"o([^u])", r"ou\1", morph)
+        if ou != morph:
+            g_morphs.append(ou)
 
     return (g_morphs, t)
 
