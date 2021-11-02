@@ -26,7 +26,11 @@ pos2upos = {"A":"ADJ", "ADV":"ADV",
             "V":"VERB", "V0":"VERB", "V12":"VERB", "V13":"VERB", "VINF":"VERB",
             "NUM":"NUM"}
 
+start_line = True
 for line in infile:
+    if start_line:
+        start_line = False
+        continue
     entries = line.split(',')
     lexeme = entries[0]
     gender = entries[1]
@@ -39,7 +43,7 @@ for line in infile:
     suffix_morpheme = entries[12]
     root = entries[13]
     root_pos = entries[14]
-    suffix_allomorphs = entries[17]
+    suffix_allomorph = entries[17]
 
     upos = "NOUN"
 
@@ -70,13 +74,26 @@ for line in infile:
         suff_features={"type":"suffix", "morpheme":suffix_morpheme}
 
         if suffix_allomorphs!="NA":
-            suff_features["allomorph"] = suffix_allomorphs
+            suff_features["allomorph"] = suffix_allomorph
 
         lexicon.add_contiguous_morpheme(lex_id, annot_name, len(lexeme)-len(suffix), len(lexeme), features=suff_features)
         end_of_stem = len(lexeme)-len(suffix)
 
     #Add processes for compounds
-    lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"stem"})
+    if morph_process=="native_compound":
+        if "-" in lexeme:
+            features1 = {"type":"stem1"}
+            features2 = {"type":"stem2"}
+            if "-" in compound_type:
+                stems_tags = compound_type.split("-")
+                features1["upos"] = stems_tags[0]
+                features2["upos"] = stems_tags[1]
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, lexeme.index("-"), features=features1)
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, lexeme.index("-"), lexeme.index("-")+1, features={"type":"hyphen"} )
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, lexeme.index("-")+1, len(lexeme), features=features2)
+
+    else:
+        lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"stem"})
 
 outfile = open(sys.argv[2], 'w')
 lexicon.save(outfile)
