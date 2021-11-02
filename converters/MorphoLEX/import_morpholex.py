@@ -4,6 +4,8 @@ Read a MorphoLEX XLSX file, extract segmentations from it, convert it
 to the Universal Segmentations format and print it to STDOUT.
 """
 
+# Needs pandas and openpyxl
+
 import argparse
 import pandas as pd
 import re
