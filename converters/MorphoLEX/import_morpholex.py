@@ -166,7 +166,11 @@ def main(args):
 
                 poses = set(line.POS.split("|"))
 
-                lexeme = lexicon.add_lexeme(form, form, line.POS, {"elp_id": int(line.ELP_ItemID)})
+                if line.ELP_ItemID:
+                    features = {"elp_id": int(line.ELP_ItemID)}
+                else:
+                    features = None
+                lexeme = lexicon.add_lexeme(form, form, line.POS, features)
 
                 segmentation = parse_segmentation(line.MorphoLexSegm)
                 morphemes = [gen_morphs(allomorphs, morpheme) for morpheme in segmentation]
