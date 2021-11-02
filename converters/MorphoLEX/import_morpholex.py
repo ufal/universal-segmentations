@@ -18,7 +18,7 @@ def parse_args():
     )
     parser.add_argument("morpholex", type=argparse.FileType("rb"), help="The name to use for storing the segmentation annotation.")
     parser.add_argument("--annot-name", required=True, help="The name to use for storing the segmentation annotation.")
-    parser.add_argument("--allomorphs", type=argparse.FileType("rt", encoding="utf-8", errors="strict"), help="A file to load allomorphy information from.")
+    parser.add_argument("--allomorphs", required=True, type=argparse.FileType("rt", encoding="utf-8", errors="strict"), help="A file to load allomorphy information from.")
     return parser.parse_args()
 
 def parse_segmentation(s):
