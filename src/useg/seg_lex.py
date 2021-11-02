@@ -130,7 +130,7 @@ class SegLex:
             # Use the `form` dict for lookup.
             if form in self._forms:
                 for lex_id in self._forms[form]:
-                    if (form is None or self.form(lex_id) == form) \
+                    if (lemma is None or self.lemma(lex_id) == lemma) \
                        and (pos is None or self.pos(lex_id) == pos):
                         yield lex_id
                 return
