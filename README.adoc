@@ -129,10 +129,32 @@ for lex_id in lexicon.iter_lexemes(pos="NOUN"):
 ----
 
 
+=== Troubleshooting
+
+To make sure that Python sees the API sources and is able to import
+them, add the src/ directory to PYTHONPATH, either by setting the
+corresponding environment variable, or by changing the path before
+importing from `useg`. That is, either:
+[source,sh]
+----
+PYTHONPATH=/path/to/universal-segmentations/src python3 script.py
+----
++
+or:
+[source,python]
+----
+import os
+import sys
+
+# Configure the path to the sources.
+sys.path.insert(0, os.path.abspath('../../src'))
+----
+
+
 === TODO
 Add documentation.
 
-* [ ] Document setting the PYTHONPATH
+* [x] Document setting the PYTHONPATH
 * [x] Document importing and creating the lexicon
 * [x] Document creating new lexemes
 * [ ] Document working with lexemes
