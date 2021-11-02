@@ -216,11 +216,22 @@ def main(args):
                             parse.append(("ing", "suffix"))
                             parse.append(("s", "suffix"))
                             final_parses.append(parse)
-                        elif unmatched_suffix in {"s", "'s", "es", "ed", "ing", "n't", "'d", "'ll", "'re", "'ve"}:
+                        elif unmatched_suffix in {"s", "'s", "ed", "ing", "n't", "'d", "'ll", "'re", "'ve"}:
                             parse.append((unmatched_suffix, "suffix"))
                             final_parses.append(parse)
                     else:
                         raise Exception("We've parsed text longer than the form. ERROR!")
+
+                if not final_parses:
+                    # There were no possibilities. Try to add -es.
+                    #  This is done in a separate pass to avoid spurious
+                    #  ambiguity with word-final -e, which may be deleted.
+                    for parse, end in parses:
+                        assert end < len(lform)
+                        unmatched_suffix = lform[end:]
+
+                        if unmatched_suffix == "es":
+                            parse.append(("es", "suffix"))
 
                 if not final_parses:
                     # Error, no possible parses found.
