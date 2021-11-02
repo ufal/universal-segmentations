@@ -1,4 +1,4 @@
-.PHONY: all lint profile test clean
+.PHONY: all lint profile test test-all clean
 .SECONDARY:
 
 all: README.xhtml
@@ -17,6 +17,9 @@ test:
 	else \
 		PYTHONPATH=src/ python -m unittest discover test/ ; \
 	fi
+
+test-all: data/converted/udm-Uniparser/all.useg test test/test_round_trip.sh test/test_round_trip.py
+	./test/test_round_trip.sh '$<'
 
 README.xhtml: README.adoc
 	asciidoc --backend=xhtml11 -o '$@' '$<'
