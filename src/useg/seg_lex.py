@@ -66,14 +66,14 @@ class SegLex:
                 simple_seg = []
                 last_morpheme = self.morpheme(lexeme.lex_id, annot_name, 0)
                 morph_str = ""
-                for i in range(len(lexeme.form)):
+                for i, char in enumerate(lexeme.form):
                     morpheme = self.morpheme(lexeme.lex_id, annot_name, i)
                     if morpheme is last_morpheme:
-                        morph_str += lexeme.form[i]
+                        morph_str += char
                     else:
                         last_morpheme = morpheme
                         simple_seg.append(morph_str)
-                        morph_str = lexeme.form[i]
+                        morph_str = char
                 simple_seg.append(morph_str)
 
                 yield seg_tsv.SegRecord(lexeme.form, lexeme.lemma, lexeme.pos, simple_seg, annot)
