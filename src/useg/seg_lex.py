@@ -45,8 +45,16 @@ class SegLex:
             for line in actual_f:
                 record = seg_tsv.parse_line(line)
                 features = {k: v for k, v in record.annot.items() if k not in {"annot_name", "segmentation"}}
-                annot_name = record.annot["annot_name"]
-                segmentation = record.annot["segmentation"]
+
+                if "segmentation" in record.annot:
+                    if "annot_name" not in record.annot:
+                        # Unnamed segmentation. Reject it.
+                        raise ValueError("Line '{}' has unnamed segmentation".format(line))
+
+                    annot_name = record.annot["annot_name"]
+                    segmentation = record.annot["segmentation"]
+                else:
+                    segmentation = []
 
                 lexeme = self.add_lexeme(record.form, record.lemma, record.pos, features)
 

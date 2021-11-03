@@ -16,6 +16,14 @@ sample_file = """ежгурт	Ёжгурт	PROPN	ежгурт	{"annot_name": "Un
 ежевоысь	Ёжево	PROPN	ежево + ысь	{"annot_name": "Uniparser UDM", "morpho_tags": ["N", "PN", "topn", "sg", "el"], "segmentation": [{"morpheme": "STEM", "span": [0, 1, 2, 3, 4], "type": "stem"}, {"morpheme": "EL", "span": [5, 6, 7], "type": "suffix"}], "trans_ru": "Ёжево"}
 """
 
+sample_file_lexemes = """counterexample	counterexample	NOUN		{}
+counterexample	counterexample	NOUN		{}
+example	example	NOUN		{}
+example	example	NOUN		{}
+examples	example	NOUN		{}
+exemplar	exemplar	ADJ		{}
+"""
+
 class TestIO(unittest.TestCase):
     def test_load_empty(self):
         # Test loading an empty lexicon.
@@ -37,6 +45,22 @@ class TestIO(unittest.TestCase):
         content = str_io.read()
 
         self.assertEqual("", content)
+
+    def test_load_lexemes(self):
+        # Test loading lexemes with no segmentation.
+        str_io = StringIO(initial_value=sample_file_lexemes)
+        seg_lex = SegLex()
+        seg_lex.load(str_io)
+
+        self.assertEqual(6, len(list(seg_lex.iter_lexemes())))
+        self.assertEqual(5, len(list(seg_lex.iter_lexemes(pos="NOUN"))))
+        self.assertEqual(2, len(list(seg_lex.iter_lexemes(form="example"))))
+        self.assertEqual(3, len(list(seg_lex.iter_lexemes(lemma="example"))))
+        self.assertEqual(2, len(list(seg_lex.iter_lexemes(lemma="counterexample"))))
+
+        for lex_id in seg_lex.iter_lexemes():
+            self.assertEqual({}, seg_lex.features(lex_id))
+            self.assertIn(seg_lex.pos(lex_id), {"NOUN", "ADJ"})
 
     def test_save_lexemes_count(self):
         # Test saving lexemes with no segmentation.
