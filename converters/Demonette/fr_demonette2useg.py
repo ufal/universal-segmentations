@@ -83,6 +83,7 @@ def add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root):
     end_of_interfix = len(lexeme)
 
     if root != "":
+        assert suffix!=0
         lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, len(root), features={"type":"stem"})
         start_of_interfix = len(root)
 
@@ -95,7 +96,9 @@ def add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root):
     if start_of_interfix != 0 and end_of_interfix != len(lexeme):
         if start_of_interfix != end_of_interfix:
             lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_interfix, end_of_interfix, features={"type":"interfix"})
-    elif end_of_interfix != len(lexeme):
+
+    elif start_of_interfix==0: #elif end_of_interfix != len(lexeme) (if we want to avoid adding whole word as stem)
+        assert start_of_interfix != end_of_interfix
         lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_interfix, end_of_interfix, features={"type":"stem"})
 
 for line in infile:

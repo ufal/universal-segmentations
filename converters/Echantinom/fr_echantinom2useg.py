@@ -93,8 +93,7 @@ for line in infile:
             lexicon.add_contiguous_morpheme(lex_id, annot_name, lexeme.index("-")+1, len(lexeme), features=features2)
 
     else:
-        if start_of_stem != 0 or end_of_stem != len(lexeme):
-            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"stem"})
+        lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"stem"})
 
 outfile = open(sys.argv[2], 'w')
 lexicon.save(outfile)
