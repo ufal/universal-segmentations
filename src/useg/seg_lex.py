@@ -47,7 +47,7 @@ class SegLex:
         for lexeme in self._lexemes:
             for annot_name in lexeme.morphemes:
                 annot = lexeme.features.copy()
-                assert "segmentation" not in annot and "" not in annot
+                assert "segmentation" not in annot and "annot_name" not in annot
                 annot["annot_name"] = annot_name
                 # TODO Ensure span is not already defined.
                 annot["segmentation"] = [{**morpheme.features, "span": morpheme.span}

@@ -1,3 +1,4 @@
+from io import StringIO
 import unittest
 from useg import SegLex
 
@@ -97,3 +98,37 @@ class TestLexemes(unittest.TestCase):
 
         self.assertEqual([],
                          list(lexicon.iter_lexemes(pos="VERB")))
+
+    def test_forbidden_features_annot_name(self):
+        seg_lex = SegLex()
+        seg_lex.add_lexeme("example", "example", "NOUN", {"annot_name": "fail"})
+
+        io = StringIO()
+        with self.assertRaises(Exception):
+            seg_lex.save(io)
+
+    def test_forbidden_features_segmentation(self):
+        seg_lex = SegLex()
+        seg_lex.add_lexeme("example", "example", "NOUN", {"segmentation": []})
+
+        io = StringIO()
+        with self.assertRaises(Exception):
+            seg_lex.save(io)
+
+    def test_forbidden_features_annot_name_with_seg(self):
+        seg_lex = SegLex()
+        lex_id = seg_lex.add_lexeme("example", "example", "NOUN", {"annot_name": "fail"})
+        seg_lex.add_contiguous_morpheme(lex_id, "seg", 0, 7)
+
+        io = StringIO()
+        with self.assertRaises(Exception):
+            seg_lex.save(io)
+
+    def test_forbidden_features_segmentation_with_seg(self):
+        seg_lex = SegLex()
+        lex_id = seg_lex.add_lexeme("example", "example", "NOUN", {"segmentation": []})
+        seg_lex.add_contiguous_morpheme(lex_id, "seg", 0, 7)
+
+        io = StringIO()
+        with self.assertRaises(Exception):
+            seg_lex.save(io)
