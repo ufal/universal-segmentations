@@ -119,3 +119,16 @@ class TestIO(unittest.TestCase):
         handle.close.assert_called_once()
 
         self.assertEqual(6, handle.write.call_count)
+
+    def test_round_trip(self):
+        str_io_src = StringIO(initial_value=sample_file)
+        str_io_tgt = StringIO()
+
+        seg_lex = SegLex()
+        seg_lex.load(str_io_src)
+        seg_lex.save(str_io_tgt)
+
+        str_io_tgt.seek(0)
+        content = str_io_tgt.read()
+
+        self.assertEqual(sample_file, content)
