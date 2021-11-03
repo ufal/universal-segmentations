@@ -139,9 +139,8 @@ class SegLex:
                     if (lemma is None or self.lemma(lex_id) == lemma) \
                        and (pos is None or self.pos(lex_id) == pos):
                         yield lex_id
-                return
-            else:
-                return
+
+            return
 
         # `form` is None, so use the `pos` dict for lookup.
 
