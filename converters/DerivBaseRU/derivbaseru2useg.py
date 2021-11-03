@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 
 import csv
-from email.mime import base
-from email.policy import default
 import regex as re
 from collections import defaultdict
+from itertools import combinations
 
 import sys
 sys.path.append('../../src/')
@@ -132,8 +131,8 @@ with open(sys.argv[1], mode='r', encoding='U8') as infile:
             continue
 
         else:
-            print('Missing code for the given operation:', operation)
-        
+            logging.warning('Missing code for the given operation: {}'.format(operation))
+
         # according to part-of-speech category
         if deri_pos == 'verb' and (deriv_lemma.endswith('ть') or deriv_lemma.endswith('ться')):
             found = re.search(r'ть(ся)*$', deriv_lemma)
@@ -142,15 +141,106 @@ with open(sys.argv[1], mode='r', encoding='U8') as infile:
                 span_end = found.span(0)[1] - 2
                 morph = 'ть'
                 segmented_lemmas['_'.join([deriv_lemma, deri_pos])].add((morph, (span_start, span_end), 'END-inf'))
+                span_start = found.span(0)[0] + 2
+                span_end = found.span(0)[1]
+                morph = 'ся'
+                segmented_lemmas['_'.join([deriv_lemma, deri_pos])].add((found.group(), found.span(0), 'PTFX'))
             else:
                 segmented_lemmas['_'.join([deriv_lemma, deri_pos])].add((found.group(), found.span(0), 'END-inf'))
 
 
-# TODO: go through segmented lemmas and resolve overlaping morphs
-print(segmented_lemmas)
+# function for finding overlap between intervals
+def find_overlap(a, b):
+    for item in a:
+        if item in b:
+            return True
+    return False
 
 
-# TODO: upload to the resulting format
+# function for constructing segmentation from non-overlapping morphs
+def create_segmentation(lemma, ranges, operations):
+    whole_interval = list(range(len(lemma)))
+    for interval in ranges:
+        for item in interval:
+            whole_interval.remove(item)
+    
+    ranges.append(whole_interval)
+    operations.append('STEM')
+
+    ranges, operations = zip(*sorted(zip(ranges, operations)))
+
+    morphs = ['' for _ in range(len(ranges))]
+    for idx_interval in range(len(ranges)):
+        for number in ranges[idx_interval]:
+            morphs[idx_interval] += lemma[number]
+
+    return [tuple(morphs), tuple(operations)]
+
+
+# TODO: function for searching for segmentation from overlapping morphs
+def search_for_segmentation(lemma, ranges, operations):
+    return None
+
+
+# go through segmented lemmas and resolve overlapping morphs
+new_segmented_lemmas = defaultdict()
+for item, segments in segmented_lemmas.items():
+    lemma, pos = item.split('_')
+    
+    # 1. non-segmented lexemes
+    if segments == {None}:  # segment basically
+        new_segmented_lemmas[item] = [[lemma], ['STEM']]
+        continue
+
+    # 2. segmented lexemes
+    segments.remove(None)
+    if len(segments) == 1:  # segment basically
+        morph, indices, operation = list(segments)[0]
+        segmentation = [[], []]
+        
+        morph_before = lemma[:indices[0]]
+        if morph_before:
+            segmentation[0].append(morph_before)
+            segmentation[1].append('STEM')
+        
+        morph_marked = lemma[indices[0]:indices[1]]
+        segmentation[0].append(morph_marked)
+        segmentation[1].append(operation)
+        
+        morph_after = lemma[indices[1]:]
+        if morph_after:
+            segmentation[0].append(morph_after)
+            segmentation[1].append('STEM')
+
+        new_segmented_lemmas[item] = segmentation
+
+    else:  # resolve overlapping morphs and segment lexeme
+        segments = sorted(list(segments), key=lambda x:len(x[0]))
+        ranges = [list(range(segment[1][0], segment[1][1])) for segment in segments]
+        operations = [segment[2] for segment in segments]
+
+        # find out whether there is an overlap between morphs
+        there_is_overlap = False
+        for first, second in combinations(ranges, 2):
+            if find_overlap(first, second):
+                there_is_overlap = True
+                break
+
+        # segment lexeme
+        if there_is_overlap:
+            # print(lemma, segments)
+            # TODO: segmentation = search_for_segmentation(lemma, ranges, operations)
+            pass
+        else:
+            segmentation = create_segmentation(lemma, ranges, operations)
+
+        new_segmented_lemmas[item] = segmentation
+
+
+# TODO: find segmentation of STEMs in the resource
+
+
+# TODO: store in the resulting format
 # lexicon = SegLex()
 
 # with open(sys.argv[2], mode='w', encoding='U8') as outfile:
