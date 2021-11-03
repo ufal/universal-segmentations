@@ -91,8 +91,7 @@ lexicon.add_morpheme(lex_id, "test_2", [14], {"type": "suffix", "morpheme": "PLU
 +
 [source,python]
 ----
-with open("output.useg", "wt", encoding="utf-8") as f:
-    lexicon.save(f)
+lexicon.save("output.useg")  # Or e.g. lexicon.save(sys.stdout)
 ----
 
 
@@ -105,8 +104,7 @@ method, analogously to saving:
 [source,python]
 ----
 lexicon = SegLex()
-with open("input.useg", "rt", encoding="utf-8") as f:
-    lexicon.load(f)
+lexicon.load("input.useg")  # Or e.g. lexicon.load(sys.stdin)
 ----
 
 The lexicon now contains lexemes and their segmentation. The lexemes

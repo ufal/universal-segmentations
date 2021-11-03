@@ -23,22 +23,40 @@ class SegLex:
 
     def load(self, f):
         """
-        Load the lexicon from the open file-like object `f` and add all
+        Load the lexicon from `f`, which is either an open file-like
+        object open for reading text or a string filename, and add all
         information contained therein to the internal lexicon of this
         object.
         """
-        for line in f:
-            record = seg_tsv.parse_line(line)
-            features = {k: v for k, v in record.annot.items() if k not in {"annot_name", "segmentation"}}
-            annot_name = record.annot["annot_name"]
-            segmentation = record.annot["segmentation"]
 
-            lexeme = self.add_lexeme(record.form, record.lemma, record.pos, features)
+        # If f is a filename, we open the file ourselves and therefore
+        #  should also close it after reading from it.
+        actual_f = None
+        close_at_end = False
 
-            for segment in segmentation:
-                span = segment["span"]
-                del segment["span"]
-                self.add_morpheme(lexeme, annot_name, span, segment)
+        try:
+            if isinstance(f, str):
+                close_at_end = True
+                actual_f = open(f, "rt", encoding="utf-8")
+            else:
+                # We assume f is already an open file object.
+                actual_f = f
+
+            for line in actual_f:
+                record = seg_tsv.parse_line(line)
+                features = {k: v for k, v in record.annot.items() if k not in {"annot_name", "segmentation"}}
+                annot_name = record.annot["annot_name"]
+                segmentation = record.annot["segmentation"]
+
+                lexeme = self.add_lexeme(record.form, record.lemma, record.pos, features)
+
+                for segment in segmentation:
+                    span = segment["span"]
+                    del segment["span"]
+                    self.add_morpheme(lexeme, annot_name, span, segment)
+        finally:
+            if actual_f is not None and close_at_end:
+                actual_f.close()
 
     def _as_records(self):
         """
@@ -80,7 +98,8 @@ class SegLex:
 
     def save(self, f):
         """
-        Save the lexicon to the open file-like object `f`.
+        Save the lexicon to `f`, which is either an open file-like
+        object open for writing or appending text, or a string filename.
         """
         # Sort the lexicon and iterate over it, producing the TSV output.
         # TODO include the keys and values of features in the sorting as
@@ -90,10 +109,27 @@ class SegLex:
             key=lambda r: (r.lemma, r.pos, r.form, r.simple_seg, len(r.annot))
         )
 
-        for record in records:
-            f.write(seg_tsv.format_record(record, False))
+        # If f is a filename, we open the file ourselves and therefore
+        #  should also close it after writing to it.
+        actual_f = None
+        close_at_end = False
 
-        f.flush()
+        try:
+            if isinstance(f, str):
+                close_at_end = True
+                actual_f = open(f, "wt", encoding="utf-8", newline="\n")
+            else:
+                # We assume f is already an open file object.
+                actual_f = f
+
+            for record in records:
+                actual_f.write(seg_tsv.format_record(record, False))
+
+        finally:
+            if actual_f is not None:
+                actual_f.flush()
+                if close_at_end:
+                    actual_f.close()
 
 
     def add_lexeme(self, form, lemma, pos, features=None):
