@@ -35,15 +35,19 @@ class SpanEncoder(json.JSONEncoder):
             return list(sorted(o))
         return json.JSONEncoder.default(self, o)
 
-def format_record(record):
+def format_record(record, full_and_concatenative):
     """
     Serialize the SegRecord namedtuple `record` into its TSV format and
     return the string of the line, with the line-terminating newline
     already attached.
+
+    If `full_and_concatenative` is True, check that each lexeme has
+    a fully segmented form and the segments have no overlap.
     """
-    joined_morphs = "".join(record.simple_seg)
-    assert record.form == joined_morphs, \
-        "The segmentation {} doesn't match the word form '{}'".format(record.simple_seg, record.form)
+    if full_and_concatenative:
+        joined_morphs = "".join(record.simple_seg)
+        assert record.form == joined_morphs, \
+            "The segmentation {} doesn't match the word form '{}'".format(record.simple_seg, record.form)
 
     return "{}\t{}\t{}\t{}\t{}\n".format(
         record.form,

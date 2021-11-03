@@ -1,3 +1,7 @@
 __pycache__/
 
+/.coverage
+/htmlcov
+
 /README.xhtml
+data/

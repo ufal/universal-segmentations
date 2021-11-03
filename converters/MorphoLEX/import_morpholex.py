@@ -4,6 +4,8 @@ Read a MorphoLEX XLSX file, extract segmentations from it, convert it
 to the Universal Segmentations format and print it to STDOUT.
 """
 
+# Needs pandas and openpyxl
+
 import argparse
 import pandas as pd
 import re
@@ -18,7 +20,7 @@ def parse_args():
     )
     parser.add_argument("morpholex", type=argparse.FileType("rb"), help="The name to use for storing the segmentation annotation.")
     parser.add_argument("--annot-name", required=True, help="The name to use for storing the segmentation annotation.")
-    parser.add_argument("--allomorphs", type=argparse.FileType("rt", encoding="utf-8", errors="strict"), help="A file to load allomorphy information from.")
+    parser.add_argument("--allomorphs", required=True, type=argparse.FileType("rt", encoding="utf-8", errors="strict"), help="A file to load allomorphy information from.")
     return parser.parse_args()
 
 def parse_segmentation(s):
@@ -88,28 +90,60 @@ def load_allomorphs(f):
 
     return m
 
-def gen_morphs(allomorphs, morpheme)
+def gen_morphs(allomorphs, morpheme):
     m, t = morpheme
-    morphs = allomorphs[m]
+
+    if m in allomorphs:
+        morphs = list(allomorphs[m])
+    else:
+        morphs = [m]
 
     g_morphs = list(morphs)
-    for morph in morphs:
+    # Iterate over the list in a weird way, because we need to change
+    #  it while iterating and have the new elements be visible in the
+    #  loop.
+    i = 0
+    while i < len(morphs):
+        morph = morphs[i]
+        i += 1
+
+        # All the tests below require nonempty morph string.
+        if not morph:
+            print("Warning: empty allomorph of morpheme '{}' detected.".format(m), file=sys.stderr)
+            continue
+
         if len(morph) >= 2 and morph[-1] == "e":
+            # Append to the source list, because e.g. "reassured" needs
+            #  both e-deletion and reduplication.
+            morphs.append(morph[:-1])
             g_morphs.append(morph[:-1])
 
-        if morph and morph[0] in {"m", "p", "s", "z"}:
+        if morph[0] in {"f", "m", "p", "s", "z"}:
             # Reduplication at the start.
             g_morphs.append(morph[0] + morph)
-        if morph and morph[0] == "k":
+        if morph[0] == "k":
             # Reduplication of c + k at the start.
             g_morphs.append("c" + morph)
 
-        if morph and morph[-1] in {"m", "p", "s", "z"}:
+        if morph[-1] in {"b", "d", "g", "k", "l", "m", "n", "p", "r", "s", "t", "v", "z"}:
             # Reduplication at the end.
             g_morphs.append(morph + morph[-1])
-        if morph and morph[0] == "c":
+        if morph[-1] == "c":
             # Reduplication of c + k at the end.
             g_morphs.append(morph + "k")
+        if morph[-1] == "y":
+            # Change of y->i at the end (e.g. anchovy - anchovies).
+            g_morphs.append(morph[:-1] + "i")
+        if morph[-1] == "f":
+            # Change of f->v at the end (e.g. wolf - wolves).
+            g_morphs.append(morph[:-1] + "v")
+
+        # Change o -> ou.
+        # FIXME if there are multiple o's, generate the last one? Or all possibilities?
+        last_o = morph.rfind("o")
+        if last_o != -1 and (last_o == len(morph) - 1 or morph[last_o + 1] != "u"):
+            morph_ou = morph[:last_o] + "ou" + morph[last_o + 1:]
+            g_morphs.append(morph_ou)
 
     return (g_morphs, t)
 
@@ -119,14 +153,16 @@ def main(args):
 
     sheets = pd.read_excel(args.morpholex, sheet_name=None, header=0, dtype=str, engine="openpyxl", na_filter=False)
     for sheet_name, sheet in sheets.items():
-        match = re.fullmatch("([0-9]+)-([0-9]+)-([0-9]+)", sheet_name)
+        match = re.fullmatch("[0-9]+-[0-9]+-[0-9]+", sheet_name)
         if match is not None:
-            # The sheet contains the segmentation data.
-            num_prefixes, num_roots, num_suffixes = match.groups()
-
-            for line in sheet.itertuples(name="MorphoLEX"):
+            for line_no, line in enumerate(sheet.itertuples(name="MorphoLEX")):
                 # Note: some words are in uppercase, for whatever reason.
                 form = line.Word
+
+                if not form:
+                    print("No form found at sheet {}, line {}.".format(sheet_name, line_no), file=sys.stderr)
+                    continue
+
                 lform = form.lower()
 
                 # This test is imperfect – if one character contracts
@@ -137,72 +173,101 @@ def main(args):
 
                 poses = set(line.POS.split("|"))
 
-                lexeme = lexicon.add_lexeme(form, form, line.POS, {"elp_id": int(line.ELP_ItemID)})
+                if line.ELP_ItemID:
+                    features = {"elp_id": int(line.ELP_ItemID)}
+                else:
+                    features = None
+                lex_id = lexicon.add_lexeme(form, form, line.POS, features)
 
-                segmentation = line.MorphoLexSegm
-                morphemes = [gen_morphs(allomorphs, morpheme) for morpheme in parse_segmentation(segmentation)]
+                segmentation = parse_segmentation(line.MorphoLexSegm)
+                morphemes = [gen_morphs(allomorphs, morpheme) for morpheme in segmentation]
 
                 # Generate the initial parses.
                 parses = []
+                morphs, t = morphemes[0]
+                for morph in morphs:
+                    if lform.startswith(morph):
+                        # Record the initial parse.
+                        parses.append(([(morph, t)], len(morph)))
 
                 # Try to lengthen each parse, until we consume all morphemes.
-                for morphs, t in morphemes:
-                    start = end
+                for morphs, t in morphemes[1:]:
+                    next_parses = []
+
                     for morph in morphs:
-                        if lform.startswith(morph, start):
-                            # Success!
-                            # TODO
-                            pass
-                        else:
-                            # TODO
-                            pass
+                        for parse, end in parses:
+                            start = end
+
+                            if lform.startswith(morph, start):
+                                # Success!
+                                # Record the successful potential parse in next_parses.
+                                next_parses.append((parse + [(morph, t)], start + len(morph)))
+                            else:
+                                # This parse failed, discard it.
+                                pass
+
+                    parses = next_parses
+
+                if not parses:
+                    # Error, no possible parses found.
+                    # TODO
+                    print("Err-stem", form, " + ".join([m for m, t in segmentation]), sep="\t", end="\n", file=sys.stderr)
+                    continue
 
                 # If there are unconsumed chars left, they may be one of
                 #  the inflectional morphemes: {"s", "'s", "ed", "ing", "ings", "n't", "'d", "'ll", "'re", "'ve"}
+                final_parses = []
+                for parse, end in parses:
+                    if end == len(lform):
+                        final_parses.append(parse)
+                    elif end < len(lform):
+                        unmatched_suffix = lform[end:]
 
-                # FIXME old code below.
-
-                if joined_segmentation == lform:
-                    # Success!
-                    pass
-                elif lform.startswith(joined_segmentation):
-                    # Some suffixes were missed.
-                    unmatched_suffix = lform[len(joined_segmentation):]
-                    last_matched_char = lform[len(joined_segmentation) - 1]
-                    first_unmatched_char = unmatched_suffix[0]
-
-                    # c-k because of e.g. trafficking, which has reduplication of c -> k.
-                    reduplicated = (last_matched_char == first_unmatched_char) or (last_matched_char == "c" and first_unmatched_char == "k")
-
-                    # FIXME quizzes has reduplication and -es instead of -s.
-                    # FIXME -es doesn't always go after "h", only after "sh".
-                    if unmatched_suffix in {"s", "'s", "ed", "ing", "ings", "n't", "'d", "'ll", "'re", "'ve"} or (reduplicated and unmatched_suffix[1:] in {"ed", "ing", "ings"}) or (last_matched_char in {"s", "z", "h", "o", "r", "x"} and (unmatched_suffix == "es" or (reduplicated and unmatched_suffix[1:] == "es"))) or (last_matched_char == "e" and unmatched_suffix == "d"):
-                        # FIXME ings is two suffixes.
-                        split_segmentation.append(unmatched_suffix)
-                        print("Added suffix '{}' in segmentation {} of '{}'.".format(form[len(joined_segmentation):], ", ".join(split_segmentation), form), file=sys.stderr)
+                        if unmatched_suffix == "ings":
+                            parse.append(("ing", "suffix"))
+                            parse.append(("s", "suffix"))
+                            final_parses.append(parse)
+                        elif unmatched_suffix in {"s", "'s", "ed", "ing", "n't", "'d", "'ll", "'re", "'ve"}:
+                            parse.append((unmatched_suffix, "suffix"))
+                            final_parses.append(parse)
                     else:
-                        print("Missed suffix '{}' in segmentation {} of '{}'.".format(form[len(joined_segmentation):], ", ".join(split_segmentation), form), file=sys.stderr)
-                elif joined_segmentation[-1] == "y" and lform.startswith(joined_segmentation[:-1]):
-                    # Try to change the word-final -y to -i (try tries, lay laid).
-                    unmatched_suffix = lform[len(joined_segmentation):]
-                    if unmatched_suffix in {"ed", "es"} or joined_segmentation.endswith("ay") and unmatched_suffix == "d":
-                        split_segmentation.append(unmatched_suffix)
-                        print("Stem-final y->i change in segmentation {} of '{}'".format(", ".join(split_segmentation), form), file=sys.stderr)
-                    else:
-                        print("Mismatched stem-final y->i change in segmentation {} of '{}'".format(", ".join(split_segmentation), form), file=sys.stderr)
-                elif joined_segmentation[-1] == "e" and lform.startswith(joined_segmentation[:-1]):
-                    # Try to remove word-final -e (plague plaguing).
-                    unmatched_suffix = lform[len(joined_segmentation) - 1:]
-                    if unmatched_suffix in {"ing", "ings"}:
-                        split_segmentation.append(unmatched_suffix)
-                        print("Deletion of e in segmentation {} of '{}'".format(", ".join(split_segmentation), form), file=sys.stderr)
-                    else:
-                        print("Mismatched deletion of e in segmentation {} of '{}'".format(", ".join(split_segmentation), form), file=sys.stderr)
-                else:
-                    print("Mismatched segmentation {} of '{}'.".format(", ".join(split_segmentation), form), file=sys.stderr)
+                        raise Exception("We've parsed text longer than the form. ERROR!")
+
+                if not final_parses:
+                    # There were no possibilities. Try to add -es.
+                    #  This is done in a separate pass to avoid spurious
+                    #  ambiguity with word-final -e, which may be deleted.
+                    for parse, end in parses:
+                        assert end < len(lform)
+                        unmatched_suffix = lform[end:]
+
+                        if unmatched_suffix == "es":
+                            parse.append(("es", "suffix"))
+                            final_parses.append(parse)
+
+                if not final_parses:
+                    # Error, no possible parses found.
+                    # TODO
+                    print("Err-suffix", form, " + ".join([m for m, t in segmentation]), sep="\t", end="\n", file=sys.stderr)
                     continue
 
-                print(form, " + ".join(split_segmentation), sep="\t", end="\n")
+                #for i, parse in enumerate(final_parses):
+                    #print("OK-{}".format(i), form, " + ".join([morph for morph, t in parse]), sep="\t", end="\n")
+
+                parse = final_parses[0]
+                end = 0
+                for i in range(len(parse)):
+                    morph, t = parse[i]
+                    start = end
+                    end = start + len(morph)
+
+                    if i < len(segmentation):
+                        features = {"morpheme": segmentation[i][0],
+                                    "type": t}
+                    else:
+                        features = {"type": t}
+
+                    lexicon.add_contiguous_morpheme(lex_id, args.annot_name, start, end, features)
 
                 # If NN, then it may end in plural "s" or "es".
                 # If VB, it may end in 3rd person present singular "s" or "es".
@@ -252,7 +317,7 @@ def main(args):
                 # intermediaries (18 in 1-2-1) and following
                 #  and several others in that sheet
 
-    #lexicon.save(sys.stdout)
+    lexicon.save(sys.stdout)
 
 if __name__ == "__main__":
     main(parse_args())

@@ -1,0 +1,15 @@
+DATADIR=../../data/
+IN_DIR=$(DATADIR)/original/Echantinom/
+OUT_DIR=$(DATADIR)/converted/fr-Echantinom/
+
+SHELL = bash
+
+
+download: # and unpack, if needed
+	mkdir -p $(IN_DIR)
+	cd $(IN_DIR) && wget https://osf.io/7phcy/download && mv download Echantinom.csv
+
+convert:
+	mkdir -p $(OUT_DIR)
+	./fr_echantinom2useg.py $(IN_DIR)/echantinom.csv  $(OUT_DIR)$/fr_echantinom.useg
+

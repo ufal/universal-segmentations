@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-import useg.seg_tsv as seg_tsv
+from useg import seg_tsv
 
 Lexeme = namedtuple("Lexeme", ["lex_id", "form", "lemma", "pos", "features", "morphemes"])
 Morpheme = namedtuple("Morpheme", ["span", "features"])
@@ -23,31 +23,63 @@ class SegLex:
 
     def load(self, f):
         """
-        Load the lexicon from the open file-like object `f` and add all
+        Load the lexicon from `f`, which is either an open file-like
+        object open for reading text or a string filename, and add all
         information contained therein to the internal lexicon of this
         object.
         """
-        for line in f:
-            record = seg_tsv.parse_line(line)
-            features = {k: v for k, v in record.annot.items() if k not in {"annot_name", "segmentation"}}
-            annot_name = record.annot["annot_name"]
-            segmentation = record.annot["segmentation"]
 
-            lexeme = self.add_lexeme(record.form, record.lemma, record.pos, features)
+        # If f is a filename, we open the file ourselves and therefore
+        #  should also close it after reading from it.
+        actual_f = None
+        close_at_end = False
 
-            for segment in segmentation:
-                span = segment["span"]
-                del segment["span"]
-                self.add_morpheme(lexeme, annot_name, span, segment)
+        try:
+            if isinstance(f, str):
+                close_at_end = True
+                actual_f = open(f, "rt", encoding="utf-8")
+            else:
+                # We assume f is already an open file object.
+                actual_f = f
+
+            for line in actual_f:
+                record = seg_tsv.parse_line(line)
+                features = {k: v for k, v in record.annot.items() if k not in {"annot_name", "segmentation"}}
+
+                if "segmentation" in record.annot:
+                    if "annot_name" not in record.annot:
+                        # Unnamed segmentation. Reject it.
+                        raise ValueError("Line '{}' has unnamed segmentation".format(line))
+
+                    annot_name = record.annot["annot_name"]
+                    segmentation = record.annot["segmentation"]
+                else:
+                    segmentation = []
+
+                lexeme = self.add_lexeme(record.form, record.lemma, record.pos, features)
+
+                for segment in segmentation:
+                    span = segment["span"]
+                    del segment["span"]
+                    self.add_morpheme(lexeme, annot_name, span, segment)
+        finally:
+            if actual_f is not None and close_at_end:
+                actual_f.close()
 
     def _as_records(self):
         """
         Iterate over the lexicon as a sequence of SegRecords (not sorted).
         """
         for lexeme in self._lexemes:
+            if not lexeme.morphemes:
+                # Return a lexeme with no records in it, because the
+                #  loop below is not going to execute.
+                assert "segmentation" not in lexeme.features and "annot_name" not in lexeme.features
+                yield seg_tsv.SegRecord(lexeme.form, lexeme.lemma, lexeme.pos, "", lexeme.features)
+
             for annot_name in lexeme.morphemes:
                 annot = lexeme.features.copy()
-                assert "segmentation" not in annot and "" not in annot
+                assert "segmentation" not in annot and "annot_name" not in annot
                 annot["annot_name"] = annot_name
                 # TODO Ensure span is not already defined.
                 annot["segmentation"] = [{**morpheme.features, "span": morpheme.span}
@@ -60,21 +92,22 @@ class SegLex:
                 simple_seg = []
                 last_morpheme = self.morpheme(lexeme.lex_id, annot_name, 0)
                 morph_str = ""
-                for i in range(len(lexeme.form)):
+                for i, char in enumerate(lexeme.form):
                     morpheme = self.morpheme(lexeme.lex_id, annot_name, i)
                     if morpheme is last_morpheme:
-                        morph_str += lexeme.form[i]
+                        morph_str += char
                     else:
                         last_morpheme = morpheme
                         simple_seg.append(morph_str)
-                        morph_str = lexeme.form[i]
+                        morph_str = char
                 simple_seg.append(morph_str)
 
                 yield seg_tsv.SegRecord(lexeme.form, lexeme.lemma, lexeme.pos, simple_seg, annot)
 
     def save(self, f):
         """
-        Save the lexicon to the open file-like object `f`.
+        Save the lexicon to `f`, which is either an open file-like
+        object open for writing or appending text, or a string filename.
         """
         # Sort the lexicon and iterate over it, producing the TSV output.
         # TODO include the keys and values of features in the sorting as
@@ -84,10 +117,27 @@ class SegLex:
             key=lambda r: (r.lemma, r.pos, r.form, r.simple_seg, len(r.annot))
         )
 
-        for record in records:
-            f.write(seg_tsv.format_record(record))
+        # If f is a filename, we open the file ourselves and therefore
+        #  should also close it after writing to it.
+        actual_f = None
+        close_at_end = False
 
-        f.flush()
+        try:
+            if isinstance(f, str):
+                close_at_end = True
+                actual_f = open(f, "wt", encoding="utf-8", newline="\n")
+            else:
+                # We assume f is already an open file object.
+                actual_f = f
+
+            for record in records:
+                actual_f.write(seg_tsv.format_record(record, False))
+
+        finally:
+            if actual_f is not None:
+                actual_f.flush()
+                if close_at_end:
+                    actual_f.close()
 
 
     def add_lexeme(self, form, lemma, pos, features=None):
@@ -130,12 +180,11 @@ class SegLex:
             # Use the `form` dict for lookup.
             if form in self._forms:
                 for lex_id in self._forms[form]:
-                    if (form is None or self.form(lex_id) == form) \
+                    if (lemma is None or self.lemma(lex_id) == lemma) \
                        and (pos is None or self.pos(lex_id) == pos):
                         yield lex_id
-                return
-            else:
-                return
+
+            return
 
         # `form` is None, so use the `pos` dict for lookup.
 
@@ -286,8 +335,12 @@ class SegLex:
         If `sort` is True, sort the morphemes by their span.
         """
         if annot_name not in self._lexemes[lex_id].morphemes:
+            # The annotation layer is not present, so there are no
+            #  annotations there.
             return []
-        elif position is None:
+
+        if position is None:
+            # Return all morphemes on the annotation layer.
             # Return a copy to prevent accidental mangling.
             morphemes = self._lexemes[lex_id].morphemes[annot_name]
             if sort:
@@ -295,6 +348,7 @@ class SegLex:
             else:
                 return list(morphemes)
         else:
+            # Return only morphemes at the specified position.
             if position < 0 or position >= len(self.form(lex_id)):
                 raise ValueError("Invalid position {} in lexeme {}; is out of bounds in the form".format(position, self.print_lexeme(lex_id)))
 
