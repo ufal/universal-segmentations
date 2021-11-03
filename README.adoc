@@ -76,7 +76,7 @@ lexicon.add_contiguous_morpheme(lex_id, "test_2", 0, 5, {"type": "root", "morphe
 lexicon.add_contiguous_morpheme(lex_id, "test_2", 5, 7, {"type": "suffix", "morpheme": "er"})
 ----
 +
-The `lexicon.add_contiguous_morpheme()` method is the lowest level one.
+The `lexicon.add_morpheme()` method is the lowest level one.
 It requires you to manually specify, which positions in the form the
 morph corresponds to using a list of integer indices, therefore
 allowing to mark non-contiguous morphemes such as circumfixes.
