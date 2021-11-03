@@ -85,7 +85,7 @@ class SegLex:
         )
 
         for record in records:
-            f.write(seg_tsv.format_record(record))
+            f.write(seg_tsv.format_record(record, False))
 
         f.flush()
 
