@@ -292,8 +292,12 @@ class SegLex:
         If `sort` is True, sort the morphemes by their span.
         """
         if annot_name not in self._lexemes[lex_id].morphemes:
+            # The annotation layer is not present, so there are no
+            #  annotations there.
             return []
-        elif position is None:
+
+        if position is None:
+            # Return all morphemes on the annotation layer.
             # Return a copy to prevent accidental mangling.
             morphemes = self._lexemes[lex_id].morphemes[annot_name]
             if sort:
@@ -301,6 +305,7 @@ class SegLex:
             else:
                 return list(morphemes)
         else:
+            # Return only morphemes at the specified position.
             if position < 0 or position >= len(self.form(lex_id)):
                 raise ValueError("Invalid position {} in lexeme {}; is out of bounds in the form".format(position, self.print_lexeme(lex_id)))
 
