@@ -73,7 +73,7 @@ for line in infile:
     if suffix!="0":
         suff_features={"type":"suffix", "morpheme":suffix_morpheme}
 
-        if suffix_allomorphs!="NA":
+        if suffix_allomorph!="NA":
             suff_features["allomorph"] = suffix_allomorph
 
         lexicon.add_contiguous_morpheme(lex_id, annot_name, len(lexeme)-len(suffix), len(lexeme), features=suff_features)
@@ -93,7 +93,8 @@ for line in infile:
             lexicon.add_contiguous_morpheme(lex_id, annot_name, lexeme.index("-")+1, len(lexeme), features=features2)
 
     else:
-        lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"stem"})
+        if start_of_stem != 0 or end_of_stem != len(lexeme):
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"stem"})
 
 outfile = open(sys.argv[2], 'w')
 lexicon.save(outfile)

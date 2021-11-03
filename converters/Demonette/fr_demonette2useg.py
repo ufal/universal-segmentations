@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-#TODO Add more features
-
 import sys
 sys.path.append('../../src/')
 from useg import SegLex
@@ -29,16 +27,18 @@ def assign_upos(grace_tag):
     else:
         return grace2upos[grace_tag[0]]
 
-def get_lexeme_features(grace_tag):
+def get_lexeme_features(grace_tag, morph_process):
     '''Builds features JSON for lexeme'''
 
     gender = {"f":"fem", "m":"masc", "-":"none"}
     number = {"s":"sg", "p":"pl", "-":"none"}
 
+    verb_category = {"m":"main", "a":"aux"}
     mood = {"n":"none"}
     tense = {"-":"non-finite"}
     person = {"-":"none"}
 
+    adj_category = {"f": "qualificative"}
     degree = {"p":"positive", "c":"comparative", "s":"superlative"}
 
     upos = assign_upos(grace_tag)
@@ -47,7 +47,8 @@ def get_lexeme_features(grace_tag):
         features["gender"] = gender[grace_tag[2]]
         features["number"] = number[grace_tag[3]]
 
-    if assign_upos(grace_tag)=="VERB":
+    if upos=="VERB":
+        features["category"] = verb_category[grace_tag[1]]
         features["tense"] = tense[grace_tag[3]]
         if features["tense"] != "non-finite":
             features["mood"] = mood[grace_tag[2]]
@@ -56,46 +57,66 @@ def get_lexeme_features(grace_tag):
             features["gender"] = gender[grace_tag[6]]
 
 
-    if assign_upos(grace_tag)=="ADJ":
+    if upos=="ADJ":
+        features["category"] = adj_category[grace_tag[1]]
         features["degree"] = degree[grace_tag[2]]
         features["gender"] = gender[grace_tag[3]]
         features["number"] = number[grace_tag[4]]
 
+    if morph_process=="conv":
+        features["morph_process"] = "conversion"
+
     return features
 
 
-def add_lexeme(lexicon, lexeme, grace_tag, type, suffix):
+
+def add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root):
     '''Adds lexeme to lexicon object'''
     upos = assign_upos(grace_tag)
-    features = get_lexeme_features(grace_tag)
-    #radical = entries[26]
-    if set(lexicon.iter_lexemes(form=lexeme, lemma=lexeme, pos=upos)):
-        return
+    features = get_lexeme_features(grace_tag, morph_process)
+
+    # for prev_lex_id in lexicon.iter_lexemes(form=lexeme, lemma=lexeme, pos=upos):
+    #     return
     lex_id = lexicon.add_lexeme(lexeme, lexeme, upos, features=features)
+
+    start_of_interfix = 0
+    end_of_interfix = len(lexeme)
+
+    if root != "":
+        lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, len(root), features={"type":"stem"})
+        start_of_interfix = len(root)
+
     if suffix != "":
         stem = lexeme[:-len(suffix)]
-        #add_contiguous_morpheme(self, lex_id, annot_name, start, end, features=None):
         assert len(stem)+len(suffix)==len(lexeme)
-        lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, len(stem), features={"type":"stem"})
         lexicon.add_contiguous_morpheme(lex_id, annot_name, len(stem), len(lexeme), features={"type":"suffix"})
-    else:
-        lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, len(lexeme))
+        end_of_interfix = len(stem)
+
+    if start_of_interfix != 0 and end_of_interfix != len(lexeme):
+        if start_of_interfix != end_of_interfix:
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_interfix, end_of_interfix, features={"type":"interfix"})
+    elif end_of_interfix != len(lexeme):
+        lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_interfix, end_of_interfix, features={"type":"stem"})
 
 for line in infile:
+    if line=="\n" or line==" ":
+        continue
     entries = line.split(',')
     lexeme = entries[0].strip('"')
     grace_tag = entries[4].strip('"')
-    type = entries[10].strip('"')
+    morph_process = entries[10].strip('"')
     suffix = entries[11].strip('"')
+    root = entries[26].strip('"')
 
-    add_lexeme(lexicon, lexeme, grace_tag, type, suffix)
+    add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root)
 
     lexeme = entries[2].strip('"')
     grace_tag = entries[6].strip('"')
-    type = entries[13].strip('"')
+    morph_process = entries[13].strip('"')
     suffix = entries[14].strip('"')
+    root = entries[28].strip('"')
 
-    add_lexeme(lexicon, lexeme, grace_tag, type, suffix)
+    add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root)
 
 outfile = open(sys.argv[2], 'w')
 lexicon.save(outfile)
