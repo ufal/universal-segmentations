@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-import useg.seg_tsv as seg_tsv
+from useg import seg_tsv
 
 Lexeme = namedtuple("Lexeme", ["lex_id", "form", "lemma", "pos", "features", "morphemes"])
 Morpheme = namedtuple("Morpheme", ["span", "features"])
