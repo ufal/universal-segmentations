@@ -1,6 +1,6 @@
 DATADIR=../../data/
 IN_DIR=$(DATADIR)/original/DerivBaseRU/
-OUT_DIR=$(DATADIR)/converted/ru-DerivBaseRU/
+OUT_DIR=$(DATADIR)/converted/rus-DerivBaseRU/
 
 SHELL = bash
 

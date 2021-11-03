@@ -1,6 +1,6 @@
 DATADIR=../../data/
 IN_DIR=$(DATADIR)/original/MorphoDictKE/
-OUT_DIR=$(DATADIR)/converted/ru-MorphoDictKE/
+OUT_DIR=$(DATADIR)/converted/rus-MorphoDictKE/
 
 SHELL = bash
 
