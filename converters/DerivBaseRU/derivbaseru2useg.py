@@ -123,7 +123,7 @@ with open(sys.argv[1], mode='r', encoding='U8') as infile:
                 if found and deriv_lemma.endswith('ся'):
                     segmented_lemmas['_'.join([deriv_lemma, deri_pos])].add((found.group(), found.span(0), 'PFX'))
                     found_sja = re.search(r'ся$', deriv_lemma)
-                    segmented_lemmas['_'.join([deriv_lemma, deri_pos])].add((found.group(), found.span(0), 'PTFX'))
+                    segmented_lemmas['_'.join([deriv_lemma, deri_pos])].add((found_sja.group(), found_sja.span(0), 'PTFX'))
                     break
 
         elif operation == 'INTERFIX':
@@ -174,12 +174,41 @@ def create_segmentation(lemma, ranges, operations):
         for number in ranges[idx_interval]:
             morphs[idx_interval] += lemma[number]
 
-    return [tuple(morphs), tuple(operations)]
+    return [morphs, operations]
 
 
-# TODO: function for searching for segmentation from overlapping morphs
+# function for searching for segmentation from overlapping morphs
 def search_for_segmentation(lemma, ranges, operations):
-    return None
+    # check types of overlaps of the morph boundaries
+    sorted_ranges = sorted(ranges, key=len)
+    for idx_interval in range(len(sorted_ranges)-1):
+        for idx_next_interval in range(idx_interval, len(sorted_ranges)):
+            if any(index in sorted_ranges[idx_next_interval] for index in sorted_ranges[idx_interval]):  # check whether there is any overlapping index
+                if not set(sorted_ranges[idx_interval]).issubset(sorted_ranges[idx_next_interval]):  # check whether there is an overlap across morph boundaries
+                    logging.warning(
+                        'There is a trouble with overlapping morph boundaries: {}, {}, {}'
+                        .format(lemma, ranges, operations)
+                    )
+                    return [[lemma], ['STEM']]
+
+    # non-problematic cases of overlapping morph boundaries
+    new_ranges, new_operations = zip(*sorted(zip(ranges, operations), key=lambda x: len(x[0])))
+    for idx_interval in range(len(new_ranges)-1):
+        for idx_next_interval in range(idx_interval+1, len(new_ranges)):
+            for item in new_ranges[idx_interval]:
+                if item in new_ranges[idx_next_interval]:  # check whether there is any overlapping index
+                    new_ranges[idx_next_interval].remove(item)
+
+    new_ranges, new_operations = list(new_ranges), list(new_operations)
+    to_delete = list()
+    for index, interval in enumerate(new_ranges):
+        if len(interval) == 0:
+            to_delete.append(index)
+    for index in sorted(to_delete, reverse=True):
+        del new_ranges[index]
+        del new_operations[index]
+
+    return create_segmentation(lemma, new_ranges, new_operations)
 
 
 # go through segmented lemmas and resolve overlapping morphs
@@ -229,7 +258,7 @@ for item, segments in segmented_lemmas.items():
         # segment lexeme
         if there_is_overlap:
             # print(lemma, segments)
-            # TODO: segmentation = search_for_segmentation(lemma, ranges, operations)
+            segmentation = search_for_segmentation(lemma, ranges, operations)
             pass
         else:
             segmentation = create_segmentation(lemma, ranges, operations)
@@ -238,7 +267,7 @@ for item, segments in segmented_lemmas.items():
 
 
 # TODO: find segmentation of STEMs in the resource
-
+print(new_segmented_lemmas)
 
 # TODO: store in the resulting format
 # lexicon = SegLex()
