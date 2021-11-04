@@ -21,8 +21,8 @@ for line in fin:
     line=line.split("\t")
     word=line[0]
     segmentations=line[1].split(", ")
-    lexeme=lexicon.add_lexeme(form=word, lemma=word, pos="none")
     for seg in segmentations:
+        lexeme=lexicon.add_lexeme(form=word, lemma=word, pos="none")
         morphs=seg.split(" ")
         idx=0
         for morph in morphs:

@@ -95,14 +95,24 @@ def starts_with(txt, substr):
     else:
         return None
 
-def guess_it(subword, candidates):
+# If we want to segment a word to morphs but only know morphemes, 
+# then we may collect all the possible morph realizations of each morpheme
+# and then try to find out if there is a combination of the morphs that produces the word.
+# this method is the bruteforce part of this approach
+#
+# this methods gets a word and a list of candidate morphs and returns the decomposition or None.
+#
+# Example:
+# find_combination(subword="arrived", candidates=[["arrive"], ["ed", "d"]])
+# output: ["arrive", "d"]
+def find_combination(subword, candidates):
     if(len(candidates)==0):
         if(len(subword)==0):
             return []
         else:
             return None
     elif(len(subword)!=0 and subword[0]=="-" and "-" not in candidates):
-        guess=guess_it(subword[1:],candidates)
+        guess=find_combination(subword[1:],candidates)
         if(guess is not None):
             if(guess==[]):
                 return ["-"]
@@ -111,71 +121,72 @@ def guess_it(subword, candidates):
     for candidate in candidates[0]:
         idx=starts_with(subword, candidate)
         if(idx!=None):
-            guess=guess_it(subword[idx:],candidates[1:])
+            guess=find_combination(subword[idx:],candidates[1:])
             if(guess is not None):
                 if(guess==[]):
                     return [candidate]
                 else:
                     return [candidate]+guess
-
-
-
     return None
 
+def generate_candidates(word, morphemes):
+    candidates=[]
+    for x in morphemes:
+        candidates.append([])
+        candidates[-1].append((x,1))
+        if(len(x)!=0):
+            candidates[-1].append((x+x[-1], 3)) #doubling of letters
+            if(x[-1]=="y"):
+                candidates[-1].append((x[:-1]+"i", 3)) #change of y to i
+
+        for i in range(0,len(x)): #shortening of subword
+            if(len(x)<=3):
+                level=5
+            else:
+                level=4
+            candidates[-1].append((x[:i], level))
+            candidates[-1].append((x[i:], level))
+            if(i>=3):
+                candidates[-1].append((x[:i]+x[i-1], 6)) #doubling the last letter
+                candidates[-1].append((x[:i-1]+x[i-2]+x[i-1], 7)) #doubling the second but last letter
+                #undoubling last letter is already done :)
+                if(x[i-2]==x[i-3]):#undoubling second-but-last letter is already done :)
+                    candidates[-1].append((x[:i-2]+x[i-1],7))
+
+        for c in morpheme2virtual_morph.get(x,[]):
+            candidates[-1].append((c, 1)) #+PL => s, es
+        for c,cnt in morpheme2true_morph.get(x,{}).items():
+            if(cnt>=2):
+                candidates[-1].append((c, 2)) #changes of individual morphemes with at least 2 occurances
+            elif(cnt==1):
+                candidates[-1].append((c, 4)) #changes of individual morphemes with 1 occurance
+    return candidates
+
+def get_filtered_candidates(candidates, uncertainty_level):
+    candidates2=[]
+    for grp in candidates:
+        grp2=[]
+        for candidate, uncertainty in grp:
+            if(uncertainty<=uncertainty_level):
+                grp2.append(candidate)
+        candidates2.append(grp2)
+    return candidates2
+
 for word,morphemes in data_old:
-    concat="".join(morphemes)
-    if(word==concat):
-        solved_words.append([word,morphemes,morphemes,0])
-    else:
-        candidates=[]
-        guess=False
-        for x in morphemes:
-            candidates.append([])
-            candidates[-1].append((x,1))
-            if(len(x)!=0):
-                candidates[-1].append((x+x[-1], 3)) #doubling of letters
-                if(x[-1]=="y"):
-                    candidates[-1].append((x[:-1]+"i", 3)) #change of y to i
-
-            for i in range(0,len(x)): #shortening of subword
-                if(len(x)<=3):
-                    level=5
-                else:
-                    level=4
-                candidates[-1].append((x[:i], level))
-                candidates[-1].append((x[i:], level))
-                if(i>=3):
-                    candidates[-1].append((x[:i]+x[i-1], 6)) #doubling the last letter
-                    candidates[-1].append((x[:i-1]+x[i-2]+x[i-1], 7)) #doubling the second but last letter
-                    #undoubling last letter is already done :)
-                    if(x[i-2]==x[i-3]):#undoubling second-but-last letter is already done :)
-                        candidates[-1].append((x[:i-2]+x[i-1],7))
-
-            for c in morpheme2virtual_morph.get(x,[]):
-                candidates[-1].append((c, 1)) #+PL => s, es
-            for c,cnt in morpheme2true_morph.get(x,{}).items():
-                if(cnt>=2):
-                    candidates[-1].append((c, 2)) #changes of individual morphemes with at least 2 occurances
-                elif(cnt==1):
-                    candidates[-1].append((c, 4)) #changes of individual morphemes with 1 occurance
-            if(len(candidates[-1])!=1):
-                guess=True
-        if(guess is False):
-            print("nothing to guess for ",word)
+        concat="".join(morphemes)
+        #if(word==concat):
+        #    solved_words.append([word,morphemes,morphemes,0])
+        #else:
+        candidates=generate_candidates(word, morphemes)
 
         morphs=None
         for uncertainty_level in range(1,7+1):
-            candidates2=[]
-            for grp in candidates:
-                grp2=[]
-                for candidate, uncertainty in grp:
-                    if(uncertainty<=uncertainty_level):
-                         grp2.append(candidate)
-                candidates2.append(grp2)
-            morphs=guess_it(word, candidates2)
+            candidates2=get_filtered_candidates(candidates, uncertainty_level)
+            morphs=find_combination(word, candidates2)
             if(morphs is not None):
                 break
         if(morphs is not None):
+             #sometimes, "-" morph is not in the list of morphemes, so we need to add it.
             if(len(morphs)!=len(morphemes)):
                 #print(word,morphs,morphemes)
                 idx1=0
@@ -237,6 +248,7 @@ fout.close()
 
 
 """
+Experiments with unsupervised morpheme handling.
 >>> difftypes.difftype3("yllätystappion","|||".join(['yllättää', '+DV-US', 'tappio', '+GEN']))
 '_-ys+tää|||+DV-US|||_-n+|||+GEN'
 

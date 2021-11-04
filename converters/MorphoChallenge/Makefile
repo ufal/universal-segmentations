@@ -34,4 +34,4 @@ convert:
 	python ./convert_morphemes.py $(IN_DIR)/morphemes_all_fin.txt $(IN_DIR)/both_2010_fin.txt $(OUT_DIR)/MorphoChallenge07080910_fin.useg 2>/dev/stdout | tee $(OUT_DIR)/logs/07080910_fin_log.txt
 	python ./convert_morphemes.py $(IN_DIR)/morphemes_all_tur.txt $(IN_DIR)/both_2010_tur.txt $(OUT_DIR)/MorphoChallenge07080910_tur.useg 2>/dev/stdout | tee $(OUT_DIR)/logs/07080910_tur_log.txt
 	#not implemented yet:
-	#python ./convert_morphemes.py $(IN_DIR)/morphemes_all_ger.txt "" $(OUT_DIR)/MorphoChallenge07080910_ger.useg 2>/dev/stdout | tee $(OUT_DIR)/logs/07080910_ger_log.txt
+	#python ./convert_morphemes.py $(IN_DIR)/morphemes_all_ger.txt "" $(OUT_DIR)/MorphoChallenge07080910_deu.useg 2>/dev/stdout | tee $(OUT_DIR)/logs/07080910_deu_log.txt
