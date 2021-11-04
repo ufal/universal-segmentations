@@ -61,7 +61,11 @@ def load_f10(fname):
     return data
 
 data_old=load_f07(sys.argv[1])
-data_new=load_f10(sys.argv[2])
+if(sys.argv[2]!=""):
+    data_new=load_f10(sys.argv[2])
+else:
+    data_new=[] #this happens in case of german.
+    print("Warning!!! We do not have data for unsupervised morpheme2morph mapping which creates problems in case of virtual morphemes.")
 
 from collections import defaultdict,Counter
 morpheme2morph=defaultdict(Counter)
