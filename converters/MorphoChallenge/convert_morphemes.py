@@ -64,19 +64,19 @@ data_old=load_f07(sys.argv[1])
 data_new=load_f10(sys.argv[2])
 
 from collections import defaultdict,Counter
-morpheme2true_morph=defaultdict(Counter)
-morpheme2true_morph_diffs=Counter()
-morpheme2virtual_morph=defaultdict(Counter)
+morpheme2morph=defaultdict(Counter)
+morpheme2morph_diffs=Counter()
+virtual_morpheme2morph=defaultdict(Counter)
 
 for word, morphemes in data_new:
     for morph, morpheme in morphemes:
         morpheme=morpheme.replace("~","")
         if(len(morpheme)!=0 and morpheme[0]=="+"):
-            morpheme2virtual_morph[morpheme].update([morph])
+            virtual_morpheme2morph[morpheme].update([morph])
         elif(morph!=morpheme):
-            morpheme2true_morph[morpheme].update([morph])
+            morpheme2morph[morpheme].update([morph])
             diff=difftypes.difftype3(morpheme,morph)
-            morpheme2true_morph_diffs.update([diff])
+            morpheme2morph_diffs.update([diff])
 
 
 solved_words=[]
@@ -129,7 +129,7 @@ def find_combination(subword, candidates):
                     return [candidate]+guess
     return None
 
-def generate_candidates(word, morphemes):
+def generate_candidates(word, morphemes, morpheme2morph={},virtual_morpheme2morph={}):
     candidates=[]
     for x in morphemes:
         candidates.append([])
@@ -153,9 +153,9 @@ def generate_candidates(word, morphemes):
                 if(x[i-2]==x[i-3]):#undoubling second-but-last letter is already done :)
                     candidates[-1].append((x[:i-2]+x[i-1],7))
 
-        for c in morpheme2virtual_morph.get(x,[]):
+        for c in virtual_morpheme2morph.get(x,[]):
             candidates[-1].append((c, 1)) #+PL => s, es
-        for c,cnt in morpheme2true_morph.get(x,{}).items():
+        for c,cnt in morpheme2morph.get(x,{}).items():
             if(cnt>=2):
                 candidates[-1].append((c, 2)) #changes of individual morphemes with at least 2 occurances
             elif(cnt==1):
@@ -177,7 +177,7 @@ for word,morphemes in data_old:
         #if(word==concat):
         #    solved_words.append([word,morphemes,morphemes,0])
         #else:
-        candidates=generate_candidates(word, morphemes)
+        candidates=generate_candidates(word, morphemes, morpheme2morph, virtual_morpheme2morph)
 
         morphs=None
         for uncertainty_level in range(1,7+1):
