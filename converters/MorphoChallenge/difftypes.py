@@ -1,3 +1,4 @@
+import difflib
 """
 Diff types
 Difftypes are descriptions of the change from one word to another.
@@ -33,15 +34,11 @@ difftype4:
 Usage:
     difftype1("jel","dojel")   --->   +_
 
-use of preprocess("word") is highly recommended, although not necessary (strip(),lower_case(), remove_accents())
+use of preprocess("word") is highly recommended, although not necessary (strip(),lower_case(), remove_accents()). pdifftype* do that for you
     pdifftype1("jel","dojel")   --->   +_
 
-does that for you
 
 """
-
-#from DerinetTreeBuilder import Node,DerinetTreeBuilder
-import difflib
 
 
 def strip_diacritics(w):
