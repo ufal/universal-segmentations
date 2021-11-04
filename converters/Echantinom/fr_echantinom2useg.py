@@ -6,7 +6,7 @@ from useg import SegLex
 
 
 import logging
-logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+logging.basicConfig(filename="unsolved.log", level=logging.WARNING)
 
 if len(sys.argv) != 3:
     sys.stderr.write("Usage:\n  "+__file__+" French-Échantinom-file.csv converted-file.useg\n\n")
@@ -17,7 +17,7 @@ lexicon = SegLex()
 
 infile = open(sys.argv[1])
 
-annot_name = "test_1"
+annot_name = "echantinom"
 
 gender_map = {"f":"fem", "m":"masc"}
 
@@ -49,7 +49,7 @@ for line in infile:
 
     features = {"gender":gender_map[gender], "last_process_broad":morph_process_broad, "last_morph_process":morph_process}
 
-    if compound_type!="0":
+    if compound_type!="0" and "-" not in compound_type:
         features["compound_type"] = compound_type
 
     if conversion_type!="0":
@@ -67,11 +67,37 @@ for line in infile:
     end_of_stem = len(lexeme)
     if prefix!="0":
         #special case of en --> em before bilabial consonants
+        if lexeme[:len(prefix)] != prefix:
+            logging.warning("Prefix %s not contained at the beginning of wordform %s", prefix, lexeme)
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"stem"})
+            continue
+
+        if prefix not in lexeme:
+            logging.warning("Prefix %s not contained in the wordform %s", prefix, lexeme)
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"stem"})
+            continue
+
         lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, len(prefix), features={"type":"prefix", "morpheme":prefix})
         start_of_stem = len(prefix)
 
     if suffix!="0":
+        print(lexeme)
         suff_features={"type":"suffix", "morpheme":suffix_morpheme}
+        if suffix[-1]=="M" or suffix[-1]=="F":
+            print(suffix)
+            suff_features["morpheme_gender"] = suffix[-1]
+            suffix = suffix[:-1]
+            print(suffix)
+
+        if lexeme[-len(suffix):] != suffix:
+            logging.warning("Suffix %s not contained at the end of wordform %s", suffix, lexeme)
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"stem"})
+            continue
+
+        if suffix not in lexeme:
+            logging.warning("Suffix %s not contained in wordform %s", suffix, lexeme)
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"stem"})
+            continue
 
         if suffix_allomorph!="NA":
             suff_features["allomorph"] = suffix_allomorph
@@ -91,7 +117,6 @@ for line in infile:
             lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, lexeme.index("-"), features=features1)
             lexicon.add_contiguous_morpheme(lex_id, annot_name, lexeme.index("-"), lexeme.index("-")+1, features={"type":"hyphen"} )
             lexicon.add_contiguous_morpheme(lex_id, annot_name, lexeme.index("-")+1, len(lexeme), features=features2)
-
     else:
         lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"stem"})
 
