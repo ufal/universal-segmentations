@@ -24,6 +24,16 @@ examples	example	NOUN		{}
 exemplar	exemplar	ADJ		{}
 """
 
+sample_file_morphemes = """counterexample	counterexample	NOUN	counter + example	{"annot_name": "annot1", "segmentation": [{"morpheme": "contra", "span": [0, 1, 2, 3, 4, 5, 6], "type": "prefix"}, {"morpheme": "example", "span": [7, 8, 9, 10, 11, 12, 13], "type": "root"}]}
+counterexample	counterexample	NOUN	counter + example	{"annot_name": "annot1", "segmentation": [{"morpheme": "example", "span": [7, 8, 9, 10, 11, 12, 13], "type": "root"}]}
+example	example	NOUN		{}
+example	example	NOUN	ex + ample	{"annot_name": "annot1", "segmentation": [{"span": [0, 1]}, {"span": [2, 3, 4, 5, 6]}]}
+example	example	NOUN	exam + ple	{"annot_name": "annot1", "segmentation": [{"span": [0, 1, 2, 3]}, {"span": [4, 5, 6]}]}
+example	example	NOUN	exampl + e	{"annot_name": "annot2", "segmentation": [{"span": [0, 1, 2, 3, 4, 5]}, {"span": [6]}]}
+examples	example	NOUN	example + s	{"annot_name": "annot1", "segmentation": [{"morpheme": "example", "span": [0, 1, 2, 3, 4, 5, 6], "type": "root"}, {"morpheme": "PL", "span": [7], "type": "suffix"}]}
+exemplar	exemplar	ADJ	exempl + ar	{"annot_name": "annot1", "segmentation": [{"morpheme": "example", "span": [0, 1, 2, 3, 4, 5], "type": "root"}]}
+"""
+
 class TestIO(unittest.TestCase):
     def test_load_empty(self):
         # Test loading an empty lexicon.
@@ -79,6 +89,51 @@ class TestIO(unittest.TestCase):
         content = str_io.read()
 
         self.assertEqual(6, content.count("\n"))
+
+    def test_load_morphemes(self):
+        # Test loading lexemes with concatenative segmentation.
+        # And with morpheme features.
+        str_io = StringIO(initial_value=sample_file_morphemes)
+        seg_lex = SegLex()
+        seg_lex.load(str_io)
+
+        self.assertEqual(7, len(list(seg_lex.iter_lexemes())))
+        self.assertEqual(3, len(list(seg_lex.iter_lexemes(form="example"))))
+        self.assertEqual(1, len(list(seg_lex.iter_lexemes(form="examples"))))
+        self.assertEqual(2, len(list(seg_lex.iter_lexemes(form="counterexample"))))
+        self.assertEqual(1, len(list(seg_lex.iter_lexemes(form="exemplar"))))
+
+    def test_save_morphemes(self):
+        # Test saving lexemes with concatenative segmentation.
+        # And with morpheme features.
+        str_io = StringIO()
+        seg_lex = SegLex()
+
+        lex_id_1 = seg_lex.add_lexeme("example", "example", "NOUN")
+        lex_id_2 = seg_lex.add_lexeme("example", "example", "NOUN")
+        seg_lex.add_morphemes_from_list(lex_id_2, "annot1", ["exam", "ple"])
+        lex_id_3 = seg_lex.add_lexeme("example", "example", "NOUN")
+        seg_lex.add_morphemes_from_list(lex_id_3, "annot1", ["ex", "ample"])
+        seg_lex.add_morphemes_from_list(lex_id_3, "annot2", ["exampl", "e"])
+        lex_id_4 = seg_lex.add_lexeme("examples", "example", "NOUN")
+        seg_lex.add_contiguous_morpheme(lex_id_4, "annot1", 0, 7, {"type": "root", "morpheme": "example"})
+        seg_lex.add_contiguous_morpheme(lex_id_4, "annot1", 7, 8, {"type": "suffix", "morpheme": "PL"})
+        lex_id_5 = seg_lex.add_lexeme("counterexample", "counterexample", "NOUN")
+        seg_lex.add_contiguous_morpheme(lex_id_5, "annot1", 0, 7, {"type": "prefix", "morpheme": "contra"})
+        seg_lex.add_contiguous_morpheme(lex_id_5, "annot1", 7, 14, {"type": "root", "morpheme": "example"})
+        lex_id_6 = seg_lex.add_lexeme("counterexample", "counterexample", "NOUN")
+        seg_lex.add_contiguous_morpheme(lex_id_6, "annot1", 7, 14, {"type": "root", "morpheme": "example"})
+        lex_id_7 = seg_lex.add_lexeme("exemplar", "exemplar", "ADJ")
+        seg_lex.add_contiguous_morpheme(lex_id_7, "annot1", 0, 6, {"type": "root", "morpheme": "example"})
+        seg_lex.save(str_io)
+
+        str_io.seek(0)
+        content = str_io.read()
+
+        self.maxDiff = None
+
+        self.assertEqual(8, content.count("\n"))
+        self.assertEqual(sample_file_morphemes, content)
 
     def test_load_file_name(self):
         # Test loading from a filename.

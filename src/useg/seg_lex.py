@@ -75,7 +75,7 @@ class SegLex:
                 # Return a lexeme with no records in it, because the
                 #  loop below is not going to execute.
                 assert "segmentation" not in lexeme.features and "annot_name" not in lexeme.features
-                yield seg_tsv.SegRecord(lexeme.form, lexeme.lemma, lexeme.pos, "", lexeme.features)
+                yield seg_tsv.SegRecord(lexeme.form, lexeme.lemma, lexeme.pos, [], lexeme.features)
 
             for annot_name in lexeme.morphemes:
                 annot = lexeme.features.copy()
