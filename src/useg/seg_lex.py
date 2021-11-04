@@ -56,7 +56,17 @@ class SegLex:
                 else:
                     segmentation = []
 
-                lexeme = self.add_lexeme(record.form, record.lemma, record.pos, features)
+                for existing_lexeme in self.iter_lexemes(record.form, record.lemma, record.pos):
+                    existing_annot_names = self.annot_names(existing_lexeme)
+                    if existing_annot_names \
+                       and annot_name not in existing_annot_names \
+                       and self.features(existing_lexeme) == features:
+                        # This is another segmentation of an existing lexeme.
+                        # Avoid adding the lexeme, just add the segmentation.
+                        lexeme = existing_lexeme
+                        break
+                else:
+                    lexeme = self.add_lexeme(record.form, record.lemma, record.pos, features)
 
                 for segment in segmentation:
                     span = segment["span"]
@@ -75,7 +85,7 @@ class SegLex:
                 # Return a lexeme with no records in it, because the
                 #  loop below is not going to execute.
                 assert "segmentation" not in lexeme.features and "annot_name" not in lexeme.features
-                yield seg_tsv.SegRecord(lexeme.form, lexeme.lemma, lexeme.pos, "", lexeme.features)
+                yield seg_tsv.SegRecord(lexeme.form, lexeme.lemma, lexeme.pos, [], lexeme.features)
 
             for annot_name in lexeme.morphemes:
                 annot = lexeme.features.copy()
@@ -247,6 +257,13 @@ class SegLex:
         freely edit the information therein.
         """
         return self._lexemes[lex_id].features
+
+    def annot_names(self, lex_id):
+        """
+        Return a set of annotation names of different segmentations of
+        lexeme with ID `lex_id`.
+        """
+        return set(self._lexemes[lex_id].morphemes.keys())
 
     def print_lexeme(self, lex_id):
         """
