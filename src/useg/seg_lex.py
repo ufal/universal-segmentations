@@ -56,7 +56,17 @@ class SegLex:
                 else:
                     segmentation = []
 
-                lexeme = self.add_lexeme(record.form, record.lemma, record.pos, features)
+                for existing_lexeme in self.iter_lexemes(record.form, record.lemma, record.pos):
+                    existing_annot_names = self.annot_names(existing_lexeme)
+                    if existing_annot_names \
+                       and annot_name not in existing_annot_names \
+                       and self.features(existing_lexeme) == features:
+                        # This is another segmentation of an existing lexeme.
+                        # Avoid adding the lexeme, just add the segmentation.
+                        lexeme = existing_lexeme
+                        break
+                else:
+                    lexeme = self.add_lexeme(record.form, record.lemma, record.pos, features)
 
                 for segment in segmentation:
                     span = segment["span"]

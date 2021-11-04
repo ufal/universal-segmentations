@@ -18,6 +18,8 @@ sample_file = """ежгурт	Ёжгурт	PROPN	ежгурт	{"annot_name": "Un
 
 sample_file_lexemes = """counterexample	counterexample	NOUN		{}
 counterexample	counterexample	NOUN		{}
+example	exam	NOUN		{}
+example	example	ADJ		{}
 example	example	NOUN		{}
 example	example	NOUN		{}
 examples	example	NOUN		{}
@@ -62,11 +64,17 @@ class TestIO(unittest.TestCase):
         seg_lex = SegLex()
         seg_lex.load(str_io)
 
-        self.assertEqual(6, len(list(seg_lex.iter_lexemes())))
-        self.assertEqual(5, len(list(seg_lex.iter_lexemes(pos="NOUN"))))
-        self.assertEqual(2, len(list(seg_lex.iter_lexemes(form="example"))))
-        self.assertEqual(3, len(list(seg_lex.iter_lexemes(lemma="example"))))
+        self.assertEqual(8, len(list(seg_lex.iter_lexemes())))
+        self.assertEqual(4, len(list(seg_lex.iter_lexemes(form="example"))))
+        self.assertEqual(1, len(list(seg_lex.iter_lexemes(form="examples"))))
+        self.assertEqual(2, len(list(seg_lex.iter_lexemes(form="counterexample"))))
+        self.assertEqual(1, len(list(seg_lex.iter_lexemes(form="exemplar"))))
+        self.assertEqual(2, len(list(seg_lex.iter_lexemes(pos="ADJ"))))
+        self.assertEqual(6, len(list(seg_lex.iter_lexemes(pos="NOUN"))))
+        self.assertEqual(4, len(list(seg_lex.iter_lexemes(lemma="example"))))
+        self.assertEqual(1, len(list(seg_lex.iter_lexemes(lemma="exam"))))
         self.assertEqual(2, len(list(seg_lex.iter_lexemes(lemma="counterexample"))))
+        self.assertEqual(1, len(list(seg_lex.iter_lexemes(lemma="exemplar"))))
 
         for lex_id in seg_lex.iter_lexemes():
             self.assertEqual({}, seg_lex.features(lex_id))
@@ -80,6 +88,8 @@ class TestIO(unittest.TestCase):
         seg_lex.add_lexeme("example", "example", "NOUN")
         seg_lex.add_lexeme("example", "example", "NOUN")
         seg_lex.add_lexeme("examples", "example", "NOUN")
+        seg_lex.add_lexeme("example", "example", "ADJ")
+        seg_lex.add_lexeme("example", "exam", "NOUN")
         seg_lex.add_lexeme("counterexample", "counterexample", "NOUN")
         seg_lex.add_lexeme("counterexample", "counterexample", "NOUN")
         seg_lex.add_lexeme("exemplar", "exemplar", "ADJ")
@@ -88,7 +98,8 @@ class TestIO(unittest.TestCase):
         str_io.seek(0)
         content = str_io.read()
 
-        self.assertEqual(6, content.count("\n"))
+        self.assertEqual(8, content.count("\n"))
+        self.assertEqual(sample_file_lexemes, content)
 
     def test_load_morphemes(self):
         # Test loading lexemes with concatenative segmentation.
