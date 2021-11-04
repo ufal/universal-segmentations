@@ -2,7 +2,7 @@
 
 DATADIR=../../data
 IN_DIR=$(DATADIR)/original/UDer-1.1
-OUT_DIR=$(DATADIR)/converted/cs-DeriNet
+OUT_DIR=$(DATADIR)/converted/ces-DeriNet
 
 DERINET_API_DIR:=../../derinet2
 

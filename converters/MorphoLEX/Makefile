@@ -2,7 +2,7 @@
 
 DATADIR=../../data
 IN_DIR=$(DATADIR)/original/MorphoLEX
-OUT_DIR=$(DATADIR)/converted/en-MorphoLEX
+OUT_DIR=$(DATADIR)/converted/eng-MorphoLEX
 
 PYTHONPATH=../../src
 export PYTHONPATH
