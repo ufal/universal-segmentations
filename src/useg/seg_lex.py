@@ -248,6 +248,13 @@ class SegLex:
         """
         return self._lexemes[lex_id].features
 
+    def annot_names(self, lex_id):
+        """
+        Return a set of annotation names of different segmentations of
+        lexeme with ID `lex_id`.
+        """
+        return set(self._lexemes[lex_id].morphemes.keys())
+
     def print_lexeme(self, lex_id):
         """
         Return a stringified form of the lexeme with ID `lex_id`.
