@@ -328,7 +328,7 @@ for entry, segmentation in new_segmented_lemmas.items():
             lex_id=lexeme,
             annot_name='?TODO?',
             start=start,
-            end=start + len(morph) - 1,
+            end=start + len(morph),
             features={'morpheme': '?TODO?', 'type': 'UNSEG' if label == 'STEM' else label}
         )
         start = start+len(morph)
