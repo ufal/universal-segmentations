@@ -5,7 +5,7 @@ import logging
 import sys
 import re
 
-from seg_lex import SegLex
+from useg import SegLex
 import itertools
 
 # with open("converters/WordFormationLatin/UDer-1.1-la-WFL.tsv") as file:
@@ -181,7 +181,7 @@ def disambiguate_morphs(lemma, morphemelist):
     morphemelist = [i[0] for i in morphemelist]
 
     for morpheme in morphemelist:
-        morpheme = morpheme.replace(" (negation)", "").replace(" (entering)", "")
+        morpheme = morpheme.replace(" (negation)", "").replace(" (entering)", "").replace('\\"', "")
         morpheme = morpheme.replace("/", "|").replace("(", "[").replace(")", "]?")
         match = re.search(morpheme, lemma)
         if match is not None:
@@ -208,38 +208,38 @@ def main():
     uder = {i.split("\t")[0]: i.split("\t")[1:] for i in sys.stdin.readlines()}
     uder.pop("\n")
     seg_lexicon = SegLex()
+    with open("log", "w") as log:
 
-    for uder_key in uder.keys():
-        uderline = uder[uder_key]
+        for uder_key in uder.keys():
+            try:
+                uderline = uder[uder_key]
 
-        morphemelist = return_segmentation(uder_key, uder)
-        try:
-            lemma = uderline[1]
-            lexid = uderline[0]
+                morphemelist = return_segmentation(uder_key, uder)
 
-            print(morphemelist)
+                lemma = uderline[1]
+                lexid = uderline[0]
+                morphs = disambiguate_morphs(lemma, morphemelist)
 
-            morpheme_strings = [i[0] for i in morphemelist]
-            morphs = disambiguate_morphs(lemma, morpheme_strings)
+                morpheme_annotations = [i[1] for i in morphemelist]
 
-            morpheme_annotations = [i[1] for i in morphemelist]
 
-            seg_lexeme = seg_lexicon.add_lexeme(lemma,
-                                                lemma,
-                                                pos=uderline[2],
-                                                features=parse_feats(uderline[3]))
+                seg_lexeme = seg_lexicon.add_lexeme(lemma,
+                                                    lemma,
+                                                    pos=uderline[2],
+                                                    features=parse_feats(uderline[3]))
 
-            for index,morph in enumerate(morphs):
-                seg_lexicon.add_contiguous_morpheme(lex_id=seg_lexeme,
-                                                    annot_name=morph,
-                                                    start=morph[1][0],
-                                                    end=morph[1][1],
-                                                    features={"type": morphemelist[index][1],
-                                                              "morpheme": morphemelist[index][0]})
-        except:
-            print("ERROR")
-            continue
-        seg_lexicon.save(sys.stdout)
+                for index,morph in enumerate(morphs):
+                    seg_lexicon.add_contiguous_morpheme(lex_id=seg_lexeme,
+                                                        annot_name="?TODO",
+                                                        start=morph[1][0],
+                                                        end=morph[1][1],
+                                                        features={"type": morphemelist[index][1],
+                                                                  "morpheme": morphemelist[index][0]})
+            except:
+                log.write("Error in " + uder_key + "\n" +
+                         "Lemma:" + lemma +  "\n")
+
+    seg_lexicon.save(sys.stdout)
 
 if __name__ == "__main__":
     main()
