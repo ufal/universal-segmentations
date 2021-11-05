@@ -6,7 +6,7 @@ from useg import SegLex
 
 
 import logging
-logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+logging.basicConfig(filename="unsolved.log", level=logging.WARNING)
 
 if len(sys.argv) != 3:
     sys.stderr.write("Usage:\n  "+__file__+" French-demonette-file.csv converted-file.useg\n\n")
@@ -17,8 +17,6 @@ lexicon = SegLex()
 
 infile = open(sys.argv[1])
 
-annot_name = "test_1"
-
 def assign_upos(grace_tag):
     '''Finds UPOS tag corresponding to GRACE tag'''
     grace2upos = {"N":"NOUN", "V":"VERB", "A":"ADJ"}
@@ -27,7 +25,7 @@ def assign_upos(grace_tag):
     else:
         return grace2upos[grace_tag[0]]
 
-def get_lexeme_features(grace_tag, morph_process):
+def get_lexeme_features(grace_tag, morph_process, annot_name):
     '''Builds features JSON for lexeme'''
 
     gender = {"f":"fem", "m":"masc", "-":"none"}
@@ -70,10 +68,10 @@ def get_lexeme_features(grace_tag, morph_process):
 
 
 
-def add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root):
+def add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root, annot_name):
     '''Adds lexeme to lexicon object'''
     upos = assign_upos(grace_tag)
-    features = get_lexeme_features(grace_tag, morph_process)
+    features = get_lexeme_features(grace_tag, morph_process, annot_name)
 
     # for prev_lex_id in lexicon.iter_lexemes(form=lexeme, lemma=lexeme, pos=upos):
     #     return
@@ -89,7 +87,14 @@ def add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root):
 
     if suffix != "":
         stem = lexeme[:-len(suffix)]
-        assert len(stem)+len(suffix)==len(lexeme)
+        if lexeme[-len(suffix):]!=suffix: #TODO Handle allomorphy
+            logging.warning("Suffix %s not contained at the end of wordform %s", suffix, lexeme)
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_interfix, end_of_interfix, features={"type":"stem"})
+            return
+        if suffix not in lexeme:
+            logging.warning("Suffix %s not contained in wordform %s", suffix, lexeme)
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_interfix, end_of_interfix, features={"type":"stem"})
+            return
         lexicon.add_contiguous_morpheme(lex_id, annot_name, len(stem), len(lexeme), features={"type":"suffix"})
         end_of_interfix = len(stem)
 
@@ -110,16 +115,22 @@ for line in infile:
     morph_process = entries[10].strip('"')
     suffix = entries[11].strip('"')
     root = entries[26].strip('"')
+    annot_name = entries[12].strip('"') or entries[27].strip('"')
+    if entries[12].strip('"') != "" and entries[27].strip('"') != "":
+        assert entries[12].strip('"') == entries[27].strip('"')
 
-    add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root)
+    add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root, annot_name)
 
     lexeme = entries[2].strip('"')
     grace_tag = entries[6].strip('"')
     morph_process = entries[13].strip('"')
     suffix = entries[14].strip('"')
     root = entries[28].strip('"')
+    annot_name = entries[15].strip('"') or entries[29].strip('"')
+    if entries[15].strip('"') != "" and entries[29].strip('"') != "":
+        assert entries[15].strip('"') == entries[29].strip('"')
 
-    add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root)
+    add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root, annot_name)
 
 outfile = open(sys.argv[2], 'w')
 lexicon.save(outfile)
