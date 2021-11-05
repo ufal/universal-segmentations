@@ -1,8 +1,18 @@
+#!/usr/bin/python3
+
 import argparse
+import logging
 import sys
 import re
 
 from seg_lex import SegLex
+import itertools
+
+# with open("converters/WordFormationLatin/UDer-1.1-la-WFL.tsv") as file:
+#     ble = file.readlines()
+#
+# uder = {i.split("\t")[0]: i.split("\t")[1:] for i in ble}
+
 
 def is_substr(find, data):
 
@@ -14,6 +24,21 @@ def is_substr(find, data):
             return False
 
     return(True)
+
+def consume(iterable):
+    iterable = iter(iterable)
+
+    while 1:
+        try:
+            item = next(iterable)
+        except StopIteration:
+            break
+
+        try:
+            data = iter(item)
+            iterable = itertools.chain(data, iterable)
+        except:
+            yield item
 
 def lcs(x,y):
     data = [x,y]
@@ -66,42 +91,90 @@ def parse_affix_info(x):
         elif affix_info[-1] == "Conversion":
             return (('Conversion'))
         elif affix_info[-1] == "Compounding":
-            return (('Compounding', affix_info[1].split(".")))
+            return (('Compounding', affix_info[1].split(",")))
         else:
             raise Exception("Unknown Word Formation Process")
 
-def return_segmentation(x, data, prefixline=[], suffixline=[]):
+# def return_segmentation(x, data, prefixline=[], suffixline=[]):
+#     if type(x) != str:
+#         x = str(x)
+#
+#     uderline = data[x]
+#
+#     affix_info = parse_affix_info(uderline[-3])
+#
+#     if affix_info == 'Root':
+#         return (prefixline + [((uderline[1]), "root")] + suffixline)
+#
+#     if affix_info == 'Conversion':
+#         return (return_segmentation(x=uderline[-4], data=data, prefixline=prefixline, suffixline=suffixline))
+#
+#
+#     elif affix_info[0] == 'Derivation':
+#         if affix_info[-1] == 'Suffix':
+#             suffixline = [((affix_info[1]), "suffix")] + suffixline
+#             # print(uderline)
+#             return (return_segmentation(x=uderline[-4], data=data, prefixline=prefixline, suffixline=suffixline))
+#         elif affix_info[-1] == 'prefix':
+#             prefixline = prefixline + [((affix_info[1]), "Prefix")]
+#             return (return_segmentation(x=uderline[-4], data=data, prefixline=prefixline, suffixline=suffixline))
+#         else:
+#             raise Exception("What? Only 'suffix' or 'prefix' should be in the data! Unbelievable")
+#
+#     elif affix_info[0] == 'Compounding':
+#         suffixline = [(return_segmentation(x=uderline[-4], data=data, prefixline=prefixline, suffixline=suffixline)) for i in affix_info[1]]
+#         return (return_segmentation(x=uderline[-4], data=data, prefixline=prefixline, suffixline=suffixline))
+#
+#     else:
+#         raise Exception("What? Only Conv, Der, Comp, Root possible, but the data dropped {}".format(affix_info[0]))
+
+def return_segmentation(x, uder, prefixline=[], suffixline=[]):
+
     if type(x) != str:
         x = str(x)
 
-    uderline = data[x]
+    uderline = uder[x]
 
-    affix_info = parse_affix_info(data[x][-3])
+    affix_info = parse_affix_info(uder[x][-3])
 
-    if affix_info == 'Root':
-        return (prefixline + [((uderline[1]), "root")] + suffixline)
+    if affix_info == 'Root' or uderline[-4] == '':
+        return (prefixline + [(uderline[1], "root")] + suffixline)
 
-    if affix_info == 'Conversion':
-        return (return_segmentation(uderline[-4], prefixline=prefixline, suffixline=suffixline))
-
+    elif affix_info == 'Conversion':
+        return (return_segmentation(x=uderline[-4], prefixline=prefixline,
+                                    suffixline=suffixline, uder=uder))
 
     elif affix_info[0] == 'Derivation':
-        if affix_info[-1] == 'suffix':
-            suffixline = [((affix_info[1]), "Suffix")] + suffixline
+        if affix_info[-1] == 'Suffix':
+            suffixline = [(affix_info[1], "suffix")] + suffixline
             # print(uderline)
-            return (return_segmentation(uderline[-4], prefixline=prefixline, suffixline=suffixline))
-        elif affix_info[-1] == 'prefix':
-            prefixline = prefixline + [((affix_info[1]), "Prefix")]
-            return (return_segmentation(uderline[-4], prefixline=prefixline, suffixline=suffixline))
+            return (return_segmentation(x=uderline[-4], prefixline=prefixline,
+                                        suffixline=suffixline, uder=uder))
+        elif affix_info[-1] == 'Prefix':
+            prefixline = prefixline + [(affix_info[1], "prefix")]
+            return (return_segmentation(x=uderline[-4], prefixline=prefixline,
+                                        suffixline=suffixline, uder=uder))
         else:
             raise Exception("What? Only 'Suffix' or 'Prefix' should be in the data! Unbelievable")
 
+
     elif affix_info[0] == 'Compounding':
-        suffixline = [((return_segmentation(i, prefixline=prefixline, suffixline=suffixline), "Root")) for i in affix_info[1]]
-        return (return_segmentation(uderline[-4], prefixline=prefixline, suffixline=suffixline))
+        complist = []
+        for i in affix_info[1]:
+            complist = complist + return_segmentation(x=i, uder=uder)
+        # print(uderline)
+        return (prefixline + complist + suffixline)
 
     else:
         raise Exception("What? Only Conv, Der, Comp, Root possible, but the data dropped {}".format(affix_info[0]))
+
+# with open("log", "w") as file:
+#     try:
+#         for i in uder.keys():
+#             file.write(str(return_segmentation(i)) + "\n")
+#     except:
+#             file.write("Error on lexeme: " + str(i))
+
 
 def disambiguate_morphs(lemma, morphemelist):
     lst = []
@@ -132,10 +205,9 @@ def parse_feats(x):
         return (dict)
 
 def main():
-    uder = {i.split("\t")[0]: i.split("\t")[1:] for i in sys.stdin}
+    uder = {i.split("\t")[0]: i.split("\t")[1:] for i in sys.stdin.readlines()}
+    uder.pop("\n")
     seg_lexicon = SegLex()
-    print("seglex")
-
     for uder_key in uder.keys():
         uderline = uder[uder_key]
 
@@ -143,17 +215,18 @@ def main():
         lemma = uderline[1]
         lexid = uderline[0]
 
-        print("uder_key")
+        print(morphemelist)
 
         morpheme_strings = [i[0] for i in morphemelist]
-        morphs = disambiguate_morphs(morpheme_strings, uder)
+        morphs = disambiguate_morphs(lemma, morpheme_strings)
 
         morpheme_annotations = [i[1] for i in morphemelist]
 
-        seg_lexeme = seg_lexicon.add_lexeme(uderline[1],
-                                            uderline[1],
+        seg_lexeme = seg_lexicon.add_lexeme(lemma,
+                                            lemma,
                                             pos=uderline[2],
                                             features=parse_feats(uderline[3]))
+
         for index,morph in enumerate(morphs):
             seg_lexicon.add_contiguous_morpheme(lex_id=seg_lexeme,
                                                 annot_name=morph,
@@ -161,7 +234,6 @@ def main():
                                                 end=morph[1][1],
                                                 features={"type": morphemelist[index][1],
                                                           "morpheme": morphemelist[index][0]})
-
     seg_lexicon.save(sys.stdout)
 
 if __name__ == "__main__":
