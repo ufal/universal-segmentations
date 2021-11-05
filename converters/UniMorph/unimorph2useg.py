@@ -33,22 +33,27 @@ allforms = []
 
 def process_cluster(lemma,pos,forms):
     longest_common_prefix = os.path.commonprefix(forms)
+#    print("-- cluster")
     for form in forms:
-        print(f"lemma={lemma} form={form} prefix={longest_common_prefix}")
         if len(longest_common_prefix) > 0:
-#            print("X"+str(len(longest_common_prefix)))
             suffix = form[len(longest_common_prefix):]
+
+            if pos in unimorphpos2upos:
+                pos = unimorphpos2upos[pos]
             
-            lexeme = lexicon.add_lexeme(lemma, form, unimorphpos2upos[pos] )
+            lexeme = lexicon.add_lexeme(form, lemma, pos  )
 
-            print(f"lemma={lemma}   form={form}   common={longest_common_prefix}   suffix={suffix}")
+#            print(f"lemma={lemma}   form={form}   common={longest_common_prefix}   suffix={suffix}")
             
-            lexicon.add_contiguous_morpheme(lexeme,'?TODO', 0, len(longest_common_prefix)-1, features={"type": "root"})
-            print(len(longest_common_prefix), len(form)-1)
-            lexicon.add_contiguous_morpheme(lexeme,'?TODO', len(longest_common_prefix), len(form)-1, features={ "type": "suffix"})
+            lexicon.add_contiguous_morpheme(lexeme,'?TODO', 0, len(longest_common_prefix), features={"type": "root"})
+#            print(len(longest_common_prefix), len(form)-1)
+            lexicon.add_contiguous_morpheme(lexeme,'?TODO', len(longest_common_prefix), len(form), features={ "type": "suffix"})
 
 
-for line in sys.stdin:
+lines = sys.stdin.readlines()
+lines.sort()  # because e.g. in Spanish accented and non-accented lemmas are interleaved
+            
+for line in lines:
 
         columns = line.rstrip().split("\t")
 
