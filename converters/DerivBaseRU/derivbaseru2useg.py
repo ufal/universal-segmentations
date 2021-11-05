@@ -319,11 +319,11 @@ for entry, segmentation in new_segmented_lemmas.items():
     morphs, labels = segmentation
     lemma, pos = entry.split('_')
 
-    lexeme = lexicon.add_lexeme(lemma, lemma, '?TODO?')
+    lexeme = lexicon.add_lexeme(lemma, lemma, pos)
 
     start = 0
     for morph, label in zip(morphs, labels):
-        print(morph, label, start, start + len(morph) - 1)
+        # print(morph, label, start, start + len(morph) - 1)
         lexicon.add_contiguous_morpheme(
             lex_id=lexeme,
             annot_name='?TODO?',
