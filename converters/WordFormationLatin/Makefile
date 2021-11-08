@@ -1,6 +1,7 @@
 DATADIR=../../data/
 IN_DIR=$(DATADIR)/original/WordFormationLatin/
 OUT_DIR=$(DATADIR)/converted/lat-WordFormationLatin/
+PYTHONPATH=$(PYTHONPATH):../../universal-segmentations/useg/
 
 SHELL = bash
 
