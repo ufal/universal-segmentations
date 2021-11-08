@@ -1,6 +1,6 @@
 DATADIR=../../data/
 IN_DIR=$(DATADIR)/original/Demonette/
-OUT_DIR=$(DATADIR)/converted/fr-Demonette/
+OUT_DIR=$(DATADIR)/converted/frc-Demonette/
 
 SHELL = bash
 
@@ -12,12 +12,12 @@ download: # and unpack, if needed
 
 convert:
 	mkdir -p $(OUT_DIR)
-	./fr_demonette2useg.py $(IN_DIR)/demonette-1.2.csv  $(OUT_DIR)$/with_duplicates.useg
+	./frc_demonette2useg.py $(IN_DIR)/demonette-1.2.csv  $(OUT_DIR)$/with_duplicates.useg
 #	wc -l $(OUT_DIR)$/with_duplicates.useg
-	cat $(OUT_DIR)$/with_duplicates.useg | sort | uniq > $(OUT_DIR)$/fr_demonette.useg
-#	wc -l $(OUT_DIR)$/fr_demonette.useg
-	cat $(OUT_DIR)$/fr_demonette.useg | grep "derif" > $(OUT_DIR)$/fr_demonette.derif.useg
-	cat $(OUT_DIR)$/fr_demonette.useg | grep "demonette" > $(OUT_DIR)$/fr_demonette.demonette.useg
+	cat $(OUT_DIR)$/with_duplicates.useg | sort | uniq > $(OUT_DIR)$/frc_demonette.useg
+#	wc -l $(OUT_DIR)$/frc_demonette.useg
+	cat $(OUT_DIR)$/frc_demonette.useg | grep "derif" > $(OUT_DIR)$/frc_demonette.derif.useg
+	cat $(OUT_DIR)$/frc_demonette.useg | grep "demonette" > $(OUT_DIR)$/frc_demonette.demonette.useg
 	rm $(OUT_DIR)$/with_duplicates.useg
-	rm $(OUT_DIR)$/fr_demonette.useg
+	rm $(OUT_DIR)$/frc_demonette.useg
 

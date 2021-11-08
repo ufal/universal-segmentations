@@ -10,4 +10,4 @@ download: # and unpack, if needed
 	
 convert:
 	mkdir -p $(OUT_DIR)
-	./derivatario2useg.py $(IN_DIR)/derivatario.csv  $(OUT_DIR)$/ita-derivatario.useg
+	./ita_derivatario2useg.py $(IN_DIR)/derivatario.csv $(IN_DIR)/UDer-1.1-it-DerIvaTario.tsv $(OUT_DIR)$/ita-derivatario.useg
