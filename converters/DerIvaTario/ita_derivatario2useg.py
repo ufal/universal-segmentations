@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
+import re
 import sys
 sys.path.append('../../src/')
 from useg import SegLex
+
 
 import logging
 # logging.basicConfig(filename="unsolved.log", level=logging.WARNING)
@@ -64,7 +66,7 @@ def longest_common_prefix(s, t):
         lcp_len += 1
     return lcp_len-1
 
-def find_morph_boundaries(lexeme, morph):
+def find_morph_boundaries(lexeme, morph, req_start = -1, root_not_found = False, is_prefix = False):
     '''Finds boundaries of allomorph'''
     # if is_prefix:
     #     return 0, longest_common_prefix(lexeme, morph)
@@ -72,14 +74,31 @@ def find_morph_boundaries(lexeme, morph):
     for i in range(len(morph)):
         # print(i)
         # print(morph[:len(morph)-i])
-        morph_start = lexeme.find(morph[:len(morph)-i])
-        # print(morph_start)
-        if morph_start != -1:
-            return morph_start, morph_start+len(morph)-i
+        # morph_start = lexeme.find(morph[:len(morph)-i])
+        shortened_morph = morph[:len(morph)-i]
+        for match in re.finditer(shortened_morph, lexeme):
+            morph_start, morph_end = match.start(), match.end()
+
+            if morph_start != -1:
+
+                #If we are not dealing with prefix
+                if is_prefix == False and morph_start >= req_start:
+                    return morph_start, morph_end
+
+                #Allow one-character interfix for prefixes - e.g. "-"
+                allowed_interfix_len = 1
+                if morph_start <= req_start + allowed_interfix_len:
+                    return morph_start, morph_end
+
+                #If morph is found before req_start, it should span the previous morph for all affixes
+                if morph_start < req_start:
+                    if shortened_morph.startswith(lexeme[morph_start:req_start]):
+                        return morph_start, morph_end
+
     return -1,-1
 
 
-# print(find_morph_boundaries("vacation", "cat", False))
+# print(find_morph_boundaries("vactacaction", "tion"))
 
 lexicon = SegLex()
 
@@ -87,7 +106,10 @@ infile = open(sys.argv[1])
 
 annot_name = "DerIvaTario"
 
-prefixes = {"acons", "anti", "auto", "bi", "de", "dis", "in", "micro", "mini", "ri", "1s", "2s", "co", "neo", "1in", "2in", "a"}
+prefixes = {"acons", "anti", "auto", "bi", "tri", "de", "1de", "2de", "dis", "in",
+"micro", "mini", "ri", "1s", "2s", "co", "neo", "1in", "2in", "a", "con",
+"per", "pre", "inter", "iper", "mega", "mono", "pan", "para", "pro", "tras", "es",
+"ex","e"}
 root_types = {"adj_th", "dnt_root", "ltn_pp", "presp", "pst_ptcp", "root", "suppl", "unrec", "vrb_th"}
 
 upos_assignment = initialize_all_upos()
@@ -97,7 +119,8 @@ for line in infile:
     entries = list(filter(lambda f: f!="", entries))
     lexeme = entries[1]
     root = entries[2].split(":")
-    # if lexeme!="anti-riscaldamento":
+
+    # if lexeme!="inimicizia":
     #     continue
 
     if len(root) < 2:
@@ -111,33 +134,41 @@ for line in infile:
     lex_id = lexicon.add_lexeme(lexeme, lexeme, upos, features=features)
 
     info_morphemes = entries[2:]
-    # print("lexeme ", lexeme)
-    # print("info_morpheme ", info_morphemes)
-    #Arranging morphemes according to order in wordform
+
+
+
+    # Arranging morphemes according to order in wordform
     morpheme_seq = []
     for info_morpheme in info_morphemes:
-        # print(info_morpheme.split(":")[0])
+
         if info_morpheme.split(":")[0] in prefixes:
             morpheme_seq = [info_morpheme] + morpheme_seq
         else:
             morpheme_seq = morpheme_seq + [info_morpheme]
 
-    start = 0
+    # print("lexeme ", lexeme)
+    # print("info_morpheme ", info_morphemes)
+    # print("Arranged ", morpheme_seq)
 
+    start = 0
     root_not_found = False
+    post_root = False
     for info_morpheme in morpheme_seq:
+
         is_root = False
+        is_prefix = False
+
         if info_morpheme.split(":")[0] == "conversion":
             continue
 
         if len(info_morpheme.split(":")) < 2:
-            seg_issues.warning("Empty morph %s of lexeme %s", info_morpheme, lexeme)
+            seg_issues.warning("Empty morph information %s of lexeme %s with desc %s", info_morpheme, lexeme, line)
             continue
 
         if info_morpheme.split(":")[1] in root_types:
             is_root = True
 
-        if info_morpheme.split(":")[0] == "baseless":
+        if info_morpheme.split(":")[0] == "baseless" or info_morpheme.split(":")[1] == "suppl":
             root_not_found = True
             continue
 
@@ -145,35 +176,59 @@ for line in infile:
             allomorph = info_morpheme.split(":")[0]
         else:
             allomorph = info_morpheme.split(":")[1]
+
         morpheme = info_morpheme.split(":")[0]
-        morph_start, morph_end = find_morph_boundaries(lexeme, allomorph)
+        if morpheme in prefixes:
+            is_prefix = True
+
+
+        morph_start, morph_end = find_morph_boundaries(lexeme, allomorph, start, root_not_found, is_prefix)
+
         # print("New field: ")
         # print(info_morpheme)
+        # print("Search with start: ", start)
         # print(morpheme, allomorph, morph_start, morph_end)
+
+        #POSSIBLE ISSUES
         if morph_start == -1:
+            if is_root:
+                root_not_found = True
             seg_issues.warning("Morph %s not found in lexeme %s with entry %s", allomorph, lexeme, line)
             continue
+        if morph_end <= start:
+            seg_issues.warning("Morph %s contained in previous morph in lexeme %s with entry %s", allomorph, lexeme, line)
         if morph_start < start:
             if allomorph.startswith(lexeme[morph_start:start]):
                 boundary_overlap_issues.warning("Morph %s overlaps with previous morpheme in lexeme %s with entry %s", allomorph, lexeme, line)
-            else:
-                seg_issues.warning("Morph %s overlaps with previous morpheme in lexeme %s with entry %s", allomorph, lexeme, line)
         if morph_start == morph_end:
             seg_issues.warning("Empty morph %s in lexeme %s with entry %s", allomorph, lexeme, line)
             continue
 
+
+        #ADD INTERFIX/STEM IF REQUIRED
         if morph_start > start:
             if root_not_found:
+                #ADD WARNING HERE?
                 lexicon.add_contiguous_morpheme(lex_id, annot_name, start, morph_start, features={"type":"stem"})
                 root_not_found = False
+            elif post_root:
+                lexicon.add_contiguous_morpheme(lex_id, annot_name, start, morph_start, features={"type":"part_of_stem"})
             else:
                 lexicon.add_contiguous_morpheme(lex_id, annot_name, start, morph_start, features={"type":"interfix"})
+        #ADD MORPH
+        lexicon.add_contiguous_morpheme(lex_id, annot_name, morph_start, morph_end, features={"morpheme":morpheme})
 
-        lexicon.add_contiguous_morpheme(lex_id, annot_name, morph_start, morph_end, features={})
-        # print(start)
-        # print(len_lcp)
         # print(lexeme, start, end, allomorph)
-        start = morph_end
+        start = max(start, morph_end)
+
+        #post_root only true if current morph was root, if not, it needs to be falsified
+        if is_root:
+            post_root = True
+        else:
+            post_root = False
+        #root_not_found only stays true for the immediately next morph, not after that
+        if root_not_found:
+            root_not_found = False
 
 
 outfile = open(sys.argv[3], 'w')
