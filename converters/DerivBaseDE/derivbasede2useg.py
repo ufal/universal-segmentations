@@ -34,23 +34,98 @@ def convert_string_rule_to_regular_expression(string_rule):
     second_pos = string_rule.split(' ')[-1]
     rule = ' '.join(string_rule.split(' ')[:-2])
 
-    # prefixation pattern: (pfx "rück") verbs verbs
-    result = re.search(r'\(pfx \"(\p{L}+)\"\)$', rule)
+    # umlaut pattern deletion: (sfx "e" & try uml) vs. (pfx "ge" & opt (uml))
+    # COMMENT: umlaut is not morph
+    rule = rule.replace('& try uml', '').replace('& opt (uml)', '').replace('& opt uml', '').replace('& try (uml)', '')
+    rule = re.sub(r' +', ' ', rule)
+    rule = rule.replace(' )', ')')
+
+    # umlaut pattern: (opt uml)
+    result = re.search(r'\(opt uml\)$', rule)
     if result:
-        return '^' + result.group(1)
+        return 'only_target', 'e*n$'
+
+    # prefixation pattern: (pfx "rück")
+    result = re.search(r'\(pfx \"(\p{L}+)\"\s*\)$', rule)
+    if result:
+        return 'only_target', '^' + result.group(1)
 
     # sufixation pattern: (sfx "schaft")
-    result = re.search(r'\(sfx \"(\p{L}+)\"\)$', rule)
+    result = re.search(r'\(sfx \"(\p{L}+)\"\s*\)$', rule)
     if result:
-        return result.group(1) + '$'
+        return 'only_target', result.group(1) + '$'
 
-    # resufixation pattern: (rsfx "ier" "end")
-    result = re.search(r'\(rsfx \"(\p{L}+)\" \"(\p{L}+)\"\)$', rule)
+    # re-sufixation pattern: (rsfx "ier" "end")
+    result = re.search(r'\(rsfx \"(\p{L}+)\" \"(\p{L}+)\"\s*\)$', rule)
     if result:
-        return result.group(1) + '$', result.group(2) + '$'
-    
+        return 'base_target', result.group(1) + '$', result.group(2) + '$'
+
+    # empty pattern: nul
+    if rule == 'nul':
+        # COMMENT: too difficult to parse
+        return None
+
+    # re-infixation pattern: (rifx "e" "u")
+    result = re.search(r'\(rifx \"(\p{L}+)\" \"(\p{L}+)\"\s*\)$', rule)
+    if result:
+        # COMMENT: too difficult to parse, conceptual problem with definition of morph
+        return None
+
+    # sufixation and possible de-suffixation pattern: (sfx "ei" & try (dsfx "e"))
+    result = re.search(r'\(sfx \"(\p{L}+)\"\s* \& try \(dsfx \"(\p{L}+)\"\s*\)\s*\)$', rule)
+    if result:
+        return 'base_target', result.group(2) + '$', result.group(1) + '$'
+
+    # prefixation and (possible) sufixation pattern: (pfx "ge" & sfx "e") vs. (pfx "an" & opt (sfx "er"))
+    result = re.search(r'\(pfx \"(\p{L}+)\"\s* \& o*p*t*\s*\(*sfx \"(\p{L}+)\"\s*\)*\s*\)$', rule)
+    if result:
+        return 'only_target', '^' + result.group(1), result.group(2) + '$'
+
+    # prefixation and (possible) sufixation pattern: (pfx "ge" & sfx "e") vs. (pfx "an" & opt (sfx "er"))
+    result = re.search(r'\(sfx \"(\p{L}+)\"\s* \& o*p*t*\s*\(*sfx \"(\p{L}+)\"\s*\)*\s*\)$', rule)
+    if result:
+        return 'only_target', result.group(2) + '*' + result.group(1) + '$'
+
+    # prefixation and possible re-sufixation: (pfx "aus" & try (rsfx "ern" "er"))
+    result = re.search(r'\(pfx \"(\p{L}+)\"\s* \& try \(rsfx \"(\p{L}+)\" \"(\p{L}+)\"\)\s*\)$', rule)
+    if result:
+        return 'base_target', ('^' + result.group(1), result.group(2) + '$'), result.group(3) + '$'
+
+    # prefixation and possible de-sufixation: (pfx "durch" & try (dsfx "e"))
+    result = re.search(r'\(pfx \"(\p{L}+)\"\s* \& t*r*y*o*p*t* \(dsfx \"(\p{L}+)\"\s*\)\s*\)$', rule)
+    if result:
+        return 'only_target', '^' + result.group(1), result.group(2) + '$'
+
+    # two re-suffixation pattern: (rsfx "ier" "abel" & try (rsfx "izier" "ikier"))
+    result = re.search(r'\(rsfx \"(\p{L}+)\"\s* \"(\p{L}+)\"\s* \& try \(rsfx \"(\p{L}+)\" \"(\p{L}+)\"\)\s*\)$', rule)
+    if result:
+        return 'base_target', (result.group(1) + 'e*n*$', result.group(3) + 'e*n*$'), (result.group(2) + '$', result.group(4) + '$')
+
+    # sufixation and list of re-sufixation patern: (sfx "at" & try (asfx [("a",""), ("en",""), ("ium",""), ("um","")]))
+    result = re.search(r'\(sfx \"(\p{L}+)\"\s* \& try \(asfx \[\(\"', rule)
+    if result:
+        res = re.findall(r'\"(\p{L}*)\"', rule)
+        suf, asf = res[0], res[1:]
+        target = set()
+        for _, asf2 in zip(asf[0::2], asf[1::2]):
+            target.add(asf2 + suf + '$')
+        return 'only_target', tuple(target)
+
+    # prefixation and list of re-prefixation patern: (pfx "de" & try (apfx [("a","sa"), ("e","se"), ("i","si"), ("o","so"), ("u","su")]))
+    result = re.search(r'\(pfx \"(\p{L}+)\"\s* \& try \(apfx \[\(\"', rule)
+    if result:
+        return 'only_target', '^' + result.group(1)
+
+    # prefixation and re-infixation pattern: (pfx "ge" & rifx "i" "a")
+    result = re.search(r'\(pfx \"(\p{L}+)\"\s* \& o*p*t*\s*\(*rifx \"(\p{L}+)\"\s* \"(\p{L}+)\"\s*\)*\s*\)$', rule)
+    if result:
+        return 'only_target', '^' + result.group(1)
+
+    if '|' in rule:  # TODO: FIX complex rules
+        return None
+
     # TODO: continue with more complicated rules
-    # print(rule)
+    print(rule)
     return None
 
 
@@ -66,8 +141,9 @@ with open(sys.argv[2], mode='r', encoding='U8') as file:
 
 
 # TODO: apply rules to the extracted data to obtain segmentation
+# carfully about capitalised letters
 def apply_rules(lemma, rule):
-    return None
+    return []
 
 
 segmentation_from_derivbase = defaultdict(set)
