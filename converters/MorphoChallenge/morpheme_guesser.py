@@ -105,29 +105,40 @@ def get_filtered_candidates(candidates, uncertainty_level):
 
 
 
-
-def guess_morphs(word, morphemes, morpheme2morph, virtual_morpheme2morph):
-        candidates=generate_candidates(word, morphemes, morpheme2morph, virtual_morpheme2morph)
-
-        morphs=None
-        for uncertainty_level in range(1,7+1):
-            candidates2=get_filtered_candidates(candidates, uncertainty_level)
-            morphs=find_combination(word, candidates2)
-            if(morphs is not None):
-                break
+#guesses the morphs when we have a morpheme segmentation of word.
+#example:
+#   guess_morphs("slowed", ["slow", "+PAST"], {"s":{"es":12} }, {"+PAST":{"d":124, "ed":14}, "+PL":{"s":13},...}}
+#output: ["slowed", ["slow","ed"], ["slow", "+PAST"], 1]
+#        ie [word, morphs, morphemes, uncertainty level - the higher the worse]
+#please note that morphemes may differ from the input ones. e.g. in case that there is "-" in the input 
+#word and there was no morpheme representing it.
+#
+#the dictionaries are {morpheme:Counter({morph1:num_occurances,morph2:num2...  }), morpheme2:  }
+#the difference between these dictionaries is that virtual_morpheme2morph is used sooner.
+#the occurance number currently only means that candidates with only 1 occurance are tried later.
+#
+#also: morphemes may be normal or virtual (start with +). We will not try to e.g. shorten the virtual morphemes.
+def guess_morphs(word, morphemes, morpheme2morph={}, virtual_morpheme2morph={}):
+    candidates=generate_candidates(word, morphemes, morpheme2morph, virtual_morpheme2morph)
+    morphs=None
+    for uncertainty_level in range(1,7+1):
+        candidates2=get_filtered_candidates(candidates, uncertainty_level)
+        morphs=find_combination(word, candidates2)
         if(morphs is not None):
-             #sometimes, "-" morph is not in the list of morphemes, so we need to add it.
-            if(len(morphs)!=len(morphemes)):
-                #print(word,morphs,morphemes)
-                idx1=0
-                idx2=0
-                morphemes2=[]
-                while idx1<len(morphs):
-                    if(morphs[idx1]=="-"):
-                        morphemes2.append("-")
-                    else:
-                        morphemes2.append(morphemes[idx2])
-                        idx2+=1
-                    idx1+=1
-                morphemes=morphemes2
-        return word, morphs,morphemes, uncertainty_level
+            break
+    if(morphs is not None):
+         #sometimes, "-" morph is not in the list of morphemes, so we need to add it.
+        if(len(morphs)!=len(morphemes)):
+            #print(word,morphs,morphemes)
+            idx1=0
+            idx2=0
+            morphemes2=[]
+            while idx1<len(morphs):
+                if(morphs[idx1]=="-"):
+                    morphemes2.append("-")
+                else:
+                    morphemes2.append(morphemes[idx2])
+                    idx2+=1
+                idx1+=1
+            morphemes=morphemes2
+    return word, morphs,morphemes, uncertainty_level

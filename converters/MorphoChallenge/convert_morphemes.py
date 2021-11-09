@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 #Proof of concept.
+#todo: directory naming
+#todo: fill in the report
 
 from collections import defaultdict,Counter
 import sys
@@ -7,7 +9,8 @@ sys.path.append('../../src/')
 from useg import SegLex
 import difftypes
 import morpheme_guesser
-
+indir="../../data/original/MorphoChallenge"
+outdir="../../data/converted/MorphoChallenge"
 if(len(sys.argv)!=4):
     print("Usage:")
     print("./convert_morphemes.py file_with_morphs_only file_with_both_morphs_and_morphemes output_file")
@@ -23,7 +26,7 @@ def load_f07(fname):
     f=open(fname,"r",1024**2, encoding="latin1")
     data=[]
     for line in f:
-        line=line.strip().replace("~","").lower()
+        line=line.strip().replace("~","") #.lower()
         if(line==""):
             continue
 
@@ -42,7 +45,7 @@ def load_f10(fname):
     f=open(fname,"r",1024**2, encoding="latin1")
     data=[]
     for line in f:
-        line=line.strip().replace("~","").lower()
+        line=line.strip().replace("~","") #.lower()
         if("::" in line):
             print("skipping because of '::':", line)
             continue
@@ -70,8 +73,8 @@ else:
     print("Warning!!! We do not have data for unsupervised morpheme2morph mapping which creates problems in case of virtual morphemes.")
 
 
+
 morpheme2morph=defaultdict(Counter)
-morpheme2morph_diffs=Counter()
 virtual_morpheme2morph=defaultdict(Counter)
 
 for word, morphemes in data_new:
@@ -81,15 +84,42 @@ for word, morphemes in data_new:
             virtual_morpheme2morph[morpheme].update([morph])
         elif(morph!=morpheme):
             morpheme2morph[morpheme].update([morph])
-            diff=difftypes.difftype3(morpheme,morph)
-            morpheme2morph_diffs.update([diff])
 
+
+virtual_morpheme2morph["+PAST"].update(["t","et"])
+
+diffs=Counter()
+for word,morphemes in data_old:
+    morphemes2=[]
+    for m in morphemes:
+        if(len(m)>1 and m[0]=="+"):
+            morphemes2.append(m.upper()) #todo: causes trouble with turkish where punctuation is represented by upper/lower-case
+        else:
+            morphemes2.append(m.lower())
+    if("@@" in word or "##" in word or "+" in word):
+        continue
+    diff=difftypes.difftype3(word,"".join(map(lambda x: x.replace("+","@@").replace("-","##"),morphemes2)))
+    diffs.update([diff])
+    if(len(diff)>=3): #e.g.: _-en+@@INF
+        if(diff[:2]=="_-" and "_" not in diff[2:] and "-" not in diff[2:]):
+            diff=diff[2:]
+            if("+" in diff):
+                diff=diff.split("+")
+                if(len(diff)==2):
+                    from_, to_ =diff
+                    to_=to_.replace("@@","+").replace("##","-")
+                    for i,x in enumerate(morphemes2):
+                        if(x==to_):
+                            to_=morphemes[i] #unuppercase
+                    tmp=to_.split("+")
+                    if(len(tmp)==2 and tmp[0]==""):
+                        if(len(to_)>=1 and to_[0]=="+"):
+                            virtual_morpheme2morph[to_].update([from_])
+                        else:
+                            morpheme2morph[to_].update([from_])
 
 solved_words=[]
 unsolved_words=[]
-diffs=Counter()
-
-
 for word,morphemes in data_old:
         word, morphs,morphemes,uncertainty_level=morpheme_guesser.guess_morphs(word, morphemes, morpheme2morph, virtual_morpheme2morph)
         if(morphs is not None):
@@ -98,15 +128,28 @@ for word,morphemes in data_old:
             #    print([word,morphs,morphemes, uncertainty_level])
         else:
             unsolved_words.append([word,morphemes])
-            diffs.update([difftypes.difftype3(word,"".join(morphemes))])
+
+
+
 
 print("solved:",len(solved_words),"unsolved:",len(unsolved_words))
 print("segmented to morphs by authors:",len(data_new), "(does not include the '05 morph-only data)")
 #print(len(not_equal),"out of", len(data_old), "words do not equal")
 
 print("unsolved words:")
-for w,m in unsolved_words:
-    print(w,m)
+diffs2=Counter()
+for word,morphemes in unsolved_words:
+    print(word,morphemes)
+    morphemes2=[]
+    for m in morphemes:
+        if(len(m)>1 and m[0]=="+"):
+            morphemes2.append(m.upper()) #todo: causes trouble with turkish where punctuation is represented by upper/lower-case
+        else:
+            morphemes2.append(m.lower())
+    diff=difftypes.difftype3(word,"".join(map(lambda x: x.replace("+","@@").replace("-","##"),morphemes2)))
+    diffs2.update([diff])
+    #if(diff=="_-e_"):
+    #    print(word,morphemes)
 
 solved_in_2010=[]
 for word, morphemes in data_new:
@@ -126,7 +169,7 @@ for word,morphs,morphemes,level in solved_words+solved_in_2010:
         morpheme=morphemes[i]
         len_=len(morph)
         lexicon.add_contiguous_morpheme(
-            lex_id=lexeme, 
+            lex_id=lexeme,
             annot_name="none",
             start=idx,
             end=idx+len_,
