@@ -121,6 +121,7 @@ def convert_string_rule_to_regular_expression(string_rule):
     if result:
         return 'only_target', '^' + result.group(1)
 
+    # 
     if '|' in rule:  # TODO: FIX complex rules
         return None
 
