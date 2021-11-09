@@ -142,3 +142,50 @@ def guess_morphs(word, morphemes, morpheme2morph={}, virtual_morpheme2morph={}):
                 idx1+=1
             morphemes=morphemes2
     return word, morphs,morphemes, uncertainty_level
+
+
+
+
+def create_morpheme2morph_mapping(data_new,data_old):
+  morpheme2morph=defaultdict(Counter)
+  virtual_morpheme2morph=defaultdict(Counter)
+
+  for word, morphemes in data_new:
+    for morph, morpheme in morphemes:
+        morpheme=morpheme.replace("~","")
+        if(len(morpheme)!=0 and morpheme[0]=="+"):
+            virtual_morpheme2morph[morpheme].update([morph])
+        elif(morph!=morpheme):
+            morpheme2morph[morpheme].update([morph])
+
+
+  virtual_morpheme2morph["+PAST"].update(["t","et"])
+
+  for word,morphemes in data_old:
+    morphemes2=[]
+    for m in morphemes:
+        if(len(m)>1 and m[0]=="+"):
+            morphemes2.append(m.upper()) #todo: causes trouble with turkish where punctuation is represented by upper/lower-case
+        else:
+            morphemes2.append(m.lower())
+    if("@@" in word or "##" in word or "+" in word):
+        continue
+    diff=difftypes.difftype3(word,"".join(map(lambda x: x.replace("+","@@").replace("-","##"),morphemes2)))
+    if(len(diff)>=3): #e.g.: _-en+@@INF
+        if(diff[:2]=="_-" and "_" not in diff[2:] and "-" not in diff[2:]):
+            diff=diff[2:]
+            if("+" in diff):
+                diff=diff.split("+")
+                if(len(diff)==2):
+                    from_, to_ =diff
+                    to_=to_.replace("@@","+").replace("##","-")
+                    for i,x in enumerate(morphemes2):
+                        if(x==to_):
+                            to_=morphemes[i] #unuppercase
+                    tmp=to_.split("+")
+                    if(len(tmp)==2 and tmp[0]==""):
+                        if(len(to_)>=1 and to_[0]=="+"):
+                            virtual_morpheme2morph[to_].update([from_])
+                        else:
+                            morpheme2morph[to_].update([from_])
+  return morpheme2morph,virtual_morpheme2morph
