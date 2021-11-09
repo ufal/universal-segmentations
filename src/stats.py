@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+import multiprocessing
+if __name__ == "__main__":
+    multiprocessing.set_start_method('forkserver')
+
 import argparse
 from os import path
 
@@ -12,6 +16,7 @@ def parse_args():
     )
     parser.add_argument("seg_lex", nargs='*', help="The USeg file(s) to compute statictics of")
     parser.add_argument("--printer", choices=("tex", "tsv"), default="tex", help="The format to use for printing")
+    parser.add_argument("--threads", type=int, default=1, help="The number of worker threads to run in parallel")
     return parser.parse_args()
 
 
@@ -171,8 +176,10 @@ def main(args):
     if args.printer == "tex":
         print("\midrule")
 
-    for f in args.seg_lex:
-        prn(*process_file(f))
+    pool = multiprocessing.Pool(args.threads)
+
+    for ret in pool.imap(process_file, args.seg_lex):
+        prn(*ret)
 
     if args.printer == "tex":
         print("\\bottomrule\n\\end{tabular}")
