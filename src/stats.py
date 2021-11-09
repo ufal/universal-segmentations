@@ -75,7 +75,7 @@ def morph(form, morpheme):
         # Empty morpheme spans are weird, but support them anyway.
         return ""
 
-def process_file(f, prn):
+def process_file(f):
     seg_lex = SegLex()
     seg_lex.load(f)
 
@@ -119,7 +119,7 @@ def process_file(f, prn):
     if dirname:
         resource_name = dirname
 
-    prn(
+    return (
         resource_name,
         lexeme_cnt,
         segmented_lexeme_cnt,
@@ -172,7 +172,7 @@ def main(args):
         print("\midrule")
 
     for f in args.seg_lex:
-        process_file(f, prn)
+        prn(*process_file(f))
 
     if args.printer == "tex":
         print("\\bottomrule\n\\end{tabular}")
