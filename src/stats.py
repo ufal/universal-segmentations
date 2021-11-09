@@ -142,6 +142,8 @@ def get_prn(t):
         return prn_tex
 
 def main(args):
+    if args.printer == "tex":
+        print("\\begin{tabular}{lrrrrrrrrrrr} \\toprule")
     prn = get_prn(args.printer)
     prn("Resource name",
         "Lexeme count",
@@ -158,9 +160,14 @@ def main(args):
         "Avg. morph length",
         "Max morph length",
     )
+    if args.printer == "tex":
+        print("\midrule")
 
     for f in args.seg_lex:
         process_file(f, prn)
+
+    if args.printer == "tex":
+        print("\\bottomrule\n\\end{tabular}")
 
 
 if __name__ == "__main__":
