@@ -10,7 +10,7 @@ def parse_args():
         allow_abbrev=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
-    parser.add_argument("seg_lex", type=argparse.FileType("rt"), nargs='*', help="The USeg file(s) to compute statictics of")
+    parser.add_argument("seg_lex", nargs='*', help="The USeg file(s) to compute statictics of")
     parser.add_argument("--printer", choices=("tex", "tsv"), default="tex", help="The format to use for printing")
     return parser.parse_args()
 
@@ -75,9 +75,9 @@ def morph(form, morpheme):
         # Empty morpheme spans are weird, but support them anyway.
         return ""
 
-def process_file(f):
+def process_file(filename):
     seg_lex = SegLex()
-    seg_lex.load(f)
+    seg_lex.load(filename)
 
     lexeme_cnt = 0
     segmented_lexeme_cnt = 0
@@ -114,7 +114,7 @@ def process_file(f):
         if is_segmented:
             segmented_lexeme_cnt += 1
 
-    resource_name = f.name
+    resource_name = filename
     dirname = path.basename(path.dirname(resource_name))
     if dirname:
         resource_name = dirname
