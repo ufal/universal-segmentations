@@ -257,7 +257,6 @@ for item, segments in segmented_lemmas.items():
 
         # segment lexeme
         if there_is_overlap:
-            # print(lemma, segments)
             segmentation = search_for_segmentation(lemma, ranges, operations)
             pass
         else:
@@ -266,19 +265,73 @@ for item, segments in segmented_lemmas.items():
         new_segmented_lemmas[item] = segmentation
 
 
-# TODO: find segmentation of STEMs in the resource
-print(new_segmented_lemmas)
+# function for flatening the given list (max 1 list inside)
+def flatten(t):
+    result = list()
+    for item in t:
+        if type(item) is list:
+            for subitem in item:
+                result.append(subitem)
+        else:
+            result.append(item)
+    return result
 
-# TODO: store in the resulting format
-# lexicon = SegLex()
 
-# with open(sys.argv[2], mode='w', encoding='U8') as outfile:
-#     lexicon.save(outfile)
+# find segmentation of STEMs in the resource
+lemmaset = {key.split('_')[0]: key.split('_')[1] for key in new_segmented_lemmas.keys()}
+any_change = False
+while any_change is False:
+    any_change = False
+    for entry, segmentation in new_segmented_lemmas.items():
+        lemma, pos = entry.split('_')
+        morphs, labels = segmentation
 
-# lexicon.add_contiguous_morpheme(
-#     lex_id=lexeme,
-#     annot_name='?TODO?',
-#     start=init_index,
-#     end=init_index + len(morph),
-#     features={'morph': morph, 'morpheme': '?TODO?', 'type': '?TODO?'}
-# )
+        # find stems and try to segment them
+        stems = list()
+        for i in range(len(labels)):
+            if labels[i] == 'STEM':
+                if morphs[i] in lemmaset:
+                    stem_segmentation = new_segmented_lemmas['_'.join((morphs[i], lemmaset[morphs[i]]))]
+                    if len(stem_segmentation[0]) > 1:
+                        stems.append((morphs[i], i, stem_segmentation))
+                        any_change = True
+        if len(stems) == 0:
+            continue
+
+        # change the unsegmented stems to segmented ones
+        morphs, labels = list(morphs), list(labels)
+        for stem, idx, segm in stems:
+            morphs[idx] = segm[0]
+            labels[idx] = segm[1]
+        
+        # flaten the list of morphs and labels
+        morphs = flatten(morphs)
+        labels = flatten(labels)
+
+        # save into the data
+        new_segmented_lemmas[entry] = [morphs, labels]
+
+
+# store in the resulting format
+lexicon = SegLex()
+
+for entry, segmentation in new_segmented_lemmas.items():
+    morphs, labels = segmentation
+    lemma, pos = entry.split('_')
+
+    lexeme = lexicon.add_lexeme(lemma, lemma, pos)
+
+    start = 0
+    for morph, label in zip(morphs, labels):
+        # print(morph, label, start, start + len(morph) - 1)
+        lexicon.add_contiguous_morpheme(
+            lex_id=lexeme,
+            annot_name='?TODO?',
+            start=start,
+            end=start + len(morph),
+            features={'morpheme': '?TODO?', 'type': 'UNSEG' if label == 'STEM' else label}
+        )
+        start = start+len(morph)
+
+with open(sys.argv[2], mode='w', encoding='U8') as outfile:
+    lexicon.save(outfile)

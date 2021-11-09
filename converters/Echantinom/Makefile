@@ -1,6 +1,6 @@
 DATADIR=../../data/
 IN_DIR=$(DATADIR)/original/Echantinom/
-OUT_DIR=$(DATADIR)/converted/fr-Echantinom/
+OUT_DIR=$(DATADIR)/converted/frc-Echantinom/
 
 SHELL = bash
 
@@ -11,5 +11,5 @@ download: # and unpack, if needed
 
 convert:
 	mkdir -p $(OUT_DIR)
-	./fr_echantinom2useg.py $(IN_DIR)/Echantinom.csv  $(OUT_DIR)$/fr_echantinom.useg
+	./frc_echantinom2useg.py $(IN_DIR)/Echantinom.csv  $(OUT_DIR)$/frc_echantinom.useg
 

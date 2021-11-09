@@ -89,9 +89,11 @@ def add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root, annot_na
         stem = lexeme[:-len(suffix)]
         if lexeme[-len(suffix):]!=suffix: #TODO Handle allomorphy
             logging.warning("Suffix %s not contained at the end of wordform %s", suffix, lexeme)
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_interfix, end_of_interfix, features={"type":"stem"})
             return
         if suffix not in lexeme:
             logging.warning("Suffix %s not contained in wordform %s", suffix, lexeme)
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_interfix, end_of_interfix, features={"type":"stem"})
             return
         lexicon.add_contiguous_morpheme(lex_id, annot_name, len(stem), len(lexeme), features={"type":"suffix"})
         end_of_interfix = len(stem)

@@ -12,6 +12,6 @@ download: # and unpack, if needed
 
 convert:
 	mkdir -p $(OUT_DIR)
-	for file in $(IN_DIR)connections_adj.csv $(IN_DIR)connections_adv.csv $(IN_DIR)connections_noun.csv $(IN_DIR)connections_rare.csv $(IN_DIR)connections_special_verb.csv $(IN_DIR)connections_verb.csv ; do \
-		./derivbaseru2useg.py $${file} $(OUT_DIR)$${file}.useg;\
+	for file in connections_adj.csv connections_adv.csv connections_noun.csv connections_rare.csv connections_special_verb.csv connections_verb.csv ; do \
+		./derivbaseru2useg.py $(IN_DIR)$${file} $(OUT_DIR)$${file}.useg;\
 	done
