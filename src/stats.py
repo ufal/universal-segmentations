@@ -10,6 +10,7 @@ def parse_args():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument("seg_lex", type=argparse.FileType("rt"), nargs='*', help="The USeg file(s) to compute statictics of")
+    parser.add_argument("--printer", choices=("tex", "tsv"), default="tex", help="The USeg file(s) to compute statictics of")
     return parser.parse_args()
 
 
@@ -71,7 +72,7 @@ def morph(form, morpheme):
         # Empty morpheme spans are weird, but support them anyway.
         return ""
 
-def process_file(f):
+def process_file(f, prn):
     seg_lex = SegLex()
     seg_lex.load(f)
 
@@ -110,45 +111,56 @@ def process_file(f):
         if is_segmented:
             segmented_lexeme_cnt += 1
 
-    print(f.name,
-          lexeme_cnt,
-          segmented_lexeme_cnt,
-          form_stats.type_count(),
-          lemma_stats.type_count(),
-          pos_stats.type_count(),
+    prn(
+        f.name,
+        lexeme_cnt,
+        segmented_lexeme_cnt,
+        form_stats.type_count(),
+        lemma_stats.type_count(),
+        pos_stats.type_count(),
 
-          form_stats.mean_length(),
+        form_stats.mean_length(),
 
-          morph_stats.token_count(),
-          morph_stats.type_count(),
-          morph_stats.min_length(),
-          morph_stats.mean_length(),
-          morph_stats.max_length(),
-          # TODO the same for roots, prefixes, suffixes.
+        morph_stats.token_count(),
+        morph_stats.type_count(),
+        morph_stats.min_length(),
+        morph_stats.mean_length(),
+        morph_stats.max_length(),
+        # TODO the same for roots, prefixes, suffixes.
+    )
 
-          sep="\t")
+def prn_tsv(*args):
+    print(*args, sep="\t", end="\n")
 
+def prn_tex(*args):
+    print(*args, sep=" & ", end=" \\\\\n")
+
+def get_prn(t):
+    if t == "tsv":
+        return prn_tsv
+    elif t == "tex":
+        return prn_tex
 
 def main(args):
-    print("Resource name",
-          "Lexeme count",
-          "Segmented lexeme count",
-          "Form count",
-          "Lemma count",
-          "POS count",
+    prn = get_prn(args.printer)
+    prn("Resource name",
+        "Lexeme count",
+        "Segmented lexeme count",
+        "Form count",
+        "Lemma count",
+        "POS count",
 
-          "Avg. form length",
+        "Avg. form length",
 
-          "Morph token count",
-          "Morph type count",
-          "Min morph length",
-          "Avg. morph length",
-          "Max morph length",
-
-          sep="\t")
+        "Morph token count",
+        "Morph type count",
+        "Min morph length",
+        "Avg. morph length",
+        "Max morph length",
+    )
 
     for f in args.seg_lex:
-        process_file(f)
+        process_file(f, prn)
 
 
 if __name__ == "__main__":
