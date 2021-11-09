@@ -47,6 +47,8 @@ class TypeTokenStats(object):
         return self._max
 
     def mean_length(self):
+        if self._tokens == 0:
+            return 0.0
         return self._length / self._tokens
 
 
