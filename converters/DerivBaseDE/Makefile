@@ -12,6 +12,4 @@ download: # and unpack, if needed
 
 convert:
 	mkdir -p $(OUT_DIR)
-	# for file in $(IN_DIR)connections_adj.csv $(IN_DIR)connections_adv.csv $(IN_DIR)connections_noun.csv $(IN_DIR)connections_rare.csv $(IN_DIR)connections_special_verb.csv $(IN_DIR)connections_verb.csv ; do \
-	# 	./derivbaseru2useg.py $${file} $(OUT_DIR)$${file}.useg;\
-	# done
+	./derivbasede2useg.py $(IN_DIR)/derivbase/DErivBase-v2.0-rulePaths.txt $(IN_DIR)/derivbase/DErivBase-v1.4.1-rules.txt $(OUT_DIR)DErivBaseDE.useg
