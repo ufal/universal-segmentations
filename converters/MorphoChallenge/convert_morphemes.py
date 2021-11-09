@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#Proof of concept.
+#todo: fill in the report
 
 from collections import defaultdict,Counter
 import sys
@@ -7,7 +7,8 @@ sys.path.append('../../src/')
 from useg import SegLex
 import difftypes
 import morpheme_guesser
-
+indir="../../data/original/MorphoChallenge"
+outdir="../../data/converted/MorphoChallenge"
 if(len(sys.argv)!=4):
     print("Usage:")
     print("./convert_morphemes.py file_with_morphs_only file_with_both_morphs_and_morphemes output_file")
@@ -23,7 +24,7 @@ def load_f07(fname):
     f=open(fname,"r",1024**2, encoding="latin1")
     data=[]
     for line in f:
-        line=line.strip().replace("~","").lower()
+        line=line.strip().replace("~","") #.lower()
         if(line==""):
             continue
 
@@ -42,7 +43,7 @@ def load_f10(fname):
     f=open(fname,"r",1024**2, encoding="latin1")
     data=[]
     for line in f:
-        line=line.strip().replace("~","").lower()
+        line=line.strip().replace("~","") #.lower()
         if("::" in line):
             print("skipping because of '::':", line)
             continue
@@ -69,44 +70,27 @@ else:
     data_new=[] #this happens in case of german.
     print("Warning!!! We do not have data for unsupervised morpheme2morph mapping which creates problems in case of virtual morphemes.")
 
-
-morpheme2morph=defaultdict(Counter)
-morpheme2morph_diffs=Counter()
-virtual_morpheme2morph=defaultdict(Counter)
-
-for word, morphemes in data_new:
-    for morph, morpheme in morphemes:
-        morpheme=morpheme.replace("~","")
-        if(len(morpheme)!=0 and morpheme[0]=="+"):
-            virtual_morpheme2morph[morpheme].update([morph])
-        elif(morph!=morpheme):
-            morpheme2morph[morpheme].update([morph])
-            diff=difftypes.difftype3(morpheme,morph)
-            morpheme2morph_diffs.update([diff])
-
+morpheme2morph,virtual_morpheme2morph=morpheme_guesser.create_morpheme2morph_mapping(data_new,data_old)
 
 solved_words=[]
 unsolved_words=[]
-diffs=Counter()
-
-
 for word,morphemes in data_old:
         word, morphs,morphemes,uncertainty_level=morpheme_guesser.guess_morphs(word, morphemes, morpheme2morph, virtual_morpheme2morph)
         if(morphs is not None):
             solved_words.append([word,morphs, morphemes, uncertainty_level])
-            #if(uncertainty_level>=4):
-            #    print([word,morphs,morphemes, uncertainty_level])
         else:
             unsolved_words.append([word,morphemes])
-            diffs.update([difftypes.difftype3(word,"".join(morphemes))])
+
+
+
 
 print("solved:",len(solved_words),"unsolved:",len(unsolved_words))
 print("segmented to morphs by authors:",len(data_new), "(does not include the '05 morph-only data)")
 #print(len(not_equal),"out of", len(data_old), "words do not equal")
 
 print("unsolved words:")
-for w,m in unsolved_words:
-    print(w,m)
+for word,morphemes in unsolved_words:
+    print(word,morphemes)
 
 solved_in_2010=[]
 for word, morphemes in data_new:
@@ -126,7 +110,7 @@ for word,morphs,morphemes,level in solved_words+solved_in_2010:
         morpheme=morphemes[i]
         len_=len(morph)
         lexicon.add_contiguous_morpheme(
-            lex_id=lexeme, 
+            lex_id=lexeme,
             annot_name="none",
             start=idx,
             end=idx+len_,
@@ -137,24 +121,3 @@ for word,morphs,morphemes,level in solved_words+solved_in_2010:
 fout=open(sys.argv[3], "w", encoding='utf-8')
 lexicon.save(fout)
 fout.close()
-
-
-"""
-Experiments with unsupervised morpheme handling.
->>> difftypes.difftype3("yllätystappion","|||".join(['yllättää', '+DV-US', 'tappio', '+GEN']))
-'_-ys+tää|||+DV-US|||_-n+|||+GEN'
-
-def uppercase(s):
-    if(len(s)>0):
-        if(s[0]=="+"):
-            s=s.upper()
-    return s
-
-unsolved_diffs2=Counter()
-for word, morphemes in unsolved_words:
-    morphemes=list(map(uppercase, morphemes))
-    diff=difftypes.difftype3(word,"|||".join([""]+morphemes+[""])).split("_")
-    unsolved_diffs2.update(diff)
-    print(diff)
-
-"""

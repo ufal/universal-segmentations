@@ -5,6 +5,8 @@ import logging
 import sys
 import re
 
+sys.path.append('../../src/')
+
 from useg import SegLex
 import itertools
 
