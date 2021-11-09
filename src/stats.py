@@ -178,7 +178,7 @@ def main(args):
 
     pool = multiprocessing.Pool(args.threads)
 
-    for ret in pool.imap(process_file, args.seg_lex):
+    for ret in pool.imap(process_file, args.seg_lex, 1):
         prn(*ret)
 
     if args.printer == "tex":
