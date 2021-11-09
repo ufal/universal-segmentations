@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+from os import path
 
 from useg import SegLex
 
@@ -111,8 +112,13 @@ def process_file(f, prn):
         if is_segmented:
             segmented_lexeme_cnt += 1
 
+    resource_name = f.name
+    dirname = path.basename(path.dirname(resource_name))
+    if dirname:
+        resource_name = dirname
+
     prn(
-        f.name,
+        resource_name,
         lexeme_cnt,
         segmented_lexeme_cnt,
         form_stats.type_count(),
