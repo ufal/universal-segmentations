@@ -10,7 +10,7 @@ def parse_args():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument("seg_lex", type=argparse.FileType("rt"), nargs='*', help="The USeg file(s) to compute statictics of")
-    parser.add_argument("--printer", choices=("tex", "tsv"), default="tex", help="The USeg file(s) to compute statictics of")
+    parser.add_argument("--printer", choices=("tex", "tsv"), default="tex", help="The format to use for printing")
     return parser.parse_args()
 
 
