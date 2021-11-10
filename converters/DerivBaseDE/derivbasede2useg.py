@@ -121,9 +121,17 @@ def convert_string_rule_to_regular_expression(string_rule):
     if result:
         return 'only_target', '^' + result.group(1)
 
-    # 
-    if '|' in rule:  # TODO: FIX complex rules
-        return None
+    # sufixation and (possible) re-sufixation pattern: (sfx "er" & try (rsfx "el" "l"))
+    result = re.search(r'\(sfx \"(\p{L}+)\"\s*\& t*r*y*o*p*t*\s*\(rsfx \"(\p{L}+)\" \"(\p{L}+)\"\)*$', rule)
+    if result:
+        return 'only_target', result.group(1) + '$'
+
+    # complex rules regarding vocal/consonant changes, not morphs
+    if '|' in rule:
+        result = re.search(r'\(sfx \"(\p{L}+)\"\s* \&', rule)
+        if result:
+            print('-', rule, result.group(1))
+            return 'base_target'
 
     # TODO: continue with more complicated rules
     print(rule)

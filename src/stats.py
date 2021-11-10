@@ -131,11 +131,10 @@ def process_file(filename):
         form_stats.type_count(),
         lemma_stats.type_count(),
         pos_stats.type_count(),
-
-        form_stats.mean_length(),
-
         morph_stats.token_count(),
         morph_stats.type_count(),
+
+        form_stats.mean_length(),
         morph_stats.min_length(),
         morph_stats.mean_length(),
         morph_stats.max_length(),
@@ -146,7 +145,7 @@ def prn_tsv(*args):
     print(*args, sep="\t", end="\n")
 
 def prn_tex(*args):
-    print(*args, sep=" & ", end=" \\\\\n")
+    print(*("{:,.2f}".format(arg) if isinstance(arg, float) else "{:,}".format(arg) if isinstance(arg, int) else str(arg).replace("_", r"\_") for arg in args), sep=" & ", end=" \\\\\n")
 
 def get_prn(t):
     if t == "tsv":
@@ -156,30 +155,29 @@ def get_prn(t):
 
 def main(args):
     if args.printer == "tex":
-        print("\\begin{tabular}{lrrrrrrrrrrr} \\toprule")
+        print("\\begin{tabular}{lrrrrrrr|rrrr} \\toprule")
+        print(" & \\multicolumn{7}{c}{Counts} & \\multicolumn{4}{c}{Lengths} \\\\")
     prn = get_prn(args.printer)
     prn("Resource name",
-        "Lexeme count",
-        "Segmented lexeme count",
-        "Form count",
-        "Lemma count",
-        "POS count",
+        "Lexemes",
+        "Segmented lexemes",
+        "Forms",
+        "Lemmas",
+        "POSes",
+        "Morph tokens",
+        "Morph types",
 
-        "Avg. form length",
-
-        "Morph token count",
-        "Morph type count",
-        "Min morph length",
-        "Avg. morph length",
-        "Max morph length",
+        "Form avg.",
+        "Morph min",
+        "Morph avg.",
+        "Morph max",
     )
     if args.printer == "tex":
         print("\midrule")
 
-    pool = multiprocessing.Pool(args.threads)
-
-    for ret in pool.imap(process_file, args.seg_lex, 1):
-        prn(*ret)
+    with multiprocessing.Pool(args.threads) as pool:
+        for ret in pool.imap(process_file, args.seg_lex, 1):
+            prn(*ret)
 
     if args.printer == "tex":
         print("\\bottomrule\n\\end{tabular}")
