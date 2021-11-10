@@ -315,11 +315,12 @@ while any_change is False:
 # store in the resulting format
 lexicon = SegLex()
 
+parse_pos = {'adj': 'ADJ', 'noun': 'NOUN', 'verb': 'VERB', 'adv': 'ADV', 'num': 'NUM'}
 for entry, segmentation in new_segmented_lemmas.items():
     morphs, labels = segmentation
     lemma, pos = entry.split('_')
 
-    lexeme = lexicon.add_lexeme(lemma, lemma, pos)
+    lexeme = lexicon.add_lexeme(lemma, lemma, parse_pos.get(pos, '??'))
 
     start = 0
     for morph, label in zip(morphs, labels):
