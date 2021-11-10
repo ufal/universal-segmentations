@@ -176,10 +176,9 @@ def main(args):
     if args.printer == "tex":
         print("\midrule")
 
-    pool = multiprocessing.Pool(args.threads)
-
-    for ret in pool.imap(process_file, args.seg_lex, 1):
-        prn(*ret)
+    with multiprocessing.Pool(args.threads) as pool:
+        for ret in pool.imap(process_file, args.seg_lex, 1):
+            prn(*ret)
 
     if args.printer == "tex":
         print("\\bottomrule\n\\end{tabular}")
