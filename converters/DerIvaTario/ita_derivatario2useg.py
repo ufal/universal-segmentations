@@ -87,7 +87,7 @@ def find_morph_boundaries(lexeme, morph, req_start = -1, root_not_found = False,
 
                 #Allow one-character interfix for prefixes - e.g. "-"
                 allowed_interfix_len = 1
-                if morph_start <= req_start + allowed_interfix_len:
+                if morph_start <= req_start + allowed_interfix_len and morph_start >= req_start:
                     return morph_start, morph_end
 
                 #If morph is found before req_start, it should span the previous morph for all affixes
@@ -96,6 +96,68 @@ def find_morph_boundaries(lexeme, morph, req_start = -1, root_not_found = False,
                         return morph_start, morph_end
 
     return -1,-1
+
+
+def choose_allomorph_boundaries(lexeme, allomorph_set = set(), req_start = -1, root_not_found = False, is_prefix = False):
+    '''Finds boundaries of allomorph'''
+    # if is_prefix:
+    #     return 0, longest_common_prefix(lexeme, morph)
+    best_boundary = dict()
+
+    for morph in allomorph_set:
+
+        for i in range(len(morph)):
+            if morph in best_boundary:
+                break
+            # print(i)
+            # print(morph[:len(morph)-i])
+            # morph_start = lexeme.find(morph[:len(morph)-i])
+            shortened_morph = morph[:len(morph)-i]
+            for match in re.finditer(shortened_morph, lexeme):
+                if morph in best_boundary:
+                    continue
+                morph_start, morph_end = match.start(), match.end()
+
+                if morph_start != -1:
+
+                    #If we are not dealing with prefix
+                    if is_prefix == False and morph_start >= req_start:
+                        best_boundary[morph] = (morph_start, morph_end)
+                        break
+
+                    #Allow one-character interfix for prefixes - e.g. "-"
+                    allowed_interfix_len = 1
+                    if morph_start <= req_start + allowed_interfix_len and morph_start >= req_start:
+                        best_boundary[morph] = (morph_start, morph_end)
+                        break
+
+                    #If morph is found before req_start, it should span the previous morph for all affixes
+                    if morph_start < req_start:
+                        if shortened_morph.startswith(lexeme[morph_start:req_start]):
+                            best_boundary[morph] = (morph_start, morph_end)
+                            break
+
+
+#Choose allomorph with best boundary
+    if len(best_boundary) == 0:
+        return -1,-1
+
+    if len(best_boundary) == 1:
+        for morph in best_boundary:
+            return best_boundary[morph]
+
+    allo_lengths = [[morph, best_boundary[morph][1]-best_boundary[morph][0]] for morph in best_boundary.keys()]
+    allo_lengths = sorted(allo_lengths, key = lambda x: x[1], reverse=True)
+
+    if allo_lengths[0][1] > allo_lengths[1][1]:
+        return best_boundary[allo_lengths[0][0]]
+
+    return best_boundary[allo_lengths[0][0]]
+# best_lengths = filter(lambda x: x[1] = allo_lengths[0][1], allo_lengths)
+
+
+
+# print(choose_allomorph_boundaries("imtransfibile", allomorph_set["bile"], req_start=5, is_prefix=False))
 
 
 # print(find_morph_boundaries("vactacaction", "tion"))
@@ -108,9 +170,35 @@ annot_name = "DerIvaTario"
 
 prefixes = {"acons", "anti", "auto", "bi", "tri", "de", "1de", "2de", "dis", "in",
 "micro", "mini", "ri", "1s", "2s", "co", "neo", "1in", "2in", "a", "con",
-"per", "pre", "inter", "iper", "mega", "mono", "pan", "para", "pro", "tras", "es",
-"ex","e"}
+"per", "pre", "inter", "intra", "iper", "mega", "mono", "maxi", "multi", "pan", "para", "pro", "tras", "es",
+"ex","e", "proto", "stra", "trans", "fra"}
+
 root_types = {"adj_th", "dnt_root", "ltn_pp", "presp", "pst_ptcp", "root", "suppl", "unrec", "vrb_th"}
+
+allomorph_set = {
+"1aio":{"aio"},
+"2aio":{"aio", "aro"},
+"ale":{"ale","are","iale","uale"},
+"bile":{"bile","ibile"},
+"ico":{"ico","atico"},
+"1in":{"in","im","il","ir"},
+"2in":{"in","im","il","ir"},
+"ismo":{"ismo","tismo"},
+"ità":{"ità","età","tà"},
+"oso":{"oso","uoso"},
+"ri":{"ri","re"},
+"trans":{"trans","tras"},
+"tore":{"tore","ore"},
+"ore":{"tore","ore"},
+"torio":{"torio","orio"},
+"orio":{"torio","orio"},
+"tora":{"tora","ora"},
+"ora":{"tora","ora"},
+"zione":{"zione","gione","ione","sion","sione"},
+"ione":{"zione","gione","ione","sion","sione"}
+}
+
+
 
 upos_assignment = initialize_all_upos()
 
@@ -120,7 +208,7 @@ for line in infile:
     lexeme = entries[1]
     root = entries[2].split(":")
 
-    # if lexeme!="inimicizia":
+    # if lexeme!="inimicizia".lower():
     #     continue
 
     if len(root) < 2:
@@ -181,8 +269,12 @@ for line in infile:
         if morpheme in prefixes:
             is_prefix = True
 
+        current_allomorph_set = {allomorph}
+        if morpheme in allomorph_set:
+            current_allomorph_set = current_allomorph_set.union(allomorph_set[morpheme])
 
-        morph_start, morph_end = find_morph_boundaries(lexeme, allomorph, start, root_not_found, is_prefix)
+
+        morph_start, morph_end = choose_allomorph_boundaries(lexeme, current_allomorph_set, start, root_not_found, is_prefix)
 
         # print("New field: ")
         # print(info_morpheme)
