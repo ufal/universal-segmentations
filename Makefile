@@ -38,7 +38,7 @@ stats.tex: src/stats.py
 	cd data/converted && $(abspath src/stats.py) --printer tex --threads 8 */*.useg > $(abspath $@)
 
 stats-non-unimorph.tex: src/stats.py
-	cd data/converted && find . -name '*.useg' -not -path '*UniMorph*' -exec $(abspath src/stats.py) --printer tex --threads 8 '{}' '+' > $(abspath $@)
+	cd data/converted && find * -name '*.useg' -not -path '*UniMorph*' -exec $(abspath src/stats.py) --printer tex --threads 8 '{}' '+' > $(abspath $@)
 
 clean:
 	rm -f README.xhtml
