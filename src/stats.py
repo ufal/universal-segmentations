@@ -145,7 +145,7 @@ def prn_tsv(*args):
     print(*args, sep="\t", end="\n")
 
 def prn_tex(*args):
-    print(*("{:,.2f}".format(arg) if isinstance(arg, float) else "{:,}".format(arg) if isinstance(arg, int) else str(arg) for arg in args), sep=" & ", end=" \\\\\n")
+    print(*("{:,.2f}".format(arg) if isinstance(arg, float) else "{:,}".format(arg) if isinstance(arg, int) else str(arg).replace("_", r"\_") for arg in args), sep=" & ", end=" \\\\\n")
 
 def get_prn(t):
     if t == "tsv":
