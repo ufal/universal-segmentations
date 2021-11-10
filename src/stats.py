@@ -92,7 +92,14 @@ def process_file(filename):
     pos_stats = TypeTokenStats()
     morpheme_stats = TypeTokenStats()
     morph_stats = TypeTokenStats()
+    root_stats = TypeTokenStats()
+    prefix_stats = TypeTokenStats()
+    suffix_stats = TypeTokenStats()
     annot_stats = TypeTokenStats()
+
+    morph_stats_types = {"root": root_stats,
+                         "prefix": prefix_stats,
+                         "suffix": suffix_stats}
 
     for lex_id in seg_lex.iter_lexemes():
         lexeme_cnt += 1
@@ -111,10 +118,14 @@ def process_file(filename):
                 is_segmented = True
 
             for morpheme in morphemes:
-                morph_stats.record(morph(seg_lex.form(lex_id), morpheme))
+                morph_string = morph(seg_lex.form(lex_id), morpheme)
+                morph_stats.record(morph_string)
 
                 if "morpheme" in morpheme.features:
                     morpheme_stats.record(morpheme.features["morpheme"])
+
+                if "type" in morpheme.features and morpheme.features["type"] in morph_stats_types:
+                    morph_stats_types[morpheme.features["type"]].record(morph_string)
 
         if is_segmented:
             segmented_lexeme_cnt += 1
@@ -131,14 +142,37 @@ def process_file(filename):
         form_stats.type_count(),
         lemma_stats.type_count(),
         pos_stats.type_count(),
+
         morph_stats.token_count(),
         morph_stats.type_count(),
+        root_stats.token_count(),
+        root_stats.type_count(),
+        prefix_stats.token_count(),
+        prefix_stats.type_count(),
+        suffix_stats.token_count(),
+        suffix_stats.type_count(),
 
         form_stats.mean_length(),
+
+        morph_stats.token_count() / annot_stats.token_count(),
         morph_stats.min_length(),
         morph_stats.mean_length(),
         morph_stats.max_length(),
-        # TODO the same for roots, prefixes, suffixes.
+
+        root_stats.token_count() / annot_stats.token_count(),
+        root_stats.min_length(),
+        root_stats.mean_length(),
+        root_stats.max_length(),
+
+        prefix_stats.token_count() / annot_stats.token_count(),
+        prefix_stats.min_length(),
+        prefix_stats.mean_length(),
+        prefix_stats.max_length(),
+
+        suffix_stats.token_count() / annot_stats.token_count(),
+        suffix_stats.min_length(),
+        suffix_stats.mean_length(),
+        suffix_stats.max_length(),
     )
 
 def prn_tsv(*args):
@@ -155,8 +189,8 @@ def get_prn(t):
 
 def main(args):
     if args.printer == "tex":
-        print("\\begin{tabular}{lrrrrrrr|rrrr} \\toprule")
-        print(" & \\multicolumn{7}{c}{Counts} & \\multicolumn{4}{c}{Lengths} \\\\")
+        print("\\begin{tabular}{lrrrrr|rrrrrrrr|r|rrrr|rrrr|rrrr|rrrr} \\toprule")
+        print(" & \\multicolumn{13}{c}{Counts} & Length & Count & \\multicolumn{3}{c}{Lengths} & Count & \\multicolumn{3}{c}{Lengths} & Count & \\multicolumn{3}{c}{Lengths} & Count & \\multicolumn{3}{c}{Lengths} \\\\")
     prn = get_prn(args.printer)
     prn("Resource name",
         "Lexemes",
@@ -164,13 +198,37 @@ def main(args):
         "Forms",
         "Lemmas",
         "POSes",
+
         "Morph tokens",
         "Morph types",
+        "Root tokens",
+        "Root types",
+        "Prefix tokens",
+        "Prefix types",
+        "Suffix tokens",
+        "Suffix types",
 
         "Form avg.",
+
+        "Morphs per lexeme",
         "Morph min",
         "Morph avg.",
         "Morph max",
+
+        "Roots per lexeme",
+        "Root min",
+        "Root avg.",
+        "Root max",
+
+        "Prefixes per lexeme",
+        "Prefix min",
+        "Prefix avg.",
+        "Prefix max",
+
+        "Suffixes per lexeme",
+        "Suffix min",
+        "Suffix avg.",
+        "Suffix max",
     )
     if args.printer == "tex":
         print("\midrule")
