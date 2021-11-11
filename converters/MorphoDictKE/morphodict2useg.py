@@ -32,25 +32,89 @@ with open(sys.argv[1], mode='r', encoding='U8') as infile:
         roots = roots if type(roots) is list else eval(roots)
         morphs_init = morphs_init if type(morphs_init) is list else eval(morphs_init)
 
-        lexeme = lexicon.add_lexeme(form=lemma, lemma=lemma, pos=parse_pos.get(pos, '?TODO?'))
+        lexeme = lexicon.add_lexeme(form=lemma, lemma=lemma, pos=parse_pos.get(pos, pos))
 
+        seen_stem, between_stems = False, False
         for morph, init_index in zip(morphs, morphs_init):
-            if morph in roots:
-                lexicon.add_contiguous_morpheme(
-                    lex_id=lexeme,
-                    annot_name='?TODO?',
-                    start=init_index,
-                    end=init_index + len(morph),
-                    features={'morph': morph, 'morpheme': '?TODO?', 'type': 'root'}
-                )
+            if len(roots) == 1:
+                if morph in roots:
+                    seen_stem = True
+                    lexicon.add_contiguous_morpheme(
+                        lex_id=lexeme,
+                        annot_name='?TODO?',
+                        start=init_index,
+                        end=init_index + len(morph),
+                        features={'type': 'root'}
+                    )
+                elif not seen_stem:
+                    lexicon.add_contiguous_morpheme(
+                        lex_id=lexeme,
+                        annot_name='?TODO?',
+                        start=init_index,
+                        end=init_index + len(morph),
+                        features={'type': 'prefix'}
+                    )
+                else:
+                    if len(lemma) == init_index + len(morph):
+                        lexicon.add_contiguous_morpheme(
+                        lex_id=lexeme,
+                        annot_name='?TODO?',
+                        start=init_index,
+                        end=init_index + len(morph)
+                    )
+                    else:
+                        lexicon.add_contiguous_morpheme(
+                            lex_id=lexeme,
+                            annot_name='?TODO?',
+                            start=init_index,
+                            end=init_index + len(morph),
+                            features={'type': 'suffix'}
+                        )
             else:
-                lexicon.add_contiguous_morpheme(
-                    lex_id=lexeme,
-                    annot_name='?TODO?',
-                    start=init_index,
-                    end=init_index + len(morph),
-                    features={'morph': morph, 'morpheme': '?TODO?', 'type': '?TODO?'}
-                )
+                if morph in roots:
+                    if morph == roots[0]:
+                        between_stems = True
+                    elif morph == roots[-1]:
+                        between_stems = False
+                    seen_stem = True
+                    lexicon.add_contiguous_morpheme(
+                        lex_id=lexeme,
+                        annot_name='?TODO?',
+                        start=init_index,
+                        end=init_index + len(morph),
+                        features={'type': 'root'}
+                    )
+                elif not seen_stem and not between_stems:
+                    lexicon.add_contiguous_morpheme(
+                        lex_id=lexeme,
+                        annot_name='?TODO?',
+                        start=init_index,
+                        end=init_index + len(morph),
+                        features={'type': 'prefix'}
+                    )
+                elif seen_stem and not between_stems:
+                    if len(lemma) == init_index + len(morph):
+                        lexicon.add_contiguous_morpheme(
+                        lex_id=lexeme,
+                        annot_name='?TODO?',
+                        start=init_index,
+                        end=init_index + len(morph)
+                    )
+                    else:
+                        lexicon.add_contiguous_morpheme(
+                            lex_id=lexeme,
+                            annot_name='?TODO?',
+                            start=init_index,
+                            end=init_index + len(morph),
+                            features={'type': 'suffix'}
+                        )
+                else:
+                    lexicon.add_contiguous_morpheme(
+                        lex_id=lexeme,
+                        annot_name='?TODO?',
+                        start=init_index,
+                        end=init_index + len(morph)
+                    )
     
 
 with open(sys.argv[2], mode='w', encoding='U8') as outfile:
