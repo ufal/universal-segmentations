@@ -24,7 +24,6 @@ logging.info(f"Converting {sys.argv[1]} to {sys.argv[2]}")
 segmented_lemmas = defaultdict(set)
 with open(sys.argv[1], mode='r', encoding='U8') as infile:
     reader = csv.reader(infile, delimiter='\t')
-    header = next(reader)
     for base_lemma, base_pos, deriv_lemma, deri_pos, rule, operation in reader:
         # add (so far) unsegmented lemmas
         if not segmented_lemmas.get('_'.join([deriv_lemma, deri_pos]), False):
