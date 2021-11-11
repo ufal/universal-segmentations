@@ -2,23 +2,9 @@ Morph ri not found in lexeme autorassicurazione with entry 10512;AUTORASSICURAZI
 
 Morph ione not found in lexeme concussore with entry 21626;CONCUSSORE;CONCUSSO:root;ZIONE:ione:mt1:ms1;TORE:ore:mt6:ms1;;;;
 
-Morph ista contained in previous morph in lexeme defascistizzazione with entry 25278;DEFASCISTIZZAZIONE;FASCIO:root;ISMO:ismo:mt1:ms2a;ISTA:ista:mt6:ms1;IZZARE:izzare:mt1:ms1;1DE:de:mt1:ms1-G;ZIONE:zione:mt1:ms1-G;
-
-Morph ore contained in previous morph in lexeme estorsore with entry 30593;ESTORSORE;ESTORCERE:pst_ptcp;TORE:ore:mt1:ms1;;;;;
-
-Morph ale not found in lexeme federalismo with entry 31844;FEDERALISMO;BASELESS:unrec;ZIONE:zione:mt8:ms3a;ALE:ale:mt6:ms1-E;ISMO:ismo:mt1:ms1-E;;;
-
-Morph fra not found in lexeme fraintendimento with entry 33855;FRAINTENDIMENTO;INTENDERE:vrb_th;FRA:fra:mt1:ms1;MENTO:mento:mt4:ms1;;;;
+Morph ale contained in previous morph in lexeme federalismo with entry 31844;FEDERALISMO;BASELESS:unrec;ZIONE:zione:mt8:ms3a;ALE:ale:mt6:ms1-E;ISMO:ismo:mt1:ms1-E;;;
 
 Morph degaule not found in lexeme gollista with entry 36909;GOLLISTA;DEGAULE:root;ISTA:ista:mt1:ms1;;;;;
-
-Morph mettere contained in previous morph in lexeme immissione with entry 40297;IMMISSIONE;METTERE:ltn_pp;2IN:in:mt2:ms2b;ZIONE:ione:mt1:ms1;;;;
-
-Morph nuocere contained in previous morph in lexeme innocentista with entry 42219;INNOCENTISTA;NUOCERE:presp;1IN:in:mt1:ms2a-P;CONVERSION:V_A-P;ISTA:ista:mt1:ms1;;;
-
-Morph riparare contained in previous morph in lexeme irreparabile with entry 43439;IRREPARABILE;RIPARARE:vrb_th;BILE:bile:mt1:ms1;1IN:in:mt2:ms1;;;;
-
-Morph ismo contained in previous morph in lexeme narcisista with entry 54794;NARCISISTA;NARCISO:root;ISMO:ismo:mt1:ms2a;ISTA:ista:mt6:ms1;;;;
 
 Morph degaule not found in lexeme neogollista with entry 55364;NEOGOLLISTA;DEGAULE:root;ISTA:ista:mt1:ms1;NEO:neo:mt1:ms1;;;;
 
@@ -62,8 +48,6 @@ Morph s not found in lexeme spregiudicatezza with entry 77582;SPREGIUDICATEZZA;G
 
 Morph humour not found in lexeme umorismo with entry 84166;UMORISMO;HUMOUR:root;ISMO:ismo:mt1:ms1;;;;;
 
-Morph cis not found in lexeme cisalpino with entry 19978;CISALPINO;ALPI:root;1INO:ino:mt1:ms1;CIS:cis:mt1:ms1;;;;
-
 Morph izia contained in previous morph in lexeme inimicizia with entry 42140;INIMICIZIA;AMICO:root;IZIA:izia:mt4:ms1;1IN:in:mt5:ms1;;;;
 
 Morph ìa not found in lexeme pulizia with entry 65325;PULIZIA;PULITO:root;ÌA:ìa:mt4:ms1;;;;;
@@ -79,10 +63,6 @@ Morph object not found in lexeme eccellenza with entry 28673;ECCELLENZA;ECCELLER
 Morph nte contained in previous morph in lexeme luminescenza with entry 48628;LUMINESCENZA;LUMIN:unrec:parad;NTE:nte:mt8:ms2a;NZA:nza:mt6:ms1;;;;
 
 Morph ad not found in lexeme inavvicinabile with entry 41061;INAVVICINABILE;VICINO:root;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;BILE:bile:mt1:ms1;;;
-
-Morph nuocere contained in previous morph in lexeme innocente with entry 42213;INNOCENTE;NUOCERE:presp;1IN:in:mt1:ms2a-P;CONVERSION:V_A-P;;;;
-
-Morph ri contained in previous morph in lexeme irrappresentabile with entry 43412;IRRAPPRESENTABILE;PRESENTARE:vrb_th;ACons:ad:mt2:ms2b-P;RI:ri:mt4:ms2b-P;BILE:bile:mt1:ms1;1IN:in:mt2:ms1;;
 
 Morph nemico contained in previous morph in lexeme inimicare with entry 42139;INIMICARE;NEMICO:root;2IN:in:mt5:ms1-P;CONVERSION:N_V-P;;;;
 
@@ -166,11 +146,7 @@ Morph iero not found in lexeme giornalmente with entry 36299;GIORNALMENTE;GIORNO
 
 Morph de not found in lexeme indefinitamente with entry 41472;INDEFINITAMENTE;FINIRE:vrb_th;2DE:de:mt1:ms2b;CONVERSION:V_A;MENTE:mente:mt1:ms1;;;
 
-Morph nuocere contained in previous morph in lexeme innocentemente with entry 42215;INNOCENTEMENTE;NUOCERE:presp;1IN:in:mt1:ms2a-P;CONVERSION:V_A-P;MENTE:mente:mt1:ms1;;;
-
 Morph s not found in lexeme inspiegabilmente with entry 42462;INSPIEGABILMENTE;PIEGARE:vrb_th;1S:s:mt1:ms1;BILE:bile:mt1:ms1;MENTE:mente:mt4:ms1;;;
-
-Morph riparare contained in previous morph in lexeme irreparabilmente with entry 43441;IRREPARABILMENTE;RIPARARE:vrb_th;BILE:bile:mt1:ms1;1IN:in:mt2:ms1;MENTE:mente:mt4:ms1;;;
 
 Morph ale not found in lexeme mentalmente with entry 51665;MENTALMENTE;MENTE:root;ALE:ale:mt1:ms1;MENTE:mente:mt4:ms1;;;;
 
@@ -196,8 +172,6 @@ Morph s not found in lexeme scombussolare with entry 72827;SCOMBUSSOLARE;BUSSOLA
 
 Morph are contained in previous morph in lexeme alare with entry 5774;ALARE;ALE:root;ALE:are:mt1:ms1;;;;;
 
-Morph tura contained in previous morph in lexeme sturatura with entry 78864;STURATURA;TURARE:unrec:parad;1S:s:mt8:ms2a;TURA:tura:mt1:ms1;;;;
-
 Morph inter not found in lexeme lamellare with entry 46245;LAMELLARE;LAMELLA:root;INTER:inter:mt1:ms1;;;;;
 
 Morph pluri not found in lexeme plurisecolare with entry 62540;PLURISECOLARE;SECOLO:root;ALE:are:mt1:ms1;PLURI:pluri:mt1:ms1;;;;
@@ -211,8 +185,6 @@ Morph s not found in lexeme scompartimento with entry 72849;SCOMPARTIMENTO;PARTE
 Morph in not found in lexeme antinfiammatorio with entry 8059;ANTINFIAMMATORIO;FIAMMA:root;2IN:in:mt1:ms2a-P;CONVERSION:N_V-P;TORIO:torio:mt1:ms1;;;
 
 Morph izzare contained in previous morph in lexeme teatralizzare with entry 80515;TEATRALIZZARE;TEATRO:root;ALE:ale:mt1:ms1;IZZARE:izzare:mt1:ms1;;;;
-
-Morph izzare contained in previous morph in lexeme socializzare with entry 75853;SOCIALIZZARE;SOCIO:root;ALE:ale:mt1:ms2b;IZZARE:izzare:mt1:ms1;;;;
 
 Morph ico contained in previous morph in lexeme simpatizzare with entry 75201;SIMPATIZZARE;SIMPATIA:root;ICO:ico:mt1:ms2b;IZZARE:izzare:mt5:ms1;;;;
 
@@ -254,11 +226,7 @@ Morph izzare contained in previous morph in lexeme familiarizzare with entry 313
 
 Morph izzare contained in previous morph in lexeme criminalizzare with entry 23626;CRIMINALIZZARE;CRIMINE:root;ALE:ale:mt1:ms1;IZZARE:izzare:mt1:ms1;;;;
 
-Morph izzare contained in previous morph in lexeme commercializzare with entry 21127;COMMERCIALIZZARE;COMMERCIO:root;ALE:ale:mt1:ms2a;IZZARE:izzare:mt1:ms1;;;;
-
 Morph ista contained in previous morph in lexeme protagonistico with entry 64945;PROTAGONISTICO;BASELESS:unrec;ISTA:ista:mt8:ms3a;BACKFORMATION:ista;ISTICO:istico:mt6:ms1;;;
-
-Morph ista contained in previous morph in lexeme terroristico with entry 81175;TERRORISTICO;TERRORE:root;ISMO:ismo:mt1:ms1;ISTA:ista:mt6:ms1;;;;
 
 Morph humour not found in lexeme umoristico with entry 84168;UMORISTICO;HUMOUR:root;ISMO:ismo:mt1:ms1;ISTICO:istico:mt6:ms1;;;;
 

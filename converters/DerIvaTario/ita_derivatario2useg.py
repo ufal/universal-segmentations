@@ -76,24 +76,42 @@ def find_morph_boundaries(lexeme, morph, req_start = -1, root_not_found = False,
         # print(morph[:len(morph)-i])
         # morph_start = lexeme.find(morph[:len(morph)-i])
         shortened_morph = morph[:len(morph)-i]
+
+        dist_from_req_start = len(lexeme)+1
+
+        best_start, best_end = -1, -1
+
         for match in re.finditer(shortened_morph, lexeme):
+            current_start, current_end = -1, -1
+
             morph_start, morph_end = match.start(), match.end()
 
             if morph_start != -1:
 
                 #If we are not dealing with prefix
                 if is_prefix == False and morph_start >= req_start:
-                    return morph_start, morph_end
+                    current_start, current_end = morph_start, morph_end
 
                 #Allow one-character interfix for prefixes - e.g. "-"
                 allowed_interfix_len = 1
                 if morph_start <= req_start + allowed_interfix_len and morph_start >= req_start:
-                    return morph_start, morph_end
+                    current_start, current_end = morph_start, morph_end
 
                 #If morph is found before req_start, it should span the previous morph for all affixes
                 if morph_start < req_start:
                     if shortened_morph.startswith(lexeme[morph_start:req_start]):
-                        return morph_start, morph_end
+                        current_start, current_end = morph_start, morph_end
+
+
+                #If more than 1 matches for same length, choose the one closest to req_start
+                if best_start == -1:
+                    best_start, best_end = current_start, current_end
+
+                if current_start != -1 and abs(current_start - req_start) < abs(best_start - req_start):
+                    best_start, best_end = current_start, current_end
+
+        if best_start != -1:
+            return best_start, best_end
 
     return -1,-1
 
@@ -105,40 +123,11 @@ def choose_allomorph_boundaries(lexeme, allomorph_set = set(), req_start = -1, r
     best_boundary = dict()
 
     for morph in allomorph_set:
+        morph_start, morph_end = find_morph_boundaries(lexeme, morph, req_start, root_not_found, is_prefix)
+        if morph_start != -1:
+            best_boundary[morph] = (morph_start, morph_end)
 
-        for i in range(len(morph)):
-            if morph in best_boundary:
-                break
-            # print(i)
-            # print(morph[:len(morph)-i])
-            # morph_start = lexeme.find(morph[:len(morph)-i])
-            shortened_morph = morph[:len(morph)-i]
-            for match in re.finditer(shortened_morph, lexeme):
-                if morph in best_boundary:
-                    continue
-                morph_start, morph_end = match.start(), match.end()
-
-                if morph_start != -1:
-
-                    #If we are not dealing with prefix
-                    if is_prefix == False and morph_start >= req_start:
-                        best_boundary[morph] = (morph_start, morph_end)
-                        break
-
-                    #Allow one-character interfix for prefixes - e.g. "-"
-                    allowed_interfix_len = 1
-                    if morph_start <= req_start + allowed_interfix_len and morph_start >= req_start:
-                        best_boundary[morph] = (morph_start, morph_end)
-                        break
-
-                    #If morph is found before req_start, it should span the previous morph for all affixes
-                    if morph_start < req_start:
-                        if shortened_morph.startswith(lexeme[morph_start:req_start]):
-                            best_boundary[morph] = (morph_start, morph_end)
-                            break
-
-
-#Choose allomorph with best boundary
+    #Choose allomorph with best boundary
     if len(best_boundary) == 0:
         return -1,-1
 
@@ -149,15 +138,18 @@ def choose_allomorph_boundaries(lexeme, allomorph_set = set(), req_start = -1, r
     allo_lengths = [[morph, best_boundary[morph][1]-best_boundary[morph][0]] for morph in best_boundary.keys()]
     allo_lengths = sorted(allo_lengths, key = lambda x: x[1], reverse=True)
 
-    if allo_lengths[0][1] > allo_lengths[1][1]:
-        return best_boundary[allo_lengths[0][0]]
+    # if allo_lengths[0][1] > allo_lengths[1][1]:
+    #     return best_boundary[allo_lengths[0][0]]
 
-    return best_boundary[allo_lengths[0][0]]
-# best_lengths = filter(lambda x: x[1] = allo_lengths[0][1], allo_lengths)
+    #Take all allomorphs with max len
+    best_allo_lengths = filter(lambda x: x[1]==allo_lengths[0][1], allo_lengths)
 
+    #If not, judge by closeness to req_start
+    dist_from_req = [[morph, abs(req_start - best_boundary[morph][0])] for [morph, len] in best_allo_lengths]
+    dist_from_req = sorted(dist_from_req, key = lambda x: x[1])
 
+    return best_boundary[dist_from_req[0][0]]
 
-# print(choose_allomorph_boundaries("imtransfibile", allomorph_set["bile"], req_start=5, is_prefix=False))
 
 
 # print(find_morph_boundaries("vactacaction", "tion"))
@@ -170,10 +162,13 @@ annot_name = "DerIvaTario"
 
 prefixes = {"acons", "anti", "auto", "bi", "tri", "de", "1de", "2de", "dis", "in",
 "micro", "mini", "ri", "1s", "2s", "co", "neo", "1in", "2in", "a", "con",
-"per", "pre", "inter", "intra", "iper", "mega", "mono", "maxi", "multi", "pan", "para", "pro", "tras", "es",
+"per", "pre", "inter", "intra", "iper", "mega", "mono", "maxi", "multi", "pan",
+"cis", "para", "pro", "tras", "es",
 "ex","e", "proto", "stra", "trans", "fra"}
 
 root_types = {"adj_th", "dnt_root", "ltn_pp", "presp", "pst_ptcp", "root", "suppl", "unrec", "vrb_th"}
+
+complex_base_type = {"acr", "cmp", "neocl_cmp", "noun_phr", "parad", "prp_phr", "vrb_phr"}
 
 allomorph_set = {
 "1aio":{"aio"},
@@ -199,6 +194,8 @@ allomorph_set = {
 }
 
 
+# print(choose_allomorph_boundaries("iabedaismo", allomorph_set["ismo"], req_start=0, is_prefix=False))
+
 
 upos_assignment = initialize_all_upos()
 
@@ -208,7 +205,8 @@ for line in infile:
     lexeme = entries[1]
     root = entries[2].split(":")
 
-    # if lexeme!="inimicizia".lower():
+
+    # if lexeme!="narcisisticamente".lower():
     #     continue
 
     if len(root) < 2:
@@ -218,11 +216,22 @@ for line in infile:
         gen_issues.warning("Lexeme %s only has root", lexeme)
 
     upos = assign_upos(lexeme, upos_assignment)
-    features = {"upos": upos, "other_info":""}
-    lex_id = lexicon.add_lexeme(lexeme, lexeme, upos, features=features)
+
+    lex_features = {"upos": upos}
+
+    if root[0] == "BASELESS":
+        lex_features["root"] = "unrec"
+    else:
+        lex_features["root"] = root[0]
+        if root[1] != "root":
+            lex_features["root_type"] = root[1]
+        if len(root) > 2:
+            lex_features["complex_type"] = root[2]
+
+
+    lex_id = lexicon.add_lexeme(lexeme, lexeme, upos, features=lex_features)
 
     info_morphemes = entries[2:]
-
 
 
     # Arranging morphemes according to order in wordform
@@ -247,6 +256,17 @@ for line in infile:
         is_prefix = False
 
         if info_morpheme.split(":")[0] == "conversion":
+            features = {"type":"conversion"}
+            if info_morpheme.endswith("-p"):
+                features["order_info"] = "simultaneous"
+                info_morpheme = info_morpheme[:-2]
+            if info_morpheme.endswith("-g"):
+                features["order_info"] = "undecided"
+                info_morpheme = info_morpheme[:-2]
+            features["conv_type"] = info_morpheme.split(":")[1]
+
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, start, start, features)
+
             continue
 
         if len(info_morpheme.split(":")) < 2:
@@ -301,14 +321,42 @@ for line in infile:
         if morph_start > start:
             if root_not_found:
                 #ADD WARNING HERE?
-                lexicon.add_contiguous_morpheme(lex_id, annot_name, start, morph_start, features={"type":"stem"})
+                features = {"type":"root"}
+                if "root" in lex_features:
+                    features["morpheme"] = lex_features["root"]
+                if "root_type" in lex_features:
+                    features["root_type"] = lex_features["root_type"]
+                if "complex_type" in lex_features:
+                    features["complex_type"] = lex_features["complex_type"]
+                lexicon.add_contiguous_morpheme(lex_id, annot_name, start, morph_start, features)
                 root_not_found = False
             elif post_root:
-                lexicon.add_contiguous_morpheme(lex_id, annot_name, start, morph_start, features={"type":"part_of_stem"})
+                lexicon.add_contiguous_morpheme(lex_id, annot_name, start, morph_start, features={"type":"part_of_root"})
             else:
                 lexicon.add_contiguous_morpheme(lex_id, annot_name, start, morph_start, features={"type":"interfix"})
         #ADD MORPH
-        lexicon.add_contiguous_morpheme(lex_id, annot_name, morph_start, morph_end, features={"morpheme":morpheme})
+        #Find features
+        features = {"morpheme":morpheme}
+        if is_root == True:
+            features["type"] = "root"
+            if "root_type" in lex_features:
+                features["root_type"] = lex_features["root_type"]
+            if "complex_type" in lex_features:
+                features["complex_type"] = lex_features["complex_type"]
+        else:
+            if info_morpheme.endswith("-p"):
+                features["order_info"] = "simultaneous"
+                info_morpheme = info_morpheme[:-2]
+            if info_morpheme.endswith("-g"):
+                features["order_info"] = "undecided"
+                info_morpheme = info_morpheme[:-2]
+
+            if len(info_morpheme.split(":")) > 2:
+                features["mt"] = info_morpheme.split(":")[2][2:]
+            if len(info_morpheme.split(":")) > 3:
+                features["ms"] = info_morpheme.split(":")[3][2:]
+
+        lexicon.add_contiguous_morpheme(lex_id, annot_name, morph_start, morph_end, features)
 
         # print(lexeme, start, end, allomorph)
         start = max(start, morph_end)
