@@ -17,3 +17,7 @@ convert:
 	# for file in connections_adj.csv connections_adv.csv connections_noun.csv connections_rare.csv connections_special_verb.csv connections_verb.csv ; do \
 	# 	./derivbaseru2useg.py <(tail -n +2 $(IN_DIR)$${file}) $(OUT_DIR)$${file}.useg;\
 	# done
+
+clean:
+	rm -rf $(IN_DIR)
+	rm -rf $(OUT_DIR)
