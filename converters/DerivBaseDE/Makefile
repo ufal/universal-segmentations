@@ -5,6 +5,11 @@ OUT_DIR=$(DATADIR)/converted/deu-DerivBaseDE/
 SHELL = bash
 
 
+all:
+	mkdir -p $(OUT_DIR)
+	$(MAKE) download
+	$(MAKE) -s convert > $(OUT_DIR)conversion.log
+
 download: # and unpack, if needed
 	mkdir -p $(IN_DIR)
 	cd $(IN_DIR) && wget https://www.ims.uni-stuttgart.de/documents/ressourcen/lexika/derivbase/derivbase-v2.0.zip

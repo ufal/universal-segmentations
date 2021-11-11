@@ -138,6 +138,7 @@ def convert_string_rule_to_regular_expression(string_rule):
             return '^' + result.group(1), 'e*n$'
 
     # COMMENT: There are still some non-processed derivational rules because of their complexity.
+    logging.warning('Unprocessed rule beuase of its complexity: {}'.format(string_rule))
     return None
 
 
@@ -396,3 +397,4 @@ for entry, segmentation in new_segmented_lemmas.items():
 
 with open(sys.argv[3], mode='w', encoding='U8') as outfile:
     lexicon.save(outfile)
+logging.info(f"Converting completed.")

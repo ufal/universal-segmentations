@@ -5,6 +5,11 @@ OUT_DIR=$(DATADIR)/converted/rus-MorphoDictKE/
 SHELL = bash
 
 
+all:
+	mkdir -p $(OUT_DIR)
+	$(MAKE) download
+	$(MAKE) -s convert > $(OUT_DIR)conversion.log
+
 download: # and unpack, if needed
 	mkdir -p $(IN_DIR)
 	cd $(IN_DIR) && wget https://raw.githubusercontent.com/olesar/Reproducible-Research/master/ruWordFormation/morphodictKE1985.txt

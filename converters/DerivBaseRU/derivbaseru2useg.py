@@ -335,3 +335,4 @@ for entry, segmentation in new_segmented_lemmas.items():
 
 with open(sys.argv[2], mode='w', encoding='U8') as outfile:
     lexicon.save(outfile)
+logging.info(f"Converting completed.")

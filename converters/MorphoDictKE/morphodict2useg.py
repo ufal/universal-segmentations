@@ -119,3 +119,4 @@ with open(sys.argv[1], mode='r', encoding='U8') as infile:
 
 with open(sys.argv[2], mode='w', encoding='U8') as outfile:
     lexicon.save(outfile)
+logging.info(f"Converting completed.")
