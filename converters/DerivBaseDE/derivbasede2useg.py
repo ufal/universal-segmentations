@@ -365,15 +365,24 @@ for entry, segmentation in new_segmented_lemmas.items():
 
     lexeme = lexicon.add_lexeme(lemma, lemma, parse_pos.get(pos[0], 'X'))
 
-    start = 0
+    start, seen_stem = 0, False
     for morph, label in zip(morphs, labels):
         if label != '':
+            seen_stem = True
             lexicon.add_contiguous_morpheme(
                 lex_id=lexeme,
                 annot_name='?TODO?',
                 start=start,
                 end=start + len(morph),
-                features={'morpheme': '?TODO?', 'type': 'UNSEG' if label == 'STEM' else label}
+                features={'type': 'unsegmented' if label == 'STEM' else label}
+            )
+        elif not seen_stem:
+            lexicon.add_contiguous_morpheme(
+                lex_id=lexeme,
+                annot_name='?TODO?',
+                start=start,
+                end=start + len(morph),
+                features={'type': 'prefix'}
             )
         else:
             lexicon.add_contiguous_morpheme(
@@ -381,7 +390,7 @@ for entry, segmentation in new_segmented_lemmas.items():
                 annot_name='?TODO?',
                 start=start,
                 end=start + len(morph),
-                features={'morpheme': '?TODO?'}
+                features={'type': 'suffix'}
             )
         start = start+len(morph)
 
