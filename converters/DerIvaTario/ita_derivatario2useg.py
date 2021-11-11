@@ -322,8 +322,7 @@ for line in infile:
             if root_not_found:
                 #ADD WARNING HERE?
                 features = {"type":"root"}
-                if "root" in lex_features:
-                    features["morpheme"] = lex_features["root"]
+                features["morpheme"] = lex_features["root"]
                 if "root_type" in lex_features:
                     features["root_type"] = lex_features["root_type"]
                 if "complex_type" in lex_features:
