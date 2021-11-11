@@ -316,6 +316,7 @@ while any_change is False:
 lexicon = SegLex()
 
 parse_pos = {'adj': 'ADJ', 'noun': 'NOUN', 'verb': 'VERB', 'adv': 'ADV', 'num': 'NUM'}
+parse_type = {'S': 'suffix', 'E': 'ending', 'P': 'prefix'}
 for entry, segmentation in new_segmented_lemmas.items():
     morphs, labels = segmentation
     lemma, pos = entry.split('_')
@@ -324,13 +325,12 @@ for entry, segmentation in new_segmented_lemmas.items():
 
     start = 0
     for morph, label in zip(morphs, labels):
-        # print(morph, label, start, start + len(morph) - 1)
         lexicon.add_contiguous_morpheme(
             lex_id=lexeme,
             annot_name='?TODO?',
             start=start,
             end=start + len(morph),
-            features={'morpheme': '?TODO?', 'type': 'UNSEG' if label == 'STEM' else label}
+            features={'type': 'unsegmented' if label == 'STEM' else parse_type.get(label[0], '')}
         )
         start = start+len(morph)
 
