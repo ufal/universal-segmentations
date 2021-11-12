@@ -2,6 +2,8 @@ Morph ri not found in lexeme autorassicurazione with entry 10512;AUTORASSICURAZI
 
 Morph ione not found in lexeme concussore with entry 21626;CONCUSSORE;CONCUSSO:root;ZIONE:ione:mt1:ms1;TORE:ore:mt6:ms1;;;;
 
+Morph ista contained in previous morph in lexeme defascistizzazione with entry 25278;DEFASCISTIZZAZIONE;FASCIO:root;ISMO:ismo:mt1:ms2a;ISTA:ista:mt6:ms1;IZZARE:izzare:mt1:ms1;1DE:de:mt1:ms1-G;ZIONE:zione:mt1:ms1-G;
+
 Morph ale contained in previous morph in lexeme federalismo with entry 31844;FEDERALISMO;BASELESS:unrec;ZIONE:zione:mt8:ms3a;ALE:ale:mt6:ms1-E;ISMO:ismo:mt1:ms1-E;;;
 
 Morph degaule not found in lexeme gollista with entry 36909;GOLLISTA;DEGAULE:root;ISTA:ista:mt1:ms1;;;;;
@@ -48,11 +50,11 @@ Morph s not found in lexeme spregiudicatezza with entry 77582;SPREGIUDICATEZZA;G
 
 Morph humour not found in lexeme umorismo with entry 84166;UMORISMO;HUMOUR:root;ISMO:ismo:mt1:ms1;;;;;
 
-Morph izia contained in previous morph in lexeme inimicizia with entry 42140;INIMICIZIA;AMICO:root;IZIA:izia:mt4:ms1;1IN:in:mt5:ms1;;;;
+Morph amico not found in lexeme inimicizia with entry 42140;INIMICIZIA;AMICO:root;IZIA:izia:mt4:ms1;1IN:in:mt5:ms1;;;;
 
 Morph ìa not found in lexeme pulizia with entry 65325;PULIZIA;PULITO:root;ÌA:ìa:mt4:ms1;;;;;
 
-Morph nza contained in previous morph in lexeme ambivalenza with entry 6828;AMBIVALENZA;VALERE:presp;AMBI:ambi:mt1:ms1;NZA:nza:mt1:ms1;;;;
+Morph ambi not found in lexeme ambivalenza with entry 6828;AMBIVALENZA;VALERE:presp;AMBI:ambi:mt1:ms1;NZA:nza:mt1:ms1;;;;
 
 Morph nte contained in previous morph in lexeme concomitanza with entry 21589;CONCOMITANZA;BASELESS:unrec;NTE:nte:mt8:ms3a;CO:con:mt1:ms1;NZA:nza:mt6:ms1;;;
 
@@ -132,8 +134,6 @@ Morph ri not found in lexeme rintuzzare with entry 68748;RINTUZZARE;BASELESS:unr
 
 Morph ri not found in lexeme rinvenire with entry 68760;RINVENIRE;VENIRE:vrb_th;RI:ri:mt2:ms2a-P;2IN:in:mt1:ms2b-P;;;;
 
-Morph izzare contained in previous morph in lexeme rivitalizzare with entry 69331;RIVITALIZZARE;VITA:root;ALE:ale:mt1:ms1;IZZARE:izzare:mt1:ms1;RI:ri:mt1:ms1;;;
-
 Morph nza not found in lexeme coscienziosamente with entry 23103;COSCIENZIOSAMENTE;BASELESS:unrec;NTE:nte:mt8:ms3a;NZA:nza:mt6:ms2b;OSO:ioso:mt1:ms1;MENTE:mente:mt1:ms1;;
 
 Morph ioso not found in lexeme coscienziosamente with entry 23103;COSCIENZIOSAMENTE;BASELESS:unrec;NTE:nte:mt8:ms3a;NZA:nza:mt6:ms2b;OSO:ioso:mt1:ms1;MENTE:mente:mt1:ms1;;
@@ -148,10 +148,6 @@ Morph de not found in lexeme indefinitamente with entry 41472;INDEFINITAMENTE;FI
 
 Morph s not found in lexeme inspiegabilmente with entry 42462;INSPIEGABILMENTE;PIEGARE:vrb_th;1S:s:mt1:ms1;BILE:bile:mt1:ms1;MENTE:mente:mt4:ms1;;;
 
-Morph ale not found in lexeme mentalmente with entry 51665;MENTALMENTE;MENTE:root;ALE:ale:mt1:ms1;MENTE:mente:mt4:ms1;;;;
-
-Morph mente contained in previous morph in lexeme mentalmente with entry 51665;MENTALMENTE;MENTE:root;ALE:ale:mt1:ms1;MENTE:mente:mt4:ms1;;;;
-
 Morph nza not found in lexeme prudenzialmente with entry 65080;PRUDENZIALMENTE;BASELESS:unrec;NTE:nte:mt8:ms3a;NZA:nza:mt6:ms1;ALE:iale:mt1:ms1;MENTE:mente:mt4:ms1;;
 
 Morph iale not found in lexeme prudenzialmente with entry 65080;PRUDENZIALMENTE;BASELESS:unrec;NTE:nte:mt8:ms3a;NZA:nza:mt6:ms1;ALE:iale:mt1:ms1;MENTE:mente:mt4:ms1;;
@@ -162,15 +158,11 @@ Morph s not found in lexeme spregiudicatamente with entry 77581;SPREGIUDICATAMEN
 
 Morph mente contained in previous morph in lexeme violentemente with entry 87295;VIOLENTEMENTE;VIOLENTO:adj_th;MENTE:mente:mt1:ms1;MENTE:mente:mt1:ms1;;;;
 
-Morph izzare contained in previous morph in lexeme strumentalizzare with entry 78766;STRUMENTALIZZARE;BASELESS:unrec;MENTO:mento:mt8:ms3a;ALE:ale:mt1:ms1;IZZARE:izzare:mt1:ms1;;;
-
 Morph tore not found in lexeme stroncare with entry 78732;STRONCARE;TRONCO:root;2S:s:mt1:ms2a-P;TORE:tore:mt1:ms1-P;;;;
 
 Morph s not found in lexeme scongiurare with entry 72891;SCONGIURARE;GIURARE:vrb_th;2S:s:mt1:ms2a-P;CO:con:mt1:ms2b-P;;;;
 
 Morph s not found in lexeme scombussolare with entry 72827;SCOMBUSSOLARE;BUSSOLA:root;2S:s:mt1:ms2a-P;CON:con:mt1:ms2b-P;CONVERSION:N_V-P;;;
-
-Morph are contained in previous morph in lexeme alare with entry 5774;ALARE;ALE:root;ALE:are:mt1:ms1;;;;;
 
 Morph inter not found in lexeme lamellare with entry 46245;LAMELLARE;LAMELLA:root;INTER:inter:mt1:ms1;;;;;
 
@@ -184,47 +176,15 @@ Morph s not found in lexeme scompartimento with entry 72849;SCOMPARTIMENTO;PARTE
 
 Morph in not found in lexeme antinfiammatorio with entry 8059;ANTINFIAMMATORIO;FIAMMA:root;2IN:in:mt1:ms2a-P;CONVERSION:N_V-P;TORIO:torio:mt1:ms1;;;
 
-Morph izzare contained in previous morph in lexeme teatralizzare with entry 80515;TEATRALIZZARE;TEATRO:root;ALE:ale:mt1:ms1;IZZARE:izzare:mt1:ms1;;;;
-
 Morph ico contained in previous morph in lexeme simpatizzare with entry 75201;SIMPATIZZARE;SIMPATIA:root;ICO:ico:mt1:ms2b;IZZARE:izzare:mt5:ms1;;;;
-
-Morph izzare contained in previous morph in lexeme sacralizzare with entry 70538;SACRALIZZARE;SACRO:root;ALE:ale:mt1:ms1;IZZARE:izzare:mt1:ms1;;;;
-
-Morph izzare contained in previous morph in lexeme regolarizzare with entry 67263;REGOLARIZZARE;REGOLA:root;ALE:ale:mt1:ms2b;IZZARE:izzare:mt1:ms2a;;;;
 
 Morph izzare contained in previous morph in lexeme razionalizzare with entry 66830;RAZIONALIZZARE;RAGIONE:suppl;ALE:ale:mt1:ms2b;IZZARE:izzare:mt1:ms1;;;;
 
-Morph izzare contained in previous morph in lexeme radicalizzare with entry 66148;RADICALIZZARE;RADICE:root;ALE:ale:mt1:ms2b;IZZARE:izzare:mt1:ms1;;;;
-
-Morph izzare contained in previous morph in lexeme personalizzare with entry 60906;PERSONALIZZARE;PERSONA:root;ALE:ale:mt1:ms1;IZZARE:izzare:mt1:ms1;;;;
-
-Morph izzare contained in previous morph in lexeme penalizzare with entry 60300;PENALIZZARE;PENA:root;ALE:ale:mt1:ms1;IZZARE:izzare:mt1:ms1;;;;
-
-Morph izzare contained in previous morph in lexeme normalizzare with entry 56189;NORMALIZZARE;NORMA:root;ALE:ale:mt1:ms2b;IZZARE:izzare:mt1:ms1;;;;
-
-Morph izzare contained in previous morph in lexeme neutralizzare with entry 55544;NEUTRALIZZARE;NEUTRO:root;ALE:ale:mt1:ms1;IZZARE:izzare:mt1:ms1;;;;
-
-Morph izzare contained in previous morph in lexeme nazionalizzare with entry 55053;NAZIONALIZZARE;NAZIONE:root;ALE:ale:mt1:ms1;IZZARE:izzare:mt1:ms1;;;;
-
-Morph izzare contained in previous morph in lexeme medicalizzare with entry 51283;MEDICALIZZARE;MEDICO:root;ALE:ale:mt1:ms1;IZZARE:izzare:mt1:ms1;;;;
-
 Morph izzare contained in previous morph in lexeme localizzare with entry 48075;LOCALIZZARE;LUOGO:suppl;ALE:ale:mt7:ms1;IZZARE:izzare:mt1:ms1;;;;
-
-Morph izzare contained in previous morph in lexeme liberalizzare with entry 47449;LIBERALIZZARE;LIBERO:root;ALE:ale:mt1:ms2a;IZZARE:izzare:mt1:ms1;;;;
-
-Morph izzare contained in previous morph in lexeme internazionalizzare with entry 42748;INTERNAZIONALIZZARE;NAZIONE:root;ALE:ale:mt1:ms1;INTER:inter:mt1:ms1;IZZARE:izzare:mt1:ms1;;;
-
-Morph izzare contained in previous morph in lexeme generalizzare with entry 35455;GENERALIZZARE;GENERE:root;ALE:ale:mt1:ms2b;IZZARE:izzare:mt1:ms1;;;;
-
-Morph izzare contained in previous morph in lexeme formalizzare with entry 33531;FORMALIZZARE;FORMA:root;ALE:ale:mt1:ms1;IZZARE:izzare:mt1:ms1;;;;
 
 Morph izzare contained in previous morph in lexeme focalizzare with entry 33218;FOCALIZZARE;FUOCO:suppl;ALE:ale:mt7:ms2b;IZZARE:izzare:mt1:ms1;;;;
 
-Morph izzare contained in previous morph in lexeme finalizzare with entry 32705;FINALIZZARE;FINE:root;ALE:ale:mt1:ms1;IZZARE:izzare:mt1:ms1;;;;
-
 Morph izzare contained in previous morph in lexeme familiarizzare with entry 31382;FAMILIARIZZARE;FAMIGLIA:suppl;ALE:are:mt7:ms2a;IZZARE:izzare:mt1:ms1;;;;
-
-Morph izzare contained in previous morph in lexeme criminalizzare with entry 23626;CRIMINALIZZARE;CRIMINE:root;ALE:ale:mt1:ms1;IZZARE:izzare:mt1:ms1;;;;
 
 Morph ista contained in previous morph in lexeme protagonistico with entry 64945;PROTAGONISTICO;BASELESS:unrec;ISTA:ista:mt8:ms3a;BACKFORMATION:ista;ISTICO:istico:mt6:ms1;;;
 

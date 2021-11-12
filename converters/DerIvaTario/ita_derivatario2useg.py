@@ -66,7 +66,7 @@ def longest_common_prefix(s, t):
         lcp_len += 1
     return lcp_len-1
 
-def find_morph_boundaries(lexeme, morph, req_start = -1, root_not_found = False, is_prefix = False):
+def find_morph_boundaries(lexeme, morph, req_start = -1, is_last = False, is_prefix = False):
     '''Finds boundaries of allomorph'''
     # if is_prefix:
     #     return 0, longest_common_prefix(lexeme, morph)
@@ -90,7 +90,10 @@ def find_morph_boundaries(lexeme, morph, req_start = -1, root_not_found = False,
 
                 #If we are not dealing with prefix
                 if is_prefix == False and morph_start >= req_start:
-                    current_start, current_end = morph_start, morph_end
+                    if is_last==False and morph_end == len(lexeme):
+                        pass
+                    else:
+                        current_start, current_end = morph_start, morph_end
 
                 #Allow one-character interfix for prefixes - e.g. "-"
                 allowed_interfix_len = 1
@@ -116,7 +119,7 @@ def find_morph_boundaries(lexeme, morph, req_start = -1, root_not_found = False,
     return -1,-1
 
 
-def choose_allomorph_boundaries(lexeme, allomorph_set = set(), req_start = -1, root_not_found = False, is_prefix = False):
+def choose_allomorph_boundaries(lexeme, allomorph_set = set(), req_start = -1, is_last = False, is_prefix = False):
     '''Finds boundaries of allomorph'''
     # if is_prefix:
     #     return 0, longest_common_prefix(lexeme, morph)
@@ -250,7 +253,9 @@ for line in infile:
     start = 0
     root_not_found = False
     post_root = False
-    for info_morpheme in morpheme_seq:
+    for info_morpheme_idx in range(len(morpheme_seq)):
+        info_morpheme = morpheme_seq[info_morpheme_idx]
+        is_last = info_morpheme_idx == len(morpheme_seq)-1
 
         is_root = False
         is_prefix = False
@@ -294,7 +299,7 @@ for line in infile:
             current_allomorph_set = current_allomorph_set.union(allomorph_set[morpheme])
 
 
-        morph_start, morph_end = choose_allomorph_boundaries(lexeme, current_allomorph_set, start, root_not_found, is_prefix)
+        morph_start, morph_end = choose_allomorph_boundaries(lexeme, current_allomorph_set, start, is_last, is_prefix)
 
         # print("New field: ")
         # print(info_morpheme)
