@@ -109,7 +109,7 @@ for word, morphs, morphemes, uncertainty_level in solved_words+solved_in_2010:
     morpheme_cl.Update(morphs)
 
 lexicon = SegLex()
-for word,morphs,morphemes,level in solved_words+solved_in_2010:
+for word,morphs,morphemes,level in solved_words:
     lexeme=lexicon.add_lexeme(form=word, lemma=word, pos="none")
     morph_classes=morpheme_cl.Guess(morphs)
     idx=0
@@ -119,12 +119,31 @@ for word,morphs,morphemes,level in solved_words+solved_in_2010:
         len_=len(morph)
         lexicon.add_contiguous_morpheme(
             lex_id=lexeme,
-            annot_name="none",
+            annot_name="MorphoChallenge",
             start=idx,
             end=idx+len_,
             features={"morph": morph, "morpheme":morpheme, "type":morph_classes[i]},
         )
         idx+=len_
+
+for word,morphs,morphemes,level in solved_in_2010:
+    lexeme=lexicon.add_lexeme(form=word, lemma=word, pos="none")
+    morph_classes=morpheme_cl.Guess(morphs)
+    idx=0
+    for i in range(len(morphs)):
+        morph=morphs[i]
+        morpheme=morphemes[i]
+        len_=len(morph)
+        lexicon.add_contiguous_morpheme(
+            lex_id=lexeme,
+            annot_name="MorphoChallenge2010",
+            start=idx,
+            end=idx+len_,
+            features={"morph": morph, "morpheme":morpheme, "type":morph_classes[i]},
+        )
+        idx+=len_
+
+
 
 fout=open(sys.argv[3], "w", encoding='utf-8')
 lexicon.save(fout)

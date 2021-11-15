@@ -44,7 +44,7 @@ for word,morphs in data:
         len_=len(morph)
         lexicon.add_contiguous_morpheme(
             lex_id=lexeme,
-            annot_name="none",
+            annot_name="MorphoChallenge2005",
             start=idx,
             end=idx+len_,
             features={"morph": morph, "morpheme":morph, "type":morph_classes[i]},
