@@ -232,7 +232,7 @@ def main():
 
                 for index,morph in enumerate(morphs):
                     seg_lexicon.add_contiguous_morpheme(lex_id=seg_lexeme,
-                                                        annot_name="?TODO",
+                                                        annot_name="Word Formation Latin",
                                                         start=morph[1][0],
                                                         end=morph[1][1],
                                                         features={"type": morphemelist[index][1],
