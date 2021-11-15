@@ -7,6 +7,7 @@ sys.path.append('../../src/')
 from useg import SegLex
 import difftypes
 import morpheme_guesser
+import morpheme_classifier
 indir="../../data/original/MorphoChallenge"
 outdir="../../data/converted/MorphoChallenge"
 if(len(sys.argv)!=4):
@@ -101,9 +102,16 @@ for word, morphemes in data_new:
         out_morphemes.append(morpheme)
     solved_in_2010.append([word, out_morphs, out_morphemes, 0])
 
+
+
+morpheme_cl=morpheme_classifier.MorphemeClassifier()
+for word, morphs, morphemes, uncertainty_level in solved_words+solved_in_2010:
+    morpheme_cl.Update(morphs)
+
 lexicon = SegLex()
 for word,morphs,morphemes,level in solved_words+solved_in_2010:
     lexeme=lexicon.add_lexeme(form=word, lemma=word, pos="none")
+    morph_classes=morpheme_cl.Guess(morphs)
     idx=0
     for i in range(len(morphs)):
         morph=morphs[i]
@@ -114,7 +122,7 @@ for word,morphs,morphemes,level in solved_words+solved_in_2010:
             annot_name="none",
             start=idx,
             end=idx+len_,
-            features={"morph": morph, "morpheme":morpheme, "type":"none"},
+            features={"morph": morph, "morpheme":morpheme, "type":morph_classes[i]},
         )
         idx+=len_
 

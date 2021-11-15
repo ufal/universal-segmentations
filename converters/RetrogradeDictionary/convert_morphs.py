@@ -21,12 +21,10 @@ for line in fin:
     line=line.strip()
     if(line==""):
         continue
-    line=line.split("\t")
-    word=line[0]
-    segmentations=line[1].split(", ")
-    for seg in segmentations:
-        morphs=seg.split(" ")
-        data.append([word,morphs])
+    line=line.replace("/","")
+    morphs=line.split("-")
+    word="".join(morphs)
+    data.append([word,morphs])
 
 fin.close()
 

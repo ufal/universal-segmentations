@@ -1,3 +1,5 @@
+from collections import defaultdict,Counter
+import difftypes
 #does the string start with the given substring?
 def starts_with(txt, substr):
     lent=len(txt)
@@ -11,7 +13,7 @@ def starts_with(txt, substr):
     else:
         return None
 
-# If we want to segment a word to morphs but only know morphemes, 
+# If we want to segment a word to morphs but only know morphemes,
 # then we may collect all the possible morph realizations of each morpheme
 # and then try to find out if there is a combination of the morphs that produces the word.
 # this method is the bruteforce part of this approach
@@ -48,10 +50,10 @@ def find_combination(subword, candidates):
 # this generates morph candidates for the approach described above, except for the fact
 # that the candidate list contains uncertainty levels
 # [[(morph1, uncertainty), (morph2, uncertainty),..],..]
-# uncertainty is basically the level of aggressiveness of the approach. the higher the number, 
+# uncertainty is basically the level of aggressiveness of the approach. the higher the number,
 # the higher chance of match, but the higher the chance of making a mistake
 # the candidates need to be filtered first with get_filtered_candidates before calling the find_combination()
-# word is word. morphemes is a list of morpheme strings. the other two are candidate mappings between morphemes and morphs with occurance numbers. 
+# word is word. morphemes is a list of morpheme strings. the other two are candidate mappings between morphemes and morphs with occurance numbers.
 # (it only matters if it was seen ones or more times. All the candidates are used but have different priorities)
 # virtual morphemes should start with + and will not be subject to shortening, etc.
 def generate_candidates(word, morphemes, morpheme2morph={},virtual_morpheme2morph={}):
@@ -110,7 +112,7 @@ def get_filtered_candidates(candidates, uncertainty_level):
 #   guess_morphs("slowed", ["slow", "+PAST"], {"s":{"es":12} }, {"+PAST":{"d":124, "ed":14}, "+PL":{"s":13},...}}
 #output: ["slowed", ["slow","ed"], ["slow", "+PAST"], 1]
 #        ie [word, morphs, morphemes, uncertainty level - the higher the worse]
-#please note that morphemes may differ from the input ones. e.g. in case that there is "-" in the input 
+#please note that morphemes may differ from the input ones. e.g. in case that there is "-" in the input
 #word and there was no morpheme representing it.
 #
 #the dictionaries are {morpheme:Counter({morph1:num_occurances,morph2:num2...  }), morpheme2:  }

@@ -1,6 +1,6 @@
 DATADIR=../../data/
 IN_DIR=$(DATADIR)/original/PersianMorphSegLex/
-OUT_DIR=$(DATADIR)/converted/fa-PersianMorphSegLex/
+OUT_DIR=$(DATADIR)/converted/fas-PersianMorphSegLex/
 
 SHELL = bash
 

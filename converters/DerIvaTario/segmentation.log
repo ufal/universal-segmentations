@@ -1,178 +1,60 @@
-Morph in contained in previous morph in lexeme antimmigrazione with entry 8045;ANTIMMIGRAZIONE;MIGRARE:vrb_th;2IN:in:mt1:ms1;ZIONE:zione:mt1:ms1;ANTI:anti:mt1:ms1;;;
-
-Morph are contained in previous morph in lexeme antiparlamentarismo with entry 8080;ANTIPARLAMENTARISMO;PARLARE:vrb_th;MENTO:mento:mt1:ms2b;ALE:are:mt1:ms1-E;ISMO:ismo:mt1:ms1-E;ANTI:anti:mt1:ms1;;
-
-Morph ismo contained in previous morph in lexeme antisionista with entry 8156;ANTISIONISTA;SION:root;ISMO:ismo:mt1:ms1;ANTI:anti:mt1:ms1;ISTA:ista:mt6:ms1;;;
-
-Morph ismo contained in previous morph in lexeme antisocialista with entry 8161;ANTISOCIALISTA;SOCIO:root;ALE:ale:mt1:ms2b;ISMO:ismo:mt1:ms2a;ANTI:anti:mt1:ms1;ISTA:ista:mt6:ms1;;
-
-Morph ismo contained in previous morph in lexeme antistalinista with entry 8172;ANTISTALINISTA;STALIN:root;ISMO:ismo:mt1:ms1;ANTI:anti:mt1:ms1;ISTA:ista:mt6:ms1;;;
-
-Morph ista contained in previous morph in lexeme antistalinista with entry 8172;ANTISTALINISTA;STALIN:root;ISMO:ismo:mt1:ms1;ANTI:anti:mt1:ms1;ISTA:ista:mt6:ms1;;;
-
-Morph tour contained in previous morph in lexeme antiturismo with entry 8200;ANTITURISMO;TOUR:root;ISMO:ismo:mt1:ms2a;ANTI:anti:mt1:ms1;;;;
-
-Morph ismo contained in previous morph in lexeme antivivisezionista with entry 8207;ANTIVIVISEZIONISTA;VIVISEZIONE:root:cmp;ANTI:anti:mt1:ms1;ISMO:ismo:mt1:ms1;ISTA:ista:mt6:ms1;;;
-
-Morph zione not found in lexeme apprensione with entry 8530;APPRENSIONE;BASELESS:unrec;ZIONE:zione:mt8:ms3a;;;;;
-
-Morph ad contained in previous morph in lexeme autoapprovvigionamento with entry 10361;AUTOAPPROVVIGIONAMENTO;PROVVEDERE:ltn_pp;ZIONE:gione:mt4:ms2a;ACons:ad:mt1:ms2a-P;CONVERSION:N_V-P;AUTO:auto:mt1:ms1;MENTO:mento:mt1:ms1;
-
-Morph zione not found in lexeme autoconfessione with entry 10389;AUTOCONFESSIONE;CONFESSARE:ltn_pp;AUTO:auto:mt1:ms1;ZIONE:zione:mt1:ms1;;;;
-
-Morph zione not found in lexeme autodecisione with entry 10406;AUTODECISIONE;DECIDERE:pst_ptcp;AUTO:auto:mt1:ms1;ZIONE:zione:mt1:ms1;;;;
-
-Morph zione not found in lexeme autolesionista with entry 10459;AUTOLESIONISTA;LEDERE:pst_ptcp;AUTO:auto:mt1:ms1;ZIONE:zione:mt1:ms1;ISMO:ismo:mt1:ms1;ISTA:ista:mt6:ms1;;
-
-Morph ad contained in previous morph in lexeme autorassicurazione with entry 10512;AUTORASSICURAZIONE;SICURO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;AUTO:auto:mt1:ms1;ZIONE:zione:mt1:ms1;
+Morph ri not found in lexeme autorassicurazione with entry 10512;AUTORASSICURAZIONE;SICURO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;AUTO:auto:mt1:ms1;ZIONE:zione:mt1:ms1;
 
 Morph ione not found in lexeme concussore with entry 21626;CONCUSSORE;CONCUSSO:root;ZIONE:ione:mt1:ms1;TORE:ore:mt6:ms1;;;;
 
-Morph ismo contained in previous morph in lexeme disfattista with entry 27129;DISFATTISTA;DISFATTA:root;ISMO:ismo:mt1:ms1;ISTA:ista:mt6:ms1;;;;
+Morph ista contained in previous morph in lexeme defascistizzazione with entry 25278;DEFASCISTIZZAZIONE;FASCIO:root;ISMO:ismo:mt1:ms2a;ISTA:ista:mt6:ms1;IZZARE:izzare:mt1:ms1;1DE:de:mt1:ms1-G;ZIONE:zione:mt1:ms1-G;
 
-Morph ismo contained in previous morph in lexeme divisionista with entry 27562;DIVISIONISTA;DIVIDERE:pst_ptcp;ZIONE:ione:mt1:ms2a;ISMO:ismo:mt1:ms2a;ISTA:ista:mt6:ms1;;;
-
-Morph zione not found in lexeme emulsione with entry 29582;EMULSIONE;BASELESS:unrec;ZIONE:zione:mt8:ms3a;;;;;
-
-Morph ismo contained in previous morph in lexeme esistenzialista with entry 30305;ESISTENZIALISTA;ESISTERE:vrb_th;CONVERSION:V_A;ALE:iale:mt1:ms1;ISMO:ismo:mt1:ms2a;ISTA:ista:mt6:ms1;;
-
-Morph eo contained in previous morph in lexeme europeista with entry 30835;EUROPEISTA;EUROPA:root;EO:eo:mt1:ms1;ISTA:ista:mt1:ms1;;;;
-
-Morph zione not found in lexeme federalismo with entry 31844;FEDERALISMO;BASELESS:unrec;ZIONE:zione:mt8:ms3a;ALE:ale:mt6:ms1-E;ISMO:ismo:mt1:ms1-E;;;
-
-Morph fra contained in previous morph in lexeme fraintendimento with entry 33855;FRAINTENDIMENTO;INTENDERE:vrb_th;FRA:fra:mt1:ms1;MENTO:mento:mt4:ms1;;;;
+Morph ale contained in previous morph in lexeme federalismo with entry 31844;FEDERALISMO;BASELESS:unrec;ZIONE:zione:mt8:ms3a;ALE:ale:mt6:ms1-E;ISMO:ismo:mt1:ms1-E;;;
 
 Morph degaule not found in lexeme gollista with entry 36909;GOLLISTA;DEGAULE:root;ISTA:ista:mt1:ms1;;;;;
 
-Morph nuocere contained in previous morph in lexeme innocentista with entry 42219;INNOCENTISTA;NUOCERE:presp;1IN:in:mt1:ms2a-P;CONVERSION:V_A-P;ISTA:ista:mt1:ms1;;;
-
-Morph ismo contained in previous morph in lexeme isolazionista with entry 43627;ISOLAZIONISTA;ISOLARE:vrb_th;ZIONE:zione:mt1:ms1-P;ISMO:ismo:mt1:ms1-P;ISTA:ista:mt6:ms1;;;
-
-Morph maxi contained in previous morph in lexeme maxi-tamponamento with entry 51026;MAXI-TAMPONAMENTO;TAMPONARE:vrb_th;MENTO:mento:mt1:ms1;MAXI:maxi:mt1:ms1;;;;
-
-Morph multi contained in previous morph in lexeme multiculturalismo with entry 54307;MULTICULTURALISMO;CULTURA:root;ALE:ale:mt1:ms1-E;ISMO:ismo:mt1:ms1-E;MULTI:multi:mt1:ms1;;;
-
-Morph multi contained in previous morph in lexeme multilateralismo with entry 54314;MULTILATERALISMO;LATO:suppl;ALE:ale:mt7:ms1;MULTI:multi:mt1:ms1;ISMO:ismo:mt1:ms1;;;
-
-Morph multi contained in previous morph in lexeme multipartitismo with entry 54328;MULTIPARTITISMO;PARTITO:root;MULTI:multi:mt1:ms1-P;ISMO:ismo:mt1:ms1-P;;;;
-
-Morph ismo contained in previous morph in lexeme narcisista with entry 54794;NARCISISTA;NARCISO:root;ISMO:ismo:mt1:ms2a;ISTA:ista:mt6:ms1;;;;
-
 Morph degaule not found in lexeme neogollista with entry 55364;NEOGOLLISTA;DEGAULE:root;ISTA:ista:mt1:ms1;NEO:neo:mt1:ms1;;;;
-
-Morph ot contained in previous morph in lexeme otturazione with entry 58147;OTTURAZIONE;TURARE:unrec:parad;OB:ot:mt8:ms2a;ZIONE:zione:mt1:ms1;;;;
-
-Morph are contained in previous morph in lexeme parlamentarismo with entry 59359;PARLAMENTARISMO;PARLARE:vrb_th;MENTO:mento:mt1:ms2b;ALE:are:mt1:ms1-E;ISMO:ismo:mt1:ms1-E;;;
 
 Morph ista contained in previous morph in lexeme protagonismo with entry 64941;PROTAGONISMO;BASELESS:unrec;ISTA:ista:mt8:ms3a;BACKFORMATION:ista;;;;
 
-Morph proto contained in previous morph in lexeme protociclismo with entry 64984;PROTOCICLISMO;CICLO:root;ISMO:ismo:mt1:ms1;PROTO:proto:mt1:ms1;;;;
+Morph ri not found in lexeme raffigurazione with entry 66255;RAFFIGURAZIONE;FIGURA:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms2b-P;CONVERSION:N_V-P;ZIONE:zione:mt1:ms1;;
 
-Morph ri contained in previous morph in lexeme raffigurazione with entry 66255;RAFFIGURAZIONE;FIGURA:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms2b-P;CONVERSION:N_V-P;ZIONE:zione:mt1:ms1;;
+Morph ri not found in lexeme rafforzamento with entry 66263;RAFFORZAMENTO;FORZA:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;MENTO:mento:mt1:ms1;;
 
-Morph ri contained in previous morph in lexeme rafforzamento with entry 66263;RAFFORZAMENTO;FORZA:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;MENTO:mento:mt1:ms1;;
+Morph ri not found in lexeme raffreddamento with entry 66266;RAFFREDDAMENTO;FREDDO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;MENTO:mento:mt1:ms1;;
 
-Morph ri contained in previous morph in lexeme raffreddamento with entry 66266;RAFFREDDAMENTO;FREDDO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;MENTO:mento:mt1:ms1;;
+Morph ri not found in lexeme raggruppamento with entry 66323;RAGGRUPPAMENTO;GRUPPO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;MENTO:mento:mt1:ms1;;
 
-Morph ri contained in previous morph in lexeme raggruppamento with entry 66323;RAGGRUPPAMENTO;GRUPPO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;MENTO:mento:mt1:ms1;;
+Morph ri not found in lexeme ragguardevole with entry 66328;RAGGUARDEVOLE;GUARDARE:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms2b-P;EVOLE:evole:mt1:ms1-P;;;
 
-Morph ri contained in previous morph in lexeme ragguardevole with entry 66328;RAGGUARDEVOLE;GUARDARE:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms2b-P;EVOLE:evole:mt1:ms1-P;;;
+Morph ri not found in lexeme rallegramento with entry 66415;RALLEGRAMENTO;ALLEGRO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;MENTO:mento:mt1:ms1;;
 
-Morph ri contained in previous morph in lexeme rallegramento with entry 66415;RALLEGRAMENTO;ALLEGRO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;MENTO:mento:mt1:ms1;;
+Morph ri not found in lexeme rallentamento with entry 66418;RALLENTAMENTO;LENTO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;MENTO:mento:mt1:ms1;;
 
-Morph ri contained in previous morph in lexeme rallentamento with entry 66418;RALLENTAMENTO;LENTO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;MENTO:mento:mt1:ms1;;
+Morph ri not found in lexeme rallentatore with entry 66421;RALLENTATORE;LENTO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;TORE:tore:mt1:ms1;;
 
-Morph ri contained in previous morph in lexeme rallentatore with entry 66421;RALLENTATORE;LENTO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;TORE:tore:mt1:ms1;;
+Morph ri not found in lexeme rammemorazione with entry 66471;RAMMEMORAZIONE;MEMORE:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;ZIONE:zione:mt1:ms1;;
 
-Morph ri contained in previous morph in lexeme rammemorazione with entry 66471;RAMMEMORAZIONE;MEMORE:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;ZIONE:zione:mt1:ms1;;
+Morph ri not found in lexeme rammollimento with entry 66476;RAMMOLLIMENTO;MOLLE:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;MENTO:mento:mt1:ms1;;
 
-Morph ri contained in previous morph in lexeme rammollimento with entry 66476;RAMMOLLIMENTO;MOLLE:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;MENTO:mento:mt1:ms1;;
+Morph ri not found in lexeme rassicuratore with entry 66716;RASSICURATORE;SICURO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;TORE:tore:mt1:ms1;;
 
-Morph ri contained in previous morph in lexeme rassicuratore with entry 66716;RASSICURATORE;SICURO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;TORE:tore:mt1:ms1;;
+Morph ri not found in lexeme rassicurazione with entry 66717;RASSICURAZIONE;SICURO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;ZIONE:zione:mt1:ms1;;
 
-Morph ri contained in previous morph in lexeme rassicurazione with entry 66717;RASSICURAZIONE;SICURO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;ZIONE:zione:mt1:ms1;;
+Morph ri not found in lexeme ravvedimento with entry 66800;RAVVEDIMENTO;VEDERE:vrb_th;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;MENTO:mento:mt4:ms1;;
 
-Morph ri contained in previous morph in lexeme ravvedimento with entry 66800;RAVVEDIMENTO;VEDERE:vrb_th;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;MENTO:mento:mt4:ms1;;
+Morph ri not found in lexeme rinvenibile with entry 68758;RINVENIBILE;VENIRE:vrb_th;RI:ri:mt1:ms2a-P;2IN:in:mt1:ms2b-P;BILE:bile:mt1:ms1;;;
 
-Morph in contained in previous morph in lexeme rimborsabile with entry 68575;RIMBORSABILE;BORSA:root;2IN:in:mt2:ms2a-P;CONVERSION:N_V-P;RI:ri:mt1:ms1-P;BILE:bile:mt1:ms1;;
+Morph ri not found in lexeme rinvenimento with entry 68759;RINVENIMENTO;VENIRE:vrb_th;RI:ri:mt1:ms2a-P;2IN:in:mt1:ms2b-P;MENTO:mento:mt1:ms1;;;
 
-Morph ri contained in previous morph in lexeme ringraziamento with entry 68720;RINGRAZIAMENTO;GRAZIA:root;RI:ri:mt2:ms2a-P;2IN:in:mt1:ms2a-P;CONVERSION:N_V-P;MENTO:mento:mt1:ms1;;
+Morph s not found in lexeme scombussolamento with entry 72826;SCOMBUSSOLAMENTO;BUSSOLA:root;2S:s:mt1:ms1-P;CON:con:mt1:ms2b-P;CONVERSION:N_V-P;MENTO:mento:mt1:ms1;;
 
-Morph ri contained in previous morph in lexeme rinvenibile with entry 68758;RINVENIBILE;VENIRE:vrb_th;RI:ri:mt1:ms2a-P;2IN:in:mt1:ms2b-P;BILE:bile:mt1:ms1;;;
+Morph izzare not found in lexeme sintetizzatore with entry 75351;SINTETIZZATORE;SINTESI:suppl;ICO:ico:mt7:ms1;IZZARE:izzare:mt5:ms1;TORE:tore:mt1:ms1;;;
 
-Morph ri contained in previous morph in lexeme rinvenimento with entry 68759;RINVENIMENTO;VENIRE:vrb_th;RI:ri:mt1:ms2a-P;2IN:in:mt1:ms2b-P;MENTO:mento:mt1:ms1;;;
-
-Morph s contained in previous morph in lexeme scombussolamento with entry 72826;SCOMBUSSOLAMENTO;BUSSOLA:root;2S:s:mt1:ms1-P;CON:con:mt1:ms2b-P;CONVERSION:N_V-P;MENTO:mento:mt1:ms1;;
-
-Morph ato contained in previous morph in lexeme snaturatezza with entry 75747;SNATURATEZZA;NATURA:root;2S:s:mt2:ms1-P;ATO:ato:mt1:ms2a-P;EZZA:ezza:mt1:ms1;;;
-
-Morph s contained in previous morph in lexeme spregiudicatezza with entry 77582;SPREGIUDICATEZZA;GIUDICARE:pst_ptcp;2S:s:mt1:ms2a-P;PRE:pre:mt1:ms2b-P;CONVERSION:V_A-P;EZZA:ezza:mt1:ms1;;
-
-Morph stra contained in previous morph in lexeme stravolgimento with entry 78603;STRAVOLGIMENTO;VOLGERE:vrb_th;STRA:stra:mt1:ms2b;MENTO:mento:mt4:ms1;;;;
-
-Morph tra contained in previous morph in lexeme tramutamento with entry 82647;TRAMUTAMENTO;MUTARE:vrb_th;TRANS:tra:mt1:ms2b;MENTO:mento:mt1:ms1;;;;
-
-Morph tra contained in previous morph in lexeme trascrizione with entry 82796;TRASCRIZIONE;SCRIVERE:pst_ptcp;TRANS:tra:mt1:ms2a;ZIONE:ione:mt4:ms1;;;;
-
-Morph tras contained in previous morph in lexeme trascurabile with entry 82797;TRASCURABILE;CURARE:vrb_th;TRANS:tras:mt1:ms2b;BILE:bile:mt1:ms1;;;;
-
-Morph tras contained in previous morph in lexeme trascuratezza with entry 82801;TRASCURATEZZA;CURARE:pst_ptcp;TRANS:tras:mt1:ms2b;CONVERSION:V_A;EZZA:ezza:mt1:ms1;;;
-
-Morph tras contained in previous morph in lexeme trasfigurazione with entry 82809;TRASFIGURAZIONE;FIGURA:root;CONVERSION:N_V;TRANS:tras:mt1:ms2a;ZIONE:zione:mt1:ms1;;;
-
-Morph tras contained in previous morph in lexeme trasformabile with entry 82811;TRASFORMABILE;FORMARE:vrb_th;TRANS:tras:mt1:ms2a;BILE:bile:mt1:ms1;;;;
-
-Morph tras contained in previous morph in lexeme trasformatore with entry 82817;TRASFORMATORE;FORMARE:vrb_th;TRANS:tras:mt1:ms2a;TORE:tore:mt1:ms1;;;;
-
-Morph tras contained in previous morph in lexeme trasformazione with entry 82818;TRASFORMAZIONE;FORMARE:vrb_th;TRANS:tras:mt1:ms2a;ZIONE:zione:mt1:ms1;;;;
-
-Morph tras contained in previous morph in lexeme trasformismo with entry 82819;TRASFORMISMO;FORMARE:root;TRANS:tras:mt1:ms2a;ISMO:ismo:mt1:ms1;;;;
-
-Morph tras contained in previous morph in lexeme trasformista with entry 82820;TRASFORMISTA;FORMARE:root;TRANS:tras:mt1:ms2a;ISMO:ismo:mt1:ms1;ISTA:ista:mt6:ms1;;;
-
-Morph tras contained in previous morph in lexeme trasfusione with entry 82824;TRASFUSIONE;FONDERE:pst_ptcp;TRANS:tras:mt1:ms2a-P;ZIONE:zione:mt1:ms2a-P;;;;
-
-Morph zione not found in lexeme trasfusione with entry 82824;TRASFUSIONE;FONDERE:pst_ptcp;TRANS:tras:mt1:ms2a-P;ZIONE:zione:mt1:ms2a-P;;;;
-
-Morph tras contained in previous morph in lexeme trasmettitore with entry 82842;TRASMETTITORE;METTERE:vrb_th;TRANS:tras:mt1:ms2b;TORE:tore:mt4:ms1;;;;
-
-Morph tras contained in previous morph in lexeme trasmigrazione with entry 82844;TRASMIGRAZIONE;MIGRARE:vrb_th;TRANS:tras:mt1:ms1;ZIONE:zione:mt1:ms1;;;;
-
-Morph tras contained in previous morph in lexeme trasmissibile with entry 82845;TRASMISSIBILE;METTERE:ltn_pp;TRANS:tras:mt1:ms2b;BILE:ibile:mt1:ms1;;;;
-
-Morph tras contained in previous morph in lexeme trasmutazione with entry 82850;TRASMUTAZIONE;MUTARE:vrb_th;TRANS:tras:mt1:ms1;ZIONE:zione:mt1:ms1;;;;
-
-Morph tras contained in previous morph in lexeme traspirazione with entry 82857;TRASPIRAZIONE;SPIRA:unrec:parad;TRANS:tras:mt8:ms2a;ZIONE:zione:mt1:ms1;;;;
-
-Morph tras contained in previous morph in lexeme trasportatore with entry 82861;TRASPORTATORE;PORTARE:vrb_th;TRANS:tras:mt1:ms1;TORE:tore:mt1:ms1;;;;
-
-Morph tras contained in previous morph in lexeme trasposizione with entry 82863;TRASPOSIZIONE;PORRE:ltn_pp;TRANS:tras:mt1:ms2a;ZIONE:ione:mt4:ms1;;;;
-
-Morph tras contained in previous morph in lexeme trasversalismo with entry 82870;TRASVERSALISMO;VERSO:root;TRANS:tras:mt1:ms2b-P;ALE:ale:mt1:ms2b-P;ISMO:ismo:mt1:ms1;;;
-
-Morph tra contained in previous morph in lexeme travestimento with entry 82936;TRAVESTIMENTO;VESTIRE:vrb_th;TRANS:tra:mt1:ms2a;MENTO:mento:mt1:ms1;;;;
-
-Morph esimo not found in lexeme umanista with entry 84117;UMANISTA;UMANO:root;ISMO:esimo:mt1:ms2a;ISTA:ista:mt6:ms1;;;;
+Morph s not found in lexeme spregiudicatezza with entry 77582;SPREGIUDICATEZZA;GIUDICARE:pst_ptcp;2S:s:mt1:ms2a-P;PRE:pre:mt1:ms2b-P;CONVERSION:V_A-P;EZZA:ezza:mt1:ms1;;
 
 Morph humour not found in lexeme umorismo with entry 84166;UMORISMO;HUMOUR:root;ISMO:ismo:mt1:ms1;;;;;
 
-Morph esimo not found in lexeme urbanista with entry 84582;URBANISTA;CITTÀ:suppl;ANO:ano:mt8:ms1;ISMO:esimo:mt1:ms1;ISTA:ista:mt6:ms1;;;
-
-Morph cis contained in previous morph in lexeme cisalpino with entry 19978;CISALPINO;ALPI:root;1INO:ino:mt1:ms1;CIS:cis:mt1:ms1;;;;
-
-Morph maxi contained in previous morph in lexeme maxipantaloncino with entry 51045;MAXIPANTALONCINO;PANTALONE:suppl;1INO:ino:mt7:ms1;MAXI:maxi:mt1:ms1;;;;
-
-Morph trans contained in previous morph in lexeme transalpino with entry 82688;TRANSALPINO;ALPI:root;2INO:ino:mt1:ms1;TRANS:trans:mt1:ms1;;;;
-
-Morph aro contained in previous morph in lexeme marinaretto with entry 50334;MARINARETTO;MARINA:root;1AIO:aro:mt1:ms1;ETTO:etto:mt1:ms1;;;;
-
-Morph izia contained in previous morph in lexeme inimicizia with entry 42140;INIMICIZIA;AMICO:root;IZIA:izia:mt4:ms1;1IN:in:mt5:ms1;;;;
+Morph amico not found in lexeme inimicizia with entry 42140;INIMICIZIA;AMICO:root;IZIA:izia:mt4:ms1;1IN:in:mt5:ms1;;;;
 
 Morph ìa not found in lexeme pulizia with entry 65325;PULIZIA;PULITO:root;ÌA:ìa:mt4:ms1;;;;;
 
-Morph ambi contained in previous morph in lexeme ambivalenza with entry 6828;AMBIVALENZA;VALERE:presp;AMBI:ambi:mt1:ms1;NZA:nza:mt1:ms1;;;;
-
-Morph nto contained in previous morph in lexeme anti-violenza with entry 7888;ANTI-VIOLENZA;BASELESS:unrec;NTO:nto:mt8:ms3a;NZA:nza:mt6:ms1;ANTI:anti:mt1:ms1;;;
+Morph ambi not found in lexeme ambivalenza with entry 6828;AMBIVALENZA;VALERE:presp;AMBI:ambi:mt1:ms1;NZA:nza:mt1:ms1;;;;
 
 Morph nte contained in previous morph in lexeme concomitanza with entry 21589;CONCOMITANZA;BASELESS:unrec;NTE:nte:mt8:ms3a;CO:con:mt1:ms1;NZA:nza:mt6:ms1;;;
 
@@ -182,277 +64,131 @@ Morph object not found in lexeme eccellenza with entry 28673;ECCELLENZA;ECCELLER
 
 Morph nte contained in previous morph in lexeme luminescenza with entry 48628;LUMINESCENZA;LUMIN:unrec:parad;NTE:nte:mt8:ms2a;NZA:nza:mt6:ms1;;;;
 
-Morph stra contained in previous morph in lexeme strafottenza with entry 78473;STRAFOTTENZA;FOTTERE:presp;CONVERSION:V_A;STRA:stra:mt1:ms2a;NZA:nza:mt1:ms2a;;;
-
-Morph stra contained in previous morph in lexeme strapotenza with entry 78538;STRAPOTENZA;POTERE:vrb_th;STRA:stra:mt1:ms1;NZA:nza:mt1:ms2b;;;;
-
-Morph tras contained in previous morph in lexeme trascuranza with entry 82798;TRASCURANZA;CURARE:vrb_th;TRANS:tras:mt1:ms2b;NZA:nza:mt1:ms2b;;;;
-
 Morph ad not found in lexeme inavvicinabile with entry 41061;INAVVICINABILE;VICINO:root;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;BILE:bile:mt1:ms1;;;
-
-Morph nuocere contained in previous morph in lexeme innocente with entry 42213;INNOCENTE;NUOCERE:presp;1IN:in:mt1:ms2a-P;CONVERSION:V_A-P;;;;
 
 Morph nemico contained in previous morph in lexeme inimicare with entry 42139;INIMICARE;NEMICO:root;2IN:in:mt5:ms1-P;CONVERSION:N_V-P;;;;
 
-Morph ri contained in previous morph in lexeme rabbonire with entry 66039;RABBONIRE;BUONO:suppl;RI:ri:mt7:ms1-P;ACons:ad:mt7:ms1-P;CONVERSION:A_V-P;;;
+Morph ri not found in lexeme rabbonire with entry 66039;RABBONIRE;BUONO:suppl;RI:ri:mt7:ms1-P;ACons:ad:mt7:ms1-P;CONVERSION:A_V-P;;;
 
-Morph ri contained in previous morph in lexeme rabbrividire with entry 66041;RABBRIVIDIRE;BRIVIDO:root;RI:ri:mt4:ms1-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
+Morph ri not found in lexeme rabbrividire with entry 66041;RABBRIVIDIRE;BRIVIDO:root;RI:ri:mt4:ms1-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
 
-Morph ri contained in previous morph in lexeme rabbuiare with entry 66044;RABBUIARE;BUIO:root;RI:ri:mt4:ms1-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
+Morph ri not found in lexeme rabbuiare with entry 66044;RABBUIARE;BUIO:root;RI:ri:mt4:ms1-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
 
-Morph ri contained in previous morph in lexeme raccapezzare with entry 66056;RACCAPEZZARE;BASELESS:unrec;RI:ri:mt8:ms3a-P;ACons:ad:mt8:ms3a-P;;;;
+Morph ri not found in lexeme raccapezzare with entry 66056;RACCAPEZZARE;BASELESS:unrec;RI:ri:mt8:ms3a-P;ACons:ad:mt8:ms3a-P;;;;
 
-Morph ri contained in previous morph in lexeme racchiudere with entry 66063;RACCHIUDERE;CHIUDERE:vrb_th;RI:ri:mt4:ms1-P;ACons:ad:mt2:ms1-P;;;;
+Morph ri not found in lexeme racchiudere with entry 66063;RACCHIUDERE;CHIUDERE:vrb_th;RI:ri:mt4:ms1-P;ACons:ad:mt2:ms1-P;;;;
 
-Morph ri contained in previous morph in lexeme raddoppiare with entry 66122;RADDOPPIARE;DOPPIO:root;RI:ri:mt4:ms1-P;ACons:ad:mt1:ms1-P;CONVERSION:A_V-P;;;
+Morph ri not found in lexeme raddoppiare with entry 66122;RADDOPPIARE;DOPPIO:root;RI:ri:mt4:ms1-P;ACons:ad:mt1:ms1-P;CONVERSION:A_V-P;;;
 
 Morph dritto contained in previous morph in lexeme raddrizzare with entry 66125;RADDRIZZARE;DRITTO:root;IZZARE:izzare:mt5:ms1;RI:ri:mt4:ms2b-P;ACons:ad:mt1:ms1-P;;;
 
-Morph ri contained in previous morph in lexeme raffigurare with entry 66254;RAFFIGURARE;FIGURA:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms2b-P;CONVERSION:N_V-P;;;
+Morph ri not found in lexeme raffigurare with entry 66254;RAFFIGURARE;FIGURA:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms2b-P;CONVERSION:N_V-P;;;
 
-Morph ri contained in previous morph in lexeme rafforzare with entry 66264;RAFFORZARE;FORZA:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
+Morph ri not found in lexeme rafforzare with entry 66264;RAFFORZARE;FORZA:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
 
-Morph ri contained in previous morph in lexeme raffreddare with entry 66267;RAFFREDDARE;FREDDO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
+Morph ri not found in lexeme raffreddare with entry 66267;RAFFREDDARE;FREDDO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
 
-Morph ri contained in previous morph in lexeme raggelare with entry 66298;RAGGELARE;GELO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
+Morph ri not found in lexeme raggelare with entry 66298;RAGGELARE;GELO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
 
-Morph ri contained in previous morph in lexeme raggranellare with entry 66316;RAGGRANELLARE;GRANO:root;ELLO:ello:mt1:ms1;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;
+Morph ri not found in lexeme raggranellare with entry 66316;RAGGRANELLARE;GRANO:root;ELLO:ello:mt1:ms1;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;
 
-Morph ri contained in previous morph in lexeme raggrinzire with entry 66319;RAGGRINZIRE;GRINZA:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
+Morph ri not found in lexeme raggrinzire with entry 66319;RAGGRINZIRE;GRINZA:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
 
-Morph ri contained in previous morph in lexeme raggrumare with entry 66321;RAGGRUMARE;GRUMO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
+Morph ri not found in lexeme raggrumare with entry 66321;RAGGRUMARE;GRUMO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
 
-Morph ri contained in previous morph in lexeme raggruppare with entry 66324;RAGGRUPPARE;GRUPPO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
+Morph ri not found in lexeme raggruppare with entry 66324;RAGGRUPPARE;GRUPPO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
 
-Morph ri contained in previous morph in lexeme rallegrare with entry 66416;RALLEGRARE;ALLEGRO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
+Morph ri not found in lexeme rallegrare with entry 66416;RALLEGRARE;ALLEGRO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
 
-Morph ri contained in previous morph in lexeme rallentare with entry 66419;RALLENTARE;LENTO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
+Morph ri not found in lexeme rallentare with entry 66419;RALLENTARE;LENTO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
 
-Morph ri contained in previous morph in lexeme rammollire with entry 66477;RAMMOLLIRE;MOLLE:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
+Morph ri not found in lexeme rammollire with entry 66477;RAMMOLLIRE;MOLLE:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
 
-Morph ri contained in previous morph in lexeme rappacificare with entry 66613;RAPPACIFICARE;PACE:root;IFICARE:ificare:mt1:ms1;RI:ri:mt1:ms2b-P;ACons:ad:mt2:ms1-P;;;
+Morph ri not found in lexeme rappacificare with entry 66613;RAPPACIFICARE;PACE:root;IFICARE:ificare:mt1:ms1;RI:ri:mt1:ms2b-P;ACons:ad:mt2:ms1-P;;;
 
-Morph ri contained in previous morph in lexeme rasserenare with entry 66710;RASSERENARE;SERENO:root;RI:ri:mt1:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
+Morph ri not found in lexeme rasserenare with entry 66710;RASSERENARE;SERENO:root;RI:ri:mt1:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
 
-Morph ri contained in previous morph in lexeme rassicurare with entry 66714;RASSICURARE;SICURO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
+Morph ri not found in lexeme rassicurare with entry 66714;RASSICURARE;SICURO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
 
-Morph ri contained in previous morph in lexeme rassodare with entry 66719;RASSODARE;SODO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
+Morph ri not found in lexeme rassodare with entry 66719;RASSODARE;SODO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
 
-Morph ri contained in previous morph in lexeme rattristare with entry 66762;RATTRISTARE;TRISTE:root;RI:ri:mt1:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
+Morph ri not found in lexeme rattristare with entry 66762;RATTRISTARE;TRISTE:root;RI:ri:mt1:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
 
-Morph ri contained in previous morph in lexeme ravvedere with entry 66799;RAVVEDERE;VEDERE:vrb_th;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms2b-P;;;;
+Morph ri not found in lexeme ravvedere with entry 66799;RAVVEDERE;VEDERE:vrb_th;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms2b-P;;;;
 
-Morph ri contained in previous morph in lexeme ravvivare with entry 66808;RAVVIVARE;VIVO:root;RI:ri:mt1:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
+Morph ri not found in lexeme ravvivare with entry 66808;RAVVIVARE;VIVO:root;RI:ri:mt1:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
 
 Morph con not found in lexeme ricongelare with entry 68157;RICONGELARE;GELO:root;CON:con:mt1:ms2a-P;CONVERSION:N_V-P;;;;
 
-Morph in contained in previous morph in lexeme rimbalzare with entry 68564;RIMBALZARE;BALZARE:vrb_th;2IN:in:mt2:ms2b-P;RI:ri:mt2:ms1-P;;;;
+Morph ri not found in lexeme rimpinzare with entry 68638;RIMPINZARE;BASELESS:unrec;RI:ri:mt8:ms3a-P;2IN:in:mt8:ms3a-P;;;;
 
-Morph in contained in previous morph in lexeme rimbeccare with entry 68569;RIMBECCARE;BECCO:root;2IN:in:mt2:ms1-P;CONVERSION:N_V-P;RI:ri:mt2:ms1;;;
+Morph ri not found in lexeme rincorrere with entry 68676;RINCORRERE;CORRERE:vrb_th;RI:ri:mt2:ms2b-P;2IN:in:mt1:ms2b-P;;;;
 
-Morph in contained in previous morph in lexeme rimbellire with entry 68571;RIMBELLIRE;BELLO:root;2IN:in:mt2:ms1-P;CONVERSION:N_V-P;RI:ri:mt2:ms1;;;
+Morph ri not found in lexeme rincuorare with entry 68682;RINCUORARE;CUORE:root;RI:ri:mt2:ms2b-P;2IN:in:mt1:ms2a-P;;;;
 
-Morph in contained in previous morph in lexeme rimbombare with entry 68573;RIMBOMBARE;BASELESS:unrec;2IN:in:mt8:ms3a-P;RI:ri:mt8:ms3a-P;;;;
+Morph ri not found in lexeme rinfacciare with entry 68688;RINFACCIARE;FACCIA:root;RI:ri:mt2:ms2b-P;2IN:in:mt1:ms2a-P;;;;
 
-Morph in contained in previous morph in lexeme rimborsare with entry 68576;RIMBORSARE;BORSA:root;2IN:in:mt2:ms2a-P;CONVERSION:N_V-P;RI:ri:mt1:ms1;;;
+Morph ri not found in lexeme rinfocolare with entry 68689;RINFOCOLARE;FUOCO:suppl;RI:ri:mt7:ms2a-P;2IN:in:mt7:ms2a-P;;;;
 
-Morph in contained in previous morph in lexeme rimbrottare with entry 68580;RIMBROTTARE;BASELESS:unrec;2IN:in:mt8:ms3a-P;RI:ri:mt8:ms3a-P;;;;
+Morph ri not found in lexeme rintuzzare with entry 68748;RINTUZZARE;BASELESS:unrec;RI:ri:mt8:ms3a-P;2IN:in:mt8:ms3a-P;;;;
 
-Morph in contained in previous morph in lexeme rimpallare with entry 68622;RIMPALLARE;PALLA:root;2IN:in:mt2:ms1-P;RI:ri:mt2:ms1-P;CONVERSION:N_V-P;;;
+Morph ri not found in lexeme rinvenire with entry 68760;RINVENIRE;VENIRE:vrb_th;RI:ri:mt2:ms2a-P;2IN:in:mt1:ms2b-P;;;;
 
-Morph in contained in previous morph in lexeme rimpastare with entry 68624;RIMPASTARE;PASTA:root;2IN:in:mt2:ms2a-P;CONVERSION:N_V-P;RI:ri:mt2:ms1;;;
+Morph nza not found in lexeme coscienziosamente with entry 23103;COSCIENZIOSAMENTE;BASELESS:unrec;NTE:nte:mt8:ms3a;NZA:nza:mt6:ms2b;OSO:ioso:mt1:ms1;MENTE:mente:mt1:ms1;;
 
-Morph in contained in previous morph in lexeme rimpatriare with entry 68626;RIMPATRIARE;PATRIA:root;2IN:in:mt2:ms1-P;RI:ri:mt2:ms1-P;CONVERSION:N_V-P;;;
-
-Morph in contained in previous morph in lexeme rimpiangere with entry 68629;RIMPIANGERE;PIANGERE:vrb_th;2IN:in:mt2:ms2b-P;RI:ri:mt2:ms1-P;;;;
-
-Morph in contained in previous morph in lexeme rimpiazzare with entry 68634;RIMPIAZZARE;PIAZZARE:vrb_th;2IN:in:mt2:ms2b-P;RI:ri:mt2:ms1-P;;;;
-
-Morph in contained in previous morph in lexeme rimpicciolire with entry 68636;RIMPICCIOLIRE;PICCOLO:suppl;2IN:in:mt7:ms1-P;RI:ri:mt7:ms2b-P;CONVERSION:A_V-P;;;
-
-Morph in contained in previous morph in lexeme rimpinguare with entry 68637;RIMPINGUARE;PINGUE:root;2IN:in:mt2:ms1-P;CONVERSION:A_V-P;RI:ri:mt2:ms1;;;
-
-Morph ri contained in previous morph in lexeme rimpinzare with entry 68638;RIMPINZARE;BASELESS:unrec;RI:ri:mt8:ms3a-P;2IN:in:mt8:ms3a-P;;;;
-
-Morph in contained in previous morph in lexeme rimpolpare with entry 68639;RIMPOLPARE;POLPA:root;2IN:in:mt2:ms1-P;CONVERSION:N_V-P;RI:ri:mt2:ms1-P;;;
-
-Morph in contained in previous morph in lexeme rimproverare with entry 68641;RIMPROVERARE;BASELESS:unrec;2IN:in:mt8:ms3a-P;RI:ri:mt8:ms3a-P;;;;
-
-Morph ri contained in previous morph in lexeme rincorrere with entry 68676;RINCORRERE;CORRERE:vrb_th;RI:ri:mt2:ms2b-P;2IN:in:mt1:ms2b-P;;;;
-
-Morph ri contained in previous morph in lexeme rincuorare with entry 68682;RINCUORARE;CUORE:root;RI:ri:mt2:ms2b-P;2IN:in:mt1:ms2a-P;;;;
-
-Morph ri contained in previous morph in lexeme rinfacciare with entry 68688;RINFACCIARE;FACCIA:root;RI:ri:mt2:ms2b-P;2IN:in:mt1:ms2a-P;;;;
-
-Morph ri contained in previous morph in lexeme rinfocolare with entry 68689;RINFOCOLARE;FUOCO:suppl;RI:ri:mt7:ms2a-P;2IN:in:mt7:ms2a-P;;;;
-
-Morph ri contained in previous morph in lexeme rinfrancare with entry 68698;RINFRANCARE;FRANCO:root;RI:ri:mt1:ms1-P;2IN:in:mt1:ms1-P;CONVERSION:N_V-P;;;
-
-Morph ri contained in previous morph in lexeme rinfrescare with entry 68702;RINFRESCARE;FRESCO:root;RI:ri:mt2:ms1-P;2IN:in:mt1:ms1-P;CONVERSION:A_V-P;;;
-
-Morph ri contained in previous morph in lexeme ringraziare with entry 68721;RINGRAZIARE;GRAZIA:root;RI:ri:mt2:ms2a-P;2IN:in:mt1:ms2a-P;CONVERSION:N_V-P;;;
-
-Morph ri contained in previous morph in lexeme rintronare with entry 68746;RINTRONARE;BASELESS:unrec;RI:ri:mt8:ms3a-P;2IN:in:mt8:ms3a-P;;;;
-
-Morph ri contained in previous morph in lexeme rintuzzare with entry 68748;RINTUZZARE;BASELESS:unrec;RI:ri:mt8:ms3a-P;2IN:in:mt8:ms3a-P;;;;
-
-Morph ri contained in previous morph in lexeme rinvenire with entry 68760;RINVENIRE;VENIRE:vrb_th;RI:ri:mt2:ms2a-P;2IN:in:mt1:ms2b-P;;;;
-
-Morph tras contained in previous morph in lexeme ritrasformare with entry 69214;RITRASFORMARE;FORMARE:vrb_th;TRANS:tras:mt1:ms2a;RI:ri:mt1:ms1;;;;
-
-Morph oso contained in previous morph in lexeme angosciosamente with entry 7533;ANGOSCIOSAMENTE;ANGOSCIA:root;OSO:oso:mt1:ms1;MENTE:mente:mt1:ms1;;;;
-
-Morph ico contained in previous morph in lexeme ciclicamente with entry 19537;CICLICAMENTE;CICLO:root;ICO:ico:mt1:ms1;MENTE:mente:mt1:ms1;;;;
-
-Morph nza contained in previous morph in lexeme coscienziosamente with entry 23103;COSCIENZIOSAMENTE;BASELESS:unrec;NTE:nte:mt8:ms3a;NZA:nza:mt6:ms2b;OSO:ioso:mt1:ms1;MENTE:mente:mt1:ms1;;
-
-Morph ioso contained in previous morph in lexeme coscienziosamente with entry 23103;COSCIENZIOSAMENTE;BASELESS:unrec;NTE:nte:mt8:ms3a;NZA:nza:mt6:ms2b;OSO:ioso:mt1:ms1;MENTE:mente:mt1:ms1;;
+Morph ioso not found in lexeme coscienziosamente with entry 23103;COSCIENZIOSAMENTE;BASELESS:unrec;NTE:nte:mt8:ms3a;NZA:nza:mt6:ms2b;OSO:ioso:mt1:ms1;MENTE:mente:mt1:ms1;;
 
 Morph mente contained in previous morph in lexeme coscienziosamente with entry 23103;COSCIENZIOSAMENTE;BASELESS:unrec;NTE:nte:mt8:ms3a;NZA:nza:mt6:ms2b;OSO:ioso:mt1:ms1;MENTE:mente:mt1:ms1;;
 
-Morph oso contained in previous morph in lexeme costosamente with entry 23246;COSTOSAMENTE;COSTO:root;OSO:oso:mt1:ms1;MENTE:mente:mt1:ms1;;;;
-
-Morph eo contained in previous morph in lexeme estemporaneamente with entry 30533;ESTEMPORANEAMENTE;TEMPO:suppl;E:es:mt7:ms2b-P;EO:eo:mt7:ms1-P;MENTE:mente:mt1:ms1;;;
-
-Morph eo contained in previous morph in lexeme ferreamente with entry 32152;FERREAMENTE;FERRO:root;EO:eo:mt1:ms1;MENTE:mente:mt1:ms1;;;;
-
 Morph eo contained in previous morph in lexeme fulmineamente with entry 34450;FULMINEAMENTE;FULMINE:root;EO:eo:mt1:ms2a;MENTE:mente:mt1:ms1;;;;
 
-Morph iero contained in previous morph in lexeme giornalmente with entry 36299;GIORNALMENTE;GIORNO:root;ALE:ale:mt1:ms1-P;IERO:iero:mt1:ms1;;;;
+Morph iero not found in lexeme giornalmente with entry 36299;GIORNALMENTE;GIORNO:root;ALE:ale:mt1:ms1-P;IERO:iero:mt1:ms1;;;;
 
 Morph de not found in lexeme indefinitamente with entry 41472;INDEFINITAMENTE;FINIRE:vrb_th;2DE:de:mt1:ms2b;CONVERSION:V_A;MENTE:mente:mt1:ms1;;;
 
-Morph nuocere contained in previous morph in lexeme innocentemente with entry 42215;INNOCENTEMENTE;NUOCERE:presp;1IN:in:mt1:ms2a-P;CONVERSION:V_A-P;MENTE:mente:mt1:ms1;;;
-
 Morph s not found in lexeme inspiegabilmente with entry 42462;INSPIEGABILMENTE;PIEGARE:vrb_th;1S:s:mt1:ms1;BILE:bile:mt1:ms1;MENTE:mente:mt4:ms1;;;
 
-Morph ale contained in previous morph in lexeme mentalmente with entry 51665;MENTALMENTE;MENTE:root;ALE:ale:mt1:ms1;MENTE:mente:mt4:ms1;;;;
+Morph nza not found in lexeme prudenzialmente with entry 65080;PRUDENZIALMENTE;BASELESS:unrec;NTE:nte:mt8:ms3a;NZA:nza:mt6:ms1;ALE:iale:mt1:ms1;MENTE:mente:mt4:ms1;;
 
-Morph mente contained in previous morph in lexeme mentalmente with entry 51665;MENTALMENTE;MENTE:root;ALE:ale:mt1:ms1;MENTE:mente:mt4:ms1;;;;
-
-Morph ismo contained in previous morph in lexeme narcisisticamente with entry 54796;NARCISISTICAMENTE;NARCISO:root;ISMO:ismo:mt1:ms1;ISTICO:istico:mt6:ms1;MENTE:mente:mt1:ms1;;;
-
-Morph nza contained in previous morph in lexeme prudenzialmente with entry 65080;PRUDENZIALMENTE;BASELESS:unrec;NTE:nte:mt8:ms3a;NZA:nza:mt6:ms1;ALE:iale:mt1:ms1;MENTE:mente:mt4:ms1;;
-
-Morph iale contained in previous morph in lexeme prudenzialmente with entry 65080;PRUDENZIALMENTE;BASELESS:unrec;NTE:nte:mt8:ms3a;NZA:nza:mt6:ms1;ALE:iale:mt1:ms1;MENTE:mente:mt4:ms1;;
+Morph iale not found in lexeme prudenzialmente with entry 65080;PRUDENZIALMENTE;BASELESS:unrec;NTE:nte:mt8:ms3a;NZA:nza:mt6:ms1;ALE:iale:mt1:ms1;MENTE:mente:mt4:ms1;;
 
 Morph mente contained in previous morph in lexeme prudenzialmente with entry 65080;PRUDENZIALMENTE;BASELESS:unrec;NTE:nte:mt8:ms3a;NZA:nza:mt6:ms1;ALE:iale:mt1:ms1;MENTE:mente:mt4:ms1;;
 
-Morph ico contained in previous morph in lexeme psichicamente with entry 65139;PSICHICAMENTE;PSICHE:root;ICO:ico:mt1:ms1;MENTE:mente:mt1:ms1;;;;
-
-Morph ico contained in previous morph in lexeme psicologicamente with entry 65168;PSICOLOGICAMENTE;PSICOLOGIA:root:neocl_cmp;ICO:ico:mt1:ms1;MENTE:mente:mt1:ms1;;;;
-
-Morph s contained in previous morph in lexeme spregiudicatamente with entry 77581;SPREGIUDICATAMENTE;GIUDICARE:pst_ptcp;2S:s:mt1:ms2a-P;PRE:pre:mt1:ms2b-P;CONVERSION:V_A-P;MENTE:mente:mt1:ms1;;
-
-Morph stra contained in previous morph in lexeme straordinariamente with entry 78523;STRAORDINARIAMENTE;ORDINE:root;ARIO:ario:mt1:ms1;STRA:stra:mt1:ms1-G;MENTE:mente:mt1:ms1-G;;;
-
-Morph tras contained in previous morph in lexeme trasversalmente with entry 82871;TRASVERSALMENTE;VERSO:root;TRANS:tras:mt1:ms2b-P;ALE:ale:mt1:ms2b-P;MENTE:mente:mt4:ms1;;;
+Morph s not found in lexeme spregiudicatamente with entry 77581;SPREGIUDICATAMENTE;GIUDICARE:pst_ptcp;2S:s:mt1:ms2a-P;PRE:pre:mt1:ms2b-P;CONVERSION:V_A-P;MENTE:mente:mt1:ms1;;
 
 Morph mente contained in previous morph in lexeme violentemente with entry 87295;VIOLENTEMENTE;VIOLENTO:adj_th;MENTE:mente:mt1:ms1;MENTE:mente:mt1:ms1;;;;
 
-Morph zione not found in lexeme suggestione with entry 79092;SUGGESTIONE;BASELESS:unrec;ZIONE:zione:mt8:ms3a;;;;;
+Morph tore not found in lexeme stroncare with entry 78732;STRONCARE;TRONCO:root;2S:s:mt1:ms2a-P;TORE:tore:mt1:ms1-P;;;;
 
-Morph ità contained in previous morph in lexeme abitabilit with entry 4093;ABITABILIT;ABITARE:vrb_th;BILE:bile:mt1:ms1;ITÀ:ità:mt1:ms1;;;;
+Morph s not found in lexeme scongiurare with entry 72891;SCONGIURARE;GIURARE:vrb_th;2S:s:mt1:ms2a-P;CO:con:mt1:ms2b-P;;;;
 
-Morph uale contained in previous morph in lexeme causalità with entry 18018;CAUSALITÀ;CAUSA:root;ALE:uale:mt1:ms1;ITÀ:ità:mt1:ms1;;;;
-
-Morph ico contained in previous morph in lexeme ciclicità with entry 19538;CICLICITÀ;CICLO:root;ICO:ico:mt1:ms1;ITÀ:ità:mt1:ms1;;;;
-
-Morph oso contained in previous morph in lexeme coscienziosità with entry 23104;COSCIENZIOSITÀ;BASELESS:unrec;NZA:nza:mt6:ms1;OSO:oso:mt1:ms1;ITÀ:ità:mt1:ms1;;;
-
-Morph oso contained in previous morph in lexeme costosità with entry 23247;COSTOSITÀ;COSTO:root;OSO:oso:mt1:ms1;ITÀ:ità:mt1:ms1;;;;
-
-Morph eo contained in previous morph in lexeme femmineità with entry 31987;FEMMINEITÀ;FEMMINA:root;EO:eo:mt1:ms1;ITÀ:ità:mt1:ms1;;;;
-
-Morph tore contained in previous morph in lexeme stroncare with entry 78732;STRONCARE;TRONCO:root;2S:s:mt1:ms2a-P;TORE:tore:mt1:ms1-P;;;;
-
-Morph multi contained in previous morph in lexeme multietnicità with entry 54309;MULTIETNICITÀ;BASELESS:unrec;ICO:ico:mt8:ms3a;ITÀ:ità:mt1:ms1;MULTI:multi:mt1:ms1;;;
-
-Morph multi contained in previous morph in lexeme multinazionalità with entry 54326;MULTINAZIONALITÀ;NAZIONE:root;ALE:ale:mt1:ms1;ITÀ:ità:mt1:ms1;MULTI:multi:mt1:ms1;;;
-
-Morph zione not found in lexeme confessionale with entry 21737;CONFESSIONALE;CONFESSARE:ltn_pp;ZIONE:zione:mt1:ms1;ALE:ale:mt1:ms1;;;;
-
-Morph ale contained in previous morph in lexeme dialettale with entry 26409;DIALETTALE;DIALETTO:root;ALE:ale:mt1:ms1;;;;;
-
-Morph multi contained in previous morph in lexeme multiculturale with entry 54306;MULTICULTURALE;CULTURA:root;ALE:ale:mt1:ms1;MULTI:multi:mt1:ms1;;;;
-
-Morph multi contained in previous morph in lexeme multinazionale with entry 54324;MULTINAZIONALE;NAZIONE:root;ALE:ale:mt1:ms1;MULTI:multi:mt1:ms1;;;;
-
-Morph multi contained in previous morph in lexeme multirazziale with entry 54335;MULTIRAZZIALE;RAZZA:root;ALE:iale:mt1:ms1;MULTI:multi:mt1:ms1;;;;
-
-Morph multi contained in previous morph in lexeme multizonale with entry 54341;MULTIZONALE;ZONA:root;ALE:ale:mt1:ms1;MULTI:multi:mt1:ms1;;;;
-
-Morph tra contained in previous morph in lexeme trascendentale with entry 82779;TRASCENDENTALE;SCENDERE:vrb_th;TRANS:tra:mt1:ms2b;CONVERSION:V_A;ALE:ale:mt1:ms1;;;
-
-Morph tras contained in previous morph in lexeme trasfusionale with entry 82823;TRASFUSIONALE;FONDERE:pst_ptcp;TRANS:tras:mt1:ms2a-P;ZIONE:zione:mt1:ms2a-P;ALE:ale:mt1:ms1;;;
-
-Morph zione not found in lexeme trasfusionale with entry 82823;TRASFUSIONALE;FONDERE:pst_ptcp;TRANS:tras:mt1:ms2a-P;ZIONE:zione:mt1:ms2a-P;ALE:ale:mt1:ms1;;;
-
-Morph tras contained in previous morph in lexeme trasversale with entry 82869;TRASVERSALE;VERSO:root;TRANS:tras:mt1:ms2b-P;ALE:ale:mt1:ms2b-P;;;;
-
-Morph tras contained in previous morph in lexeme trascoloratura with entry 82790;TRASCOLORATURA;COLORE:root;CONVERSION:N_V;TRANS:tras:mt1:ms1;TURA:tura:mt1:ms1;;;
-
-Morph s contained in previous morph in lexeme scongiurare with entry 72891;SCONGIURARE;GIURARE:vrb_th;2S:s:mt1:ms2a-P;CO:con:mt1:ms2b-P;;;;
-
-Morph s contained in previous morph in lexeme scombussolare with entry 72827;SCOMBUSSOLARE;BUSSOLA:root;2S:s:mt1:ms2a-P;CON:con:mt1:ms2b-P;CONVERSION:N_V-P;;;
-
-Morph tura contained in previous morph in lexeme sturatura with entry 78864;STURATURA;TURARE:unrec:parad;1S:s:mt8:ms2a;TURA:tura:mt1:ms1;;;;
-
-Morph intra contained in previous morph in lexeme intracellulare with entry 42930;INTRACELLULARE;CELLULA:root;INTRA:intra:mt1:ms1;ALE:are:mt1:ms1;;;;
+Morph s not found in lexeme scombussolare with entry 72827;SCOMBUSSOLARE;BUSSOLA:root;2S:s:mt1:ms2a-P;CON:con:mt1:ms2b-P;CONVERSION:N_V-P;;;
 
 Morph inter not found in lexeme lamellare with entry 46245;LAMELLARE;LAMELLA:root;INTER:inter:mt1:ms1;;;;;
 
-Morph multi contained in previous morph in lexeme multipolare with entry 54333;MULTIPOLARE;POLO:root;ALE:are:mt1:ms2a;MULTI:multi:mt1:ms1;;;;
-
-Morph pluri contained in previous morph in lexeme plurisecolare with entry 62540;PLURISECOLARE;SECOLO:root;ALE:are:mt1:ms1;PLURI:pluri:mt1:ms1;;;;
+Morph pluri not found in lexeme plurisecolare with entry 62540;PLURISECOLARE;SECOLO:root;ALE:are:mt1:ms1;PLURI:pluri:mt1:ms1;;;;
 
 Morph are not found in lexeme semicircolo with entry 73649;SEMICIRCOLO;SEMICIRCOLO:root:neocl_cmp;ALE:are:mt1:ms1;;;;;
 
 Morph tura not found in lexeme bravura with entry 14734;BRAVURA;BRAVO:root;TURA:tura:mt1:ms1;;;;;
 
-Morph s contained in previous morph in lexeme scompartimento with entry 72849;SCOMPARTIMENTO;PARTE:root;1S:s:mt1:ms1-P;CO:com:mt1:ms2b-P;MENTO:mento:mt1:ms2b;;;
+Morph s not found in lexeme scompartimento with entry 72849;SCOMPARTIMENTO;PARTE:root;1S:s:mt1:ms1-P;CO:com:mt1:ms2b-P;MENTO:mento:mt1:ms2b;;;
 
 Morph in not found in lexeme antinfiammatorio with entry 8059;ANTINFIAMMATORIO;FIAMMA:root;2IN:in:mt1:ms2a-P;CONVERSION:N_V-P;TORIO:torio:mt1:ms1;;;
 
 Morph ico contained in previous morph in lexeme simpatizzare with entry 75201;SIMPATIZZARE;SIMPATIA:root;ICO:ico:mt1:ms2b;IZZARE:izzare:mt5:ms1;;;;
 
-Morph ale contained in previous morph in lexeme regolarizzare with entry 67263;REGOLARIZZARE;REGOLA:root;ALE:ale:mt1:ms2b;IZZARE:izzare:mt1:ms2a;;;;
+Morph izzare contained in previous morph in lexeme razionalizzare with entry 66830;RAZIONALIZZARE;RAGIONE:suppl;ALE:ale:mt1:ms2b;IZZARE:izzare:mt1:ms1;;;;
 
-Morph ad contained in previous morph in lexeme autoabbronzante with entry 10352;AUTOABBRONZANTE;BRONZO:root;ACons:ad:mt2:ms2a-P;CONVERSION:N_V-P;AUTO:auto:mt1:ms1;CONVERSION:V_A;;
+Morph izzare contained in previous morph in lexeme localizzare with entry 48075;LOCALIZZARE;LUOGO:suppl;ALE:ale:mt7:ms1;IZZARE:izzare:mt1:ms1;;;;
+
+Morph izzare contained in previous morph in lexeme focalizzare with entry 33218;FOCALIZZARE;FUOCO:suppl;ALE:ale:mt7:ms2b;IZZARE:izzare:mt1:ms1;;;;
 
 Morph izzare contained in previous morph in lexeme familiarizzare with entry 31382;FAMILIARIZZARE;FAMIGLIA:suppl;ALE:are:mt7:ms2a;IZZARE:izzare:mt1:ms1;;;;
 
-Morph ico contained in previous morph in lexeme iconoclastico with entry 39423;ICONOCLASTICO;ICONOCLASTA:root:neocl_cmp;ICO:ico:mt1:ms1;;;;;
-
 Morph ista contained in previous morph in lexeme protagonistico with entry 64945;PROTAGONISTICO;BASELESS:unrec;ISTA:ista:mt8:ms3a;BACKFORMATION:ista;ISTICO:istico:mt6:ms1;;;
-
-Morph ico contained in previous morph in lexeme psicoanalitico with entry 65147;PSICOANALITICO;PSICOANALISI:dnt_root:neocl_cmp;ICO:ico:mt1:ms1;;;;;
-
-Morph ico contained in previous morph in lexeme psicofonico with entry 65159;PSICOFONICO;PSICOFONIA:root:neocl_cmp;ICO:ico:mt1:ms1;;;;;
-
-Morph ico contained in previous morph in lexeme psicologico with entry 65170;PSICOLOGICO;PSICOLOGIA:root:neocl_cmp;ICO:ico:mt1:ms1;;;;;
-
-Morph ismo contained in previous morph in lexeme scissionistico with entry 72749;SCISSIONISTICO;SCINDERE:pst_ptcp;ZIONE:ione:mt1:ms1;ISMO:ismo:mt1:ms1;ISTICO:istico:mt6:ms1;;;
-
-Morph tras contained in previous morph in lexeme trasformistico with entry 82822;TRASFORMISTICO;FORMARE:root;TRANS:tras:mt1:ms2a;ISMO:ismo:mt1:ms1;ISTICO:istico:mt6:ms1;;;
-
-Morph esimo not found in lexeme umanistico with entry 84119;UMANISTICO;UMANO:root;ISMO:esimo:mt1:ms2a;ISTICO:istico:mt6:ms1;;;;
 
 Morph humour not found in lexeme umoristico with entry 84168;UMORISTICO;HUMOUR:root;ISMO:ismo:mt1:ms1;ISTICO:istico:mt6:ms1;;;;
 
-Morph esimo not found in lexeme urbanistico with entry 84585;URBANISTICO;CITTÀ:suppl;ANO:ano:mt8:ms1;ISMO:esimo:mt1:ms1;ISTICO:istico:mt6:ms1;;;
-
 Morph ità contained in previous morph in lexeme unitario with entry 84397;UNITARIO;UNITÀ:root;ITÀ:ità:mt1:ms2a;ARIO:ario:mt1:ms2a;;;;
-
-Morph stra contained in previous morph in lexeme straordinario with entry 78525;STRAORDINARIO;ORDINE:root;ARIO:ario:mt1:ms1;STRA:stra:mt1:ms1;;;;
-
-Morph stra contained in previous morph in lexeme stramiliardario with entry 78499;STRAMILIARDARIO;MILIARDO:root;ARIO:ario:mt1:ms1;STRA:stra:mt1:ms1;;;;
-
-Morph esimo not found in lexeme umanista with entry 84118;UMANISTA;UMANO:root;ISMO:esimo:mt1:ms2a;ISTA:ista:mt6:ms1;;;;
-
-Morph tras contained in previous morph in lexeme trasformista with entry 82821;TRASFORMISTA;FORMARE:root;TRANS:tras:mt1:ms2a;ISMO:ismo:mt1:ms1;ISTA:ista:mt6:ms1;;;
-
-Morph ismo contained in previous morph in lexeme scissionista with entry 72748;SCISSIONISTA;SCINDERE:pst_ptcp;ZIONE:ione:mt1:ms1;ISMO:ismo:mt1:ms1;ISTA:ista:mt6:ms1;;;
-
-Morph ismo contained in previous morph in lexeme revisionista with entry 67782;REVISIONISTA;VEDERE:ltn_pp;RI:re:mt1:ms1;ZIONE:ione:mt1:ms2a-G;ISMO:ismo:mt1:ms1;ISTA:ista:mt6:ms1;;
 

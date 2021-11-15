@@ -5,6 +5,11 @@ OUT_DIR=$(DATADIR)/converted/rus-DerivBaseRU/
 SHELL = bash
 
 
+all:
+	mkdir -p $(OUT_DIR)
+	$(MAKE) download
+	$(MAKE) -s convert > $(OUT_DIR)conversion.log
+
 download: # and unpack, if needed
 	mkdir -p $(IN_DIR)
 	cd $(IN_DIR) && wget https://github.com/s231644/DerivBaseRu/raw/master/data/wiktionary/v001.00-connections.zip
@@ -12,6 +17,12 @@ download: # and unpack, if needed
 
 convert:
 	mkdir -p $(OUT_DIR)
-	for file in connections_adj.csv connections_adv.csv connections_noun.csv connections_rare.csv connections_special_verb.csv connections_verb.csv ; do \
-		./derivbaseru2useg.py $(IN_DIR)$${file} $(OUT_DIR)$${file}.useg;\
-	done
+	./derivbaseru2useg.py <(cat <(tail -n +2 $(IN_DIR)connections_adj.csv) <(tail -n +2 $(IN_DIR)connections_adv.csv) <(tail -n +2 $(IN_DIR)connections_noun.csv) <(tail -n +2 $(IN_DIR)connections_rare.csv) <(tail -n +2 $(IN_DIR)connections_special_verb.csv) <(tail -n +2 $(IN_DIR)connections_verb.csv)) $(OUT_DIR)DerivBaseRU.useg
+
+	# for file in connections_adj.csv connections_adv.csv connections_noun.csv connections_rare.csv connections_special_verb.csv connections_verb.csv ; do \
+	# 	./derivbaseru2useg.py <(tail -n +2 $(IN_DIR)$${file}) $(OUT_DIR)$${file}.useg;\
+	# done
+
+clean:
+	rm -rf $(IN_DIR)
+	rm -rf $(OUT_DIR)

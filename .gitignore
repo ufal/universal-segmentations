@@ -6,3 +6,6 @@ __pycache__/
 /README.xhtml
 data/
 **/.DS_Store
+
+/stats.tex
+/stats-non-unimorph.tex

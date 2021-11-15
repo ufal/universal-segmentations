@@ -24,7 +24,6 @@ logging.info(f"Converting {sys.argv[1]} to {sys.argv[2]}")
 segmented_lemmas = defaultdict(set)
 with open(sys.argv[1], mode='r', encoding='U8') as infile:
     reader = csv.reader(infile, delimiter='\t')
-    header = next(reader)
     for base_lemma, base_pos, deriv_lemma, deri_pos, rule, operation in reader:
         # add (so far) unsegmented lemmas
         if not segmented_lemmas.get('_'.join([deriv_lemma, deri_pos]), False):
@@ -315,23 +314,25 @@ while any_change is False:
 # store in the resulting format
 lexicon = SegLex()
 
+parse_pos = {'adj': 'ADJ', 'noun': 'NOUN', 'verb': 'VERB', 'adv': 'ADV', 'num': 'NUM'}
+parse_type = {'S': 'suffix', 'E': 'ending', 'P': 'prefix'}
 for entry, segmentation in new_segmented_lemmas.items():
     morphs, labels = segmentation
     lemma, pos = entry.split('_')
 
-    lexeme = lexicon.add_lexeme(lemma, lemma, pos)
+    lexeme = lexicon.add_lexeme(lemma, lemma, parse_pos.get(pos, '??'))
 
     start = 0
     for morph, label in zip(morphs, labels):
-        # print(morph, label, start, start + len(morph) - 1)
         lexicon.add_contiguous_morpheme(
             lex_id=lexeme,
             annot_name='?TODO?',
             start=start,
             end=start + len(morph),
-            features={'morpheme': '?TODO?', 'type': 'UNSEG' if label == 'STEM' else label}
+            features={'type': 'unsegmented' if label == 'STEM' else parse_type.get(label[0], '')}
         )
         start = start+len(morph)
 
 with open(sys.argv[2], mode='w', encoding='U8') as outfile:
     lexicon.save(outfile)
+logging.info(f"Converting completed.")
