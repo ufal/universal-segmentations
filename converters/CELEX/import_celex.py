@@ -24,7 +24,7 @@ def parse_args():
     parser.add_argument("--lang", required=True, choices=("deu", "eng", "nld"), help="The language code of the resource to convert.")
     return parser.parse_args()
 
-hier_extract_regex = re.compile("\((.*)\)\[[^][]*\]")
+hier_extract_regex = re.compile("\((.*)\)\[([^][]*)\]")
 def hier_to_morphemes(s):
     """
     Parse the hierarchical information `s` from a CELEX lexeme info to a list
@@ -39,6 +39,39 @@ def hier_to_morphemes(s):
         return [s], s
 
     inside = match[1]
+    tags = match[2]
+
+    div = tags.find("|")
+    if div == -1:
+        # The divisor is not there, therefore the brackets contain just
+        #  the POS tag.
+        pos = tags
+        t = "root"
+    else:
+        pos = tags[:div]
+        affix_mark = tags[div + 1:]
+        dot_position = affix_mark.find(".")
+        assert dot_position != -1, "No dot in {}".format(s)
+        previous = affix_mark[:dot_position]
+        following = affix_mark[dot_position + 1:]
+
+        t = None
+        if not previous or set(previous) == {"x"}:
+            # No previous morphemes or only other prefixes.
+            t = "prefix"
+        if not following or set(following) == {"x"}:
+            # No following morphemes or only other suffixes.
+            # Sometimes a lone dot is also used for weird marking of roots.
+            if t is None:
+                t = "suffix"
+            elif t == "prefix":
+                logger.warning("Dot used for marking a root in {}".format(s))
+                t = "root"
+            else:
+                assert False
+        if t is None:
+            # Between two roots/stems.
+            t = "interfix"
 
     flat_morphemes = []
     hier_morphemes = []
@@ -53,7 +86,11 @@ def hier_to_morphemes(s):
 
         if char == "," and paren_level == 0:
             flat_parsed_part, hier_parsed_part = hier_to_morphemes(part)
-            flat_morphemes += flat_parsed_part
+            if len(flat_parsed_part) == 1 and isinstance(flat_parsed_part[0], str):
+                flat_morphemes.append({"type": t, "morpheme": flat_parsed_part[0]})
+            else:
+                assert t == "root", "String {} denotes a multi-morpheme affix".format(s)
+                flat_morphemes += flat_parsed_part
             hier_morphemes.append(hier_parsed_part)
             part = ""
         elif char == "(":
@@ -67,7 +104,11 @@ def hier_to_morphemes(s):
 
     # Parse the last part, which has no ',' after it.
     flat_parsed_part, hier_parsed_part = hier_to_morphemes(part)
-    flat_morphemes += flat_parsed_part
+    if len(flat_parsed_part) == 1 and isinstance(flat_parsed_part[0], str):
+        flat_morphemes.append({"type": t, "morpheme": flat_parsed_part[0]})
+    else:
+        assert t == "root", "String {} denotes a multi-morpheme affix".format(s)
+        flat_morphemes += flat_parsed_part
     hier_morphemes.append(hier_parsed_part)
 
     return flat_morphemes, hier_morphemes
@@ -107,43 +148,44 @@ def main(args):
             if lexeme.pos == "VERB":
                 if lemma.endswith("en"):
                     segments.append("en")
-                    flat_morphemes.append("en")
+                    flat_morphemes.append({"type": "suffix", "morpheme": "en"})
                     hier_morphemes.append(["en"])
                 elif lemma.endswith("ln") or lemma.endswith("rn") or lemma.endswith("in") or lemma.endswith("tun"):
                     segments.append("n")
-                    flat_morphemes.append("n")
+                    # TODO The morpheme should be "en" here, only the morph is "n".
+                    flat_morphemes.append({"type": "suffix", "morpheme": "n"})
                     hier_morphemes.append(["n"])
                 else:
                     logger.warning("Unknown verbal ending in {}".format(lexeme))
             elif lexeme.pos == "NOUN":
-                if flat_morphemes[-1] == "bieg" and lemma.endswith("bogen"):
+                if flat_morphemes[-1]["morpheme"] == "bieg" and lemma.endswith("bogen"):
                     segments.append("en")
-                    flat_morphemes[-1] = "bog"
-                    flat_morphemes.append("en")
+                    flat_morphemes[-1]["morpheme"] = "bog"
+                    flat_morphemes.append({"type": "suffix", "morpheme": "en"})
                     hier_morphemes.append(["en"])
-                if flat_morphemes[-1] == "tu" and lemma.endswith("tat"):
+                if flat_morphemes[-1]["morpheme"] == "tu" and lemma.endswith("tat"):
                     # Manually fix allomorphy.
                     #  FIXME do the same for segments and hier_morphemes.
-                    flat_morphemes[-1] = "tat"
-                elif lemma.endswith("t") and flat_morphemes[-1].endswith("h"):
+                    flat_morphemes[-1]["morpheme"] = "tat"
+                elif lemma.endswith("t") and flat_morphemes[-1]["morpheme"].endswith("h"):
                     segments.append("t")
-                    flat_morphemes.append("t")
+                    flat_morphemes.append({"type": "suffix", "morpheme": "t"})
                     hier_morphemes.append(["t"])
-                elif lemma.endswith("d") and flat_morphemes[-1].endswith("g"):
+                elif lemma.endswith("d") and flat_morphemes[-1]["morpheme"].endswith("g"):
                     segments.append("d")
-                    flat_morphemes.append("d")
+                    flat_morphemes.append({"type": "suffix", "morpheme": "d"})
                     hier_morphemes.append(["d"])
-                elif lemma.endswith("e") and not flat_morphemes[-1].endswith("e"):
+                elif lemma.endswith("e") and not flat_morphemes[-1]["morpheme"].endswith("e"):
                     segments.append("e")
-                    flat_morphemes.append("e")
+                    flat_morphemes.append({"type": "suffix", "morpheme": "e"})
                     hier_morphemes.append(["e"])
             elif lexeme.pos == "ADP":
-                if lemma.endswith("er") and not flat_morphemes[-1].endswith("er"):
+                if lemma.endswith("er") and not flat_morphemes[-1]["morpheme"].endswith("er"):
                     segments.append("er")
-                    flat_morphemes.append("er")
+                    flat_morphemes.append({"type": "suffix", "morpheme": "er"})
                     hier_morphemes.append(["er"])
 
-        bounds, cost = infer_bounds(flat_morphemes, lemma)
+        bounds, cost = infer_bounds([m["morpheme"] for m in flat_morphemes], lemma)
 
         assert len(bounds) == len(flat_morphemes) + 1
 
@@ -157,9 +199,9 @@ def main(args):
             end = bounds[i + 1]
 
             if start < end:
-                seg_lex.add_contiguous_morpheme(lex_id, annot_name, start, end, {"morpheme": morpheme})
+                seg_lex.add_contiguous_morpheme(lex_id, annot_name, start, end, morpheme)
             else:
-                logger.error("Missed morpheme nr. {} '{}' in {} segmented as {}".format(i+1, morpheme, lemma, lexeme.misc["segmentation_hierarch"]))
+                logger.error("Missed morpheme nr. {} '{}' in {} segmented as {}".format(i+1, morpheme["morpheme"], lemma, lexeme.misc["segmentation_hierarch"]))
 
         if cost > 0.0:
             logger.info("Fuzziness {} needed when mapping {} to {} as {}".format(cost, lexeme.misc["segmentation_hierarch"], lemma, " + ".join(seg_lex._simple_seg(lex_id, annot_name))))
