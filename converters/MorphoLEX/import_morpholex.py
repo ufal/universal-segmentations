@@ -206,13 +206,14 @@ def main(args):
                 if len(lform) != len(form):
                     print("Word '{}' changes length when lowercasing; this will cause issues.".format(form), file=sys.stderr)
 
-                poses = set(line.POS.split("|"))
+                pos = line.POS
+                poses = set(pos.split("|"))
 
                 if line.ELP_ItemID:
                     features = {"elp_id": int(line.ELP_ItemID)}
                 else:
                     features = None
-                lex_id = lexicon.add_lexeme(form, form, line.POS, features)
+                lex_id = lexicon.add_lexeme(form, form, pos, features)
 
                 segmentation = parse_segmentation_eng(line.MorphoLexSegm)
                 morphemes = [gen_morphs_eng(allomorphs, morpheme) for morpheme in segmentation]
