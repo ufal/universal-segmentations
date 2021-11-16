@@ -80,6 +80,48 @@ def parse_segmentation_eng(s):
 
     return morphemes
 
+def parse_segmentation_fra(s):
+    # The French segmentation seems not to be recursive and has no stem
+    #  marks.
+    morphemes = []
+    rest = s
+
+    while rest:
+        if rest[0] == "<":
+            # Prefix.
+            t = "prefix"
+            end = rest.index("<", 1)
+        elif rest[0] == ">":
+            # Suffix.
+            t = "suffix"
+            end = rest.index(">", 1)
+        elif rest[0] == "(":
+            # Root.
+            t = "root"
+            # There may be parentheses inside, so we have to scan for
+            #  a matching paren.
+            paren_depth = 1
+            end = None
+            for i, char in enumerate(rest[1:], start=1):
+                if char == "(":
+                    paren_depth += 1
+                elif char == ")":
+                    paren_depth -= 1
+
+                if paren_depth == 0:
+                    end = i
+                    break
+            else:
+                raise ValueError("Unbalanced parentheses in '{}'".format(s))
+        else:
+            raise ValueError("Unparseable segmentation '{}'".format(s))
+
+        morpheme = rest[1:end]
+        morphemes.append((morpheme, t))
+        rest = rest[end + 1:]
+
+    return morphemes
+
 def load_allomorphs(f):
     m = {}
 
@@ -153,6 +195,52 @@ def gen_morphs_eng(allomorphs, morpheme):
 
     return (g_morphs, t)
 
+def gen_morphs_fra(allomorphs, morpheme):
+    m, t = morpheme
+
+    # Some French morphemes end in numerals. This seems to be an error.
+    #  Delete the numeral.
+    if re.search(r"\d$", m) is not None:
+        m = re.sub(r"\d*$", "", m)
+
+    if m in allomorphs:
+        morphs = list(allomorphs[m])
+    else:
+        morphs = [m]
+
+    g_morphs = []
+    # Iterate over the list in a weird way, because we need to change
+    #  it while iterating and have the new elements be visible in the
+    #  loop.
+    i = 0
+    while i < len(morphs):
+        morph = morphs[i]
+        i += 1
+
+        if "/" in morph:
+            if morph == "ant/ent":
+                morphs.append("ant")
+                morphs.append("ent")
+                continue
+
+            parts = morph.split("/")
+            assert len(parts) == 2, "More than two alternatives are not supported"
+            base, alt = parts
+            morphs.append(base)
+            for n in range(min(len(alt) + 1, len(base))):
+                # Try to delete up to n + 1 characters from the base
+                #  and replace them with the alternative suffix.
+                # Don't use base[:-n], because -0 == 0 == empty word.
+                remaining = len(base) - n
+                morphs.append(base[:remaining] + alt)
+
+            continue
+        else:
+            # The morpheme itself is one of the morphs.
+            g_morphs.append(morph)
+
+    return (g_morphs, t)
+
 def match_morphemes(form, morphemes):
     # Generate the initial parses.
     parses = []
@@ -192,6 +280,8 @@ def main(args):
         if match is not None:
             if "Word" in sheet.columns:
                 lang = "eng"
+            elif "item" in sheet.columns:
+                lang = "fra"
             else:
                 assert False, "Unknown language"
 
@@ -200,6 +290,10 @@ def main(args):
                 if lang == "eng":
                     # The English data stores the word form in `Word`.
                     form = line.Word
+                else:
+                    # The French data documents the form as being stored
+                    #  in `Word`, but it is actually in `item`.
+                    form = line.item
 
                 if not form:
                     print("No form found at sheet {}, line {}.".format(sheet_name, line_no), file=sys.stderr)
@@ -229,6 +323,17 @@ def main(args):
                         features = {"elp_id": int(line.ELP_ItemID)}
                     else:
                         features = None
+                else:
+                    # The French data has no POSes and the IDs are
+                    #  probably not interlinked with anything.
+                    pos = ""
+
+                    segmentation = line.canon_segm
+                    segmentation = parse_segmentation_fra(segmentation)
+                    morphemes = [gen_morphs_fra(allomorphs, morpheme) for morpheme in segmentation]
+
+                    features = None
+
                 lex_id = lexicon.add_lexeme(form, form, pos, features)
 
 
