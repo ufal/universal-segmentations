@@ -4,8 +4,10 @@ import argparse
 import logging
 import sys
 import re
+import logging
 
 sys.path.append('../../src/')
+logging.basicConfig(filename='../../data/converted/lat-WordFormationLatin/convertion.log', filemode='a')
 
 from useg import SegLex
 import itertools
@@ -129,6 +131,10 @@ def parse_affix_info(x):
 #
 #     else:
 #         raise Exception("What? Only Conv, Der, Comp, Root possible, but the data dropped {}".format(affix_info[0]))
+def clean(morpheme):
+    return(morpheme.replace(" (negation)", "").replace(" (entering)", "")
+           .replace('\\"', "").replace("/", "|").replace("(", "[").replace(")", "]?")
+           .replace("\'", "").replace('\"', "")).replace("\\", "")
 
 def return_segmentation(x, uder, prefixline=[], suffixline=[]):
 
@@ -140,7 +146,7 @@ def return_segmentation(x, uder, prefixline=[], suffixline=[]):
     affix_info = parse_affix_info(uder[x][-3])
 
     if affix_info == 'Root' or uderline[-4] == '':
-        return (prefixline + [(uderline[1], "root")] + suffixline)
+        return (prefixline + [(clean(uderline[1]), "root")] + suffixline)
 
     elif affix_info == 'Conversion':
         return (return_segmentation(x=uderline[-4], prefixline=prefixline,
@@ -176,15 +182,13 @@ def return_segmentation(x, uder, prefixline=[], suffixline=[]):
 #             file.write(str(return_segmentation(i)) + "\n")
 #     except:
 #             file.write("Error on lexeme: " + str(i))
-
-
 def disambiguate_morphs(lemma, morphemelist):
     lst = []
     morphemelist = [i[0] for i in morphemelist]
 
     for morpheme in morphemelist:
-        morpheme = morpheme.replace(" (negation)", "").replace(" (entering)", "").replace('\\"', "")
-        morpheme = morpheme.replace("/", "|").replace("(", "[").replace(")", "]?")
+        morpheme = clean(morpheme)
+
         match = re.search(morpheme, lemma)
         if match is not None:
             lst.append((match.group(), match.span()))
@@ -218,11 +222,9 @@ def main():
 
                 morphemelist = return_segmentation(uder_key, uder)
 
-                lemma = uderline[1]
+                lemma = clean(uderline[1])
                 lexid = uderline[0]
                 morphs = disambiguate_morphs(lemma, morphemelist)
-
-                morpheme_annotations = [i[1] for i in morphemelist]
 
 
                 seg_lexeme = seg_lexicon.add_lexeme(lemma,
@@ -238,8 +240,8 @@ def main():
                                                         features={"type": morphemelist[index][1],
                                                                   "morpheme": morphemelist[index][0]})
             except:
-                log.write("Error in " + uder_key + "\n" +
-                         "Lemma:" + lemma +  "\n")
+                e = sys.exc_info()
+                logging.error((e, uder_key))
 
     seg_lexicon.save(sys.stdout)
 
