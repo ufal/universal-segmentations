@@ -76,6 +76,21 @@ class SegLex:
             if actual_f is not None and close_at_end:
                 actual_f.close()
 
+    def _simple_seg(self, lex_id, annot_name):
+        simple_seg = []
+        last_morpheme = self.morpheme(lex_id, annot_name, 0)
+        morph_str = ""
+        for i, char in enumerate(self.form(lex_id)):
+            morpheme = self.morpheme(lex_id, annot_name, i)
+            if morpheme is last_morpheme:
+                morph_str += char
+            else:
+                last_morpheme = morpheme
+                simple_seg.append(morph_str)
+                morph_str = char
+        simple_seg.append(morph_str)
+        return simple_seg
+
     def _as_records(self):
         """
         Iterate over the lexicon as a sequence of SegRecords (not sorted).
@@ -99,18 +114,7 @@ class SegLex:
                                              sort=True
                                          )]
 
-                simple_seg = []
-                last_morpheme = self.morpheme(lexeme.lex_id, annot_name, 0)
-                morph_str = ""
-                for i, char in enumerate(lexeme.form):
-                    morpheme = self.morpheme(lexeme.lex_id, annot_name, i)
-                    if morpheme is last_morpheme:
-                        morph_str += char
-                    else:
-                        last_morpheme = morpheme
-                        simple_seg.append(morph_str)
-                        morph_str = char
-                simple_seg.append(morph_str)
+                simple_seg = self._simple_seg(lexeme.lex_id, annot_name)
 
                 yield seg_tsv.SegRecord(lexeme.form, lexeme.lemma, lexeme.pos, simple_seg, annot)
 
