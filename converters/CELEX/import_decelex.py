@@ -65,17 +65,6 @@ def hier_to_morphemes(s):
     return flat_morphemes, hier_morphemes
 
 
-def record_boundaries(lexeme, segments):
-    """
-    The list of strings `segments` is the lexeme's lemma broken down into
-    contiguous segments (potentially multi-morph). That means that boundaries
-    between the segments are morph boundaries in lexeme. Record them.
-    """
-    position = 0
-    for segment in segments:
-        position += len(segment)
-        lexeme.add_boundary(position, True)
-
 def main():
     seg_lex = SegLex()
 
