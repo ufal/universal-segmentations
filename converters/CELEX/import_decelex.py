@@ -91,7 +91,7 @@ def main():
 
         # Ignore lexemes which don't contain the necessary information.
         if "segmentation" not in lexeme.misc or "segmentation_hierarch" not in lexeme.misc:
-            logger.warning("Lexeme {} doesn't contain segmentation information".format(lexeme))
+            logger.info("Lexeme {} doesn't contain segmentation information".format(lexeme))
             continue
 
         lemma = lexeme.lemma.lower()
