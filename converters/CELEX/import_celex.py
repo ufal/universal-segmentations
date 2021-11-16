@@ -115,6 +115,33 @@ def main(args):
                     hier_morphemes.append(["n"])
                 else:
                     logger.warning("Unknown verbal ending in {}".format(lexeme))
+            elif lexeme.pos == "NOUN":
+                if flat_morphemes[-1] == "bieg" and lemma.endswith("bogen"):
+                    segments.append("en")
+                    flat_morphemes[-1] = "bog"
+                    flat_morphemes.append("en")
+                    hier_morphemes.append(["en"])
+                if flat_morphemes[-1] == "tu" and lemma.endswith("tat"):
+                    # Manually fix allomorphy.
+                    #  FIXME do the same for segments and hier_morphemes.
+                    flat_morphemes[-1] = "tat"
+                elif lemma.endswith("t") and flat_morphemes[-1].endswith("h"):
+                    segments.append("t")
+                    flat_morphemes.append("t")
+                    hier_morphemes.append(["t"])
+                elif lemma.endswith("d") and flat_morphemes[-1].endswith("g"):
+                    segments.append("d")
+                    flat_morphemes.append("d")
+                    hier_morphemes.append(["d"])
+                elif lemma.endswith("e") and not flat_morphemes[-1].endswith("e"):
+                    segments.append("e")
+                    flat_morphemes.append("e")
+                    hier_morphemes.append(["e"])
+            elif lexeme.pos == "ADP":
+                if lemma.endswith("er") and not flat_morphemes[-1].endswith("er"):
+                    segments.append("er")
+                    flat_morphemes.append("er")
+                    hier_morphemes.append(["er"])
 
         bounds, cost = infer_bounds(flat_morphemes, lemma)
 
