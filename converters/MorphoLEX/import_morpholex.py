@@ -118,6 +118,12 @@ def gen_morphs_eng(allomorphs, morpheme):
             morphs.append(morph[:-1])
             g_morphs.append(morph[:-1])
 
+        if len(morph) >= 2 and morph[-1] == "o":
+            # Deleting -o at the end.
+            # Again support reduplication, e.g. with "disassociated".
+            morphs.append(morph[:-1])
+            g_morphs.append(morph[:-1])
+
         if morph[0] in {"f", "m", "p", "s", "z"}:
             # Reduplication at the start.
             g_morphs.append(morph[0] + morph)
