@@ -257,8 +257,9 @@ def main(args):
                     print("Err-suffix", form, " + ".join([m for m, t in segmentation]), sep="\t", end="\n", file=sys.stderr)
                     continue
 
-                #for i, parse in enumerate(final_parses):
-                    #print("OK-{}".format(i), form, " + ".join([morph for morph, t in parse]), sep="\t", end="\n")
+                if len(final_parses) > 1:
+                    for i, parse in enumerate(final_parses[1:]):
+                        print("Multi-{}".format(2 + i), form, " + ".join([morph for morph, t in parse]), sep="\t", end="\n", file=sys.stderr)
 
                 parse = final_parses[0]
                 end = 0
