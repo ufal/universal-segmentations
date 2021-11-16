@@ -201,7 +201,7 @@ def delete_cost(s, i):
 def infer_bounds(morphs, form):
     """
     Use the list of strings `morphs` to infer boundaries in the string
-    `form`. Return a list of boundary indices.
+    `form`. Return a list of boundary indices and the cost of the mapping.
     >>> infer_bounds(["pes", "vést"], "psovod")
     [0, 3, 6]
     """
@@ -296,4 +296,4 @@ def infer_bounds(morphs, form):
     for i in range(1, len(bounds)):
         assert bounds[i-1] <= bounds[i], "Bounds {} not strictly ascending when segmenting {} by {}".format(bounds, form, morphs)
 
-    return bounds
+    return bounds, ss[f_len][m_len]["cost"]
