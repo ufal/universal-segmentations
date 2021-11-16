@@ -24,4 +24,4 @@ convert: $(OUT_DIR)/all.useg
 # TODO Generate train / dev / test split.
 
 $(OUT_DIR)/all.useg: $(IN_DIR)/UDer-1.1-de-GCelex-nomorphs.tsv import_decelex.py | $(OUT_DIR)
-	./import_decelex.py < '$<' > '$@' 2> '$(basename $@).log'
+	./import_decelex.py --lang deu < '$<' > '$@' 2> '$(basename $@).log'

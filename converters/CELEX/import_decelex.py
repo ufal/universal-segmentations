@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import argparse
 import logging
 import re
 import sys
@@ -15,6 +16,13 @@ logging.basicConfig(level=logging.DEBUG,
 
 logger = logging.getLogger(__name__)
 
+def parse_args():
+    parser = argparse.ArgumentParser(
+        allow_abbrev=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser.add_argument("--lang", required=True, choices=("deu", "eng", "nld"), help="The language code of the resource to convert.")
+    return parser.parse_args()
 
 hier_extract_regex = re.compile("\((.*)\)\[[^][]*\]")
 def hier_to_morphemes(s):
@@ -65,11 +73,15 @@ def hier_to_morphemes(s):
     return flat_morphemes, hier_morphemes
 
 
-def main():
+def main(args):
     seg_lex = SegLex()
 
     lexicon = Lexicon()
     lexicon.load(sys.stdin)
+
+    annot_name = {"deu": "gCELEX",
+                  "eng": "eCELEX",
+                  "nld": "dCELEX"}[args.lang]
 
     for lexeme in lexicon.iter_lexemes():
         feats = dict(lexeme.misc, **lexeme.feats)
@@ -91,17 +103,18 @@ def main():
         #  the end.
         # FIXME this is probably mostly valid for German and Dutch, but
         #  definitely not for English.
-        if lexeme.pos == "VERB":
-            if lemma.endswith("en"):
-                segments.append("en")
-                flat_morphemes.append("en")
-                hier_morphemes.append(["en"])
-            elif lemma.endswith("ln") or lemma.endswith("rn") or lemma.endswith("in") or lemma.endswith("tun"):
-                segments.append("n")
-                flat_morphemes.append("n")
-                hier_morphemes.append(["n"])
-            else:
-                logger.warning("Unknown verbal ending in {}".format(lexeme))
+        if args.lang == "deu":
+            if lexeme.pos == "VERB":
+                if lemma.endswith("en"):
+                    segments.append("en")
+                    flat_morphemes.append("en")
+                    hier_morphemes.append(["en"])
+                elif lemma.endswith("ln") or lemma.endswith("rn") or lemma.endswith("in") or lemma.endswith("tun"):
+                    segments.append("n")
+                    flat_morphemes.append("n")
+                    hier_morphemes.append(["n"])
+                else:
+                    logger.warning("Unknown verbal ending in {}".format(lexeme))
 
         bounds, cost = infer_bounds(flat_morphemes, lemma)
 
@@ -118,14 +131,14 @@ def main():
             morpheme = flat_morphemes[i]
 
             if start < end:
-                seg_lex.add_contiguous_morpheme(lex_id, "gCELEX", start, end, {"morpheme": morpheme})
+                seg_lex.add_contiguous_morpheme(lex_id, annot_name, start, end, {"morpheme": morpheme})
             else:
                 logger.error("Missed morpheme nr. {} '{}' in {} segmented as {}".format(i+1, morpheme, lemma, lexeme.misc["segmentation_hierarch"]))
 
         if cost > 0.0:
-            logger.info("Fuzziness {} needed when mapping {} to {} as {}".format(cost, lexeme.misc["segmentation_hierarch"], lemma, " + ".join(seg_lex._simple_seg(lex_id, "gCELEX"))))
+            logger.info("Fuzziness {} needed when mapping {} to {} as {}".format(cost, lexeme.misc["segmentation_hierarch"], lemma, " + ".join(seg_lex._simple_seg(lex_id, annot_name))))
 
     seg_lex.save(sys.stdout)
 
 if __name__ == "__main__":
-    main()
+    main(parse_args())
