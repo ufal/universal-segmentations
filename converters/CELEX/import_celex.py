@@ -152,21 +152,20 @@ def main(args):
                     hier_morphemes.append(["en"])
                 elif lemma.endswith("ln") or lemma.endswith("rn") or lemma.endswith("in") or lemma.endswith("tun"):
                     segments.append("n")
-                    # TODO The morpheme should be "en" here, only the morph is "n".
-                    flat_morphemes.append({"type": "suffix", "morpheme": "n"})
+                    flat_morphemes.append({"type": "suffix", "morpheme": "en", "morph": "n"})
                     hier_morphemes.append(["n"])
                 else:
                     logger.warning("Unknown verbal ending in {}".format(lexeme))
             elif lexeme.pos == "NOUN":
                 if flat_morphemes[-1]["morpheme"] == "bieg" and lemma.endswith("bogen"):
                     segments.append("en")
-                    flat_morphemes[-1]["morpheme"] = "bog"
+                    flat_morphemes[-1]["morph"] = "bog"
                     flat_morphemes.append({"type": "suffix", "morpheme": "en"})
                     hier_morphemes.append(["en"])
                 if flat_morphemes[-1]["morpheme"] == "tu" and lemma.endswith("tat"):
                     # Manually fix allomorphy.
                     #  FIXME do the same for segments and hier_morphemes.
-                    flat_morphemes[-1]["morpheme"] = "tat"
+                    flat_morphemes[-1]["morph"] = "tat"
                 elif lemma.endswith("t") and flat_morphemes[-1]["morpheme"].endswith("h"):
                     segments.append("t")
                     flat_morphemes.append({"type": "suffix", "morpheme": "t"})
@@ -185,7 +184,7 @@ def main(args):
                     flat_morphemes.append({"type": "suffix", "morpheme": "er"})
                     hier_morphemes.append(["er"])
 
-        bounds, cost = infer_bounds([m["morpheme"] for m in flat_morphemes], lemma)
+        bounds, cost = infer_bounds([m["morph"] if "morph" in m else m["morpheme"] for m in flat_morphemes], lemma)
 
         assert len(bounds) == len(flat_morphemes) + 1
 
@@ -199,6 +198,8 @@ def main(args):
             end = bounds[i + 1]
 
             if start < end:
+                if "morph" in morpheme:
+                    del morpheme["morph"]
                 seg_lex.add_contiguous_morpheme(lex_id, annot_name, start, end, morpheme)
             else:
                 logger.error("Missed morpheme nr. {} '{}' in {} segmented as {}".format(i+1, morpheme["morpheme"], lemma, lexeme.misc["segmentation_hierarch"]))
