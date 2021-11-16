@@ -155,7 +155,6 @@ def main(args):
         for i, morpheme in enumerate(flat_morphemes):
             start = bounds[i]
             end = bounds[i + 1]
-            morpheme = flat_morphemes[i]
 
             if start < end:
                 seg_lex.add_contiguous_morpheme(lex_id, annot_name, start, end, {"morpheme": morpheme})
