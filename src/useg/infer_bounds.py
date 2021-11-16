@@ -230,7 +230,7 @@ def infer_bounds(morphs, form):
 
         cost = prev["cost"] + delete_cost(m_form, j)
 
-        if j in m_bounds and j != 0:
+        if j + 1 in m_bounds:
             if verbose:
                 print("\t*d{}-{}".format(m_form[j], cost), file=sys.stderr, end="")
             bounds = prev["bounds"] + [0]

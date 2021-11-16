@@ -37,3 +37,12 @@ class TestInferBounds(unittest.TestCase):
 
     def test_shorter_suffix(self):
         self.assertEqual([0, 3, 6], infer_bounds(["abc", "def"], "abcdefx")[0])
+
+    def test_missing_prefix(self):
+        self.assertEqual([0, 0, 3], infer_bounds(["xxx", "abc"], "abc")[0])
+
+    def test_missing_suffix(self):
+        self.assertEqual([0, 3, 3], infer_bounds(["abc", "xxx"], "abc")[0])
+
+    def test_missing_center(self):
+        self.assertEqual([0, 3, 3, 6], infer_bounds(["abc", "xxx", "def"], "abcdef")[0])
