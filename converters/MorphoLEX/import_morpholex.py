@@ -153,6 +153,35 @@ def gen_morphs_eng(allomorphs, morpheme):
 
     return (g_morphs, t)
 
+def match_morphemes(form, morphemes):
+    # Generate the initial parses.
+    parses = []
+    morphs, t = morphemes[0]
+    for morph in morphs:
+        if form.startswith(morph):
+            # Record the initial parse.
+            parses.append(([(morph, t)], len(morph)))
+
+    # Try to lengthen each parse, until we consume all morphemes.
+    for morphs, t in morphemes[1:]:
+        next_parses = []
+
+        for morph in morphs:
+            for parse, end in parses:
+                start = end
+
+                if form.startswith(morph, start):
+                    # Success!
+                    # Record the successful potential parse in next_parses.
+                    next_parses.append((parse + [(morph, t)], start + len(morph)))
+                else:
+                    # This parse failed, discard it.
+                    pass
+
+        parses = next_parses
+
+    return parses
+
 def main(args):
     lexicon = SegLex()
     allomorphs = load_allomorphs(args.allomorphs)
@@ -188,31 +217,7 @@ def main(args):
                 segmentation = parse_segmentation_eng(line.MorphoLexSegm)
                 morphemes = [gen_morphs_eng(allomorphs, morpheme) for morpheme in segmentation]
 
-                # Generate the initial parses.
-                parses = []
-                morphs, t = morphemes[0]
-                for morph in morphs:
-                    if lform.startswith(morph):
-                        # Record the initial parse.
-                        parses.append(([(morph, t)], len(morph)))
-
-                # Try to lengthen each parse, until we consume all morphemes.
-                for morphs, t in morphemes[1:]:
-                    next_parses = []
-
-                    for morph in morphs:
-                        for parse, end in parses:
-                            start = end
-
-                            if lform.startswith(morph, start):
-                                # Success!
-                                # Record the successful potential parse in next_parses.
-                                next_parses.append((parse + [(morph, t)], start + len(morph)))
-                            else:
-                                # This parse failed, discard it.
-                                pass
-
-                    parses = next_parses
+                parses = match_morphemes(lform, morphemes)
 
                 if not parses:
                     # Error, no possible parses found.
