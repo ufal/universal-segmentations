@@ -1,8 +1,8 @@
-.PHONY: download convert
+.PHONY: download convert convert-en clean
 
 DATADIR=../../data
 IN_DIR=$(DATADIR)/original/MorphoLEX
-OUT_DIR=$(DATADIR)/converted/eng-MorphoLEX
+OUT_DIR_eng=$(DATADIR)/converted/eng-MorphoLEX
 
 PYTHONPATH=../../src
 export PYTHONPATH
@@ -15,16 +15,23 @@ $(IN_DIR)/MorphoLEX_en.xlsx: | $(IN_DIR)
 $(IN_DIR):
 	mkdir -p '$@'
 
-$(OUT_DIR):
+$(OUT_DIR_eng):
 	mkdir -p '$@'
 
-convert: $(OUT_DIR)/all.useg
+convert: convert-eng
+
+convert-eng: $(OUT_DIR_eng)/all.useg
 # TODO Generate train / dev / test split.
 
-$(OUT_DIR)/all.useg: $(IN_DIR)/MorphoLEX_en.xlsx python-venv/bin/activate | $(OUT_DIR)
-	. python-venv/bin/activate && ./import_morpholex.py --annot-name '$(basename $(notdir $<))' --allomorphs allomorphs.tsv '$<' > '$@' 2> '$(basename $@).log'
+$(OUT_DIR_eng)/all.useg: $(IN_DIR)/MorphoLEX_en.xlsx allomorphs-eng.tsv python-venv/bin/activate | $(OUT_DIR_eng)
+	. python-venv/bin/activate && ./import_morpholex.py --annot-name '$(basename $(notdir $<))' --allomorphs allomorphs-eng.tsv '$<' > '$@' 2> '$(basename $@).log'
 
 python-venv/bin/activate: requirements.txt
 	rm -rf python-venv
 	virtualenv -p python3 python-venv/
 	. python-venv/bin/activate && pip install -r '$<'
+
+clean:
+	rm -rf '$(OUT_DIR_eng)'
+	#rm -rf python-venv
+	#rm -rf '$(IN_DIR)'

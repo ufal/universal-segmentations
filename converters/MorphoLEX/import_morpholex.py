@@ -23,7 +23,7 @@ def parse_args():
     parser.add_argument("--allomorphs", required=True, type=argparse.FileType("rt", encoding="utf-8", errors="strict"), help="A file to load allomorphy information from.")
     return parser.parse_args()
 
-def parse_segmentation(s):
+def parse_segmentation_eng(s):
     morphemes = []
     rest = s
 
@@ -60,7 +60,7 @@ def parse_segmentation(s):
 
             stem = rest[1:end]
             # TODO Somehow record stem information and return it.
-            morphemes.extend(parse_segmentation(stem))
+            morphemes.extend(parse_segmentation_eng(stem))
             rest = rest[end + 1:]
             continue
         else:
@@ -90,7 +90,7 @@ def load_allomorphs(f):
 
     return m
 
-def gen_morphs(allomorphs, morpheme):
+def gen_morphs_eng(allomorphs, morpheme):
     m, t = morpheme
 
     if m in allomorphs:
@@ -179,8 +179,8 @@ def main(args):
                     features = None
                 lex_id = lexicon.add_lexeme(form, form, line.POS, features)
 
-                segmentation = parse_segmentation(line.MorphoLexSegm)
-                morphemes = [gen_morphs(allomorphs, morpheme) for morpheme in segmentation]
+                segmentation = parse_segmentation_eng(line.MorphoLexSegm)
+                morphemes = [gen_morphs_eng(allomorphs, morpheme) for morpheme in segmentation]
 
                 # Generate the initial parses.
                 parses = []
