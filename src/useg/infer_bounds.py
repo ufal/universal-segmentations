@@ -129,6 +129,8 @@ l_ctg = {
     "X": "cons",
     "Z": "cons",
     "Ž": "cons",
+    "-": "punct",
+    "'": "punct"
 }
 
 def letter_category(l):
@@ -186,6 +188,8 @@ def subst_cost(sa, ia, sb, ib):
 
 def insert_cost(s, i):
     lc = letter_category(s[i])
+    if lc == "punct":
+        return 0.1
     if lc == "vowel":
         return 0.3
 
