@@ -7,6 +7,7 @@ import sys
 from derinet import Lexicon
 from derinet.utils import DerinetMorphError
 from useg import SegLex
+from useg.infer_bounds import infer_bounds
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)-8s %(message)s',
@@ -113,110 +114,27 @@ def main():
             else:
                 logger.warning("Unknown verbal ending in {}".format(lexeme))
 
-        #print(flat_morphemes, hier_morphemes)
+        bounds, cost = infer_bounds(flat_morphemes, lemma)
 
-        # Record the boundaries present in the stem list.
-        if "".join(segments) == lemma:
-            # The boundaries can be simply concatenated, there are no
-            #  phonological or other changes. Easy!
-            #print("Stem segmentation success:", lemma, segments)
-            record_boundaries(lexeme, segments)
-        else:
-            logger.info("Stem segmentation fail in {}: {}".format(lexeme, segments))
-            pass
+        assert len(bounds) == len(flat_morphemes) + 1
 
-        # Record the boundaries present in the morpheme list.
-        if "".join(flat_morphemes) == lemma:
-            # The boundaries can be simply concatenated, there are no
-            #  phonological or other changes. Easy!
-            #print("Full morpheme segmentation success:", lemma, flat_morphemes)
-            end = 0
-            for morph in flat_morphemes:
-                start = end
-                end = start + len(morph)
-                seg_lex.add_contiguous_morpheme(lex_id, "gCELEX", start, end, {"morpheme": morph})
-        else:
-            #print("Full morpheme segmentation fail:", lemma, flat_morphemes)
+        if bounds[0] != 0:
+            logger.warning("Ignored prefix '{}' of {} segmented as {}".format(lemma[:bounds[0]], lemma, lexeme.misc["segmentation_hierarch"]))
+        if bounds[-1] != len(lemma):
+            logger.warning("Ignored suffix '{}' of {} segmented as {}".format(lemma[bounds[-1]:], lemma, lexeme.misc["segmentation_hierarch"]))
 
-            # Try to record as many segments as possible from the start of
-            #  the lemma.
-            position = 0
-            used_start_morphemes = 0
-            for morpheme in flat_morphemes:
-                if lemma.startswith(morpheme, position):
-                    end_position = position + len(morpheme)
-                    # FIXME check that we don't overlap an existing boundary
-                    #  inferred from the stem segmentation.
-                    #print("Partially start-segmenting", lemma, "with", morpheme, "at", position, end_position)
-                    try:
-                        seg_lex.add_contiguous_morpheme(lex_id, "gCELEX", position, end_position, {"morpheme": morpheme})
-                    except DerinetMorphError as ex:
-                        # FIXME we can probably use the hierarchical segmentation for this.
-                        #  If the hier segmentation has three immediate constituents, these
-                        #  should correspond to three stems. So we ought to know which stems
-                        #  contain which morphemes. But I should verify this idea first.
-                        logger.info("Morph segmentation overlaps with stem segmentation in {}: {}".format(lemma, ex))
-                        break
-                    position = end_position
-                    used_start_morphemes += 1
-                else:
-                    break
+        for i, morpheme in enumerate(flat_morphemes):
+            start = bounds[i]
+            end = bounds[i + 1]
+            morpheme = flat_morphemes[i]
 
-            if position < 0 or position >= len(lemma):
-                #assert False, "The lemma '{}' shouldn't have been fully segmented by '{}', because segmentation ought to have failed".format(lemma, flat_morphemes)
-                # This happens e.g. in the lemma abtransport, which is
-                #  segmented as ['ab', 'transport', 'ier']. It's probably
-                #  an error in the data, which should be cleaned up.
-                continue
-            # Remember where the segmentation stopped matching.
-            residual_morph_start = position
-
-            # Now try to record as many segments as possible from the end.
-            end_position = len(lemma)
-            used_end_morphemes = 0
-            for morpheme in reversed(flat_morphemes):
-                position = end_position - len(morpheme)
-                if lemma.startswith(morpheme, position):
-                    #print("Partially end-segmenting", lemma, "with", morpheme, "at", position, end_position)
-                    if position <= residual_morph_start:
-                        # The segmentations from the start and end ran into
-                        #  one another. That means there is a character in
-                        #  the lemma which ought to belong to both of them.
-                        #  For example, "Achtelliter" should be segmented as
-                        #  "acht+tel+liter", making the "t" double-covered.
-                        # This means the whole segmentation is unsound.
-                        # FIXME remove the offending morpheme which was
-                        #  added during the forward pass.
-                        break
-                    seg_lex.add_contiguous_morpheme(lex_id, "gCELEX", position, end_position, {"morpheme": morpheme})
-                    end_position = position
-                    used_end_morphemes += 1
-                else:
-                    break
-
-            assert 0 < end_position <= len(lemma), "The lemma '{}' shouldn't have been fully segmented by '{}', because segmentation ought to have failed".format(lemma, flat_morphemes)
-            residual_morph_end = end_position
-
-            # If there is only one morpheme left, it must correspond to the
-            #  part of the lemma that is unused.
-            unused_morphemes = flat_morphemes[used_start_morphemes:len(flat_morphemes)-used_end_morphemes]
-
-            # FIXME add the leftover part to the morpheme where it belongs,
-            #  it is probably a duplicate character, as the extra `s` in
-            #  'aussenantenne' → '['aus', 'en', 'antenne']'.
-            #assert len(unused_morphemes) >= 1, "Segmentation of '{}' by '{}' failed, yet there are no unused morphemes".format(lemma, flat_morphemes)
-            if len(unused_morphemes) < 1:
-                continue
-
-            # Record the residual morpheme.
-            if len(unused_morphemes) == 1:
-                try:
-                    seg_lex.add_contiguous_morpheme(lex_id, "gCELEX", residual_morph_start, residual_morph_end, {"morpheme": unused_morphemes[0], "residual": True})
-                    #print("Residual segmentation of", lemma, "succeeded by mapping", unused_morphemes[0], "to", lemma[residual_morph_start:residual_morph_end])
-                except DerinetMorphError as ex:
-                    logger.info("Residual segmentation of {} tried and failed because of residual morph overlap: {}".format(lexeme, flat_morphemes))
+            if start < end:
+                seg_lex.add_contiguous_morpheme(lex_id, "gCELEX", start, end, {"morpheme": morpheme})
             else:
-                logger.info("Residual segmentation fail in {}: {}".format(lexeme, flat_morphemes))
+                logger.error("Missed morpheme nr. {} '{}' in {} segmented as {}".format(i+1, morpheme, lemma, lexeme.misc["segmentation_hierarch"]))
+
+        if cost > 0.0:
+            logger.info("Fuzziness {} needed when mapping {} to {} as {}".format(cost, lexeme.misc["segmentation_hierarch"], lemma, " + ".join(seg_lex._simple_seg(lex_id, "gCELEX"))))
 
     seg_lex.save(sys.stdout)
 
