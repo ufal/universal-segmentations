@@ -190,9 +190,16 @@ def main(args):
     for sheet_name, sheet in sheets.items():
         match = re.fullmatch("[0-9]+-[0-9]+-[0-9]+", sheet_name)
         if match is not None:
+            if "Word" in sheet.columns:
+                lang = "eng"
+            else:
+                assert False, "Unknown language"
+
             for line_no, line in enumerate(sheet.itertuples(name="MorphoLEX")):
                 # Note: some words are in uppercase, for whatever reason.
-                form = line.Word
+                if lang == "eng":
+                    # The English data stores the word form in `Word`.
+                    form = line.Word
 
                 if not form:
                     print("No form found at sheet {}, line {}.".format(sheet_name, line_no), file=sys.stderr)
@@ -206,17 +213,24 @@ def main(args):
                 if len(lform) != len(form):
                     print("Word '{}' changes length when lowercasing; this will cause issues.".format(form), file=sys.stderr)
 
-                pos = line.POS
-                poses = set(pos.split("|"))
+                if lang == "eng":
+                    # The English data has parts of speech, with
+                    #  possibly multiple options per lexeme.
+                    pos = line.POS
+                    poses = set(pos.split("|"))
 
-                if line.ELP_ItemID:
-                    features = {"elp_id": int(line.ELP_ItemID)}
-                else:
-                    features = None
+                    segmentation = line.MorphoLexSegm
+                    segmentation = parse_segmentation_eng(segmentation)
+                    morphemes = [gen_morphs_eng(allomorphs, morpheme) for morpheme in segmentation]
+
+                    if line.ELP_ItemID:
+                        # Some English lexemes have interlinked IDs,
+                        #  some don't.
+                        features = {"elp_id": int(line.ELP_ItemID)}
+                    else:
+                        features = None
                 lex_id = lexicon.add_lexeme(form, form, pos, features)
 
-                segmentation = parse_segmentation_eng(line.MorphoLexSegm)
-                morphemes = [gen_morphs_eng(allomorphs, morpheme) for morpheme in segmentation]
 
                 parses = match_morphemes(lform, morphemes)
 
