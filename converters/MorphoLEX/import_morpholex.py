@@ -23,7 +23,7 @@ def parse_args():
     parser.add_argument("--allomorphs", required=True, type=argparse.FileType("rt", encoding="utf-8", errors="strict"), help="A file to load allomorphy information from.")
     return parser.parse_args()
 
-def parse_segmentation(s):
+def parse_segmentation_eng(s):
     morphemes = []
     rest = s
 
@@ -60,7 +60,7 @@ def parse_segmentation(s):
 
             stem = rest[1:end]
             # TODO Somehow record stem information and return it.
-            morphemes.extend(parse_segmentation(stem))
+            morphemes.extend(parse_segmentation_eng(stem))
             rest = rest[end + 1:]
             continue
         else:
@@ -80,6 +80,48 @@ def parse_segmentation(s):
 
     return morphemes
 
+def parse_segmentation_fra(s):
+    # The French segmentation seems not to be recursive and has no stem
+    #  marks.
+    morphemes = []
+    rest = s
+
+    while rest:
+        if rest[0] == "<":
+            # Prefix.
+            t = "prefix"
+            end = rest.index("<", 1)
+        elif rest[0] == ">":
+            # Suffix.
+            t = "suffix"
+            end = rest.index(">", 1)
+        elif rest[0] == "(":
+            # Root.
+            t = "root"
+            # There may be parentheses inside, so we have to scan for
+            #  a matching paren.
+            paren_depth = 1
+            end = None
+            for i, char in enumerate(rest[1:], start=1):
+                if char == "(":
+                    paren_depth += 1
+                elif char == ")":
+                    paren_depth -= 1
+
+                if paren_depth == 0:
+                    end = i
+                    break
+            else:
+                raise ValueError("Unbalanced parentheses in '{}'".format(s))
+        else:
+            raise ValueError("Unparseable segmentation '{}'".format(s))
+
+        morpheme = rest[1:end]
+        morphemes.append((morpheme, t))
+        rest = rest[end + 1:]
+
+    return morphemes
+
 def load_allomorphs(f):
     m = {}
 
@@ -90,7 +132,7 @@ def load_allomorphs(f):
 
     return m
 
-def gen_morphs(allomorphs, morpheme):
+def gen_morphs_eng(allomorphs, morpheme):
     m, t = morpheme
 
     if m in allomorphs:
@@ -115,6 +157,12 @@ def gen_morphs(allomorphs, morpheme):
         if len(morph) >= 2 and morph[-1] == "e":
             # Append to the source list, because e.g. "reassured" needs
             #  both e-deletion and reduplication.
+            morphs.append(morph[:-1])
+            g_morphs.append(morph[:-1])
+
+        if len(morph) >= 2 and morph[-1] == "o":
+            # Deleting -o at the end.
+            # Again support reduplication, e.g. with "disassociated".
             morphs.append(morph[:-1])
             g_morphs.append(morph[:-1])
 
@@ -147,6 +195,81 @@ def gen_morphs(allomorphs, morpheme):
 
     return (g_morphs, t)
 
+def gen_morphs_fra(allomorphs, morpheme):
+    m, t = morpheme
+
+    # Some French morphemes end in numerals. This seems to be an error.
+    #  Delete the numeral.
+    if re.search(r"\d$", m) is not None:
+        m = re.sub(r"\d*$", "", m)
+
+    if m in allomorphs:
+        morphs = list(allomorphs[m])
+    else:
+        morphs = [m]
+
+    g_morphs = []
+    # Iterate over the list in a weird way, because we need to change
+    #  it while iterating and have the new elements be visible in the
+    #  loop.
+    i = 0
+    while i < len(morphs):
+        morph = morphs[i]
+        i += 1
+
+        if "/" in morph:
+            if morph == "ant/ent":
+                morphs.append("ant")
+                morphs.append("ent")
+                continue
+
+            parts = morph.split("/")
+            assert len(parts) == 2, "More than two alternatives are not supported"
+            base, alt = parts
+            morphs.append(base)
+            for n in range(min(len(alt) + 1, len(base))):
+                # Try to delete up to n + 1 characters from the base
+                #  and replace them with the alternative suffix.
+                # Don't use base[:-n], because -0 == 0 == empty word.
+                remaining = len(base) - n
+                morphs.append(base[:remaining] + alt)
+
+            continue
+        else:
+            # The morpheme itself is one of the morphs.
+            g_morphs.append(morph)
+
+    return (g_morphs, t)
+
+def match_morphemes(form, morphemes):
+    # Generate the initial parses.
+    parses = []
+    morphs, t = morphemes[0]
+    for morph in morphs:
+        if form.startswith(morph):
+            # Record the initial parse.
+            parses.append(([(morph, t)], len(morph)))
+
+    # Try to lengthen each parse, until we consume all morphemes.
+    for morphs, t in morphemes[1:]:
+        next_parses = []
+
+        for morph in morphs:
+            for parse, end in parses:
+                start = end
+
+                if form.startswith(morph, start):
+                    # Success!
+                    # Record the successful potential parse in next_parses.
+                    next_parses.append((parse + [(morph, t)], start + len(morph)))
+                else:
+                    # This parse failed, discard it.
+                    pass
+
+        parses = next_parses
+
+    return parses
+
 def main(args):
     lexicon = SegLex()
     allomorphs = load_allomorphs(args.allomorphs)
@@ -155,9 +278,22 @@ def main(args):
     for sheet_name, sheet in sheets.items():
         match = re.fullmatch("[0-9]+-[0-9]+-[0-9]+", sheet_name)
         if match is not None:
+            if "Word" in sheet.columns:
+                lang = "eng"
+            elif "item" in sheet.columns:
+                lang = "fra"
+            else:
+                assert False, "Unknown language"
+
             for line_no, line in enumerate(sheet.itertuples(name="MorphoLEX")):
                 # Note: some words are in uppercase, for whatever reason.
-                form = line.Word
+                if lang == "eng":
+                    # The English data stores the word form in `Word`.
+                    form = line.Word
+                else:
+                    # The French data documents the form as being stored
+                    #  in `Word`, but it is actually in `item`.
+                    form = line.item
 
                 if not form:
                     print("No form found at sheet {}, line {}.".format(sheet_name, line_no), file=sys.stderr)
@@ -171,42 +307,37 @@ def main(args):
                 if len(lform) != len(form):
                     print("Word '{}' changes length when lowercasing; this will cause issues.".format(form), file=sys.stderr)
 
-                poses = set(line.POS.split("|"))
+                if lang == "eng":
+                    # The English data has parts of speech, with
+                    #  possibly multiple options per lexeme.
+                    pos = line.POS
+                    poses = set(pos.split("|"))
 
-                if line.ELP_ItemID:
-                    features = {"elp_id": int(line.ELP_ItemID)}
+                    segmentation = line.MorphoLexSegm
+                    segmentation = parse_segmentation_eng(segmentation)
+                    morphemes = [gen_morphs_eng(allomorphs, morpheme) for morpheme in segmentation]
+
+                    if line.ELP_ItemID:
+                        # Some English lexemes have interlinked IDs,
+                        #  some don't.
+                        features = {"elp_id": int(line.ELP_ItemID)}
+                    else:
+                        features = None
                 else:
+                    # The French data has no POSes and the IDs are
+                    #  probably not interlinked with anything.
+                    pos = ""
+
+                    segmentation = line.canon_segm
+                    segmentation = parse_segmentation_fra(segmentation)
+                    morphemes = [gen_morphs_fra(allomorphs, morpheme) for morpheme in segmentation]
+
                     features = None
-                lex_id = lexicon.add_lexeme(form, form, line.POS, features)
 
-                segmentation = parse_segmentation(line.MorphoLexSegm)
-                morphemes = [gen_morphs(allomorphs, morpheme) for morpheme in segmentation]
+                lex_id = lexicon.add_lexeme(form, form, pos, features)
 
-                # Generate the initial parses.
-                parses = []
-                morphs, t = morphemes[0]
-                for morph in morphs:
-                    if lform.startswith(morph):
-                        # Record the initial parse.
-                        parses.append(([(morph, t)], len(morph)))
 
-                # Try to lengthen each parse, until we consume all morphemes.
-                for morphs, t in morphemes[1:]:
-                    next_parses = []
-
-                    for morph in morphs:
-                        for parse, end in parses:
-                            start = end
-
-                            if lform.startswith(morph, start):
-                                # Success!
-                                # Record the successful potential parse in next_parses.
-                                next_parses.append((parse + [(morph, t)], start + len(morph)))
-                            else:
-                                # This parse failed, discard it.
-                                pass
-
-                    parses = next_parses
+                parses = match_morphemes(lform, morphemes)
 
                 if not parses:
                     # Error, no possible parses found.
@@ -251,8 +382,9 @@ def main(args):
                     print("Err-suffix", form, " + ".join([m for m, t in segmentation]), sep="\t", end="\n", file=sys.stderr)
                     continue
 
-                #for i, parse in enumerate(final_parses):
-                    #print("OK-{}".format(i), form, " + ".join([morph for morph, t in parse]), sep="\t", end="\n")
+                if len(final_parses) > 1:
+                    for i, parse in enumerate(final_parses[1:]):
+                        print("Multi-{}".format(2 + i), form, " + ".join([morph for morph, t in parse]), sep="\t", end="\n", file=sys.stderr)
 
                 parse = final_parses[0]
                 end = 0
