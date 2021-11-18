@@ -223,6 +223,44 @@ def gen_morphs_fra(allomorphs, morpheme):
 
     return (g_morphs, t)
 
+def add_endings_eng(form, joined_segmentation, morphemes):
+    if form.endswith("ings") and not joined_segmentation.endswith("ings"):
+        morphemes.append((["ing"], "suffix"))
+        morphemes.append((["s"], "suffix"))
+        return morphemes
+
+    if form[-3:] in {"ing", "n't", "'ll", "'re", "'ve"}:
+        s = form[-3:]
+        if not joined_segmentation.endswith(s):
+            morphemes.append(([s], "suffix"))
+        return morphemes
+
+    if form[-2:] in {"'s", "'d"}:
+        s = form[-2:]
+        if not joined_segmentation.endswith(s):
+            morphemes.append(([s], "suffix"))
+        return morphemes
+
+    if form[-2:] == "ed":
+        if joined_segmentation[-1] == "e":
+            morphemes.append((["ed", "d"], "suffix"))
+        elif not joined_segmentation.endswith("ed"):
+            morphemes.append((["ed"], "suffix"))
+        return morphemes
+
+    if form[-2:] == "id" and joined_segmentation[-1] == "y":
+        morphemes.append((["ed", "d"], "suffix"))
+        return morphemes
+
+    if form[-1] == "s" and joined_segmentation[-1] != "s":
+        if form[-2:] == "es" and joined_segmentation[-1] != "e":
+            morphemes.append((["s", "es"], "suffix"))
+        else:
+            morphemes.append((["s"], "suffix"))
+        return morphemes
+
+    return morphemes
+
 def record_morphemes(seg_lex, lex_id, annot_name, form, morphemes):
     # First, generate all allomorph combinations to map.
     # Generate the initial state.
@@ -338,6 +376,8 @@ def main(args):
                 lex_id = lexicon.add_lexeme(form, form, pos, features)
 
                 joined_segmentation = "".join([m for m, t in segmentation])
+                if lang == "eng":
+                    morphemes = add_endings_eng(lform, joined_segmentation, morphemes)
 
                 record_morphemes(lexicon, lex_id, args.annot_name, lform, morphemes)
 
