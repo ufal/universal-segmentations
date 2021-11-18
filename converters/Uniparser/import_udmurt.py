@@ -122,8 +122,9 @@ def main():
             else:
                 morphs = parts.split("-")
 
-            assert len(morphs) == len(morphemes), \
-                "The morph and morpheme lists don't match for line '{}'".format(line)
+            if len(morphs) != len(morphemes):
+                print("The morph and morpheme lists don't match for line '{}'".format(line), file=sys.stderr)
+                continue
 
             morpho_tags = gr.split(",")
             pos = gr_to_upos(morpho_tags)
