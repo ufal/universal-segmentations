@@ -27,4 +27,4 @@ convert: $(OUT_DIR_udm)/all.useg
 # TODO Generate train / dev / test split.
 
 $(OUT_DIR_udm)/all.useg: $(IN_DIR)/udm_wordlist_analyzed_fixed.txt | $(OUT_DIR_udm)
-	./import_udmurt.py < '$<' 2>&1 > '$@' | tee '$(basename $@).log' >&2
+	./import_uniparser.py < '$<' 2>&1 > '$@' | tee '$(basename $@).log' >&2
