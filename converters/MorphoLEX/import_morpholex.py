@@ -142,30 +142,11 @@ def gen_morphs_eng(allomorphs, morpheme):
         morphs = [m]
 
     g_morphs = list(morphs)
-    # Iterate over the list in a weird way, because we need to change
-    #  it while iterating and have the new elements be visible in the
-    #  loop.
-    i = 0
-    while i < len(morphs):
-        morph = morphs[i]
-        i += 1
-
+    for morph in morphs:
         # All the tests below require nonempty morph string.
         if not morph:
             print("Warning: empty allomorph of morpheme '{}' detected.".format(m), file=sys.stderr)
             continue
-
-        if len(morph) >= 2 and morph[-1] == "e":
-            # Append to the source list, because e.g. "reassured" needs
-            #  both e-deletion and reduplication.
-            morphs.append(morph[:-1])
-            g_morphs.append(morph[:-1])
-
-        if len(morph) >= 2 and morph[-1] == "o":
-            # Deleting -o at the end.
-            # Again support reduplication, e.g. with "disassociated".
-            morphs.append(morph[:-1])
-            g_morphs.append(morph[:-1])
 
         if morph[0] in {"f", "m", "p", "s", "z"}:
             # Reduplication at the start.
