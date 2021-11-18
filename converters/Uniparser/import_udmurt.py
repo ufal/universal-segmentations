@@ -42,6 +42,7 @@ def gr_to_upos(morpho_tags):
 
 def main():
     lexicon = SegLex()
+    annot_name = "Uniparser UDM"
 
     for line in sys.stdin:
         line = line.rstrip()
@@ -150,7 +151,7 @@ def main():
                     #  first case). Skip it.
                     lexicon.add_contiguous_morpheme(
                         lexeme,
-                        "Uniparser UDM",
+                        annot_name,
                         end,
                         end + 1,
                         # FIXME the type should be different when it is
@@ -179,7 +180,7 @@ def main():
 
                 lexicon.add_contiguous_morpheme(
                     lexeme,
-                    "Uniparser UDM",
+                    annot_name,
                     start,
                     end,
                     features={"morpheme": morpheme, "type": morpheme_type}
@@ -189,7 +190,7 @@ def main():
                 # Add the (potentially discontiguous) stem morpheme.
                 lexicon.add_morpheme(
                     lexeme,
-                    "Uniparser UDM",
+                    annot_name,
                     stem_morph_span,
                     features={"morpheme": "STEM", "type": "stem"}
                 )
@@ -202,7 +203,7 @@ def main():
                 #  Add it as a connector now.
                 lexicon.add_contiguous_morpheme(
                     lexeme,
-                    "Uniparser UDM",
+                    annot_name,
                     end,
                     end + 1,
                     # FIXME the type should be different when it is
