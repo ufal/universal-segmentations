@@ -18,7 +18,7 @@ $(IN_DIR)/UDer-1.1-de-GCelex-nomorphs.tsv:
 $(IN_DIR)/UDer-1.1-en-ECelex.tsv:
 	cp /net/work/people/vidra/universal-derivations/en/ECelex/UDer-1.1-en-ECelex.tsv '$@' | $(IN_DIR)
 $(IN_DIR)/UDer-1.1-nl-DCelex.tsv:
-	cp /net/work/people/vidra/universal-derivations/de/GCelex/UDer-1.1-nl-DCelex.tsv '$@' | $(IN_DIR)
+	cp /net/work/people/vidra/universal-derivations/nl/DCelex/UDer-1.1-nl-DCelex.tsv '$@' | $(IN_DIR)
 
 $(IN_DIR):
 	mkdir -p '$@'
