@@ -33,12 +33,16 @@ lexicon = SegLex()
 def assign_upos(pos):
     '''Maps POS to UPOS'''
     upos = ""
+    if pos.startswith("D"):
+        upos = "DET"
     if pos.startswith("N"):
         upos = "NOUN"
     if pos.startswith("NNP"):
         upos = "PROPN"
-    if pos.startswith("NNP"):
-        upos = "NOUN"
+    if pos.startswith("PR"):
+        upos = "PRON"
+    if pos.startswith("PSP"):
+        upos = "ADP"
     if pos.startswith("V"):
         upos = "VERB"
     if "VAU" in pos or "VAU" in pos:
@@ -51,11 +55,17 @@ def assign_upos(pos):
         upos = "JJ"
     if pos.startswith("RB"):
         upos = "ADV"
-    if pos.startswith("PR"):
-        upos = "ADP"
+    if pos.startswith("Q"):
+        upos = "NUM"
+    if pos.startswith("CC"):
+        upos = "SCONJ|CCONJ"
+    if pos.startswith("INTF"):
+        upos = "ADV"
+
 
     if upos=="":
         pos_issues.warning("POS %s not assigned ", pos)
+        return "UNK"
 
     return upos
 
@@ -67,20 +77,47 @@ def get_lexeme_features(af, pos):
     '''Extracts and translates features from af'''
     features = dict()
     features["root"] = af[0]
-    if len(features)!=8:
+
+    if af[0].isascii():
+        del features["root"]
+
+    if len(af)!=8:
         return features
-    features["lcat"] = af[1]
-    features["gender"] = af[2]
-    features["number"] = af[3]
-    features["person"] = af[4]
-    features["case"] = af[6]
-    features["person"] = af[7]
+
+    lcats = {"n", "adj", "avy", "adv", "num", "psp", "v", "any"}
+    genders = {"f", "m", "n", "any"}
+    numbers = {"sg", "pl", "any"}
+    persons = {"1", "2", "3", "1h", "2h", "3h" "any"}
+    cases = {"d", "o", "any"}
+
+
+    features["lcat"] = af[1] if af[1] in lcats else ""
+    features["gender"] = af[2] if af[2] in genders else ""
+    features["number"] = af[3] if af[3] in numbers else ""
+    features["person"] = af[4] if af[4] in persons else ""
+    features["case"] = af[5] if af[5] in cases else ""
+
+    if assign_upos(pos).startswith("N"):
+        features["case_marker"] = af[6]
+    if assign_upos(pos).startswith("V"):
+        features["tam_marker"] = af[6]
+
     features["AnnCorra_tag"] = pos
+
+    features = {k:v for k,v in features.items() if v!=""}
+
     return features
 
 
 annot_name = "kcis"
 infile = open(sys.argv[1])
+
+
+allomorph_eq_sets = [{"चा", "ची", "चे", "चं", "च", "च्या"},
+{"ला", "ली", "ले", "लं", "ल", "ल्या"},
+{"ता", "ती", "ते", "तं", "त्या", "तात" }]
+
+allomorph_sets = {morph:morph_set for morph_set in allomorph_eq_sets for morph in morph_set}
 
 for line in infile:
     entries = line.strip().split("\t")
@@ -94,29 +131,52 @@ for line in infile:
     lemma = get_lemma(wordform, pos, fs)
     features = get_lexeme_features(af, pos)
 
-    lex_id = lexicon.add_lexeme(wordform, lemma, upos, features)
+    lex_id = lexicon.add_lexeme(wordform, lemma, upos, features=features)
+
+    # if wordform!= "अमेरीकेला":
+    #     continue
+
 
     if len(af)!=8:
         gen_issues.warning("Wordform %s has af: %s without enough fields", wordform, af)
         continue
 
-    if af[7] != "":
+    if af[7] != "" and af[7].isascii()==False:
         suffixes = af[7].split("_")
         suffixes.reverse()
         end = len(wordform)
-        # if len(suffixes)>1:
-            # suffixes = suffixes[:-1]
-        for suffix in suffixes:
-            features = {"info":""}
-            start = len(wordform[:end]) - len(suffix)
-            if not wordform[:end].endswith(suffix):
-                seg_issues.warning("Suffix %s not at position %s, %s, of wordform %s, af: %s", suffix, start, end, wordform, af)
-                # print(wordform, suffix, af)
-                # print(start, end)
-                continue
+        # print(line)
+        # print(suffixes)
 
+        for suffix in suffixes:
+
+            morph = ""
+
+            if wordform[:end].endswith(suffix):
+                morph = suffix
+            else:
+                if suffix in allomorph_sets:
+                    for allomorph in allomorph_sets[suffix]:
+                        if wordform[:end].endswith(allomorph):
+                            morph = allomorph
+
+
+            if morph == "" and morph != suffix:
+                seg_issues.warning("Suffix %s not at end position %s, of wordform %s, af: %s", suffix, end, wordform, af)
+                continue
+                print(wordform, suffix, af)
+                print(start, end)
+
+
+            start = len(wordform[:end]) - len(morph)
+
+            features = {"type":"suffix"}
             lexicon.add_contiguous_morpheme(lex_id, annot_name, start, end, features)
+
             end = start
+            # print(morph, start, end)
+            # print("new end, ", end, wordform[:end])
+
         lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, end, features={"type":"root"})
 
 
