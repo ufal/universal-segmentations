@@ -46,7 +46,11 @@ def main():
 
     for line in sys.stdin:
         line = line.rstrip()
-        w = ET.fromstring(line)
+        try:
+            w = ET.fromstring(line)
+        except ET.ParseError as exc:
+            print("Unparseable line '{}'".format(line), file=sys.stderr)
+            raise exc
         assert w.tag == "w"
 
         form = "".join(w.itertext())
