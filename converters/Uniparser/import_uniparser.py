@@ -74,6 +74,10 @@ def main():
             #lex2 = ana.attrib["lex2"]
             #trans_ru2 = ana.attrib["trans_ru2"]
 
+            if "<" in gloss:
+                print("Problematic infixation (?) in {} {} {} {}, skipping".format(form, lex, gloss, parts), file=sys.stderr)
+                continue
+
             morphemes = gloss.split("-")
 
             # The length-mismatch detection is there to detect words
