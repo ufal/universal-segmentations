@@ -3,7 +3,7 @@
 
 DATADIR=../../data
 IN_DIR=$(DATADIR)/original/Uniparser
-LANGS=udm kpv
+LANGS=udm kpv tgk
 
 PYTHONPATH=../../src
 export PYTHONPATH
@@ -23,6 +23,12 @@ $(IN_DIR)/kpv_wordlist_analyzed_fixed.txt: $(IN_DIR)/kpv_wordlist_analyzed.txt
 
 $(IN_DIR)/kpv_wordlist_analyzed.txt: | $(IN_DIR)
 	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-komi-zyrian/raw/master/wordlists/wordlist_analyzed.txt'
+
+$(IN_DIR)/tgk_wordlist_analyzed_fixed.txt: $(IN_DIR)/tgk_wordlist_analyzed.txt
+	sed -e 's/ trans_en=""//g; s/>__*/>/; s/__*</</; s/\(trans_ru="[^"]*" \)trans_ru="[^"]*"/\1/g' < '$<' > '$@'
+
+$(IN_DIR)/tgk_wordlist_analyzed.txt: | $(IN_DIR)
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-tajik/raw/master/wordlists/wordlist_analyzed.txt'
 
 $(IN_DIR):
 	mkdir -p '$@'
