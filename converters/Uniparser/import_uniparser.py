@@ -68,7 +68,7 @@ def main():
             gr = ana.attrib["gr"]
             parts = ana.attrib["parts"]
             gloss = ana.attrib["gloss"]
-            trans_ru = ana.attrib["trans_ru"]
+            features = {k: v for k, v in ana.attrib.items() if k not in {"lex", "gr", "parts", "gloss"}}
 
             # TODO what are these two?
             #lex2 = ana.attrib["lex2"]
@@ -133,10 +133,7 @@ def main():
             morpho_tags = gr.split(",")
             pos = gr_to_upos(morpho_tags)
 
-            features = {
-                "morpho_tags": morpho_tags,
-                "trans_ru": trans_ru
-            }
+            features["morpho_tags"] = morpho_tags
 
             lexeme = lexicon.add_lexeme(form, lex, pos=pos, features=features)
 
