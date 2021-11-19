@@ -3,13 +3,12 @@
 
 DATADIR=../../data
 IN_DIR=$(DATADIR)/original/Uniparser
-OUT_DIR_udm=$(DATADIR)/converted/udm-Uniparser
-OUT_DIR_kpv=$(DATADIR)/converted/kpv-Uniparser
+LANGS=udm kpv
 
 PYTHONPATH=../../src
 export PYTHONPATH
 
-download: $(IN_DIR)/udm_wordlist_analyzed_fixed.txt $(IN_DIR)/kpv_wordlist_analyzed_fixed.txt
+download: $(LANGS:%=$(IN_DIR)/%_wordlist_analyzed_fixed.txt)
 
 $(IN_DIR)/udm_wordlist_analyzed_fixed.txt: $(IN_DIR)/udm_wordlist_analyzed.txt
 	# There are some spurious underscores in some word forms;
@@ -28,16 +27,11 @@ $(IN_DIR)/kpv_wordlist_analyzed.txt: | $(IN_DIR)
 $(IN_DIR):
 	mkdir -p '$@'
 
-$(OUT_DIR_udm):
-	mkdir -p '$@'
-$(OUT_DIR_kpv):
+$(DATADIR)/converted/%-Uniparser/:
 	mkdir -p '$@'
 
-convert: $(OUT_DIR_udm)/all.useg $(OUT_DIR_kpv)/all.useg
+convert: $(LANGS:%=$(DATADIR)/converted/%-Uniparser/all.useg)
 # TODO Generate train / dev / test split.
 
-$(OUT_DIR_udm)/all.useg: $(IN_DIR)/udm_wordlist_analyzed_fixed.txt | $(OUT_DIR_udm)
-	./import_uniparser.py < '$<' 2>&1 > '$@' | tee '$(basename $@).log' >&2
-
-$(OUT_DIR_kpv)/all.useg: $(IN_DIR)/kpv_wordlist_analyzed_fixed.txt | $(OUT_DIR_kpv)
+$(DATADIR)/converted/%-Uniparser/all.useg: $(IN_DIR)/%_wordlist_analyzed_fixed.txt | $(DATADIR)/converted/%-Uniparser/
 	./import_uniparser.py < '$<' 2>&1 > '$@' | tee '$(basename $@).log' >&2
