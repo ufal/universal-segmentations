@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import re
+import string
 import sys
 sys.path.append('../../src/')
 from useg import SegLex
@@ -29,6 +30,15 @@ if len(sys.argv) != 3:
 gen_issues.info(f"Converting {sys.argv[1]} to {sys.argv[2]}")
 
 lexicon = SegLex()
+
+def isascii(str):
+    '''Returns True if English'''
+    alphabet = list(string.ascii_lowercase)
+    for l in alphabet:
+        if l in str:
+            return True
+    return False
+
 
 def assign_upos(pos):
     '''Maps POS to UPOS'''
@@ -78,7 +88,7 @@ def get_lexeme_features(af, pos):
     features = dict()
     features["root"] = af[0]
 
-    if af[0].isascii():
+    if isascii(af[0]):
         del features["root"]
 
     if len(af)!=8:
@@ -141,7 +151,7 @@ for line in infile:
         gen_issues.warning("Wordform %s has af: %s without enough fields", wordform, af)
         continue
 
-    if af[7] != "" and af[7].isascii()==False:
+    if af[7] != "" and isascii(af[7])==False:
         suffixes = af[7].split("_")
         suffixes.reverse()
         end = len(wordform)

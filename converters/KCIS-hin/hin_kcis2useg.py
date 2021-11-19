@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import re
+import string
 import sys
 sys.path.append('../../src/')
 from useg import SegLex
@@ -69,6 +70,14 @@ def assign_upos(pos):
 
     return upos
 
+
+def isascii(str):
+    '''Returns True if English'''
+    alphabet = list(string.ascii_lowercase)
+    for l in alphabet:
+        if l in str:
+            return True
+    return False
 
 def get_lemma(wordform, pos, fs):
     '''Returns lemma'''
@@ -140,7 +149,7 @@ for line in infile:
         gen_issues.warning("Wordform %s has af: %s without enough fields", wordform, af)
         continue
 
-    if af[6] not in ["","0"] and af[6].isascii()==False:
+    if af[6] not in ["","0"] and isascii(af[6])==False:
         suffixes = af[6].split("_")
 
         # suffixes.reverse()
