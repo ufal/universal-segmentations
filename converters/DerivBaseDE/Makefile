@@ -17,7 +17,7 @@ download: # and unpack, if needed
 
 convert:
 	mkdir -p $(OUT_DIR)
-	./derivbasede2useg.py $(IN_DIR)/derivbase/DErivBase-v2.0-rulePaths.txt $(IN_DIR)/derivbase/DErivBase-v1.4.1-rules.txt $(OUT_DIR)DErivBaseDE.useg
+	./derivbasede2useg.py $(IN_DIR)/derivbase/DErivBase-v2.0-rulePaths.txt $(IN_DIR)/derivbase/DErivBase-v1.4.1-rules.txt $(OUT_DIR)DErivBaseDE.useg > $(OUT_DIR)conversion.log
 
 clean:
 	rm -rf $(IN_DIR)
