@@ -16,7 +16,7 @@ download: # and unpack, if needed
 
 convert:
 	mkdir -p $(OUT_DIR)
-	./croderiv2useg.py $(IN_DIR)webpage-data.html manual-annotation.tsv $(OUT_DIR)CroDeriV.useg
+	./croderiv2useg.py $(IN_DIR)webpage-data.html manual-annotation.tsv $(OUT_DIR)CroDeriV.useg > $(OUT_DIR)conversion.log
 
 clean:
 	rm -rf $(IN_DIR)
