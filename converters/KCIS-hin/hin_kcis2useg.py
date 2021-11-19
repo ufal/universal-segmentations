@@ -33,12 +33,16 @@ lexicon = SegLex()
 def assign_upos(pos):
     '''Maps POS to UPOS'''
     upos = ""
+    if pos.startswith("D"):
+        upos = "DET"
     if pos.startswith("N"):
         upos = "NOUN"
     if pos.startswith("NNP"):
         upos = "PROPN"
-    if pos.startswith("NNP"):
-        upos = "NOUN"
+    if pos.startswith("PR"):
+        upos = "PRON"
+    if pos.startswith("PSP"):
+        upos = "ADP"
     if pos.startswith("V"):
         upos = "VERB"
     if "VAU" in pos or "VAU" in pos:
@@ -51,13 +55,20 @@ def assign_upos(pos):
         upos = "JJ"
     if pos.startswith("RB"):
         upos = "ADV"
-    if pos.startswith("PR"):
-        upos = "ADP"
+    if pos.startswith("Q"):
+        upos = "NUM"
+    if pos.startswith("CC"):
+        upos = "SCONJ|CCONJ"
+    if pos.startswith("INTF"):
+        upos = "ADV"
+
 
     if upos=="":
         pos_issues.warning("POS %s not assigned ", pos)
+        return "UNK"
 
     return upos
+
 
 def get_lemma(wordform, pos, fs):
     '''Returns lemma'''
@@ -67,15 +78,35 @@ def get_lexeme_features(af, pos):
     '''Extracts and translates features from af'''
     features = dict()
     features["root"] = af[0]
-    if len(features)!=8:
+
+    if af[0].isascii():
+        del features["root"]
+
+    if len(af)!=8:
         return features
-    features["lcat"] = af[1]
-    features["gender"] = af[2]
-    features["number"] = af[3]
-    features["person"] = af[4]
-    features["case"] = af[6]
-    # features["person"] = af[7]
+
+    lcats = {"n", "adj", "avy", "adv", "num", "psp", "v", "any"}
+    genders = {"f", "m", "n", "any"}
+    numbers = {"sg", "pl", "any"}
+    persons = {"1", "2", "3", "1h", "2h", "3h" "any"}
+    cases = {"d", "o", "any"}
+
+
+    features["lcat"] = af[1] if af[1] in lcats else ""
+    features["gender"] = af[2] if af[2] in genders else ""
+    features["number"] = af[3] if af[3] in numbers else ""
+    features["person"] = af[4] if af[4] in persons else ""
+    features["case"] = af[5] if af[5] in cases else ""
+
+    if assign_upos(pos).startswith("N"):
+        features["case_marker"] = af[6]
+    if assign_upos(pos).startswith("V"):
+        features["tam_marker"] = af[6]
+
     features["AnnCorra_tag"] = pos
+
+    features = {k:v for k,v in features.items() if v not in ["", "0"]}
+
     return features
 
 
@@ -109,7 +140,7 @@ for line in infile:
         gen_issues.warning("Wordform %s has af: %s without enough fields", wordform, af)
         continue
 
-    if af[6] not in ["","0"]:
+    if af[6] not in ["","0"] and af[6].isascii()==False:
         suffixes = af[6].split("_")
 
         # suffixes.reverse()
@@ -117,6 +148,10 @@ for line in infile:
         #     start = len(wordform[:end]) - len(suffix)
         #
         if len(suffixes)==2:
+            suffixes.reverse()
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, len(wordform)-len(suffixes[0]), len(wordform), features={"type":"suffix", "morpheme":suffixes[0]})
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, len(wordform)-len(suffixes[0])-len(suffixes[1]), len(wordform)-len(suffixes[0]), features={"type":"suffix", "morpheme":suffixes[1]})
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, len(wordform)-len(suffixes[0])-len(suffixes[1]), features={"type":"root"})
             continue
         root = af[0]
         root_length = longest_common_prefix(wordform, root)
