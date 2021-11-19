@@ -9,16 +9,16 @@ OUT_DIR_nld:=$(DATADIR)/converted/nld-CELEX
 PYTHONPATH:=$(abspath ../../src):$(abspath ../../derinet2)
 export PYTHONPATH
 
-download: $(IN_DIR)/UDer-1.1-de-GCelex-nomorphs.tsv $(IN_DIR)/UDer-1.1-en-ECelex.tsv $(IN_DIR)/UDer-1.1-nl-DCelex.tsv | $(IN_DIR)
+download: $(IN_DIR)/UDer-1.1-de-GCelex-nomorphs.tsv $(IN_DIR)/UDer-1.1-en-ECelex.tsv $(IN_DIR)/UDer-1.1-nl-DCelex.tsv
 
 # The dependency is not recorded, so that the recipe works outside of
 #  the UFAL network if you supply the data manually.
 $(IN_DIR)/UDer-1.1-de-GCelex-nomorphs.tsv:
-	cp /net/work/people/vidra/universal-derivations/de/GCelex/UDer-1.1-de-GCelex-nomorphs.tsv '$@'
+	cp /net/work/people/vidra/universal-derivations/de/GCelex/UDer-1.1-de-GCelex-nomorphs.tsv '$@' | $(IN_DIR)
 $(IN_DIR)/UDer-1.1-en-ECelex.tsv:
-	cp /net/work/people/vidra/universal-derivations/en/ECelex/UDer-1.1-en-ECelex.tsv '$@'
+	cp /net/work/people/vidra/universal-derivations/en/ECelex/UDer-1.1-en-ECelex.tsv '$@' | $(IN_DIR)
 $(IN_DIR)/UDer-1.1-nl-DCelex.tsv:
-	cp /net/work/people/vidra/universal-derivations/de/GCelex/UDer-1.1-nl-DCelex.tsv '$@'
+	cp /net/work/people/vidra/universal-derivations/nl/DCelex/UDer-1.1-nl-DCelex.tsv '$@' | $(IN_DIR)
 
 $(IN_DIR):
 	mkdir -p '$@'

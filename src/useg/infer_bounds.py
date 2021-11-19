@@ -170,6 +170,10 @@ def subst_cost(sa, ia, sb, ib):
         # Exact match.
         return 0.0
 
+    if ca in {"i", "y"} and cb in {"i", "y"}:
+        # Change of i -> y or vice versa, usually harmless.
+        return 0.2
+
     da = unidecode(ca)
     db = unidecode(cb)
 

@@ -12,6 +12,7 @@ import re
 import sys
 
 from useg import SegLex
+from useg.infer_bounds import infer_bounds
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -141,30 +142,11 @@ def gen_morphs_eng(allomorphs, morpheme):
         morphs = [m]
 
     g_morphs = list(morphs)
-    # Iterate over the list in a weird way, because we need to change
-    #  it while iterating and have the new elements be visible in the
-    #  loop.
-    i = 0
-    while i < len(morphs):
-        morph = morphs[i]
-        i += 1
-
+    for morph in morphs:
         # All the tests below require nonempty morph string.
         if not morph:
             print("Warning: empty allomorph of morpheme '{}' detected.".format(m), file=sys.stderr)
             continue
-
-        if len(morph) >= 2 and morph[-1] == "e":
-            # Append to the source list, because e.g. "reassured" needs
-            #  both e-deletion and reduplication.
-            morphs.append(morph[:-1])
-            g_morphs.append(morph[:-1])
-
-        if len(morph) >= 2 and morph[-1] == "o":
-            # Deleting -o at the end.
-            # Again support reduplication, e.g. with "disassociated".
-            morphs.append(morph[:-1])
-            g_morphs.append(morph[:-1])
 
         if morph[0] in {"f", "m", "p", "s", "z"}:
             # Reduplication at the start.
@@ -241,34 +223,87 @@ def gen_morphs_fra(allomorphs, morpheme):
 
     return (g_morphs, t)
 
-def match_morphemes(form, morphemes):
-    # Generate the initial parses.
+def add_endings_eng(form, joined_segmentation, morphemes):
+    if form.endswith("ings") and not joined_segmentation.endswith("ings"):
+        morphemes.append((["ing"], "suffix"))
+        morphemes.append((["s"], "suffix"))
+        return morphemes
+
+    if form[-3:] in {"ing", "n't", "'ll", "'re", "'ve"}:
+        s = form[-3:]
+        if not joined_segmentation.endswith(s):
+            morphemes.append(([s], "suffix"))
+        return morphemes
+
+    if form[-2:] in {"'s", "'d"}:
+        s = form[-2:]
+        if not joined_segmentation.endswith(s):
+            morphemes.append(([s], "suffix"))
+        return morphemes
+
+    if form[-2:] == "ed":
+        if joined_segmentation[-1] == "e":
+            morphemes.append((["ed", "d"], "suffix"))
+        elif not joined_segmentation.endswith("ed"):
+            morphemes.append((["ed"], "suffix"))
+        return morphemes
+
+    if form[-2:] == "id" and joined_segmentation[-1] == "y":
+        morphemes.append((["ed", "d"], "suffix"))
+        return morphemes
+
+    if form[-1] == "s" and joined_segmentation[-1] != "s":
+        if form[-2:] == "es" and joined_segmentation[-1] != "e":
+            morphemes.append((["s", "es"], "suffix"))
+        else:
+            morphemes.append((["s"], "suffix"))
+        return morphemes
+
+    return morphemes
+
+def record_morphemes(seg_lex, lex_id, annot_name, form, morphemes):
+    # First, generate all allomorph combinations to map.
+    # Generate the initial state.
     parses = []
     morphs, t = morphemes[0]
     for morph in morphs:
-        if form.startswith(morph):
-            # Record the initial parse.
-            parses.append(([(morph, t)], len(morph)))
+        # Record the initial parse.
+        parses.append([morph])
 
-    # Try to lengthen each parse, until we consume all morphemes.
+    # Lengthen each combination, until we consume all morphemes.
     for morphs, t in morphemes[1:]:
         next_parses = []
 
         for morph in morphs:
-            for parse, end in parses:
-                start = end
-
-                if form.startswith(morph, start):
-                    # Success!
-                    # Record the successful potential parse in next_parses.
-                    next_parses.append((parse + [(morph, t)], start + len(morph)))
-                else:
-                    # This parse failed, discard it.
-                    pass
+            for parse in parses:
+                next_parses.append(parse + [morph])
 
         parses = next_parses
 
-    return parses
+    # Map each combination to the form and select the best one.
+    best_cost = float("inf")
+    best_mapping = None
+    for parse in parses:
+        mapping, cost = infer_bounds(parse, form)
+        if cost < best_cost:
+            best_cost = cost
+            best_mapping = mapping
+
+    if best_mapping[0] != 0:
+        print("Ignored prefix '{}' of {}".format(form[:best_mapping[0]], form), file=sys.stderr)
+    if best_mapping[-1] != len(form):
+        print("Ignored suffix '{}' of {}".format(form[best_mapping[-1]:], form), file=sys.stderr)
+
+
+    for i, (morphs, t) in enumerate(morphemes):
+        start = best_mapping[i]
+        end = best_mapping[i + 1]
+        morpheme = morphs[0]
+
+        if start < end:
+            seg_lex.add_contiguous_morpheme(lex_id, annot_name, start, end, {"morpheme": morpheme, "type": t})
+        else:
+            print("Missed morpheme nr. {} '{}' in {}".format(i+1, morpheme, form), file=sys.stderr)
 
 def main(args):
     lexicon = SegLex()
@@ -334,72 +369,17 @@ def main(args):
 
                     features = None
 
+
+
+
+
                 lex_id = lexicon.add_lexeme(form, form, pos, features)
 
+                joined_segmentation = "".join([m for m, t in segmentation])
+                if lang == "eng":
+                    morphemes = add_endings_eng(lform, joined_segmentation, morphemes)
 
-                parses = match_morphemes(lform, morphemes)
-
-                if not parses:
-                    # Error, no possible parses found.
-                    # TODO
-                    print("Err-stem", form, " + ".join([m for m, t in segmentation]), sep="\t", end="\n", file=sys.stderr)
-                    continue
-
-                # If there are unconsumed chars left, they may be one of
-                #  the inflectional morphemes: {"s", "'s", "ed", "ing", "ings", "n't", "'d", "'ll", "'re", "'ve"}
-                final_parses = []
-                for parse, end in parses:
-                    if end == len(lform):
-                        final_parses.append(parse)
-                    elif end < len(lform):
-                        unmatched_suffix = lform[end:]
-
-                        if unmatched_suffix == "ings":
-                            parse.append(("ing", "suffix"))
-                            parse.append(("s", "suffix"))
-                            final_parses.append(parse)
-                        elif unmatched_suffix in {"s", "'s", "ed", "ing", "n't", "'d", "'ll", "'re", "'ve"}:
-                            parse.append((unmatched_suffix, "suffix"))
-                            final_parses.append(parse)
-                    else:
-                        raise Exception("We've parsed text longer than the form. ERROR!")
-
-                if not final_parses:
-                    # There were no possibilities. Try to add -es.
-                    #  This is done in a separate pass to avoid spurious
-                    #  ambiguity with word-final -e, which may be deleted.
-                    for parse, end in parses:
-                        assert end < len(lform)
-                        unmatched_suffix = lform[end:]
-
-                        if unmatched_suffix == "es":
-                            parse.append(("es", "suffix"))
-                            final_parses.append(parse)
-
-                if not final_parses:
-                    # Error, no possible parses found.
-                    # TODO
-                    print("Err-suffix", form, " + ".join([m for m, t in segmentation]), sep="\t", end="\n", file=sys.stderr)
-                    continue
-
-                if len(final_parses) > 1:
-                    for i, parse in enumerate(final_parses[1:]):
-                        print("Multi-{}".format(2 + i), form, " + ".join([morph for morph, t in parse]), sep="\t", end="\n", file=sys.stderr)
-
-                parse = final_parses[0]
-                end = 0
-                for i in range(len(parse)):
-                    morph, t = parse[i]
-                    start = end
-                    end = start + len(morph)
-
-                    if i < len(segmentation):
-                        features = {"morpheme": segmentation[i][0],
-                                    "type": t}
-                    else:
-                        features = {"type": t}
-
-                    lexicon.add_contiguous_morpheme(lex_id, args.annot_name, start, end, features)
+                record_morphemes(lexicon, lex_id, args.annot_name, lform, morphemes)
 
                 # If NN, then it may end in plural "s" or "es".
                 # If VB, it may end in 3rd person present singular "s" or "es".

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Read the Udmurt XML-like file with analyses from STDIN, convert it to the
-Universal Segmentations format and print it to STDOUT.
+Read the Uniparser XML-like file with analyses from STDIN, convert it
+to the Universal Segmentations format and print it to STDOUT.
 """
 
 import sys
@@ -42,10 +42,15 @@ def gr_to_upos(morpho_tags):
 
 def main():
     lexicon = SegLex()
+    annot_name = "Uniparser UDM"
 
     for line in sys.stdin:
         line = line.rstrip()
-        w = ET.fromstring(line)
+        try:
+            w = ET.fromstring(line)
+        except ET.ParseError as exc:
+            print("Unparseable line '{}'".format(line), file=sys.stderr)
+            raise exc
         assert w.tag == "w"
 
         form = "".join(w.itertext())
@@ -68,6 +73,10 @@ def main():
             # TODO what are these two?
             #lex2 = ana.attrib["lex2"]
             #trans_ru2 = ana.attrib["trans_ru2"]
+
+            if "<" in gloss:
+                print("Problematic infixation (?) in {} {} {} {}, skipping".format(form, lex, gloss, parts), file=sys.stderr)
+                continue
 
             morphemes = gloss.split("-")
 
@@ -117,8 +126,9 @@ def main():
             else:
                 morphs = parts.split("-")
 
-            assert len(morphs) == len(morphemes), \
-                "The morph and morpheme lists don't match for line '{}'".format(line)
+            if len(morphs) != len(morphemes):
+                print("The morph and morpheme lists don't match for line '{}'".format(line), file=sys.stderr)
+                continue
 
             morpho_tags = gr.split(",")
             pos = gr_to_upos(morpho_tags)
@@ -150,7 +160,7 @@ def main():
                     #  first case). Skip it.
                     lexicon.add_contiguous_morpheme(
                         lexeme,
-                        "Uniparser UDM",
+                        annot_name,
                         end,
                         end + 1,
                         # FIXME the type should be different when it is
@@ -179,7 +189,7 @@ def main():
 
                 lexicon.add_contiguous_morpheme(
                     lexeme,
-                    "Uniparser UDM",
+                    annot_name,
                     start,
                     end,
                     features={"morpheme": morpheme, "type": morpheme_type}
@@ -189,7 +199,7 @@ def main():
                 # Add the (potentially discontiguous) stem morpheme.
                 lexicon.add_morpheme(
                     lexeme,
-                    "Uniparser UDM",
+                    annot_name,
                     stem_morph_span,
                     features={"morpheme": "STEM", "type": "stem"}
                 )
@@ -202,7 +212,7 @@ def main():
                 #  Add it as a connector now.
                 lexicon.add_contiguous_morpheme(
                     lexeme,
-                    "Uniparser UDM",
+                    annot_name,
                     end,
                     end + 1,
                     # FIXME the type should be different when it is
