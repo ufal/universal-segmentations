@@ -1,4 +1,5 @@
 .PHONY: download convert
+.SECONDARY:
 
 DATADIR=../../data
 IN_DIR=$(DATADIR)/original/Uniparser
