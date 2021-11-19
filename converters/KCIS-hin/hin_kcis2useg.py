@@ -88,7 +88,7 @@ def get_lexeme_features(af, pos):
     features = dict()
     features["root"] = af[0]
 
-    if af[0].isascii():
+    if isascii(af[0]):
         del features["root"]
 
     if len(af)!=8:
