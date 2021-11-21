@@ -198,7 +198,7 @@ def main():
                     lexeme,
                     annot_name,
                     stem_morph_span,
-                    features={"morpheme": "STEM", "type": "stem"}
+                    features={"type": "stem"}
                 )
             else:
                 assert nr_stems == 0
