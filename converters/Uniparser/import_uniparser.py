@@ -127,7 +127,7 @@ def main():
                 morphs = parts.split("-")
 
             if len(morphs) != len(morphemes):
-                print("The morph and morpheme lists don't match for line '{}'".format(line), file=sys.stderr)
+                print("The morph '{}' and morpheme '{}' lists don't match for line '{}'".format(morphs, morphemes, line), file=sys.stderr)
                 continue
 
             morpho_tags = gr.split(",")
