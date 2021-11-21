@@ -228,13 +228,13 @@ def main(args):
                         lexicon.add_morpheme(
                             lexeme,
                             annot_name,
-                            infix_span,
+                            [start + i for i in infix_span],
                             features=infix_feature
                         )
 
                     # Record the stem for processing downstream.
                     seen_stems += 1
-                    stem_morph_span += infix_spans[-1]
+                    stem_morph_span += [start + i for i in infix_spans[-1]]
                     end = start + length
                     continue
 
