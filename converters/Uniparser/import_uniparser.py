@@ -149,6 +149,10 @@ def main():
             stem_morph_span = []
 
             for morph, morpheme in zip(morphs, morphemes):
+                if morph == "∅":
+                    # Zero morpheme, ignore it (unfortunately, we can't really express that).
+                    continue
+
                 if form[end] == "-" and not morph.startswith("-"):
                     # The word form starts with a dash, indicating its
                     #  affixal nature; or contains a dash, representing
