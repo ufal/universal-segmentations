@@ -5,6 +5,7 @@ to the Universal Segmentations format and print it to STDOUT.
 """
 
 import argparse
+import re
 import sys
 import xml.etree.ElementTree as ET
 
@@ -49,6 +50,48 @@ def gr_to_upos(morpho_tags):
     else:
         return gr_upos_table.get(gr_pos, "X")
 
+def parse_infixation(morph, morpheme):
+    in_infix = False
+    morphs = []
+    spans = []
+    i = 0
+    start = 0
+    main_span = []
+    infix = ""
+    main_morph = ""
+
+    for char in morph:
+        if char == "<":
+            assert not in_infix
+            in_infix = True
+            start = i
+        elif char == ">":
+            assert in_infix
+            in_infix = False
+            morphs.append(infix)
+            infix = ""
+            spans.append(range(start, i))
+        else:
+            if in_infix:
+                infix += char
+            else:
+                main_morph += char
+                main_span.append(i)
+            i += 1
+    assert not in_infix
+
+    main_morpheme = re.sub(r"<[^>]*>", "", morpheme)
+    assert main_morpheme == "STEM"
+
+    features = [{"morpheme": match.group(1), "type": "infix"} for match in re.finditer(r"<([^>]*)>", morpheme)]
+
+    morphs.append(main_morph)
+    spans.append(main_span)
+    features.append({"type": "stem"})
+
+    assert len(morphs) == len(spans) == len(features)
+    return morphs, spans, features, i
+
 def main(args):
     lexicon = SegLex()
     annot_name = args.annot_name
@@ -79,13 +122,6 @@ def main(args):
             gloss = ana.attrib["gloss"]
             features = {k: v for k, v in ana.attrib.items() if k not in {"lex", "gr", "parts", "gloss"} and v}
 
-            # TODO what are these two?
-            #lex2 = ana.attrib["lex2"]
-            #trans_ru2 = ana.attrib["trans_ru2"]
-
-            if "<" in gloss:
-                print("Problematic infixation (?) in {} {} {} {}, skipping".format(form, lex, gloss, parts), file=sys.stderr)
-                continue
 
             morphemes = gloss.split("-")
 
@@ -151,7 +187,7 @@ def main(args):
             #  stems with an infix in between them. Detect infixes by
             #  counting stems and considering everything between them an
             #  infix.
-            nr_stems = sum(m == "STEM" for m in morphemes)
+            nr_stems = sum(re.search(r"(?:>|^)STEM(?:<|$)", m) is not None for m in morphemes)
             seen_stems = 0
             # Remember the span of the stem, which may be discontiguous
             #  due to the infixes.
@@ -183,6 +219,26 @@ def main(args):
                 else:
                     start = end
 
+                if "<" in morpheme:
+                    # Infixation.
+                    infix_morphs, infix_spans, infix_features, length = parse_infixation(morph, morpheme)
+
+                    # Process the non-stem morphemes.
+                    for infix_morph, infix_span, infix_feature in zip(infix_morphs[:-1], infix_spans[:-1], infix_features[:-1]):
+                        lexicon.add_morpheme(
+                            lexeme,
+                            annot_name,
+                            infix_span,
+                            features=infix_feature
+                        )
+
+                    # Record the stem for processing downstream.
+                    seen_stems += 1
+                    stem_morph_span += infix_spans[-1]
+                    end = start + length
+                    continue
+
+                # No infixation, this is really a single morpheme.
                 end = start + len(morph)
 
                 if morpheme == "STEM":
