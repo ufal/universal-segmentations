@@ -4,10 +4,19 @@ Read the Uniparser XML-like file with analyses from STDIN, convert it
 to the Universal Segmentations format and print it to STDOUT.
 """
 
+import argparse
 import sys
 import xml.etree.ElementTree as ET
 
 from useg import SegLex
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        allow_abbrev=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser.add_argument("--annot-name", required=True, help="The name to use for storing the segmentation annotation.")
+    return parser.parse_args()
 
 gr_upos_table = {
     "A": "X", # TODO
@@ -40,9 +49,9 @@ def gr_to_upos(morpho_tags):
     else:
         return gr_upos_table.get(gr_pos, "X")
 
-def main():
+def main(args):
     lexicon = SegLex()
-    annot_name = "Uniparser UDM"
+    annot_name = args.annot_name
 
     for line in sys.stdin:
         line = line.rstrip()
@@ -230,4 +239,4 @@ def main():
     lexicon.save(sys.stdout)
 
 if __name__ == "__main__":
-    main()
+    main(parse_args())

@@ -46,4 +46,4 @@ convert: $(LANGS:%=$(DATADIR)/converted/%-Uniparser/all.useg)
 # TODO Generate train / dev / test split.
 
 $(DATADIR)/converted/%-Uniparser/all.useg: $(IN_DIR)/%_wordlist_analyzed_fixed.txt | $(DATADIR)/converted/%-Uniparser/
-	./import_uniparser.py < '$<' 2>&1 > '$@' | tee '$(basename $@).log' >&2
+	./import_uniparser.py --annot-name 'Uniparser $*' < '$<' > '$@' 2> '$(basename $@).log'
