@@ -68,7 +68,7 @@ def main():
             gr = ana.attrib["gr"]
             parts = ana.attrib["parts"]
             gloss = ana.attrib["gloss"]
-            features = {k: v for k, v in ana.attrib.items() if k not in {"lex", "gr", "parts", "gloss"}}
+            features = {k: v for k, v in ana.attrib.items() if k not in {"lex", "gr", "parts", "gloss"} and v}
 
             # TODO what are these two?
             #lex2 = ana.attrib["lex2"]
