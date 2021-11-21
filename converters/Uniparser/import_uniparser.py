@@ -153,6 +153,7 @@ def main():
                     # Zero morpheme, ignore it (unfortunately, we can't really express that).
                     continue
 
+                assert end < len(form), "Morph '{}' out of bounds in form '{}' at line {}".format(morph, form, line)
                 if form[end] == "-" and not morph.startswith("-"):
                     # The word form starts with a dash, indicating its
                     #  affixal nature; or contains a dash, representing
