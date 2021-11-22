@@ -30,6 +30,50 @@ gen_issues.info(f"Converting {sys.argv[1]} to {sys.argv[2]}")
 
 lexicon = SegLex()
 
+def longest_common_prefix(s, t):
+    '''Finds length of LCP'''
+    lcp_len = 0
+    while(lcp_len <= min(len(s),len(t)) and s[:lcp_len]==t[:lcp_len]):
+        lcp_len += 1
+    return lcp_len-1
+
+def find_morph_boundaries(lexeme, morph, req_start = -1):
+    '''Finds morph boundaries'''
+
+    if req_start==0:
+        return 0, longest_common_prefix(lexeme, morph)
+
+    for i in range(len(morph)):
+        # print(i)
+        # print(morph[:len(morph)-i])
+        # morph_start = lexeme.find(morph[:len(morph)-i])
+        shortened_morph = morph[:len(morph)-i]
+
+        dist_from_req_start = len(lexeme)+1
+
+        best_start, best_end = -1, -1
+
+        for match in re.finditer(shortened_morph, lexeme):
+            current_start, current_end = -1, -1
+            morph_start, morph_end = match.start(), match.end()
+
+            allowed_interfix_len = 3
+            if morph_start <= req_start + allowed_interfix_len and morph_start >= req_start:
+                current_start, current_end = morph_start, morph_end
+                #If more than 1 matches for same length, choose the one closest to req_start
+                if best_start == -1:
+                    best_start, best_end = current_start, current_end
+
+                if current_start != -1 and abs(current_start - req_start) < abs(best_start - req_start):
+                    best_start, best_end = current_start, current_end
+
+        if best_start != -1:
+            return best_start, best_end
+
+    return -1,-1
+
+
+
 def assign_upos(pos):
     '''Maps POS to UPOS'''
     upos = ""
@@ -59,9 +103,9 @@ def assign_upos(pos):
 
     return upos
 
-def get_lemma(wordform, pos, fs):
+def get_lemma(lexeme, pos, fs):
     '''Returns lemma'''
-    return wordform
+    return lexeme
 
 def get_lexeme_features(af, pos):
     '''Extracts and translates features from af'''
@@ -83,11 +127,15 @@ annot_name = "kcis"
 infile = open(sys.argv[1])
 
 for line in infile:
+    if line == "\n" or line == " ":
+        continue
     entries = line.strip().split("\t")
-    wordform = entries[0].strip("'\"").strip()
+    lexeme = entries[0].strip("'\"").strip()
     pos = entries[1].strip()
     fs = entries[2].strip()
 
+    if len(lexeme)==0:
+        continue
     if "af" not in fs:
         continue
     try:
@@ -97,33 +145,45 @@ for line in infile:
         assert 1==0
 
     upos = assign_upos(pos)
-    lemma = get_lemma(wordform, pos, fs)
+    lemma = get_lemma(lexeme, pos, fs)
     features = get_lexeme_features(af, pos)
 
-    lex_id = lexicon.add_lexeme(wordform, lemma, upos, features)
+    lex_id = lexicon.add_lexeme(lexeme, lemma, upos, features)
 
     if len(af)!=8:
-        gen_issues.warning("Wordform %s has af: %s without enough fields", wordform, af)
+        gen_issues.warning("Lexeme %s has af: %s without enough fields", lexeme, af)
         continue
 
-    if af[6] not in ["","0"]:
-        suffixes = af[6].split("+")
-        suffixes.reverse()
-        end = len(wordform)
-        # if len(suffixes)>1:
-            # suffixes = suffixes[:-1]
-        for suffix in suffixes:
-            features = {"info":""}
-            start = len(wordform[:end]) - len(suffix)
-            if not wordform[:end].endswith(suffix):
-                seg_issues.warning("Suffix %s not at position %s, %s, of wordform %s, af: %s", suffix, start, end, wordform, af)
-                # print(wordform, suffix, af)
-                # print(start, end)
-                continue
 
-            lexicon.add_contiguous_morpheme(lex_id, annot_name, start, end, features)
-            end = start
-        lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, end, features={"type":"root"})
+    morpheme_seq = [af[0]]
+    if af[6] not in ["","0"]:
+        morpheme_seq += af[6].split("+")
+
+    start = 0
+    for midx, morpheme in enumerate(morpheme_seq):
+        features = {"info":""}
+
+        morph_start, morph_end = find_morph_boundaries(lexeme, morpheme, req_start = start)
+
+        if morph_start != -1 and morph_end != -1:
+            start_of_next_morpheme = len(lexeme)
+            if midx < len(morpheme_seq)-1:
+                start_of_next_morpheme, end_of_next_morpheme = find_morph_boundaries(lexeme, morpheme_seq[midx+1], req_start = morph_end)
+                if start_of_next_morpheme != -1:
+                    morph_end = start_of_next_morpheme
+            
+            # if morph_start > start:
+            #     lexicon.add_contiguous_morpheme(lex_id, annot_name, start, morph_start, features={"type":"interfix"})
+            #     seg_issues.warning("Interfix added at position %s, %s, of wordform %s, af: %s", start, morph_start, lexeme, af)
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, morph_start, morph_end, features)
+        else:
+            if start == 0:
+                seg_issues.warning("Root %s not at position %s, of wordform %s, af: %s", morpheme, start, lexeme, af)
+            else:
+                seg_issues.warning("Morpheme %s not at position %s, of wordform %s, af: %s", morpheme, start, lexeme, af)
+            continue
+
+        start = start_of_next_morpheme
 
 
 outfile = open(sys.argv[2], 'w')
