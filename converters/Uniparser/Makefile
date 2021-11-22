@@ -8,7 +8,7 @@ LANGS=udm kpv mdf tgk
 PYTHONPATH=../../src
 export PYTHONPATH
 
-download: $(LANGS:%=$(IN_DIR)/%_wordlist_analyzed_fixed.txt)
+download: $(LANGS:%=$(IN_DIR)/%_wordlist_analyzed_fixed.txt) $(IN_DIR)/tgk_affixes.txt
 
 $(IN_DIR)/udm_wordlist_analyzed_fixed.txt: $(IN_DIR)/udm_wordlist_analyzed.txt
 	# There are some spurious underscores in some word forms;
@@ -36,6 +36,15 @@ $(IN_DIR)/tgk_wordlist_analyzed_fixed.txt: $(IN_DIR)/tgk_wordlist_analyzed.txt
 $(IN_DIR)/tgk_wordlist_analyzed.txt: | $(IN_DIR)
 	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-tajik/raw/master/wordlists/wordlist_analyzed.txt'
 
+$(IN_DIR)/%_affixes.txt: $(IN_DIR)/%_paradigms.txt
+	grep ' gloss: ' '$<' |sed -e 's/ *gloss: *//' | sort -u > '$@'
+	# The tgk paradigms miss these glosses for some reason (maybe
+	#  they are in the constraint grammars?).
+	printf 'ADJ0\nCONV\nDEMIN1\nDEMIN2\nDEMIN3\nDEMIN4\n' >> '$@'
+
+$(IN_DIR)/tgk_paradigms.txt: | $(IN_DIR)
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-tajik/raw/master/paradigms.txt'
+
 $(IN_DIR):
 	mkdir -p '$@'
 
@@ -47,3 +56,6 @@ convert: $(LANGS:%=$(DATADIR)/converted/%-Uniparser/all.useg)
 
 $(DATADIR)/converted/%-Uniparser/all.useg: $(IN_DIR)/%_wordlist_analyzed_fixed.txt | $(DATADIR)/converted/%-Uniparser/
 	./import_uniparser.py --annot-name 'Uniparser $*' < '$<' > '$@' 2> '$(basename $@).log'
+
+$(DATADIR)/converted/tgk-Uniparser/all.useg: $(IN_DIR)/tgk_wordlist_analyzed_fixed.txt $(IN_DIR)/tgk_affixes.txt | $(DATADIR)/converted/tgk-Uniparser/
+	./import_uniparser.py --annot-name 'Uniparser tgk' --affixes $(IN_DIR)/tgk_affixes.txt < '$<' > '$@' 2> '$(basename $@).log'

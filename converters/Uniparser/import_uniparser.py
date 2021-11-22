@@ -17,6 +17,7 @@ def parse_args():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument("--annot-name", required=True, help="The name to use for storing the segmentation annotation.")
+    parser.add_argument("--affixes", type=argparse.FileType("rt", encoding="utf-8", errors="strict"), help="A file to load allowed affixes from; all other morphemes will be considered to be stems.")
     return parser.parse_args()
 
 gr_upos_table = {
@@ -49,6 +50,34 @@ def gr_to_upos(morpho_tags):
         return "PROPN"
     else:
         return gr_upos_table.get(gr_pos, "X")
+
+def fix_gloss(gloss, affixes):
+    morphs = gloss.split("-")
+    fixed_morphs = []
+    last_stem = False
+    for morph in morphs:
+        is_affix = True
+
+        for part in morph.replace("|", ".").replace(",", ".").split("."):
+            if part not in affixes:
+                is_affix = False
+
+        if is_affix:
+            last_stem = False
+            fixed_morphs.append(morph)
+        elif not last_stem:
+            last_stem = True
+            fixed_morphs.append("STEM")
+    return "-".join(fixed_morphs)
+
+def load_affixes(f):
+    affixes = {"STEM"}
+    for line in f:
+        line = line.rstrip("\n")
+        affixes.add(line)
+        for part in line.replace("|", ".").replace(",", ".").split("."):
+            affixes.add(part)
+    return affixes
 
 def parse_infixation(morph, morpheme):
     in_infix = False
@@ -96,6 +125,12 @@ def main(args):
     lexicon = SegLex()
     annot_name = args.annot_name
 
+    if args.affixes is not None:
+        fixup_gloss = True
+        affixes = load_affixes(args.affixes)
+    else:
+        fixup_gloss = False
+
     for line in sys.stdin:
         line = line.rstrip()
         try:
@@ -122,6 +157,8 @@ def main(args):
             gloss = ana.attrib["gloss"]
             features = {k: v for k, v in ana.attrib.items() if k not in {"lex", "gr", "parts", "gloss"} and v}
 
+            if fixup_gloss:
+                gloss = fix_gloss(gloss, affixes)
 
             morphemes = gloss.split("-")
 
