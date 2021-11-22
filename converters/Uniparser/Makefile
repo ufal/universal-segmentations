@@ -57,5 +57,8 @@ convert: $(LANGS:%=$(DATADIR)/converted/%-Uniparser/all.useg)
 $(DATADIR)/converted/%-Uniparser/all.useg: $(IN_DIR)/%_wordlist_analyzed_fixed.txt | $(DATADIR)/converted/%-Uniparser/
 	./import_uniparser.py --annot-name 'Uniparser $*' < '$<' > '$@' 2> '$(basename $@).log'
 
+$(DATADIR)/converted/udm-Uniparser/all.useg: $(IN_DIR)/udm_wordlist_analyzed_fixed.txt | $(DATADIR)/converted/udm-Uniparser/
+	./import_uniparser.py --annot-name 'Uniparser udm' --multi-stem-infixation < '$<' > '$@' 2> '$(basename $@).log'
+
 $(DATADIR)/converted/tgk-Uniparser/all.useg: $(IN_DIR)/tgk_wordlist_analyzed_fixed.txt $(IN_DIR)/tgk_affixes.txt | $(DATADIR)/converted/tgk-Uniparser/
 	./import_uniparser.py --annot-name 'Uniparser tgk' --affixes $(IN_DIR)/tgk_affixes.txt < '$<' > '$@' 2> '$(basename $@).log'

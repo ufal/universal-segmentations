@@ -18,6 +18,7 @@ def parse_args():
     )
     parser.add_argument("--annot-name", required=True, help="The name to use for storing the segmentation annotation.")
     parser.add_argument("--affixes", type=argparse.FileType("rt", encoding="utf-8", errors="strict"), help="A file to load allowed affixes from; all other morphemes will be considered to be stems.")
+    parser.add_argument("--multi-stem-infixation", action="store_true", help="When encountering multiple STEM morphemes, consider them to be a single STEM with infixes instead of a compound.")
     return parser.parse_args()
 
 gr_upos_table = {
@@ -271,7 +272,19 @@ def main(args):
 
                     # Record the stem for processing downstream.
                     seen_stems += 1
-                    stem_morph_span += [start + i for i in infix_spans[-1]]
+
+                    if args.multi_stem_infixation:
+                        stem_morph_span += [start + i for i in infix_spans[-1]]
+                    else:
+                        # Add the stem morpheme now; don't merge it with
+                        #  adjacent stems.
+                        lexicon.add_morpheme(
+                            lexeme,
+                            annot_name,
+                            [start + i for i in infix_spans[-1]],
+                            features={"type": "stem"}
+                        )
+
                     end = start + length
                     continue
 
@@ -280,9 +293,22 @@ def main(args):
 
                 if morpheme == "STEM":
                     seen_stems += 1
-                    stem_morph_span += list(range(start, end))
-                    # We add the stem last, to account for discontiguous
-                    #  stems.
+
+                    if args.multi_stem_infixation:
+                        stem_morph_span += list(range(start, end))
+                        # We add the stem last, to account for discontiguous
+                        #  stems.
+                    else:
+                        # Add the stem morpheme now; don't merge it with
+                        #  adjacent stems.
+                        lexicon.add_contiguous_morpheme(
+                            lexeme,
+                            annot_name,
+                            start,
+                            end,
+                            features={"type": "stem"}
+                        )
+
                     continue
                 elif seen_stems == nr_stems:
                     morpheme_type = "suffix"
@@ -307,7 +333,9 @@ def main(args):
                     stem_morph_span,
                     features={"type": "stem"}
                 )
-            else:
+            elif args.multi_stem_infixation:
+                # We were asked to combine multiple stem spans together,
+                #  but the span is empty.
                 assert nr_stems == 0
                 print("Stemless word form '{}' detected".format(form), file=sys.stderr)
 
