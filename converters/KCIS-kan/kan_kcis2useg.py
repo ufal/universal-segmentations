@@ -40,8 +40,8 @@ def longest_common_prefix(s, t):
 def find_morph_boundaries(lexeme, morph, req_start = -1):
     '''Finds morph boundaries'''
 
-    if req_start==0:
-        return 0, longest_common_prefix(lexeme, morph)
+    # if req_start==0:
+    #     return 0, longest_common_prefix(lexeme, morph)
 
     for i in range(len(morph)):
         # print(i)
@@ -49,15 +49,13 @@ def find_morph_boundaries(lexeme, morph, req_start = -1):
         # morph_start = lexeme.find(morph[:len(morph)-i])
         shortened_morph = morph[:len(morph)-i]
 
-        dist_from_req_start = len(lexeme)+1
-
         best_start, best_end = -1, -1
 
         for match in re.finditer(shortened_morph, lexeme):
             current_start, current_end = -1, -1
             morph_start, morph_end = match.start(), match.end()
 
-            allowed_interfix_len = 3
+            allowed_interfix_len = len(lexeme)
             if morph_start <= req_start + allowed_interfix_len and morph_start >= req_start:
                 current_start, current_end = morph_start, morph_end
                 #If more than 1 matches for same length, choose the one closest to req_start
@@ -67,7 +65,7 @@ def find_morph_boundaries(lexeme, morph, req_start = -1):
                 if current_start != -1 and abs(current_start - req_start) < abs(best_start - req_start):
                     best_start, best_end = current_start, current_end
 
-        if best_start != -1:
+        if best_start != -1 and best_start != best_end:
             return best_start, best_end
 
     return -1,-1
@@ -138,11 +136,10 @@ for line in infile:
         continue
     if "af" not in fs:
         continue
-    try:
-        af = fs.strip("<>").split(" ")[1].split("=")[1].strip("''").split(",")
-    except:
-        print(line)
-        assert 1==0
+    af = fs.strip("<>").split(" ")[1].split("=")[1].strip("''").split(",")
+
+    # if lexeme != "ಆಕರ್ಷಿಸಿಸುತ್ತದೆ":
+    #     continue
 
     upos = assign_upos(pos)
     lemma = get_lemma(lexeme, pos, fs)
@@ -155,13 +152,16 @@ for line in infile:
         continue
 
 
+
     morpheme_seq = [af[0]]
-    if af[6] not in ["","0"]:
+    if af[6] in ["","0"]:
+        continue
+    else:
         morpheme_seq += af[6].split("+")
+
 
     start = 0
     for midx, morpheme in enumerate(morpheme_seq):
-        features = {"info":""}
 
         morph_start, morph_end = find_morph_boundaries(lexeme, morpheme, req_start = start)
 
@@ -171,10 +171,16 @@ for line in infile:
                 start_of_next_morpheme, end_of_next_morpheme = find_morph_boundaries(lexeme, morpheme_seq[midx+1], req_start = morph_end)
                 if start_of_next_morpheme != -1:
                     morph_end = start_of_next_morpheme
-            
+
             # if morph_start > start:
             #     lexicon.add_contiguous_morpheme(lex_id, annot_name, start, morph_start, features={"type":"interfix"})
             #     seg_issues.warning("Interfix added at position %s, %s, of wordform %s, af: %s", start, morph_start, lexeme, af)
+            if midx == 0 and morph_start != 0:
+                lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, morph_start, {"type":"prefix"})
+
+            features = dict()
+            features["type"] = "root" if midx == 0 else "suffix"
+
             lexicon.add_contiguous_morpheme(lex_id, annot_name, morph_start, morph_end, features)
         else:
             if start == 0:
@@ -183,7 +189,22 @@ for line in infile:
                 seg_issues.warning("Morpheme %s not at position %s, of wordform %s, af: %s", morpheme, start, lexeme, af)
             continue
 
-        start = start_of_next_morpheme
+        # print(lexeme, "\t", morpheme,"\t", morph_start, morph_end, "\t", af)
+        # print(lexeme[morph_start:morph_end], "\t",len(morpheme), len(lexeme))
+        # print(morpheme_seq,"\t", midx)
+        # print(start_of_next_morpheme, end_of_next_morpheme)
+        # for c in lexeme:
+        #     print(c, " ")
+        # print("\n")
+        # for c in morpheme:
+        #     print(c, " ")
+        # print("\n")
+        #
+        # print("\n\n\n")
+
+
+        if start_of_next_morpheme != -1:
+            start = start_of_next_morpheme
 
 
 outfile = open(sys.argv[2], 'w')
