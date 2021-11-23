@@ -15,7 +15,7 @@ download: $(LANGS:%=$(IN_DIR)/%_wordlist_analyzed_fixed.txt) $(IN_DIR)/tgk_affix
 $(IN_DIR)/udm_wordlist_analyzed_fixed.txt: $(IN_DIR)/udm_wordlist_analyzed.txt
 	# There are some spurious underscores in some word forms;
 	#  get rid of them. Also, fix STEMSTEM -> STEM
-	sed -e 's/__//; s/_</</; s/"STEMSTEM"/"STEM"/' < '$<' > '$@'
+	sed -e 's/__//; s/_</</; s/"STEMSTEM"/"STEM"/; s/<\(ӥськ\|он\|н\|ыт\|м\|эм\|ем\|ськ\|иськ\|т\|ск\|PASS\|VN\|CAUS\|PTCP\.PST\)>/\&lt;\1\&gt;/g' < '$<' > '$@'
 
 $(IN_DIR)/udm_wordlist_analyzed.txt: | $(IN_DIR)
 	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-udm/raw/master/wordlists/wordlist_analyzed.txt'
