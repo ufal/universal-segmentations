@@ -4,6 +4,8 @@ import re
 import sys
 sys.path.append('../../src/')
 from useg import SegLex
+from collections import defaultdict
+import unicodedata as ucd
 
 
 import logging
@@ -29,6 +31,36 @@ if len(sys.argv) != 3:
 gen_issues.info(f"Converting {sys.argv[1]} to {sys.argv[2]}")
 
 lexicon = SegLex()
+
+def get_char_equivalences():
+    '''Equivalence classes for vowels'''
+    letter_file = open("kan_characters.txt", "r")
+    eq2letter = defaultdict(lambda: [])
+    for line in letter_file:
+        description, letter = line.split("\t")[1], line.split("\t")[2]
+        eq2letter[description.split(" ")[-2]].append(letter)
+
+    # print("FIRST \n", eq2letter, "\n\n\n")
+    del eq2letter["MARK"]
+    # del eq2letter["CANDRABINDU"]
+    eq2letter = {v[0]:v for k,v in eq2letter.items() if len(v)>1}
+    # print("ONLY DOUBLES \n", eq2letter, "\n\n\n")
+    letter2eq = {eq_char:k for k,v in eq2letter.items() for eq_char in v}
+    print("letter2eq\n", letter2eq, "\n\n\n")
+
+    return letter2eq
+
+def normalize_chars(str):
+    '''Replace character with representative of equivalence set'''
+    str_original = str
+    for ch, member in eq_sets.items():
+        if ch in str:
+            str = re.sub(ch, member, str)
+
+    assert len(str)==len(str_original)
+
+    return str
+
 
 def longest_common_prefix(s, t):
     '''Finds length of LCP'''
@@ -56,7 +88,7 @@ def find_morph_boundaries(lexeme, morph, req_start = -1):
             morph_start, morph_end = match.start(), match.end()
 
             allowed_interfix_len = len(lexeme)
-            if morph_start <= req_start + allowed_interfix_len and morph_start >= req_start:
+            if morph_start <= req_start + allowed_interfix_len:
                 current_start, current_end = morph_start, morph_end
                 #If more than 1 matches for same length, choose the one closest to req_start
                 if best_start == -1:
@@ -70,6 +102,7 @@ def find_morph_boundaries(lexeme, morph, req_start = -1):
 
     return -1,-1
 
+# print(find_morph_boundaries("vacacation", "ca", 6))
 
 
 def assign_upos(pos):
@@ -124,11 +157,16 @@ def get_lexeme_features(af, pos):
 annot_name = "kcis"
 infile = open(sys.argv[1])
 
+eq_sets = get_char_equivalences()
+
 for line in infile:
     if line == "\n" or line == " ":
         continue
     entries = line.strip().split("\t")
     lexeme = entries[0].strip("'\"").strip()
+    if re.match("\d",lexeme):
+        continue
+
     pos = entries[1].strip()
     fs = entries[2].strip()
 
@@ -138,7 +176,8 @@ for line in infile:
         continue
     af = fs.strip("<>").split(" ")[1].split("=")[1].strip("''").split(",")
 
-    # if lexeme != "ಆಕರ್ಷಿಸಿಸುತ್ತದೆ":
+
+    # if lexeme != "ಅನ್ನೋದು":
     #     continue
 
     upos = assign_upos(pos)
@@ -159,18 +198,35 @@ for line in infile:
     else:
         morpheme_seq += af[6].split("+")
 
+    lexeme_eq = normalize_chars(lexeme)
+    morpheme_seq_eq = [normalize_chars(suff) for suff in morpheme_seq]
+
 
     start = 0
-    for midx, morpheme in enumerate(morpheme_seq):
+    for midx, morpheme in enumerate(morpheme_seq_eq):
 
-        morph_start, morph_end = find_morph_boundaries(lexeme, morpheme, req_start = start)
+        morph_start, morph_end = find_morph_boundaries(lexeme_eq, morpheme, req_start = start)
+
+        # print(lexeme, "\tnormalized: ", lexeme_eq, "\tmorpheme: ", morpheme,"\tmorph_start, end: ", morph_start, morph_end, "\t", af)
+        # print(lexeme_eq[morph_start:morph_end], "\t",len(morpheme), len(lexeme_eq))
+        # print(morpheme_seq_eq,"\t", midx)
+        # # print(start_of_next_morpheme, end_of_next_morpheme)
+        #
+        # for c in lexeme_eq:
+        #     print(c, ucd.name(c, "unknown"))
+        # print("\n")
+        # for c in morpheme:
+        #     print(c, ucd.name(c, "unknown"))
+        # print("\n")
+        #
+        # print("\n\n\n")
 
         if morph_start != -1 and morph_end != -1:
-            start_of_next_morpheme = len(lexeme)
-            if midx < len(morpheme_seq)-1:
-                start_of_next_morpheme, end_of_next_morpheme = find_morph_boundaries(lexeme, morpheme_seq[midx+1], req_start = morph_end)
-                if start_of_next_morpheme != -1:
-                    morph_end = start_of_next_morpheme
+            # start_of_next_morpheme = len(lexeme_eq)
+            # if midx < len(morpheme_seq)-1:
+            #     start_of_next_morpheme, end_of_next_morpheme = find_morph_boundaries(lexeme_eq, morpheme_seq_eq[midx+1], req_start = morph_end)
+            #     if start_of_next_morpheme != -1:
+            #         morph_end = start_of_next_morpheme
 
             # if morph_start > start:
             #     lexicon.add_contiguous_morpheme(lex_id, annot_name, start, morph_start, features={"type":"interfix"})
@@ -184,27 +240,14 @@ for line in infile:
             lexicon.add_contiguous_morpheme(lex_id, annot_name, morph_start, morph_end, features)
         else:
             if start == 0:
-                seg_issues.warning("Root %s not at position %s, of wordform %s, af: %s", morpheme, start, lexeme, af)
+                seg_issues.warning("Root %s not at position %s, of wordform %s, normalized %s, af: %s", morpheme, start, lexeme, lexeme_eq, af)
             else:
-                seg_issues.warning("Morpheme %s not at position %s, of wordform %s, af: %s", morpheme, start, lexeme, af)
+                seg_issues.warning("Morpheme %s not at position %s, of wordform %s, normalized %s, af: %s", morpheme, start, lexeme, lexeme_eq, af)
             continue
 
-        # print(lexeme, "\t", morpheme,"\t", morph_start, morph_end, "\t", af)
-        # print(lexeme[morph_start:morph_end], "\t",len(morpheme), len(lexeme))
-        # print(morpheme_seq,"\t", midx)
-        # print(start_of_next_morpheme, end_of_next_morpheme)
-        # for c in lexeme:
-        #     print(c, " ")
-        # print("\n")
-        # for c in morpheme:
-        #     print(c, " ")
-        # print("\n")
-        #
-        # print("\n\n\n")
 
-
-        if start_of_next_morpheme != -1:
-            start = start_of_next_morpheme
+        if morph_end != -1:
+            start = morph_end
 
 
 outfile = open(sys.argv[2], 'w')
