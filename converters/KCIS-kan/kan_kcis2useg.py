@@ -46,9 +46,41 @@ def get_char_equivalences():
     eq2letter = {v[0]:v for k,v in eq2letter.items() if len(v)>1}
     # print("ONLY DOUBLES \n", eq2letter, "\n\n\n")
     letter2eq = {eq_char:k for k,v in eq2letter.items() for eq_char in v}
-    print("letter2eq\n", letter2eq, "\n\n\n")
+    # print("letter2eq\n", letter2eq, "\n\n\n")
 
     return letter2eq
+
+
+def get_vowel_classes():
+    '''Return set of long and short vowels'''
+
+    vowels = "aeiou"
+    short_vowels = set()
+    long_vowels = set()
+    dipthongs = set()
+
+    letter_file = open("kan_characters.txt", "r")
+    for line in letter_file:
+        description, letter = line.split("\t")[1], line.split("\t")[2]
+        translit_letter = description.split(" ")[-2].lower()
+
+        translit_letter_vow = [c for c in translit_letter if c in vowels]
+        if len(translit_letter_vow) < len(translit_letter):
+            continue
+
+        if len(translit_letter)==1:
+            short_vowels.add(letter)
+        elif len(translit_letter)==2 and translit_letter[0]==translit_letter[1]:
+            long_vowels.add(letter)
+        else:
+            dipthongs.add(letter)
+
+    # print("SHORT: ", short_vowels)
+    # print("LONG: ", long_vowels)
+    # print("DIPTHONGS: ", dipthongs)
+
+    return short_vowels, long_vowels, dipthongs
+
 
 def normalize_chars(str):
     '''Replace character with representative of equivalence set'''
@@ -60,6 +92,18 @@ def normalize_chars(str):
     assert len(str)==len(str_original)
 
     return str
+
+short_vowels, long_vowels, dipthongs = get_vowel_classes()
+def find_allomorphs(morpheme):
+    '''Make modifications from most to least conservative'''
+    #No modification
+    yield morpheme
+    #Remove starting vowel
+    if morpheme[0] in short_vowels:
+        yield morpheme[1:]
+
+
+    #Interchange long and short vowels
 
 
 def longest_common_prefix(s, t):
@@ -103,6 +147,39 @@ def find_morph_boundaries(lexeme, morph, req_start = -1):
     return -1,-1
 
 # print(find_morph_boundaries("vacacation", "ca", 6))
+
+def choose_allomorph_boundaries(lexeme, morpheme, req_start = -1):
+    '''Finds boundaries of allomorph'''
+
+    best_boundary = dict()
+
+    for morph in find_allomorphs(morpheme):
+        morph_start, morph_end = find_morph_boundaries(lexeme, morph, req_start)
+        if morph_start != -1:
+            best_boundary[morph] = (morph_start, morph_end)
+
+    #Choose allomorph with best boundary
+    if len(best_boundary) == 0:
+        return -1,-1
+
+    if len(best_boundary) == 1:
+        for morph in best_boundary:
+            return best_boundary[morph]
+
+    allo_lengths = [[morph, best_boundary[morph][1]-best_boundary[morph][0]] for morph in best_boundary.keys()]
+    allo_lengths = sorted(allo_lengths, key = lambda x: x[1], reverse=True)
+
+    #Take all allomorphs with max len
+    best_allo_lengths = filter(lambda x: x[1]==allo_lengths[0][1], allo_lengths)
+
+    #If not, judge by closeness to req_start
+    dist_from_req = [[morph, abs(req_start - best_boundary[morph][0])] for [morph, len] in best_allo_lengths]
+    dist_from_req = sorted(dist_from_req, key = lambda x: x[1])
+
+    return best_boundary[dist_from_req[0][0]]
+
+
+
 
 
 def assign_upos(pos):
@@ -154,6 +231,8 @@ def get_lexeme_features(af, pos):
     return features
 
 
+
+
 annot_name = "kcis"
 infile = open(sys.argv[1])
 
@@ -177,7 +256,7 @@ for line in infile:
     af = fs.strip("<>").split(" ")[1].split("=")[1].strip("''").split(",")
 
 
-    # if lexeme != "ಅನ್ನೋದು":
+    # if lexeme != "ಆಕರ್ಷಿಸಿಸುತ್ತದೆ":
     #     continue
 
     upos = assign_upos(pos)
@@ -191,7 +270,6 @@ for line in infile:
         continue
 
 
-
     morpheme_seq = [af[0]]
     if af[6] in ["","0"]:
         continue
@@ -200,20 +278,33 @@ for line in infile:
 
     lexeme_eq = normalize_chars(lexeme)
     morpheme_seq_eq = [normalize_chars(suff) for suff in morpheme_seq]
-
+    short_vowels, long_vowels, dipthongs = get_vowel_classes()
 
     start = 0
     for midx, morpheme in enumerate(morpheme_seq_eq):
 
-        morph_start, morph_end = find_morph_boundaries(lexeme_eq, morpheme, req_start = start)
+        if morpheme=="":
+            continue
+
+        morph_start, morph_end = choose_allomorph_boundaries(lexeme_eq, morpheme, req_start = start)
+        #Reassign for special morph
+        if morpheme=="ಅ":
+            morph_start, morph_end = start - 1, start
+
+        #For one letter vowel morphemes, reassign to closest vowel after start
+        if morpheme in short_vowels and morph_start < start-2:
+            for pos in range(start-1, len(lexeme_eq)):
+                if lexeme_eq[pos] in short_vowels:
+                    morph_start, morph_end = pos, pos+1
+                    break
 
         # print(lexeme, "\tnormalized: ", lexeme_eq, "\tmorpheme: ", morpheme,"\tmorph_start, end: ", morph_start, morph_end, "\t", af)
         # print(lexeme_eq[morph_start:morph_end], "\t",len(morpheme), len(lexeme_eq))
         # print(morpheme_seq_eq,"\t", midx)
         # # print(start_of_next_morpheme, end_of_next_morpheme)
         #
-        # for c in lexeme_eq:
-        #     print(c, ucd.name(c, "unknown"))
+        # for i, c in enumerate(lexeme_eq):
+        #     print(c, ucd.name(c, "unknown"), i)
         # print("\n")
         # for c in morpheme:
         #     print(c, ucd.name(c, "unknown"))
@@ -222,29 +313,25 @@ for line in infile:
         # print("\n\n\n")
 
         if morph_start != -1 and morph_end != -1:
-            # start_of_next_morpheme = len(lexeme_eq)
-            # if midx < len(morpheme_seq)-1:
-            #     start_of_next_morpheme, end_of_next_morpheme = find_morph_boundaries(lexeme_eq, morpheme_seq_eq[midx+1], req_start = morph_end)
-            #     if start_of_next_morpheme != -1:
-            #         morph_end = start_of_next_morpheme
 
-            # if morph_start > start:
-            #     lexicon.add_contiguous_morpheme(lex_id, annot_name, start, morph_start, features={"type":"interfix"})
+            if morph_start > start:
+                lexicon.add_contiguous_morpheme(lex_id, annot_name, start, morph_start, features={"type":"interfix"})
             #     seg_issues.warning("Interfix added at position %s, %s, of wordform %s, af: %s", start, morph_start, lexeme, af)
             if midx == 0 and morph_start != 0:
                 lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, morph_start, {"type":"prefix"})
 
             features = dict()
             features["type"] = "root" if midx == 0 else "suffix"
+            features["morpheme"] = morpheme_seq[midx]
 
             lexicon.add_contiguous_morpheme(lex_id, annot_name, morph_start, morph_end, features)
         else:
             if start == 0:
                 seg_issues.warning("Root %s not at position %s, of wordform %s, normalized %s, af: %s", morpheme, start, lexeme, lexeme_eq, af)
             else:
-                seg_issues.warning("Morpheme %s not at position %s, of wordform %s, normalized %s, af: %s", morpheme, start, lexeme, lexeme_eq, af)
+                if len(morpheme)>1:
+                    seg_issues.warning("Morpheme %s not at position %s, of wordform %s, normalized %s, af: %s", morpheme, start, lexeme, lexeme_eq, af)
             continue
-
 
         if morph_end != -1:
             start = morph_end
