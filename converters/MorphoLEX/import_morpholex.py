@@ -224,6 +224,9 @@ def gen_morphs_fra(allomorphs, morpheme):
     return (g_morphs, t)
 
 def add_endings_eng(form, joined_segmentation, morphemes):
+    if form.endswith("ingly") and morphemes[-1][0][0] == "ly" and not joined_segmentation.endswith("ingly"):
+        morphemes = morphemes[:-1] + [(["ing"], "suffix")] + [morphemes[-1]]
+
     if form.endswith("ings") and not joined_segmentation.endswith("ings"):
         morphemes.append((["ing"], "suffix"))
         morphemes.append((["s"], "suffix"))
