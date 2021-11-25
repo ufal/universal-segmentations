@@ -264,9 +264,7 @@ def add_endings_eng(form, joined_segmentation, morphemes):
 
     return morphemes
 
-def convert_pos_eng(pos):
-    poses = pos.split("|")
-
+def convert_pos_eng(poses):
     trans = {"VB": "VERB",
              "NN": "NOUN",
              "JJ": "ADJ",
@@ -362,7 +360,8 @@ def main(args):
                 if lang == "eng":
                     # The English data has parts of speech, with
                     #  possibly multiple options per lexeme.
-                    pos = convert_pos_eng(line.POS)
+                    orig_poses = line.POS.split("|")
+                    pos = convert_pos_eng(orig_poses)
 
                     segmentation = line.MorphoLexSegm
                     segmentation = parse_segmentation_eng(segmentation)
@@ -371,9 +370,10 @@ def main(args):
                     if line.ELP_ItemID:
                         # Some English lexemes have interlinked IDs,
                         #  some don't.
-                        features = {"elp_id": int(line.ELP_ItemID)}
+                        features = {"elp_id": int(line.ELP_ItemID),
+                                    "morpho_tags": orig_poses}
                     else:
-                        features = None
+                        features = {"morpho_tags": orig_poses}
                 else:
                     # The French data has no POSes and the IDs are
                     #  probably not interlinked with anything.
