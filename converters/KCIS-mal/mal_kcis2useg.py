@@ -116,7 +116,8 @@ def find_allomorphs(morpheme):
     #Remove viramas
     def remove_viramas(morpheme):
         for cidx, c in enumerate(morpheme):
-            if "VIRAMA" in ucd.name(c):
+            if c in viramas:
+                # print("here")
                 morpheme = morpheme[:cidx]+morpheme[cidx+1:]
         return morpheme
 
