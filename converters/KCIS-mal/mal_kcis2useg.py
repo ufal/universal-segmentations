@@ -100,37 +100,76 @@ def normalize_chars(str):
     return str
 
 short_vowels, long_vowels, dipthongs, viramas = get_vowel_classes()
-print(viramas)
 def find_allomorphs(morpheme):
     '''Make modifications from most to least conservative'''
     #No modification
     yield morpheme
+
     #Remove starting vowel
-    if morpheme[0] in short_vowels:
-        yield morpheme[1:]
+    def remove_start_vowel(morpheme):
+        if len(morpheme)<1:
+            return ""
+        if morpheme[0] in short_vowels.union(long_vowels):
+            return morpheme[1:]
+        return morpheme
+
+    #Remove viramas
+    def remove_viramas(morpheme):
+        for cidx, c in enumerate(morpheme):
+            if "VIRAMA" in ucd.name(c):
+                morpheme = morpheme[:cidx]+morpheme[cidx+1:]
+        return morpheme
 
 
-    yield re.sub("ട", "റ", morpheme)
+    def switch_letters(morpheme, a, b):
+    #Interchange a and b
+        morpheme_s = morpheme
+        for cidx, c in enumerate(morpheme):
+            if c == a:
+                morpheme_s = morpheme_s[:cidx] + b + morpheme_s[cidx:]
+                # yield morpheme_t
 
-    morpheme_v = morpheme
-    for v in viramas:
-         morpheme_v = re.sub(v, "", morpheme)
-    if len(morpheme_v)<len(morpheme):
-        # print("hello", morpheme_v, morpheme, len(morpheme_v), len(morpheme))
-        yield morpheme_v
-
-    morpheme_t = morpheme
-    for cidx, c in enumerate(morpheme):
-        if c == "ട":
-            morpheme_t = morpheme_t[:cidx] + "ത" + morpheme_t[cidx:]
-            yield morpheme_t
-
-        if c == "ത":
-            morpheme_t = morpheme_t[:cidx] + "ട" + morpheme_t[cidx:]
-            yield morpheme_t
+            if c == b:
+                morpheme_s = morpheme_s[:cidx] + a + morpheme_s[cidx:]
+                # yield morpheme_t
+        return morpheme_s
 
 
-    #Interchange long and short vowels
+    #Different combinations of above transformations
+    m_rsv = remove_start_vowel(morpheme)
+    yield m_rsv
+
+
+    m_rv = remove_viramas(morpheme)
+    yield m_rv
+    yield remove_start_vowel(m_rv)
+
+    m_twr = switch_letters(morpheme, "ട", "റ") #TTA, RRA
+    yield m_twr
+    yield remove_start_vowel(m_twr)
+    yield remove_viramas(m_twr)
+
+    m_twr = switch_letters(morpheme, "ര", "റ") #TA, RRA
+    yield m_twr
+    yield remove_start_vowel(m_twr)
+    yield remove_viramas(m_twr)
+
+    m_twt = switch_letters(morpheme, "ത", "ട") #TA, TTA
+    yield m_twt
+    yield remove_start_vowel(m_twt)
+    yield remove_viramas(m_twt)
+
+    m_rwr = switch_letters(morpheme, "ര", "റ") #RA, RRA
+    yield m_rwr
+    yield remove_start_vowel(m_rwr)
+    yield remove_viramas(m_rwr)
+
+
+    m_kwn = switch_letters(morpheme, "ക", "ങ") #KA, NGA
+    yield m_kwn
+    yield remove_start_vowel(m_kwn)
+    yield remove_viramas(m_kwn)
+
 
 
 def longest_common_prefix(s, t):
@@ -280,7 +319,7 @@ for line in infile:
     af = fs.strip("<>").split(" ")[1].split("=")[1].strip("''").split(",")
 
 
-    # if "തിനെ" not in lexeme:
+    # if "അടിച്ചുപൊളിക്കുന്ന" not in lexeme:
         # continue
 
     upos = assign_upos(pos)
@@ -311,16 +350,6 @@ for line in infile:
             continue
 
         morph_start, morph_end = choose_allomorph_boundaries(lexeme_eq, morpheme, req_start = start)
-        #Reassign for special morph
-        # if morpheme=="ಅ":
-        #     morph_start, morph_end = start - 1, start
-
-        #For one letter vowel morphemes, reassign to closest vowel after start
-        # if morpheme in short_vowels and morph_start < start-2:
-        #     for pos in range(start-1, len(lexeme_eq)):
-        #         if lexeme_eq[pos] in short_vowels:
-        #             morph_start, morph_end = pos, pos+1
-        #             break
 
         # print(lexeme, "\tnormalized: ", lexeme_eq, "\tmorpheme: ", morpheme,"\tmorph_start, end: ", morph_start, morph_end, "\t", af)
         # print(lexeme_eq[morph_start:morph_end], "\t",len(morpheme), len(lexeme_eq))
@@ -338,8 +367,8 @@ for line in infile:
 
         if morph_start != -1 and morph_end != -1:
 
-            if morph_start > start:
-                lexicon.add_contiguous_morpheme(lex_id, annot_name, start, morph_start, features={"type":"interfix"})
+            # if morph_start > start:
+            #     lexicon.add_contiguous_morpheme(lex_id, annot_name, start, morph_start, features={"type":"interfix"})
             #     seg_issues.warning("Interfix added at position %s, %s, of wordform %s, af: %s", start, morph_start, lexeme, af)
             if midx == 0 and morph_start != 0:
                 lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, morph_start, {"type":"prefix"})
