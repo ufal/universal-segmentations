@@ -22,13 +22,14 @@ def parse_args():
     return parser.parse_args()
 
 gr_upos_table = {
-    "A": "X", # TODO
+    # See http://udmurt.web-corpora.net/index_en.html
+    "A": "ADJ",
     "ADJ": "ADJ",
-    "ADJPRO": "X", # TODO
+    "ADJPRO": "DET", # See https://universaldependencies.org/u/pos/PRON.html
     "ADV": "ADV",
     "ADVPRO": "X", # TODO
     "CNJ": "CCONJ", # TODO or SCONJ as well?
-    "IMIT": "X", # TODO
+    "IMIT": "ADV", # See https://universaldependencies.org/u/pos/ADV.html
     "INTRJ": "INTJ",
     "N": "NOUN",
     "NUM": "NUM",
