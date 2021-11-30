@@ -5,7 +5,7 @@ import string
 import sys
 sys.path.append('../../src/')
 from useg import SegLex
-
+import unicodedata as ucd
 
 import logging
 
@@ -17,12 +17,11 @@ def setup_logger(logger_name, log_file, level=logging.INFO):
 
 setup_logger('gen_issues', r'general.log')
 setup_logger('seg_issues', r'segmentation.log')
-setup_logger('boundary_overlap_issues', r'boundary_overlaps.log')
 setup_logger('pos_issues', r'pos.log')
 gen_issues = logging.getLogger('gen_issues')
 seg_issues = logging.getLogger('seg_issues')
 pos_issues = logging.getLogger('pos_issues')
-boundary_overlap_issues = logging.getLogger('boundary_overlap_issues')
+
 
 if len(sys.argv) != 3:
     sys.stderr.write("Usage:\n  "+__file__+" Bengali-SSF-file.csv converted-file.useg\n\n")
@@ -118,80 +117,74 @@ def get_lexeme_features(af, pos):
 
     return features
 
+def longest_common_prefix(s, t):
+    '''Finds length of LCP'''
+    lcp_len = 0
+    while(lcp_len <= min(len(s),len(t)) and s[:lcp_len]==t[:lcp_len]):
+        lcp_len += 1
+    return lcp_len-1
+
 
 annot_name = "kcis"
 infile = open(sys.argv[1])
 
 
-allomorph_eq_sets = [{"चा", "ची", "चे", "चं", "च", "च्या"},
-{"ला", "ली", "ले", "लं", "ल", "ल्या"},
-{"ता", "ती", "ते", "तं", "त्या", "तात" }]
+# allomorph_sets = {morph:morph_set for morph_set in allomorph_eq_sets for morph in morph_set}
 
-allomorph_sets = {morph:morph_set for morph_set in allomorph_eq_sets for morph in morph_set}
-count = 0
 for line in infile:
     entries = line.strip().split("\t")
-    wordform = entries[0].strip("'\"").strip()
+    lexeme = entries[0].strip("'\"").strip()
     pos = entries[1].strip()
     fs = entries[2].strip()
 
     af = fs.strip("<>").split(" ")[1].split("=")[1].strip("''").split(",")
 
     upos = assign_upos(pos)
-    lemma = get_lemma(wordform, pos, fs)
+    lemma = get_lemma(lexeme, pos, fs)
     features = get_lexeme_features(af, pos)
 
-    lex_id = lexicon.add_lexeme(wordform, lemma, upos, features=features)
 
-    # if wordform!= "अमेरीकेला":
+
+    # if lexeme!= "হাতে":
     #     continue
+    #
 
     if len(af)!=8:
-        gen_issues.warning("Wordform %s has af: %s without enough fields", wordform, af)
+        gen_issues.warning("Lexeme %s has af: %s without enough fields", lexeme, af)
         continue
 
+    if af[7] not in ["", "0"]:
 
-    if af[6] not in ["", "0"]:
-        count += 1
-        print(line)
-        continue
-        suffixes = af[7].split("_")
-        suffixes.reverse()
-        end = len(wordform)
-        # print(line)
-        # print(suffixes)
+        lex_id = lexicon.add_lexeme(lexeme, lemma, upos, features=features)
 
-        for suffix in suffixes:
+        suffix = af[7]
+        root = af[0]
 
-            morph = ""
+        s_len = longest_common_prefix(lexeme[::-1], suffix[::-1])
 
-            if wordform[:end].endswith(suffix):
-                morph = suffix
-            else:
-                if suffix in allomorph_sets:
-                    for allomorph in allomorph_sets[suffix]:
-                        if wordform[:end].endswith(allomorph):
-                            morph = allomorph
+        # print(lexeme, suffix, af)
+        # for c in lexeme:
+        #     print(c, ucd.name(c))
+        # print("\n\n")
+        # for c in suffix:
+        #     print(c, ucd.name(c))
+        #
+        # print("LCP ", s_len)
 
-
-            if morph == "" and morph != suffix:
-                seg_issues.warning("Suffix %s not at end position %s, of wordform %s, af: %s", suffix, end, wordform, af)
-                continue
-                print(wordform, suffix, af)
-                print(start, end)
-
-
-            start = len(wordform[:end]) - len(morph)
-
+        if s_len != 0:
+            start = len(lexeme) - s_len
+            assert lexeme[-s_len:] == suffix[-s_len:]
             features = {"type":"suffix"}
-            lexicon.add_contiguous_morpheme(lex_id, annot_name, start, end, features)
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, start, len(lexeme), features)
 
-            end = start
-            # print(morph, start, end)
-            # print("new end, ", end, wordform[:end])
+            features = {"type":"root"}
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, start, features)
+        else:
+            seg_issues.warning("Suffix %s not at end of wordform %s, af: %s", suffix, lexeme, af)
+            # if suffix in allomorph_sets:
+            #     for allomorph in allomorph_sets[suffix]:
+            #         if wordform[:end].endswith(allomorph):
+            #             morph = allomorph
 
-        lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, end, features={"type":"root"})
-
-print(count)
 outfile = open(sys.argv[2], 'w')
 lexicon.save(outfile)
