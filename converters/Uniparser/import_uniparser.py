@@ -49,8 +49,10 @@ def gr_to_upos(morpho_tags):
     gr_pos = morpho_tags[0]
     if gr_pos == "N" and len(morpho_tags) >= 2 and morpho_tags[1] == "PN":
         return "PROPN"
+    elif gr_pos in gr_upos_table:
+        return gr_upos_table[gr_pos]
     else:
-        return gr_upos_table.get(gr_pos, "X")
+        print("Unknown POS tag '{}'".format(gr_pos), file=sys.stderr)
 
 def fix_gloss(gloss, affixes):
     morphs = gloss.split("-")
