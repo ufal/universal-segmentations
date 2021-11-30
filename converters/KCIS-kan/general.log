@@ -1,0 +1,13 @@
+Converting ../../data//original/KCIS/kan//simplified_ssf.txt to ../../data//converted/kan-KCIS/with_duplicates.useg
+Lexeme ಅಧಿಕಾರಿಗಳು has af: ['ಅಧಿಕಾರಿಗಳು', 'n', 'any', 'pl', '3', 'o', 'ಗಳು'] without enough fields
+Lexeme ಆಗುತ್ತದೆ has af: ['ಆಗು', 'v', '', 'sg', '3', '', 'ಉತ್ತ್'] without enough fields
+Lexeme ಇರುತ್ತದೆ has af: ['ಇರು', 'v', '', 'sg', '3', '', 'ಉತ್ತ್'] without enough fields
+Lexeme ಇರುತ್ತೆ has af: ['ಇರು', 'v', '', 'sg', '3', '', 'ತ್ತ್+ಎ'] without enough fields
+Lexeme ಗಳಿಸುತ್ತಿರುವ has af: ['ಗಳಿಸು', 'v', '', '', '', '', 'ಉತ್ತ್'] without enough fields
+Lexeme ನೀತಿಯನ್ನು has af: ['ನೀತಿ', 'n', '', 'sg', '3', 'o', 'ಇಯ್+ಅ+ಅನ್ನು'] without enough fields
+Lexeme ಪ್ರೋತ್ಸಾಹಿತರು has af: ['ಪ್ರೋತ್ಸಾಹಿತ'] without enough fields
+Lexeme ಬರುತ್ತವೆ has af: ['ಬರು', 'v', '', 'pl', '3', '', 'ಉತ್ತ್'] without enough fields
+Lexeme ಬಿಡುತ್ತಿರುವ has af: ['ಬಿಡು', 'v', '', '', '', '', 'ಉತ್ತ್'] without enough fields
+Lexeme ಸಮಸ್ಯೆಗಳನ್ನು has af: ['ಸಮಸ್ಯೆ', 'n', '', 'pl', '3', 'o', 'ಗಳು+ಅ+ಅನ್ನು'] without enough fields
+Lexeme ಸಲ್ಲಿಸುತ್ತಿರುವ has af: ['ಸಲ್ಲಿಸು', 'v', '', '', '', '', 'ಉತ್ತ್'] without enough fields
+Lexeme ಹೋಗುತ್ತದೆ has af: ['ಹೋಗು', 'v', '', 'sg', '3', '', 'ಉತ್ತ್'] without enough fields

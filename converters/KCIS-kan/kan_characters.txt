@@ -1,0 +1,90 @@
+U+0C80	KANNADA SIGN SPACING CANDRABINDU (U+0C80)	ಀ	unifont
+U+0C81	KANNADA SIGN CANDRABINDU (U+0C81)	ಁ	unifont
+U+0C82	KANNADA SIGN ANUSVARA (U+0C82)	ಂ	arial_unicode_ms
+U+0C83	KANNADA SIGN VISARGA (U+0C83)	ಃ	arial_unicode_ms
+U+0C84	KANNADA SIGN SIDDHAM (U+0C84)	಄	unifont
+U+0C85	KANNADA LETTER A (U+0C85)	ಅ	arial_unicode_ms
+U+0C86	KANNADA LETTER AA (U+0C86)	ಆ	arial_unicode_ms
+U+0C87	KANNADA LETTER I (U+0C87)	ಇ	arial_unicode_ms
+U+0C88	KANNADA LETTER II (U+0C88)	ಈ	arial_unicode_ms
+U+0C89	KANNADA LETTER U (U+0C89)	ಉ	arial_unicode_ms
+U+0C8A	KANNADA LETTER UU (U+0C8A)	ಊ	arial_unicode_ms
+U+0C8B	KANNADA LETTER VOCALIC R (U+0C8B)	ಋ	arial_unicode_ms
+U+0C8C	KANNADA LETTER VOCALIC L (U+0C8C)	ಌ	arial_unicode_ms
+U+0C8E	KANNADA LETTER E (U+0C8E)	ಎ	arial_unicode_ms
+U+0C8F	KANNADA LETTER EE (U+0C8F)	ಏ	arial_unicode_ms
+U+0C90	KANNADA LETTER AI (U+0C90)	ಐ	arial_unicode_ms
+U+0C92	KANNADA LETTER O (U+0C92)	ಒ	arial_unicode_ms
+U+0C93	KANNADA LETTER OO (U+0C93)	ಓ	arial_unicode_ms
+U+0C94	KANNADA LETTER AU (U+0C94)	ಔ	arial_unicode_ms
+U+0C95	KANNADA LETTER KA (U+0C95)	ಕ	arial_unicode_ms
+U+0C96	KANNADA LETTER KHA (U+0C96)	ಖ	arial_unicode_ms
+U+0C97	KANNADA LETTER GA (U+0C97)	ಗ	arial_unicode_ms
+U+0C98	KANNADA LETTER GHA (U+0C98)	ಘ	arial_unicode_ms
+U+0C99	KANNADA LETTER NGA (U+0C99)	ಙ	arial_unicode_ms
+U+0C9A	KANNADA LETTER CA (U+0C9A)	ಚ	arial_unicode_ms
+U+0C9B	KANNADA LETTER CHA (U+0C9B)	ಛ	arial_unicode_ms
+U+0C9C	KANNADA LETTER JA (U+0C9C)	ಜ	arial_unicode_ms
+U+0C9D	KANNADA LETTER JHA (U+0C9D)	ಝ	arial_unicode_ms
+U+0C9E	KANNADA LETTER NYA (U+0C9E)	ಞ	arial_unicode_ms
+U+0C9F	KANNADA LETTER TTA (U+0C9F)	ಟ	arial_unicode_ms
+U+0CA0	KANNADA LETTER TTHA (U+0CA0)	ಠ	arial_unicode_ms
+U+0CA1	KANNADA LETTER DDA (U+0CA1)	ಡ	arial_unicode_ms
+U+0CA2	KANNADA LETTER DDHA (U+0CA2)	ಢ	arial_unicode_ms
+U+0CA3	KANNADA LETTER NNA (U+0CA3)	ಣ	arial_unicode_ms
+U+0CA4	KANNADA LETTER TA (U+0CA4)	ತ	arial_unicode_ms
+U+0CA5	KANNADA LETTER THA (U+0CA5)	ಥ	arial_unicode_ms
+U+0CA6	KANNADA LETTER DA (U+0CA6)	ದ	arial_unicode_ms
+U+0CA7	KANNADA LETTER DHA (U+0CA7)	ಧ	arial_unicode_ms
+U+0CA8	KANNADA LETTER NA (U+0CA8)	ನ	arial_unicode_ms
+U+0CAA	KANNADA LETTER PA (U+0CAA)	ಪ	arial_unicode_ms
+U+0CAB	KANNADA LETTER PHA (U+0CAB)	ಫ	arial_unicode_ms
+U+0CAC	KANNADA LETTER BA (U+0CAC)	ಬ	arial_unicode_ms
+U+0CAD	KANNADA LETTER BHA (U+0CAD)	ಭ	arial_unicode_ms
+U+0CAE	KANNADA LETTER MA (U+0CAE)	ಮ	arial_unicode_ms
+U+0CAF	KANNADA LETTER YA (U+0CAF)	ಯ	arial_unicode_ms
+U+0CB0	KANNADA LETTER RA (U+0CB0)	ರ	arial_unicode_ms
+U+0CB1	KANNADA LETTER RRA (U+0CB1)	ಱ	arial_unicode_ms
+U+0CB2	KANNADA LETTER LA (U+0CB2)	ಲ	arial_unicode_ms
+U+0CB3	KANNADA LETTER LLA (U+0CB3)	ಳ	arial_unicode_ms
+U+0CB5	KANNADA LETTER VA (U+0CB5)	ವ	arial_unicode_ms
+U+0CB6	KANNADA LETTER SHA (U+0CB6)	ಶ	arial_unicode_ms
+U+0CB7	KANNADA LETTER SSA (U+0CB7)	ಷ	arial_unicode_ms
+U+0CB8	KANNADA LETTER SA (U+0CB8)	ಸ	arial_unicode_ms
+U+0CB9	KANNADA LETTER HA (U+0CB9)	ಹ	arial_unicode_ms
+U+0CBC	KANNADA SIGN NUKTA (U+0CBC)	಼	code2000
+U+0CBD	KANNADA SIGN AVAGRAHA (U+0CBD)	ಽ	code2000
+U+0CBE	KANNADA VOWEL SIGN AA (U+0CBE)	ಾ	arial_unicode_ms
+U+0CBF	KANNADA VOWEL SIGN I (U+0CBF)	ಿ	arial_unicode_ms
+U+0CC0	KANNADA VOWEL SIGN II (U+0CC0)	ೀ	arial_unicode_ms
+U+0CC1	KANNADA VOWEL SIGN U (U+0CC1)	ು	arial_unicode_ms
+U+0CC2	KANNADA VOWEL SIGN UU (U+0CC2)	ೂ	arial_unicode_ms
+U+0CC3	KANNADA VOWEL SIGN VOCALIC R (U+0CC3)	ೃ	arial_unicode_ms
+U+0CC4	KANNADA VOWEL SIGN VOCALIC RR (U+0CC4)	ೄ	arial_unicode_ms
+U+0CC6	KANNADA VOWEL SIGN E (U+0CC6)	ೆ	arial_unicode_ms
+U+0CC7	KANNADA VOWEL SIGN EE (U+0CC7)	ೇ	arial_unicode_ms
+U+0CC8	KANNADA VOWEL SIGN AI (U+0CC8)	ೈ	arial_unicode_ms
+U+0CCA	KANNADA VOWEL SIGN O (U+0CCA)	ೊ	arial_unicode_ms
+U+0CCB	KANNADA VOWEL SIGN OO (U+0CCB)	ೋ	arial_unicode_ms
+U+0CCC	KANNADA VOWEL SIGN AU (U+0CCC)	ೌ	arial_unicode_ms
+U+0CCD	KANNADA SIGN VIRAMA (U+0CCD)	್	arial_unicode_ms
+U+0CD5	KANNADA LENGTH MARK (U+0CD5)	ೕ	arial_unicode_ms
+U+0CD6	KANNADA AI LENGTH MARK (U+0CD6)	ೖ	arial_unicode_ms
+U+0CDD	KANNADA LETTER NAKAARA POLLU (U+0CDD)	ೝ	unifont
+U+0CDE	KANNADA LETTER FA (U+0CDE)	ೞ	arial_unicode_ms
+U+0CE0	KANNADA LETTER VOCALIC RR (U+0CE0)	ೠ	arial_unicode_ms
+U+0CE1	KANNADA LETTER VOCALIC LL (U+0CE1)	ೡ	arial_unicode_ms
+U+0CE2	KANNADA VOWEL SIGN VOCALIC L (U+0CE2)	ೢ	code2000
+U+0CE3	KANNADA VOWEL SIGN VOCALIC LL (U+0CE3)	ೣ	code2000
+U+0CE6	KANNADA DIGIT ZERO (U+0CE6)	೦	arial_unicode_ms
+U+0CE7	KANNADA DIGIT ONE (U+0CE7)	೧	arial_unicode_ms
+U+0CE8	KANNADA DIGIT TWO (U+0CE8)	೨	arial_unicode_ms
+U+0CE9	KANNADA DIGIT THREE (U+0CE9)	೩	arial_unicode_ms
+U+0CEA	KANNADA DIGIT FOUR (U+0CEA)	೪	arial_unicode_ms
+U+0CEB	KANNADA DIGIT FIVE (U+0CEB)	೫	arial_unicode_ms
+U+0CEC	KANNADA DIGIT SIX (U+0CEC)	೬	arial_unicode_ms
+U+0CED	KANNADA DIGIT SEVEN (U+0CED)	೭	arial_unicode_ms
+U+0CEE	KANNADA DIGIT EIGHT (U+0CEE)	೮	arial_unicode_ms
+U+0CEF	KANNADA DIGIT NINE (U+0CEF)	೯	arial_unicode_ms
+U+0CF1	KANNADA SIGN JIHVAMULIYA (U+0CF1)	ೱ	code2000
+U+0CF2	KANNADA SIGN UPADHMANIYA (U+0CF2)	ೲ	code2000

@@ -1,13 +1,25 @@
 #!/usr/bin/env python3
 """
-Read the Udmurt XML-like file with analyses from STDIN, convert it to the
-Universal Segmentations format and print it to STDOUT.
+Read the Uniparser XML-like file with analyses from STDIN, convert it
+to the Universal Segmentations format and print it to STDOUT.
 """
 
+import argparse
+import re
 import sys
 import xml.etree.ElementTree as ET
 
 from useg import SegLex
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        allow_abbrev=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser.add_argument("--annot-name", required=True, help="The name to use for storing the segmentation annotation.")
+    parser.add_argument("--affixes", type=argparse.FileType("rt", encoding="utf-8", errors="strict"), help="A file to load allowed affixes from; all other morphemes will be considered to be stems.")
+    parser.add_argument("--multi-stem-infixation", action="store_true", help="When encountering multiple STEM morphemes, consider them to be a single STEM with infixes instead of a compound.")
+    return parser.parse_args()
 
 gr_upos_table = {
     "A": "X", # TODO
@@ -40,12 +52,93 @@ def gr_to_upos(morpho_tags):
     else:
         return gr_upos_table.get(gr_pos, "X")
 
-def main():
+def fix_gloss(gloss, affixes):
+    morphs = gloss.split("-")
+    fixed_morphs = []
+    last_stem = False
+    for morph in morphs:
+        is_affix = True
+
+        for part in morph.replace("|", ".").replace(",", ".").split("."):
+            if part not in affixes:
+                is_affix = False
+
+        if is_affix:
+            last_stem = False
+            fixed_morphs.append(morph)
+        elif not last_stem:
+            last_stem = True
+            fixed_morphs.append("STEM")
+    return "-".join(fixed_morphs)
+
+def load_affixes(f):
+    affixes = {"STEM"}
+    for line in f:
+        line = line.rstrip("\n")
+        affixes.add(line)
+        for part in line.replace("|", ".").replace(",", ".").split("."):
+            affixes.add(part)
+    return affixes
+
+def parse_infixation(morph, morpheme):
+    in_infix = False
+    morphs = []
+    spans = []
+    i = 0
+    start = 0
+    main_span = []
+    infix = ""
+    main_morph = ""
+
+    for char in morph:
+        if char == "<":
+            assert not in_infix
+            in_infix = True
+            start = i
+        elif char == ">":
+            assert in_infix
+            in_infix = False
+            morphs.append(infix)
+            infix = ""
+            spans.append(range(start, i))
+        else:
+            if in_infix:
+                infix += char
+            else:
+                main_morph += char
+                main_span.append(i)
+            i += 1
+    assert not in_infix
+
+    main_morpheme = re.sub(r"<[^>]*>", "", morpheme)
+    assert main_morpheme == "STEM"
+
+    features = [{"morpheme": match.group(1), "type": "infix"} for match in re.finditer(r"<([^>]*)>", morpheme)]
+
+    morphs.append(main_morph)
+    spans.append(main_span)
+    features.append({"type": "stem"})
+
+    assert len(morphs) == len(spans) == len(features)
+    return morphs, spans, features, i
+
+def main(args):
     lexicon = SegLex()
+    annot_name = args.annot_name
+
+    if args.affixes is not None:
+        fixup_gloss = True
+        affixes = load_affixes(args.affixes)
+    else:
+        fixup_gloss = False
 
     for line in sys.stdin:
         line = line.rstrip()
-        w = ET.fromstring(line)
+        try:
+            w = ET.fromstring(line)
+        except ET.ParseError as exc:
+            print("Unparseable line '{}'".format(line), file=sys.stderr)
+            raise exc
         assert w.tag == "w"
 
         form = "".join(w.itertext())
@@ -63,11 +156,10 @@ def main():
             gr = ana.attrib["gr"]
             parts = ana.attrib["parts"]
             gloss = ana.attrib["gloss"]
-            trans_ru = ana.attrib["trans_ru"]
+            features = {k: v for k, v in ana.attrib.items() if k not in {"lex", "gr", "parts", "gloss"} and v}
 
-            # TODO what are these two?
-            #lex2 = ana.attrib["lex2"]
-            #trans_ru2 = ana.attrib["trans_ru2"]
+            if fixup_gloss:
+                gloss = fix_gloss(gloss, affixes)
 
             morphemes = gloss.split("-")
 
@@ -117,16 +209,14 @@ def main():
             else:
                 morphs = parts.split("-")
 
-            assert len(morphs) == len(morphemes), \
-                "The morph and morpheme lists don't match for line '{}'".format(line)
+            if len(morphs) != len(morphemes):
+                print("The morph '{}' and morpheme '{}' lists don't match for line '{}'".format(morphs, morphemes, line), file=sys.stderr)
+                continue
 
             morpho_tags = gr.split(",")
             pos = gr_to_upos(morpho_tags)
 
-            features = {
-                "morpho_tags": morpho_tags,
-                "trans_ru": trans_ru
-            }
+            features["morpho_tags"] = morpho_tags
 
             lexeme = lexicon.add_lexeme(form, lex, pos=pos, features=features)
 
@@ -135,13 +225,18 @@ def main():
             #  stems with an infix in between them. Detect infixes by
             #  counting stems and considering everything between them an
             #  infix.
-            nr_stems = sum(m == "STEM" for m in morphemes)
+            nr_stems = sum(re.search(r"(?:>|^)STEM(?:<|$)", m) is not None for m in morphemes)
             seen_stems = 0
             # Remember the span of the stem, which may be discontiguous
             #  due to the infixes.
             stem_morph_span = []
 
             for morph, morpheme in zip(morphs, morphemes):
+                if morph == "∅":
+                    # Zero morpheme, ignore it (unfortunately, we can't really express that).
+                    continue
+
+                assert end < len(form), "Morph '{}' out of bounds in form '{}' at line {}".format(morph, form, line)
                 if form[end] == "-" and not morph.startswith("-"):
                     # The word form starts with a dash, indicating its
                     #  affixal nature; or contains a dash, representing
@@ -150,7 +245,7 @@ def main():
                     #  first case). Skip it.
                     lexicon.add_contiguous_morpheme(
                         lexeme,
-                        "Uniparser UDM",
+                        annot_name,
                         end,
                         end + 1,
                         # FIXME the type should be different when it is
@@ -162,13 +257,58 @@ def main():
                 else:
                     start = end
 
+                if "<" in morpheme:
+                    # Infixation.
+                    infix_morphs, infix_spans, infix_features, length = parse_infixation(morph, morpheme)
+
+                    # Process the non-stem morphemes.
+                    for infix_morph, infix_span, infix_feature in zip(infix_morphs[:-1], infix_spans[:-1], infix_features[:-1]):
+                        lexicon.add_morpheme(
+                            lexeme,
+                            annot_name,
+                            [start + i for i in infix_span],
+                            features=infix_feature
+                        )
+
+                    # Record the stem for processing downstream.
+                    seen_stems += 1
+
+                    if args.multi_stem_infixation:
+                        stem_morph_span += [start + i for i in infix_spans[-1]]
+                    else:
+                        # Add the stem morpheme now; don't merge it with
+                        #  adjacent stems.
+                        lexicon.add_morpheme(
+                            lexeme,
+                            annot_name,
+                            [start + i for i in infix_spans[-1]],
+                            features={"type": "stem"}
+                        )
+
+                    end = start + length
+                    continue
+
+                # No infixation, this is really a single morpheme.
                 end = start + len(morph)
 
                 if morpheme == "STEM":
                     seen_stems += 1
-                    stem_morph_span += list(range(start, end))
-                    # We add the stem last, to account for discontiguous
-                    #  stems.
+
+                    if args.multi_stem_infixation:
+                        stem_morph_span += list(range(start, end))
+                        # We add the stem last, to account for discontiguous
+                        #  stems.
+                    else:
+                        # Add the stem morpheme now; don't merge it with
+                        #  adjacent stems.
+                        lexicon.add_contiguous_morpheme(
+                            lexeme,
+                            annot_name,
+                            start,
+                            end,
+                            features={"type": "stem"}
+                        )
+
                     continue
                 elif seen_stems == nr_stems:
                     morpheme_type = "suffix"
@@ -179,7 +319,7 @@ def main():
 
                 lexicon.add_contiguous_morpheme(
                     lexeme,
-                    "Uniparser UDM",
+                    annot_name,
                     start,
                     end,
                     features={"morpheme": morpheme, "type": morpheme_type}
@@ -189,11 +329,13 @@ def main():
                 # Add the (potentially discontiguous) stem morpheme.
                 lexicon.add_morpheme(
                     lexeme,
-                    "Uniparser UDM",
+                    annot_name,
                     stem_morph_span,
-                    features={"morpheme": "STEM", "type": "stem"}
+                    features={"type": "stem"}
                 )
-            else:
+            elif args.multi_stem_infixation:
+                # We were asked to combine multiple stem spans together,
+                #  but the span is empty.
                 assert nr_stems == 0
                 print("Stemless word form '{}' detected".format(form), file=sys.stderr)
 
@@ -202,7 +344,7 @@ def main():
                 #  Add it as a connector now.
                 lexicon.add_contiguous_morpheme(
                     lexeme,
-                    "Uniparser UDM",
+                    annot_name,
                     end,
                     end + 1,
                     # FIXME the type should be different when it is
@@ -218,4 +360,4 @@ def main():
     lexicon.save(sys.stdout)
 
 if __name__ == "__main__":
-    main()
+    main(parse_args())

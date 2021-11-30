@@ -16,7 +16,7 @@ download: # and unpack, if needed
 
 convert:
 	mkdir -p $(OUT_DIR)
-	./morphodict2useg.py $(IN_DIR)morphodictKE1985.txt $(OUT_DIR)MorphoDictKE.useg
+	./morphodict2useg.py $(IN_DIR)morphodictKE1985.txt $(OUT_DIR)MorphoDictKE.useg > $(OUT_DIR)conversion.log
 
 clean:
 	rm -rf $(IN_DIR)

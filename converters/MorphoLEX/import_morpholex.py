@@ -12,6 +12,7 @@ import re
 import sys
 
 from useg import SegLex
+from useg.infer_bounds import infer_bounds
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -23,7 +24,7 @@ def parse_args():
     parser.add_argument("--allomorphs", required=True, type=argparse.FileType("rt", encoding="utf-8", errors="strict"), help="A file to load allomorphy information from.")
     return parser.parse_args()
 
-def parse_segmentation(s):
+def parse_segmentation_eng(s):
     morphemes = []
     rest = s
 
@@ -60,7 +61,7 @@ def parse_segmentation(s):
 
             stem = rest[1:end]
             # TODO Somehow record stem information and return it.
-            morphemes.extend(parse_segmentation(stem))
+            morphemes.extend(parse_segmentation_eng(stem))
             rest = rest[end + 1:]
             continue
         else:
@@ -80,6 +81,48 @@ def parse_segmentation(s):
 
     return morphemes
 
+def parse_segmentation_fra(s):
+    # The French segmentation seems not to be recursive and has no stem
+    #  marks.
+    morphemes = []
+    rest = s
+
+    while rest:
+        if rest[0] == "<":
+            # Prefix.
+            t = "prefix"
+            end = rest.index("<", 1)
+        elif rest[0] == ">":
+            # Suffix.
+            t = "suffix"
+            end = rest.index(">", 1)
+        elif rest[0] == "(":
+            # Root.
+            t = "root"
+            # There may be parentheses inside, so we have to scan for
+            #  a matching paren.
+            paren_depth = 1
+            end = None
+            for i, char in enumerate(rest[1:], start=1):
+                if char == "(":
+                    paren_depth += 1
+                elif char == ")":
+                    paren_depth -= 1
+
+                if paren_depth == 0:
+                    end = i
+                    break
+            else:
+                raise ValueError("Unbalanced parentheses in '{}'".format(s))
+        else:
+            raise ValueError("Unparseable segmentation '{}'".format(s))
+
+        morpheme = rest[1:end]
+        morphemes.append((morpheme, t))
+        rest = rest[end + 1:]
+
+    return morphemes
+
 def load_allomorphs(f):
     m = {}
 
@@ -90,7 +133,7 @@ def load_allomorphs(f):
 
     return m
 
-def gen_morphs(allomorphs, morpheme):
+def gen_morphs_eng(allomorphs, morpheme):
     m, t = morpheme
 
     if m in allomorphs:
@@ -99,24 +142,11 @@ def gen_morphs(allomorphs, morpheme):
         morphs = [m]
 
     g_morphs = list(morphs)
-    # Iterate over the list in a weird way, because we need to change
-    #  it while iterating and have the new elements be visible in the
-    #  loop.
-    i = 0
-    while i < len(morphs):
-        morph = morphs[i]
-        i += 1
-
+    for morph in morphs:
         # All the tests below require nonempty morph string.
         if not morph:
             print("Warning: empty allomorph of morpheme '{}' detected.".format(m), file=sys.stderr)
             continue
-
-        if len(morph) >= 2 and morph[-1] == "e":
-            # Append to the source list, because e.g. "reassured" needs
-            #  both e-deletion and reduplication.
-            morphs.append(morph[:-1])
-            g_morphs.append(morph[:-1])
 
         if morph[0] in {"f", "m", "p", "s", "z"}:
             # Reduplication at the start.
@@ -147,6 +177,149 @@ def gen_morphs(allomorphs, morpheme):
 
     return (g_morphs, t)
 
+def gen_morphs_fra(allomorphs, morpheme):
+    m, t = morpheme
+
+    # Some French morphemes end in numerals. This seems to be an error.
+    #  Delete the numeral.
+    if re.search(r"\d$", m) is not None:
+        m = re.sub(r"\d*$", "", m)
+
+    if m in allomorphs:
+        morphs = list(allomorphs[m])
+    else:
+        morphs = [m]
+
+    g_morphs = []
+    # Iterate over the list in a weird way, because we need to change
+    #  it while iterating and have the new elements be visible in the
+    #  loop.
+    i = 0
+    while i < len(morphs):
+        morph = morphs[i]
+        i += 1
+
+        if "/" in morph:
+            if morph == "ant/ent":
+                morphs.append("ant")
+                morphs.append("ent")
+                continue
+
+            parts = morph.split("/")
+            assert len(parts) == 2, "More than two alternatives are not supported"
+            base, alt = parts
+            morphs.append(base)
+            for n in range(min(len(alt) + 1, len(base))):
+                # Try to delete up to n + 1 characters from the base
+                #  and replace them with the alternative suffix.
+                # Don't use base[:-n], because -0 == 0 == empty word.
+                remaining = len(base) - n
+                morphs.append(base[:remaining] + alt)
+
+            continue
+        else:
+            # The morpheme itself is one of the morphs.
+            g_morphs.append(morph)
+
+    return (g_morphs, t)
+
+def add_endings_eng(form, joined_segmentation, morphemes):
+    if form.endswith("ingly") and morphemes[-1][0][0] == "ly" and not joined_segmentation.endswith("ingly"):
+        morphemes = morphemes[:-1] + [(["ing"], "suffix")] + [morphemes[-1]]
+
+    if form.endswith("ings") and not joined_segmentation.endswith("ings"):
+        morphemes.append((["ing"], "suffix"))
+        morphemes.append((["s"], "suffix"))
+        return morphemes
+
+    if form[-3:] in {"ing", "n't", "'ll", "'re", "'ve"}:
+        s = form[-3:]
+        if not joined_segmentation.endswith(s):
+            morphemes.append(([s], "suffix"))
+        return morphemes
+
+    if form[-2:] in {"'s", "'d"}:
+        s = form[-2:]
+        if not joined_segmentation.endswith(s):
+            morphemes.append(([s], "suffix"))
+        return morphemes
+
+    if form[-2:] == "ed":
+        if joined_segmentation[-1] == "e":
+            morphemes.append((["ed", "d"], "suffix"))
+        elif not joined_segmentation.endswith("ed"):
+            morphemes.append((["ed"], "suffix"))
+        return morphemes
+
+    if form[-2:] == "id" and joined_segmentation[-1] == "y":
+        morphemes.append((["ed", "d"], "suffix"))
+        return morphemes
+
+    if form[-1] == "s" and joined_segmentation[-1] != "s":
+        if form[-2:] == "es" and joined_segmentation[-1] != "e":
+            morphemes.append((["s", "es"], "suffix"))
+        else:
+            morphemes.append((["s"], "suffix"))
+        return morphemes
+
+    return morphemes
+
+def convert_pos_eng(poses):
+    trans = {"VB": "VERB",
+             "NN": "NOUN",
+             "JJ": "ADJ",
+             "RB": "ADV"}
+
+    for pos_component in poses:
+        if pos_component in trans:
+            return trans[pos_component]
+
+    return "X"
+
+def record_morphemes(seg_lex, lex_id, annot_name, form, morphemes):
+    # First, generate all allomorph combinations to map.
+    # Generate the initial state.
+    parses = []
+    morphs, t = morphemes[0]
+    for morph in morphs:
+        # Record the initial parse.
+        parses.append([morph])
+
+    # Lengthen each combination, until we consume all morphemes.
+    for morphs, t in morphemes[1:]:
+        next_parses = []
+
+        for morph in morphs:
+            for parse in parses:
+                next_parses.append(parse + [morph])
+
+        parses = next_parses
+
+    # Map each combination to the form and select the best one.
+    best_cost = float("inf")
+    best_mapping = None
+    for parse in parses:
+        mapping, cost = infer_bounds(parse, form)
+        if cost < best_cost:
+            best_cost = cost
+            best_mapping = mapping
+
+    if best_mapping[0] != 0:
+        print("Ignored prefix '{}' of {}".format(form[:best_mapping[0]], form), file=sys.stderr)
+    if best_mapping[-1] != len(form):
+        print("Ignored suffix '{}' of {}".format(form[best_mapping[-1]:], form), file=sys.stderr)
+
+
+    for i, (morphs, t) in enumerate(morphemes):
+        start = best_mapping[i]
+        end = best_mapping[i + 1]
+        morpheme = morphs[0]
+
+        if start < end:
+            seg_lex.add_contiguous_morpheme(lex_id, annot_name, start, end, {"morpheme": morpheme, "type": t})
+        else:
+            print("Missed morpheme nr. {} '{}' in {}".format(i+1, morpheme, form), file=sys.stderr)
+
 def main(args):
     lexicon = SegLex()
     allomorphs = load_allomorphs(args.allomorphs)
@@ -155,9 +328,22 @@ def main(args):
     for sheet_name, sheet in sheets.items():
         match = re.fullmatch("[0-9]+-[0-9]+-[0-9]+", sheet_name)
         if match is not None:
+            if "Word" in sheet.columns:
+                lang = "eng"
+            elif "item" in sheet.columns:
+                lang = "fra"
+            else:
+                assert False, "Unknown language"
+
             for line_no, line in enumerate(sheet.itertuples(name="MorphoLEX")):
                 # Note: some words are in uppercase, for whatever reason.
-                form = line.Word
+                if lang == "eng":
+                    # The English data stores the word form in `Word`.
+                    form = line.Word
+                else:
+                    # The French data documents the form as being stored
+                    #  in `Word`, but it is actually in `item`.
+                    form = line.item
 
                 if not form:
                     print("No form found at sheet {}, line {}.".format(sheet_name, line_no), file=sys.stderr)
@@ -171,103 +357,45 @@ def main(args):
                 if len(lform) != len(form):
                     print("Word '{}' changes length when lowercasing; this will cause issues.".format(form), file=sys.stderr)
 
-                poses = set(line.POS.split("|"))
+                if lang == "eng":
+                    # The English data has parts of speech, with
+                    #  possibly multiple options per lexeme.
+                    orig_poses = line.POS.split("|")
+                    pos = convert_pos_eng(orig_poses)
 
-                if line.ELP_ItemID:
-                    features = {"elp_id": int(line.ELP_ItemID)}
+                    segmentation = line.MorphoLexSegm
+                    segmentation = parse_segmentation_eng(segmentation)
+                    morphemes = [gen_morphs_eng(allomorphs, morpheme) for morpheme in segmentation]
+
+                    if line.ELP_ItemID:
+                        # Some English lexemes have interlinked IDs,
+                        #  some don't.
+                        features = {"elp_id": int(line.ELP_ItemID),
+                                    "morpho_tags": orig_poses}
+                    else:
+                        features = {"morpho_tags": orig_poses}
                 else:
+                    # The French data has no POSes and the IDs are
+                    #  probably not interlinked with anything.
+                    pos = ""
+
+                    segmentation = line.canon_segm
+                    segmentation = parse_segmentation_fra(segmentation)
+                    morphemes = [gen_morphs_fra(allomorphs, morpheme) for morpheme in segmentation]
+
                     features = None
-                lex_id = lexicon.add_lexeme(form, form, line.POS, features)
 
-                segmentation = parse_segmentation(line.MorphoLexSegm)
-                morphemes = [gen_morphs(allomorphs, morpheme) for morpheme in segmentation]
 
-                # Generate the initial parses.
-                parses = []
-                morphs, t = morphemes[0]
-                for morph in morphs:
-                    if lform.startswith(morph):
-                        # Record the initial parse.
-                        parses.append(([(morph, t)], len(morph)))
 
-                # Try to lengthen each parse, until we consume all morphemes.
-                for morphs, t in morphemes[1:]:
-                    next_parses = []
 
-                    for morph in morphs:
-                        for parse, end in parses:
-                            start = end
 
-                            if lform.startswith(morph, start):
-                                # Success!
-                                # Record the successful potential parse in next_parses.
-                                next_parses.append((parse + [(morph, t)], start + len(morph)))
-                            else:
-                                # This parse failed, discard it.
-                                pass
+                lex_id = lexicon.add_lexeme(form, form, pos, features)
 
-                    parses = next_parses
+                joined_segmentation = "".join([m for m, t in segmentation])
+                if lang == "eng":
+                    morphemes = add_endings_eng(lform, joined_segmentation, morphemes)
 
-                if not parses:
-                    # Error, no possible parses found.
-                    # TODO
-                    print("Err-stem", form, " + ".join([m for m, t in segmentation]), sep="\t", end="\n", file=sys.stderr)
-                    continue
-
-                # If there are unconsumed chars left, they may be one of
-                #  the inflectional morphemes: {"s", "'s", "ed", "ing", "ings", "n't", "'d", "'ll", "'re", "'ve"}
-                final_parses = []
-                for parse, end in parses:
-                    if end == len(lform):
-                        final_parses.append(parse)
-                    elif end < len(lform):
-                        unmatched_suffix = lform[end:]
-
-                        if unmatched_suffix == "ings":
-                            parse.append(("ing", "suffix"))
-                            parse.append(("s", "suffix"))
-                            final_parses.append(parse)
-                        elif unmatched_suffix in {"s", "'s", "ed", "ing", "n't", "'d", "'ll", "'re", "'ve"}:
-                            parse.append((unmatched_suffix, "suffix"))
-                            final_parses.append(parse)
-                    else:
-                        raise Exception("We've parsed text longer than the form. ERROR!")
-
-                if not final_parses:
-                    # There were no possibilities. Try to add -es.
-                    #  This is done in a separate pass to avoid spurious
-                    #  ambiguity with word-final -e, which may be deleted.
-                    for parse, end in parses:
-                        assert end < len(lform)
-                        unmatched_suffix = lform[end:]
-
-                        if unmatched_suffix == "es":
-                            parse.append(("es", "suffix"))
-                            final_parses.append(parse)
-
-                if not final_parses:
-                    # Error, no possible parses found.
-                    # TODO
-                    print("Err-suffix", form, " + ".join([m for m, t in segmentation]), sep="\t", end="\n", file=sys.stderr)
-                    continue
-
-                #for i, parse in enumerate(final_parses):
-                    #print("OK-{}".format(i), form, " + ".join([morph for morph, t in parse]), sep="\t", end="\n")
-
-                parse = final_parses[0]
-                end = 0
-                for i in range(len(parse)):
-                    morph, t = parse[i]
-                    start = end
-                    end = start + len(morph)
-
-                    if i < len(segmentation):
-                        features = {"morpheme": segmentation[i][0],
-                                    "type": t}
-                    else:
-                        features = {"type": t}
-
-                    lexicon.add_contiguous_morpheme(lex_id, args.annot_name, start, end, features)
+                record_morphemes(lexicon, lex_id, args.annot_name, lform, morphemes)
 
                 # If NN, then it may end in plural "s" or "es".
                 # If VB, it may end in 3rd person present singular "s" or "es".
