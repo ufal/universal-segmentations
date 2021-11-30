@@ -148,38 +148,38 @@ def process_file(filename):
         segmented_lexeme_cnt,
         form_stats.type_count(),
         lemma_stats.type_count(),
-        pos_stats.type_count(),
+        #pos_stats.type_count(),
 
-        morph_stats.token_count(),
         morph_stats.type_count(),
-        root_stats.token_count(),
         root_stats.type_count(),
-        prefix_stats.token_count(),
         prefix_stats.type_count(),
-        suffix_stats.token_count(),
         suffix_stats.type_count(),
+        #morph_stats.token_count(),
+        #root_stats.token_count(),
+        #prefix_stats.token_count(),
+        #suffix_stats.token_count(),
 
-        form_stats.mean_length(),
+        #form_stats.mean_length(),
 
         morph_stats.token_count() / annot_cnt if annot_cnt > 0 else 0.0,
-        morph_stats.min_length(),
+        #morph_stats.min_length(),
         morph_stats.mean_length(),
-        morph_stats.max_length(),
+        #morph_stats.max_length(),
 
         root_stats.token_count() / annot_cnt if annot_cnt > 0 else 0.0,
-        root_stats.min_length(),
-        root_stats.mean_length(),
-        root_stats.max_length(),
+        #root_stats.min_length(),
+        #root_stats.mean_length(),
+        #root_stats.max_length(),
 
         prefix_stats.token_count() / annot_cnt if annot_cnt > 0 else 0.0,
-        prefix_stats.min_length(),
-        prefix_stats.mean_length(),
-        prefix_stats.max_length(),
+        #prefix_stats.min_length(),
+        #prefix_stats.mean_length(),
+        #prefix_stats.max_length(),
 
         suffix_stats.token_count() / annot_cnt if annot_cnt > 0 else 0.0,
-        suffix_stats.min_length(),
-        suffix_stats.mean_length(),
-        suffix_stats.max_length(),
+        #suffix_stats.min_length(),
+        #suffix_stats.mean_length(),
+        #suffix_stats.max_length(),
     )
 
 def prn_tsv(*args):
@@ -195,50 +195,54 @@ def get_prn(t):
         return prn_tex
 
 def main(args):
-    if args.printer == "tex":
-        print("\\begin{tabular}{lrrrrr|rrrrrrrr|r|rrrr|rrrr|rrrr|rrrr} \\toprule")
-        print(" & \\multicolumn{13}{c}{Counts} & Length & Count & \\multicolumn{3}{c}{Lengths} & Count & \\multicolumn{3}{c}{Lengths} & Count & \\multicolumn{3}{c}{Lengths} & Count & \\multicolumn{3}{c}{Lengths} \\\\")
     prn = get_prn(args.printer)
-    prn("Resource name",
-        "Lexemes",
-        "Segmented lexemes",
-        "Forms",
-        "Lemmas",
-        "POSes",
 
-        "Morph tokens",
-        "Morph types",
-        "Root tokens",
-        "Root types",
-        "Prefix tokens",
-        "Prefix types",
-        "Suffix tokens",
-        "Suffix types",
-
-        "Form avg.",
-
-        "Morphs per lexeme",
-        "Morph min",
-        "Morph avg.",
-        "Morph max",
-
-        "Roots per lexeme",
-        "Root min",
-        "Root avg.",
-        "Root max",
-
-        "Prefixes per lexeme",
-        "Prefix min",
-        "Prefix avg.",
-        "Prefix max",
-
-        "Suffixes per lexeme",
-        "Suffix min",
-        "Suffix avg.",
-        "Suffix max",
-    )
     if args.printer == "tex":
-        print("\midrule")
+        print(r"\begin{tabular}{lrrrrrrrr|rrrrr} \toprule")
+        print(r"              &         &              &          \multicolumn{6}{c}{Type counts}              & Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
+        print(r"Resource name & Lexemes & Seg. lexemes & Forms & Lemmas & Morphs & Roots & Prefixes & Suffixes & per lex & avg. len & lexeme & per lexeme & per lex \midrule \\")
+
+        #print("\\begin{tabular}{lrrrrr|rrrrrrrr|r|rrrr|rrrr|rrrr|rrrr} \\toprule")
+        #print(" & \\multicolumn{13}{c}{Counts} & Length & Count & \\multicolumn{3}{c}{Lengths} & Count & \\multicolumn{3}{c}{Lengths} & Count & \\multicolumn{3}{c}{Lengths} & Count & \\multicolumn{3}{c}{Lengths} \\\\")
+    else:
+        prn("Resource name",
+            "Lexemes",
+            "Segmented lexemes",
+            "Forms",
+            "Lemmas",
+            #"POSes",
+
+            "Morph types",
+            "Root types",
+            "Prefix types",
+            "Suffix types",
+            #"Morph tokens",
+            #"Root tokens",
+            #"Prefix tokens",
+            #"Suffix tokens",
+
+            #"Form avg.",
+
+            "Morphs per lexeme",
+            #"Morph min",
+            "Morph avg.",
+            #"Morph max",
+
+            "Roots per lexeme",
+            #"Root min",
+            #"Root avg.",
+            #"Root max",
+
+            "Prefixes per lexeme",
+            #"Prefix min",
+            #"Prefix avg.",
+            #"Prefix max",
+
+            "Suffixes per lexeme",
+            #"Suffix min",
+            #"Suffix avg.",
+            #"Suffix max",
+        )
 
     with multiprocessing.Pool(args.threads) as pool:
         for ret in pool.imap(process_file, args.seg_lex, 1):
