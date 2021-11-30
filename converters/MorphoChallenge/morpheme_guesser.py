@@ -22,29 +22,30 @@ def starts_with(txt, substr):
 #
 # Example:
 # find_combination(subword="arrived", candidates=[["arrive"], ["ed", "d"]])
-# output: ["arrive", "d"]
-def find_combination(subword, candidates):
+# output: [(0,"arrive"), (0,"d")] #0 means, that the morpheme was not artificially added, 1 means it was.
+
+def find_combination(subword, candidates, free_additions):
     if(len(candidates)==0):
         if(len(subword)==0):
             return []
         else:
             return None
-    elif(len(subword)!=0 and subword[0]=="-" and "-" not in candidates):
-        guess=find_combination(subword[1:],candidates)
-        if(guess is not None):
-            if(guess==[]):
-                return ["-"]
-            else:
-                return ["-"]+guess
+
+    #try addition of extra morphems
+    for potential_addition in free_additions:
+        len_=len(potential_addition)
+        if(subword[:len_]==potential_addition and (len(candidates)==0 or candidates[0]!=potential_addition)):
+            guess=find_combination(subword[len_:], candidates, free_additions)
+            if(guess is not None):
+                return [(1,potential_addition)]+guess
+
+    #try candidates
     for candidate in candidates[0]:
         idx=starts_with(subword, candidate)
         if(idx!=None):
-            guess=find_combination(subword[idx:],candidates[1:])
+            guess=find_combination(subword[idx:],candidates[1:], free_additions)
             if(guess is not None):
-                if(guess==[]):
-                    return [candidate]
-                else:
-                    return [candidate]+guess
+                return [(0,candidate)]+guess
     return None
 
 # this generates morph candidates for the approach described above, except for the fact
@@ -120,74 +121,80 @@ def get_filtered_candidates(candidates, uncertainty_level):
 #the occurance number currently only means that candidates with only 1 occurance are tried later.
 #
 #also: morphemes may be normal or virtual (start with +). We will not try to e.g. shorten the virtual morphemes.
-def guess_morphs(word, morphemes, morpheme2morph={}, virtual_morpheme2morph={}):
+LANG_GER="LANG_GER" #TODO: !!
+LANG_TUR="LANG_TUR"
+def guess_morphs(word, morphemes, morpheme2morph={}, virtual_morpheme2morph={}, language=None):
     candidates=generate_candidates(word, morphemes, morpheme2morph, virtual_morpheme2morph)
     morphs=None
+    free_additions=["-"," "] #characters/groups thereof, that can be freely added anywhere.
+    if(language==LANG_GER):
+        free_additions+=["ge"]
     for uncertainty_level in range(1,7+1):
         candidates2=get_filtered_candidates(candidates, uncertainty_level)
-        morphs=find_combination(word, candidates2)
+        morphs=find_combination(word, candidates2, free_additions)
         if(morphs is not None):
             break
+
     if(morphs is not None):
-         #sometimes, "-" morph is not in the list of morphemes, so we need to add it.
-        if(len(morphs)!=len(morphemes)):
-            #print(word,morphs,morphemes)
-            idx1=0
-            idx2=0
-            morphemes2=[]
-            while idx1<len(morphs):
-                if(morphs[idx1]=="-"):
-                    morphemes2.append("-")
-                else:
-                    morphemes2.append(morphemes[idx2])
-                    idx2+=1
-                idx1+=1
-            morphemes=morphemes2
+        post_processed_morphs=[]
+        post_processed_morphemes=[]
+        idx=0
+        for added, morph in morphs:
+            post_processed_morphs.append(morph)
+            if(added):
+                post_processed_morphemes.append(morph)
+            else:
+                post_processed_morphemes.append(morphemes[idx])
+                idx+=1
+        morphs=post_processed_morphs
+        morphemes=post_processed_morphemes
     return word, morphs,morphemes, uncertainty_level
 
 
 
 
-def create_morpheme2morph_mapping(data_new,data_old):
-  morpheme2morph=defaultdict(Counter)
-  virtual_morpheme2morph=defaultdict(Counter)
+def create_morpheme2morph_mapping(data_new,data_old, language):
+    morpheme2morph=defaultdict(Counter)
+    virtual_morpheme2morph=defaultdict(Counter)
 
-  for word, morphemes in data_new:
-    for morph, morpheme in morphemes:
-        morpheme=morpheme.replace("~","")
-        if(len(morpheme)!=0 and morpheme[0]=="+"):
-            virtual_morpheme2morph[morpheme].update([morph])
-        elif(morph!=morpheme):
-            morpheme2morph[morpheme].update([morph])
+    for word, morphemes in data_new:
+        for morph, morpheme in morphemes:
+            morpheme=morpheme.replace("~","")
+            if(len(morpheme)!=0 and morpheme[0]=="+"):
+                virtual_morpheme2morph[morpheme].update([morph])
+            elif(morph!=morpheme):
+                morpheme2morph[morpheme].update([morph])
 
+    if(language==LANG_GER):
+        virtual_morpheme2morph["+PAST"].update(["t","et"])
 
-  virtual_morpheme2morph["+PAST"].update(["t","et"])
-
-  for word,morphemes in data_old:
-    morphemes2=[]
-    for m in morphemes:
-        if(len(m)>1 and m[0]=="+"):
-            morphemes2.append(m.upper()) #todo: causes trouble with turkish where punctuation is represented by upper/lower-case
-        else:
-            morphemes2.append(m.lower())
-    if("@@" in word or "##" in word or "+" in word):
-        continue
-    diff=difftypes.difftype3(word,"".join(map(lambda x: x.replace("+","@@").replace("-","##"),morphemes2)))
-    if(len(diff)>=3): #e.g.: _-en+@@INF
-        if(diff[:2]=="_-" and "_" not in diff[2:] and "-" not in diff[2:]):
-            diff=diff[2:]
-            if("+" in diff):
-                diff=diff.split("+")
-                if(len(diff)==2):
-                    from_, to_ =diff
-                    to_=to_.replace("@@","+").replace("##","-")
-                    for i,x in enumerate(morphemes2):
-                        if(x==to_):
-                            to_=morphemes[i] #unuppercase
-                    tmp=to_.split("+")
-                    if(len(tmp)==2 and tmp[0]==""):
-                        if(len(to_)>=1 and to_[0]=="+"):
-                            virtual_morpheme2morph[to_].update([from_])
-                        else:
-                            morpheme2morph[to_].update([from_])
-  return morpheme2morph,virtual_morpheme2morph
+    for word,morphemes in data_old:
+        morphemes2=[]
+        for m in morphemes:
+            if(len(m)>1 and m[0]=="+"):
+                morphemes2.append(m.upper())
+            else:
+                #causes trouble with turkish where punctuation is represented by upper/lower-case
+                if(language!=LANG_TUR):
+                    morphemes2.append(m.lower())
+        if("@@" in word or "##" in word or "+" in word):
+            continue
+        diff=difftypes.difftype3(word,"".join(map(lambda x: x.replace("+","@@").replace("-","##"),morphemes2)))
+        if(len(diff)>=3): #e.g.: _-en+@@INF
+            if(diff[:2]=="_-" and "_" not in diff[2:] and "-" not in diff[2:]):
+                diff=diff[2:]
+                if("+" in diff):
+                    diff=diff.split("+")
+                    if(len(diff)==2):
+                        from_, to_ =diff
+                        to_=to_.replace("@@","+").replace("##","-")
+                        for i,x in enumerate(morphemes2):
+                            if(x==to_):
+                                to_=morphemes[i] #unuppercase
+                        tmp=to_.split("+")
+                        if(len(tmp)==2 and tmp[0]==""):
+                            if(len(to_)>=1 and to_[0]=="+"):
+                                virtual_morpheme2morph[to_].update([from_])
+                            else:
+                                morpheme2morph[to_].update([from_])
+    return morpheme2morph,virtual_morpheme2morph
