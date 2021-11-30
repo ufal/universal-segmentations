@@ -6,6 +6,7 @@ if __name__ == "__main__":
 
 import argparse
 from os import path
+import sys
 
 from useg import SegLex
 
@@ -82,7 +83,11 @@ def morph(form, morpheme):
 
 def process_file(filename):
     seg_lex = SegLex()
-    seg_lex.load(filename)
+    try:
+        seg_lex.load(filename)
+    except Exception as exc:
+        print("Cannot load file {}".format(filename), file=sys.stderr)
+        raise exc
 
     lexeme_cnt = 0
     segmented_lexeme_cnt = 0
