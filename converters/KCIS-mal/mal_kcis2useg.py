@@ -284,15 +284,22 @@ def get_lexeme_features(af, pos):
     '''Extracts and translates features from af'''
     features = dict()
     features["root"] = af[0]
-    if len(features)!=8:
+    if len(af)!=8:
         return features
     features["lcat"] = af[1]
     features["gender"] = af[2]
     features["number"] = af[3]
     features["person"] = af[4]
-    features["case"] = af[6]
-    features["person"] = af[7]
+    features["case"] = af[5]
+    if assign_upos(pos).startswith("N"):
+        features["case_marker"] = af[6]
+    if assign_upos(pos).startswith("V"):
+        features["tam_marker"] = af[6]
+
     features["AnnCorra_tag"] = pos
+
+    features = {k:v for k,v in features.items() if v!=""}
+
     return features
 
 
