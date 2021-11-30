@@ -135,6 +135,8 @@ def process_file(filename):
     if dirname:
         resource_name = dirname
 
+    annot_cnt = annot_stats.token_count()
+
     return (
         resource_name,
         lexeme_cnt,
@@ -154,22 +156,22 @@ def process_file(filename):
 
         form_stats.mean_length(),
 
-        morph_stats.token_count() / annot_stats.token_count(),
+        morph_stats.token_count() / annot_cnt if annot_cnt > 0 else 0.0,
         morph_stats.min_length(),
         morph_stats.mean_length(),
         morph_stats.max_length(),
 
-        root_stats.token_count() / annot_stats.token_count(),
+        root_stats.token_count() / annot_cnt if annot_cnt > 0 else 0.0,
         root_stats.min_length(),
         root_stats.mean_length(),
         root_stats.max_length(),
 
-        prefix_stats.token_count() / annot_stats.token_count(),
+        prefix_stats.token_count() / annot_cnt if annot_cnt > 0 else 0.0,
         prefix_stats.min_length(),
         prefix_stats.mean_length(),
         prefix_stats.max_length(),
 
-        suffix_stats.token_count() / annot_stats.token_count(),
+        suffix_stats.token_count() / annot_cnt if annot_cnt > 0 else 0.0,
         suffix_stats.min_length(),
         suffix_stats.mean_length(),
         suffix_stats.max_length(),
