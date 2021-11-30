@@ -124,7 +124,7 @@ def process_file(filename):
                 if "morpheme" in morpheme.features:
                     morpheme_stats.record(morpheme.features["morpheme"])
 
-                if "type" in morpheme.features and morpheme.features["type"] in morph_stats_types:
+                if "type" in morpheme.features and isinstance(morpheme.features["type"], str) and morpheme.features["type"] in morph_stats_types:
                     morph_stats_types[morpheme.features["type"]].record(morph_string)
 
         if is_segmented:
