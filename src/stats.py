@@ -17,6 +17,7 @@ def parse_args():
     )
     parser.add_argument("seg_lex", nargs='*', help="The USeg file(s) to compute statictics of")
     parser.add_argument("--printer", choices=("tex", "tsv"), default="tex", help="The format to use for printing")
+    parser.add_argument("--only", choices=("both", "left", "right"), default="both", help="Which parts of the table to print")
     parser.add_argument("--threads", type=int, default=1, help="The number of worker threads to run in parallel")
     return parser.parse_args()
 
@@ -198,55 +199,74 @@ def main(args):
     prn = get_prn(args.printer)
 
     if args.printer == "tex":
-        print(r"\begin{tabular}{lrrrrrrrr|rrrrr} \toprule")
-        print(r"              &         &              &          \multicolumn{6}{c}{Type counts}              & Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
-        print(r"Resource name & Lexemes & Seg. lexemes & Forms & Lemmas & Morphs & Roots & Prefixes & Suffixes & per lex & avg. len & lexeme & per lexeme & per lex \midrule \\")
-
-        #print("\\begin{tabular}{lrrrrr|rrrrrrrr|r|rrrr|rrrr|rrrr|rrrr} \\toprule")
-        #print(" & \\multicolumn{13}{c}{Counts} & Length & Count & \\multicolumn{3}{c}{Lengths} & Count & \\multicolumn{3}{c}{Lengths} & Count & \\multicolumn{3}{c}{Lengths} & Count & \\multicolumn{3}{c}{Lengths} \\\\")
+        if args.only == "both":
+            print(r"\begin{tabular}{lrrrrrrrr|rrrrr} \toprule")
+            print(r"              &         &              &          \multicolumn{6}{c}{Type counts}              & Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
+            print(r"Resource name & Lexemes & Seg. lexemes & Forms & Lemmas & Morphs & Roots & Prefixes & Suffixes & per lex & avg. len & lexeme & per lexeme & per lex \midrule \\")
+        elif args.only == "left":
+            print(r"\begin{tabular}{lrrrrrrrr} \toprule")
+            print(r"              &         &              &          \multicolumn{6}{c}{Type counts}              \\")
+            print(r"Resource name & Lexemes & Seg. lexemes & Forms & Lemmas & Morphs & Roots & Prefixes & Suffixes \midrule \\")
+        elif args.only == "right":
+            print(r"\begin{tabular}{rrrrr} \toprule")
+            print(r"Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
+            print(r"per lex & avg. len & lexeme & per lexeme & per lex \midrule \\")
     else:
-        prn("Resource name",
-            "Lexemes",
-            "Segmented lexemes",
-            "Forms",
-            "Lemmas",
-            #"POSes",
+        to_print = []
+        if args.only in {"left", "both"}:
+            to_print += [
+                "Resource name",
+                "Lexemes",
+                "Segmented lexemes",
+                "Forms",
+                "Lemmas",
+                #"POSes",
 
-            "Morph types",
-            "Root types",
-            "Prefix types",
-            "Suffix types",
-            #"Morph tokens",
-            #"Root tokens",
-            #"Prefix tokens",
-            #"Suffix tokens",
+                "Morph types",
+                "Root types",
+                "Prefix types",
+                "Suffix types",
+                #"Morph tokens",
+                #"Root tokens",
+                #"Prefix tokens",
+                #"Suffix tokens",
+            ]
+        if args.only in {"right", "both"}:
+            to_print += [
+                #"Form avg.",
 
-            #"Form avg.",
+                "Morphs per lexeme",
+                #"Morph min",
+                "Morph avg.",
+                #"Morph max",
 
-            "Morphs per lexeme",
-            #"Morph min",
-            "Morph avg.",
-            #"Morph max",
+                "Roots per lexeme",
+                #"Root min",
+                #"Root avg.",
+                #"Root max",
 
-            "Roots per lexeme",
-            #"Root min",
-            #"Root avg.",
-            #"Root max",
+                "Prefixes per lexeme",
+                #"Prefix min",
+                #"Prefix avg.",
+                #"Prefix max",
 
-            "Prefixes per lexeme",
-            #"Prefix min",
-            #"Prefix avg.",
-            #"Prefix max",
-
-            "Suffixes per lexeme",
-            #"Suffix min",
-            #"Suffix avg.",
-            #"Suffix max",
-        )
+                "Suffixes per lexeme",
+                #"Suffix min",
+                #"Suffix avg.",
+                #"Suffix max",
+            ]
+        prn(*to_print)
 
     with multiprocessing.Pool(args.threads) as pool:
         for ret in pool.imap(process_file, args.seg_lex, 1):
-            prn(*ret)
+            if args.only == "both":
+                prn(*ret)
+            elif args.only == "left":
+                prn(*ret[:9])
+            elif args.only == "right":
+                prn(*ret[9:])
+            else:
+                raise ValueError("Unknown `only` {}".format(args.only))
 
     if args.printer == "tex":
         print("\\bottomrule\n\\end{tabular}")
