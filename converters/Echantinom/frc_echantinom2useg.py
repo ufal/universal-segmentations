@@ -3,7 +3,7 @@
 import sys
 sys.path.append('../../src/')
 from useg import SegLex
-
+from collections import defaultdict
 
 import logging
 logging.basicConfig(filename="unsolved.log", level=logging.WARNING)
@@ -26,6 +26,11 @@ pos2upos = {"A":"ADJ", "ADV":"ADV",
             "V":"VERB", "V0":"VERB", "V12":"VERB", "V13":"VERB", "VINF":"VERB",
             "NUM":"NUM"}
 
+allomorphs = defaultdict(lambda: set())
+allomorphs["en"] = {"em"}
+allomorphs["re"] = {"r"}
+allomorphs["in"] = {"im"}
+
 start_line = True
 for line in infile:
     if start_line:
@@ -44,6 +49,7 @@ for line in infile:
     root = entries[13]
     root_pos = entries[14]
     suffix_allomorph = entries[17]
+
 
     upos = "NOUN"
 
@@ -66,28 +72,28 @@ for line in infile:
     start_of_stem = 0
     end_of_stem = len(lexeme)
     if prefix!="0":
-        #special case of en --> em before bilabial consonants
-        if lexeme[:len(prefix)] != prefix:
+
+        prefix_set = {prefix}.union(allomorphs[prefix])
+
+        for prefix in prefix_set:
+            if lexeme.startswith(prefix):
+                lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, len(prefix), features={"type":"prefix", "morpheme":prefix})
+                start_of_stem = len(prefix)
+
+        if start_of_stem == 0:
             logging.warning("Prefix %s not contained at the beginning of wordform %s", prefix, lexeme)
             lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"stem"})
             continue
 
-        if prefix not in lexeme:
-            logging.warning("Prefix %s not contained in the wordform %s", prefix, lexeme)
-            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"stem"})
-            continue
-
-        lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, len(prefix), features={"type":"prefix", "morpheme":prefix})
-        start_of_stem = len(prefix)
 
     if suffix!="0":
-        print(lexeme)
+        # print(lexeme)
         suff_features={"type":"suffix", "morpheme":suffix_morpheme}
         if suffix[-1]=="M" or suffix[-1]=="F":
-            print(suffix)
+            # print(suffix)
             suff_features["morpheme_gender"] = suffix[-1]
             suffix = suffix[:-1]
-            print(suffix)
+            # print(suffix)
 
         if lexeme[-len(suffix):] != suffix:
             logging.warning("Suffix %s not contained at the end of wordform %s", suffix, lexeme)
