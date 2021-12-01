@@ -5,6 +5,7 @@ DATADIR=../../data
 IN_DIR=$(DATADIR)/original/Uniparser
 # sqi and aii don't contain segmentation.
 # tru is different, don't parse it (at least for now).
+# ady does not contain the analyzed word list.
 LANGS=udm kpv mdf tgk mhr myv hye
 
 PYTHONPATH=../../src

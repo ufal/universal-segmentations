@@ -44,3 +44,13 @@ PREDIC
 PREP
 PRO
 V
+
+
+
+The Unimorph wordlist for mhr contains words with dashes that are hard to parse:
+The morph '['мастер-класс-влак']' and morpheme '['STEM', 'PL']' lists don't match for line '<w><ana lex="мастер-класс" gr="N,rus,nom,pl" parts="мастер-класс-влак" gloss="STEM-PL" trans_ru="мастер-класс"></ana>мастер-класс-влак</w>'
+	Actually, the analysis is fine, we would just have to somehow recognize that the мастер-класс is one morpheme and влак is another, despite the second dash being present in the form.
+
+
+The tgk data contains compounding with words such as "house" or "similar",
+but we get rid of it because we consider multiple stems to be infixation.

@@ -6,6 +6,7 @@ if __name__ == "__main__":
 
 import argparse
 from os import path
+import sys
 
 from useg import SegLex
 
@@ -16,6 +17,7 @@ def parse_args():
     )
     parser.add_argument("seg_lex", nargs='*', help="The USeg file(s) to compute statictics of")
     parser.add_argument("--printer", choices=("tex", "tsv"), default="tex", help="The format to use for printing")
+    parser.add_argument("--only", choices=("both", "left", "right"), default="both", help="Which parts of the table to print")
     parser.add_argument("--threads", type=int, default=1, help="The number of worker threads to run in parallel")
     return parser.parse_args()
 
@@ -82,7 +84,11 @@ def morph(form, morpheme):
 
 def process_file(filename):
     seg_lex = SegLex()
-    seg_lex.load(filename)
+    try:
+        seg_lex.load(filename)
+    except Exception as exc:
+        print("Cannot load file {}".format(filename), file=sys.stderr)
+        raise exc
 
     lexeme_cnt = 0
     segmented_lexeme_cnt = 0
@@ -124,7 +130,7 @@ def process_file(filename):
                 if "morpheme" in morpheme.features:
                     morpheme_stats.record(morpheme.features["morpheme"])
 
-                if "type" in morpheme.features and morpheme.features["type"] in morph_stats_types:
+                if "type" in morpheme.features and isinstance(morpheme.features["type"], str) and morpheme.features["type"] in morph_stats_types:
                     morph_stats_types[morpheme.features["type"]].record(morph_string)
 
         if is_segmented:
@@ -135,44 +141,46 @@ def process_file(filename):
     if dirname:
         resource_name = dirname
 
+    annot_cnt = annot_stats.token_count()
+
     return (
         resource_name,
         lexeme_cnt,
         segmented_lexeme_cnt,
         form_stats.type_count(),
         lemma_stats.type_count(),
-        pos_stats.type_count(),
+        #pos_stats.type_count(),
 
-        morph_stats.token_count(),
         morph_stats.type_count(),
-        root_stats.token_count(),
         root_stats.type_count(),
-        prefix_stats.token_count(),
         prefix_stats.type_count(),
-        suffix_stats.token_count(),
         suffix_stats.type_count(),
+        #morph_stats.token_count(),
+        #root_stats.token_count(),
+        #prefix_stats.token_count(),
+        #suffix_stats.token_count(),
 
-        form_stats.mean_length(),
+        #form_stats.mean_length(),
 
-        morph_stats.token_count() / annot_stats.token_count(),
-        morph_stats.min_length(),
+        morph_stats.token_count() / annot_cnt if annot_cnt > 0 else 0.0,
+        #morph_stats.min_length(),
         morph_stats.mean_length(),
-        morph_stats.max_length(),
+        #morph_stats.max_length(),
 
-        root_stats.token_count() / annot_stats.token_count(),
-        root_stats.min_length(),
-        root_stats.mean_length(),
-        root_stats.max_length(),
+        root_stats.token_count() / annot_cnt if annot_cnt > 0 else 0.0,
+        #root_stats.min_length(),
+        #root_stats.mean_length(),
+        #root_stats.max_length(),
 
-        prefix_stats.token_count() / annot_stats.token_count(),
-        prefix_stats.min_length(),
-        prefix_stats.mean_length(),
-        prefix_stats.max_length(),
+        prefix_stats.token_count() / annot_cnt if annot_cnt > 0 else 0.0,
+        #prefix_stats.min_length(),
+        #prefix_stats.mean_length(),
+        #prefix_stats.max_length(),
 
-        suffix_stats.token_count() / annot_stats.token_count(),
-        suffix_stats.min_length(),
-        suffix_stats.mean_length(),
-        suffix_stats.max_length(),
+        suffix_stats.token_count() / annot_cnt if annot_cnt > 0 else 0.0,
+        #suffix_stats.min_length(),
+        #suffix_stats.mean_length(),
+        #suffix_stats.max_length(),
     )
 
 def prn_tsv(*args):
@@ -188,54 +196,77 @@ def get_prn(t):
         return prn_tex
 
 def main(args):
-    if args.printer == "tex":
-        print("\\begin{tabular}{lrrrrr|rrrrrrrr|r|rrrr|rrrr|rrrr|rrrr} \\toprule")
-        print(" & \\multicolumn{13}{c}{Counts} & Length & Count & \\multicolumn{3}{c}{Lengths} & Count & \\multicolumn{3}{c}{Lengths} & Count & \\multicolumn{3}{c}{Lengths} & Count & \\multicolumn{3}{c}{Lengths} \\\\")
     prn = get_prn(args.printer)
-    prn("Resource name",
-        "Lexemes",
-        "Segmented lexemes",
-        "Forms",
-        "Lemmas",
-        "POSes",
 
-        "Morph tokens",
-        "Morph types",
-        "Root tokens",
-        "Root types",
-        "Prefix tokens",
-        "Prefix types",
-        "Suffix tokens",
-        "Suffix types",
-
-        "Form avg.",
-
-        "Morphs per lexeme",
-        "Morph min",
-        "Morph avg.",
-        "Morph max",
-
-        "Roots per lexeme",
-        "Root min",
-        "Root avg.",
-        "Root max",
-
-        "Prefixes per lexeme",
-        "Prefix min",
-        "Prefix avg.",
-        "Prefix max",
-
-        "Suffixes per lexeme",
-        "Suffix min",
-        "Suffix avg.",
-        "Suffix max",
-    )
     if args.printer == "tex":
-        print("\midrule")
+        if args.only == "both":
+            print(r"\begin{tabular}{lrrrrrrrr|rrrrr} \toprule")
+            print(r"              &         &              &          \multicolumn{6}{c}{Type counts}              & Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
+            print(r"Resource name & Lexemes & Seg. lexemes & Forms & Lemmas & Morphs & Roots & Prefixes & Suffixes & per lex & avg. len & lexeme & per lexeme & per lex \midrule \\")
+        elif args.only == "left":
+            print(r"\begin{tabular}{lrrrrrrrr} \toprule")
+            print(r"              &         &              &          \multicolumn{6}{c}{Type counts}              \\")
+            print(r"Resource name & Lexemes & Seg. lexemes & Forms & Lemmas & Morphs & Roots & Prefixes & Suffixes \midrule \\")
+        elif args.only == "right":
+            print(r"\begin{tabular}{rrrrr} \toprule")
+            print(r"Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
+            print(r"per lex & avg. len & lexeme & per lexeme & per lex \midrule \\")
+    else:
+        to_print = []
+        if args.only in {"left", "both"}:
+            to_print += [
+                "Resource name",
+                "Lexemes",
+                "Segmented lexemes",
+                "Forms",
+                "Lemmas",
+                #"POSes",
+
+                "Morph types",
+                "Root types",
+                "Prefix types",
+                "Suffix types",
+                #"Morph tokens",
+                #"Root tokens",
+                #"Prefix tokens",
+                #"Suffix tokens",
+            ]
+        if args.only in {"right", "both"}:
+            to_print += [
+                #"Form avg.",
+
+                "Morphs per lexeme",
+                #"Morph min",
+                "Morph avg.",
+                #"Morph max",
+
+                "Roots per lexeme",
+                #"Root min",
+                #"Root avg.",
+                #"Root max",
+
+                "Prefixes per lexeme",
+                #"Prefix min",
+                #"Prefix avg.",
+                #"Prefix max",
+
+                "Suffixes per lexeme",
+                #"Suffix min",
+                #"Suffix avg.",
+                #"Suffix max",
+            ]
+        prn(*to_print)
 
     with multiprocessing.Pool(args.threads) as pool:
         for ret in pool.imap(process_file, args.seg_lex, 1):
-            prn(*ret)
+            if args.only == "both":
+                prn(*ret)
+            elif args.only == "left":
+                prn(*ret[:9])
+            elif args.only == "right":
+                prn(*ret[9:])
+            else:
+                raise ValueError("Unknown `only` {}".format(args.only))
 
     if args.printer == "tex":
         print("\\bottomrule\n\\end{tabular}")
