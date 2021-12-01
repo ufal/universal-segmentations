@@ -66,7 +66,7 @@ def get_vowel_classes():
         description, letter = line.split("\t")[1], line.split("\t")[2]
         translit_letter = description.split(" ")[-2].lower()
 
-        if "VIRAMA" in description:
+        if "BAR VIRAMA" in description:
             viramas.add(letter)
             continue
 
@@ -115,23 +115,18 @@ def find_allomorphs(morpheme):
 
     #Remove viramas
     def remove_viramas(morpheme):
-        for cidx, c in enumerate(morpheme):
-            if c in viramas:
-                # print("here")
-                morpheme = morpheme[:cidx]+morpheme[cidx+1:]
-        return morpheme
-
+        return "".join([c for c in morpheme if c not in viramas])
 
     def switch_letters(morpheme, a, b):
     #Interchange a and b
         morpheme_s = morpheme
         for cidx, c in enumerate(morpheme):
             if c == a:
-                morpheme_s = morpheme_s[:cidx] + b + morpheme_s[cidx:]
+                morpheme_s = morpheme_s[:cidx] + b + morpheme_s[cidx+1:]
                 # yield morpheme_t
 
             if c == b:
-                morpheme_s = morpheme_s[:cidx] + a + morpheme_s[cidx:]
+                morpheme_s = morpheme_s[:cidx] + a + morpheme_s[cidx+1:]
                 # yield morpheme_t
         return morpheme_s
 
@@ -221,6 +216,7 @@ def choose_allomorph_boundaries(lexeme, morpheme, req_start = -1):
     best_boundary = dict()
 
     for morph in find_allomorphs(morpheme):
+
         morph_start, morph_end = find_morph_boundaries(lexeme, morph, req_start)
         if morph_start != -1:
             best_boundary[morph] = (morph_start, morph_end)
@@ -327,8 +323,8 @@ for line in infile:
     af = fs.strip("<>").split(" ")[1].split("=")[1].strip("''").split(",")
 
 
-    # if "അടിച്ചുപൊളിക്കുന്ന" not in lexeme:
-        # continue
+    if "അക്കാരണങ്ങളാല്" not in lexeme:
+        continue
 
     upos = assign_upos(pos)
     lemma = get_lemma(lexeme, pos, fs)
@@ -359,19 +355,19 @@ for line in infile:
 
         morph_start, morph_end = choose_allomorph_boundaries(lexeme_eq, morpheme, req_start = start)
 
-        # print(lexeme, "\tnormalized: ", lexeme_eq, "\tmorpheme: ", morpheme,"\tmorph_start, end: ", morph_start, morph_end, "\t", af)
-        # print(lexeme_eq[morph_start:morph_end], "\t",len(morpheme), len(lexeme_eq))
-        # print(morpheme_seq_eq,"\t", midx)
-        # # print(start_of_next_morpheme, end_of_next_morpheme)
-        #
-        # for i, c in enumerate(lexeme_eq):
-        #     print(c, ucd.name(c, "unknown"), i)
-        # print("\n")
-        # for c in morpheme:
-        #     print(c, ucd.name(c, "unknown"))
-        # print("\n")
-        #
-        # print("\n\n\n")
+        print(lexeme, "\tnormalized: ", lexeme_eq, "\tmorpheme: ", morpheme,"\tmorph_start, end: ", morph_start, morph_end, "\t", af)
+        print(lexeme_eq[morph_start:morph_end], "\t",len(morpheme), len(lexeme_eq))
+        print(morpheme_seq_eq,"\t", midx)
+        # print(start_of_next_morpheme, end_of_next_morpheme)
+
+        for i, c in enumerate(lexeme_eq):
+            print(c, ucd.name(c, "unknown"), i)
+        print("\n")
+        for c in morpheme:
+            print(c, ucd.name(c, "unknown"))
+        print("\n")
+
+        print("\n\n\n")
 
         if morph_start != -1 and morph_end != -1:
 
