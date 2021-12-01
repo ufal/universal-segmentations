@@ -25,8 +25,9 @@ def assign_upos(grace_tag):
     else:
         return grace2upos[grace_tag[0]]
 
-def get_lexeme_features(grace_tag, morph_process, annot_name):
+def get_lexeme_features(root, grace_tag, morph_process, annot_name):
     '''Builds features JSON for lexeme'''
+    features["root"] = root
 
     gender = {"f":"fem", "m":"masc", "-":"none"}
     number = {"s":"sg", "p":"pl", "-":"none"}
@@ -71,7 +72,7 @@ def get_lexeme_features(grace_tag, morph_process, annot_name):
 def add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root, annot_name):
     '''Adds lexeme to lexicon object'''
     upos = assign_upos(grace_tag)
-    features = get_lexeme_features(grace_tag, morph_process, annot_name)
+    features = get_lexeme_features(root, grace_tag, morph_process, annot_name)
 
     # for prev_lex_id in lexicon.iter_lexemes(form=lexeme, lemma=lexeme, pos=upos):
     #     return
@@ -82,18 +83,18 @@ def add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root, annot_na
 
     if root != "":
         assert suffix!=0
-        lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, len(root), features={"type":"stem"})
+        lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, len(root), features={"type":"root"})
         start_of_interfix = len(root)
 
     if suffix != "":
         stem = lexeme[:-len(suffix)]
         if lexeme[-len(suffix):]!=suffix: #TODO Handle allomorphy
             logging.warning("Suffix %s not contained at the end of wordform %s", suffix, lexeme)
-            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_interfix, end_of_interfix, features={"type":"stem"})
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_interfix, end_of_interfix, features={"type":"root"})
             return
         if suffix not in lexeme:
             logging.warning("Suffix %s not contained in wordform %s", suffix, lexeme)
-            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_interfix, end_of_interfix, features={"type":"stem"})
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_interfix, end_of_interfix, features={"type":"root"})
             return
         lexicon.add_contiguous_morpheme(lex_id, annot_name, len(stem), len(lexeme), features={"type":"suffix"})
         end_of_interfix = len(stem)
@@ -104,7 +105,7 @@ def add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root, annot_na
 
     elif start_of_interfix==0: #elif end_of_interfix != len(lexeme) (if we want to avoid adding whole word as stem)
         assert start_of_interfix != end_of_interfix
-        lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_interfix, end_of_interfix, features={"type":"stem"})
+        lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_interfix, end_of_interfix, features={"type":"root"})
 
 for line in infile:
     if line=="\n" or line==" ":
