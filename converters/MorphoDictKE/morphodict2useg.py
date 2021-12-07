@@ -60,7 +60,8 @@ with open(sys.argv[1], mode='r', encoding='U8') as infile:
                         lex_id=lexeme,
                         annot_name='?TODO?',
                         start=init_index,
-                        end=init_index + len(morph)
+                        end=init_index + len(morph),
+                        features={'type': 'suffix'}
                     )
                     else:
                         lexicon.add_contiguous_morpheme(
@@ -98,7 +99,8 @@ with open(sys.argv[1], mode='r', encoding='U8') as infile:
                         lex_id=lexeme,
                         annot_name='?TODO?',
                         start=init_index,
-                        end=init_index + len(morph)
+                        end=init_index + len(morph),
+                        features={'type': 'suffix'}
                     )
                     else:
                         lexicon.add_contiguous_morpheme(
@@ -113,9 +115,10 @@ with open(sys.argv[1], mode='r', encoding='U8') as infile:
                         lex_id=lexeme,
                         annot_name='?TODO?',
                         start=init_index,
-                        end=init_index + len(morph)
+                        end=init_index + len(morph),
+                        features={'type': 'interfix'}
                     )
-    
+
 
 with open(sys.argv[2], mode='w', encoding='U8') as outfile:
     lexicon.save(outfile)
