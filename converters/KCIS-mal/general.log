@@ -1,1 +1,19 @@
 Converting ../../data//original/KCIS/mal//simplified_ssf.txt to ../../data//converted/mal-KCIS/with_duplicates.useg
+Lexeme ആയി has af: ['', ''] without enough fields
+Lexeme ആയുര്‍ദൈര്‍ഘ്യത്തിനും has af: ['ആയുര്ദൈര്ഘ്യ', 'n', 'ne', 'sg', '3', 'd', 'ഉ്'] without enough fields
+Lexeme ഒറ്റ has af: ['ഒറ്റ', 'qtf', '', '', '', '', ''] without enough fields
+Lexeme കൂണുകളും has af: ['കൂണു', 'n', 'ne', 'pl', '3', 'd', 'കള്'] without enough fields
+Lexeme കൃപ has af: ['കൃപ', 'n', 'ne', 'sg', '3', '', 'd', '0', '0'] without enough fields
+Lexeme കൃഷിവകുപ്പിലൂടെ has af: ['കൃഷിവകുപ്പ്', 'n', 'ne', 'sg', '3', 'd', 'ഇല്ഊടെ'] without enough fields
+Lexeme കേരളീയര്‍ക്കും has af: ['കേരളീയന്', 'n', 'm', 'pl', '3', 'd', 'അര്ക്ക്'] without enough fields
+Lexeme ടൂറിസത്തിലൂടെ has af: ['ടൂറിസ', 'n', 'ne', 'sg', '3', 'd', 'ഇല്ഊടെ'] without enough fields
+Lexeme തന്നിലേക്ക് has af: ['തന്', 'pn', 'ne', 'sg', '3', 'd', ''] without enough fields
+Lexeme ദമന്‍'ദ്വീപും has af: ['ദമന്\u200d'] without enough fields
+Lexeme ധ്രിതിയില്‍ has af: ['ധ്രിതിയില്\u200d', 'adv', '', '', '', '', ''] without enough fields
+Lexeme നാലുചുറ്റും has af: ['നാലുചുറ്റും'] without enough fields
+Lexeme മുറ്റത്തില്‍ has af: ['മുറ്റത്തില്\u200d'] without enough fields
+Lexeme മുറ്റത്തില്‍ has af: ['മുറ്റത്തില്\u200d'] without enough fields
+Lexeme വിളവെടുപ്പും has af: ['വിളവെടുപ്പ്'] without enough fields
+Lexeme സസ്യങ്ങളും has af: ['സസ്യ', 'n', 'ne', 'pl', '3', 'd', 'കള്'] without enough fields
+Lexeme സ്ത്രീകളുടെയും has af: ['സ്ത്രീ', 'n', 'ne', 'pl', '3', 'd', 'കള്ഉടെ'] without enough fields
+Lexeme Alzheimer's has af: ['Alzheimer'] without enough fields

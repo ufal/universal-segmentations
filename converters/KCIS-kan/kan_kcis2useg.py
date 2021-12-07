@@ -257,7 +257,7 @@ for line in infile:
 
 
     # if lexeme != "ಆಕರ್ಷಿಸಿಸುತ್ತದೆ":
-    #     continue
+        # continue
 
     upos = assign_upos(pos)
     lemma = get_lemma(lexeme, pos, fs)

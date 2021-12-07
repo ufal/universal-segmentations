@@ -137,13 +137,16 @@ for line in infile:
     pos = entries[1].strip()
     fs = entries[2].strip()
 
+    if isascii(lexeme):
+        continue
+
     af = fs.strip("<>").split(" ")[1].split("=")[1].strip("''").split(",")
 
     upos = assign_upos(pos)
     lemma = get_lemma(lexeme, pos, fs)
     features = get_lexeme_features(af, pos)
 
-
+    lex_id = lexicon.add_lexeme(lexeme, lemma, upos, features=features)
 
     # if lexeme!= "হাতে":
     #     continue
@@ -154,8 +157,6 @@ for line in infile:
         continue
 
     if af[7] not in ["", "0"]:
-
-        lex_id = lexicon.add_lexeme(lexeme, lemma, upos, features=features)
 
         suffix = af[7]
         root = af[0]

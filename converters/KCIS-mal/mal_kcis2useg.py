@@ -323,8 +323,8 @@ for line in infile:
     af = fs.strip("<>").split(" ")[1].split("=")[1].strip("''").split(",")
 
 
-    if "അക്കാരണങ്ങളാല്" not in lexeme:
-        continue
+    # if "അക്കാരണങ്ങളാല്" not in lexeme:
+        # continue
 
     upos = assign_upos(pos)
     lemma = get_lemma(lexeme, pos, fs)
@@ -355,19 +355,19 @@ for line in infile:
 
         morph_start, morph_end = choose_allomorph_boundaries(lexeme_eq, morpheme, req_start = start)
 
-        print(lexeme, "\tnormalized: ", lexeme_eq, "\tmorpheme: ", morpheme,"\tmorph_start, end: ", morph_start, morph_end, "\t", af)
-        print(lexeme_eq[morph_start:morph_end], "\t",len(morpheme), len(lexeme_eq))
-        print(morpheme_seq_eq,"\t", midx)
-        # print(start_of_next_morpheme, end_of_next_morpheme)
-
-        for i, c in enumerate(lexeme_eq):
-            print(c, ucd.name(c, "unknown"), i)
-        print("\n")
-        for c in morpheme:
-            print(c, ucd.name(c, "unknown"))
-        print("\n")
-
-        print("\n\n\n")
+        # print(lexeme, "\tnormalized: ", lexeme_eq, "\tmorpheme: ", morpheme,"\tmorph_start, end: ", morph_start, morph_end, "\t", af)
+        # print(lexeme_eq[morph_start:morph_end], "\t",len(morpheme), len(lexeme_eq))
+        # print(morpheme_seq_eq,"\t", midx)
+        # # print(start_of_next_morpheme, end_of_next_morpheme)
+        #
+        # for i, c in enumerate(lexeme_eq):
+        #     print(c, ucd.name(c, "unknown"), i)
+        # print("\n")
+        # for c in morpheme:
+        #     print(c, ucd.name(c, "unknown"))
+        # print("\n")
+        #
+        # print("\n\n\n")
 
         if morph_start != -1 and morph_end != -1:
 
