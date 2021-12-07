@@ -2,8 +2,6 @@ Morph ri not found in lexeme autorassicurazione with entry 10512;AUTORASSICURAZI
 
 Morph ione not found in lexeme concussore with entry 21626;CONCUSSORE;CONCUSSO:root;ZIONE:ione:mt1:ms1;TORE:ore:mt6:ms1;;;;
 
-Morph ista contained in previous morph in lexeme defascistizzazione with entry 25278;DEFASCISTIZZAZIONE;FASCIO:root;ISMO:ismo:mt1:ms2a;ISTA:ista:mt6:ms1;IZZARE:izzare:mt1:ms1;1DE:de:mt1:ms1-G;ZIONE:zione:mt1:ms1-G;
-
 Morph ale contained in previous morph in lexeme federalismo with entry 31844;FEDERALISMO;BASELESS:unrec;ZIONE:zione:mt8:ms3a;ALE:ale:mt6:ms1-E;ISMO:ismo:mt1:ms1-E;;;
 
 Morph degaule not found in lexeme gollista with entry 36909;GOLLISTA;DEGAULE:root;ISTA:ista:mt1:ms1;;;;;
@@ -15,10 +13,6 @@ Morph ista contained in previous morph in lexeme protagonismo with entry 64941;P
 Morph ri not found in lexeme raffigurazione with entry 66255;RAFFIGURAZIONE;FIGURA:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms2b-P;CONVERSION:N_V-P;ZIONE:zione:mt1:ms1;;
 
 Morph ri not found in lexeme rafforzamento with entry 66263;RAFFORZAMENTO;FORZA:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;MENTO:mento:mt1:ms1;;
-
-Morph ri not found in lexeme raffreddamento with entry 66266;RAFFREDDAMENTO;FREDDO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;MENTO:mento:mt1:ms1;;
-
-Morph ri not found in lexeme raggruppamento with entry 66323;RAGGRUPPAMENTO;GRUPPO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;MENTO:mento:mt1:ms1;;
 
 Morph ri not found in lexeme ragguardevole with entry 66328;RAGGUARDEVOLE;GUARDARE:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms2b-P;EVOLE:evole:mt1:ms1-P;;;
 
@@ -70,8 +64,6 @@ Morph nemico contained in previous morph in lexeme inimicare with entry 42139;IN
 
 Morph ri not found in lexeme rabbonire with entry 66039;RABBONIRE;BUONO:suppl;RI:ri:mt7:ms1-P;ACons:ad:mt7:ms1-P;CONVERSION:A_V-P;;;
 
-Morph ri not found in lexeme rabbrividire with entry 66041;RABBRIVIDIRE;BRIVIDO:root;RI:ri:mt4:ms1-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
-
 Morph ri not found in lexeme rabbuiare with entry 66044;RABBUIARE;BUIO:root;RI:ri:mt4:ms1-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
 
 Morph ri not found in lexeme raccapezzare with entry 66056;RACCAPEZZARE;BASELESS:unrec;RI:ri:mt8:ms3a-P;ACons:ad:mt8:ms3a-P;;;;
@@ -86,17 +78,7 @@ Morph ri not found in lexeme raffigurare with entry 66254;RAFFIGURARE;FIGURA:roo
 
 Morph ri not found in lexeme rafforzare with entry 66264;RAFFORZARE;FORZA:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
 
-Morph ri not found in lexeme raffreddare with entry 66267;RAFFREDDARE;FREDDO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
-
 Morph ri not found in lexeme raggelare with entry 66298;RAGGELARE;GELO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
-
-Morph ri not found in lexeme raggranellare with entry 66316;RAGGRANELLARE;GRANO:root;ELLO:ello:mt1:ms1;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;
-
-Morph ri not found in lexeme raggrinzire with entry 66319;RAGGRINZIRE;GRINZA:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
-
-Morph ri not found in lexeme raggrumare with entry 66321;RAGGRUMARE;GRUMO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
-
-Morph ri not found in lexeme raggruppare with entry 66324;RAGGRUPPARE;GRUPPO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
 
 Morph ri not found in lexeme rallegrare with entry 66416;RALLEGRARE;ALLEGRO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
 
@@ -111,8 +93,6 @@ Morph ri not found in lexeme rasserenare with entry 66710;RASSERENARE;SERENO:roo
 Morph ri not found in lexeme rassicurare with entry 66714;RASSICURARE;SICURO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
 
 Morph ri not found in lexeme rassodare with entry 66719;RASSODARE;SODO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
-
-Morph ri not found in lexeme rattristare with entry 66762;RATTRISTARE;TRISTE:root;RI:ri:mt1:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
 
 Morph ri not found in lexeme ravvedere with entry 66799;RAVVEDERE;VEDERE:vrb_th;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms2b-P;;;;
 
