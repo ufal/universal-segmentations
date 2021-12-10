@@ -606,10 +606,6 @@ Morph ista overlaps with previous morpheme in lexeme psicopedagogista with entry
 
 Morph ista overlaps with previous morpheme in lexeme qualunquista with entry 65667;QUALUNQUISTA;QUALUNQUE:root;ISMO:ismo:mt1:ms1;ISTA:ista:mt6:ms1;;;;
 
-Morph freddo overlaps with previous morpheme in lexeme raffreddamento with entry 66266;RAFFREDDAMENTO;FREDDO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;MENTO:mento:mt1:ms1;;
-
-Morph gruppo overlaps with previous morpheme in lexeme raggruppamento with entry 66323;RAGGRUPPAMENTO;GRUPPO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;MENTO:mento:mt1:ms1;;
-
 Morph evole overlaps with previous morpheme in lexeme ragionevole with entry 66336;RAGIONEVOLE;RAGIONE:root;EVOLE:evole:mt1:ms1;;;;;
 
 Morph evole overlaps with previous morpheme in lexeme ragionevolezza with entry 66337;RAGIONEVOLEZZA;RAGIONE:root;EVOLE:evole:mt1:ms1;EZZA:ezza:mt1:ms1;;;;
@@ -649,8 +645,6 @@ Morph in overlaps with previous morpheme in lexeme rimboschimento with entry 685
 Morph ale overlaps with previous morpheme in lexeme rinaturalizzazione with entry 68659;RINATURALIZZAZIONE;NATURA:root;ALE:ale:mt1:ms1;IZZARE:izzare:mt1:ms1;RI:ri:mt1:ms1-G;ZIONE:zione:mt1:ms1-G;;
 
 Morph in overlaps with previous morpheme in lexeme ringiovanimento with entry 68716;RINGIOVANIMENTO;GIOVANE:root;2IN:in:mt1:ms1-P;CONVERSION:A_V-P;RI:ri:mt2:ms1-P;MENTO:mento:mt1:ms1;;
-
-Morph grazia overlaps with previous morpheme in lexeme ringraziamento with entry 68720;RINGRAZIAMENTO;GRAZIA:root;RI:ri:mt2:ms2a-P;2IN:in:mt1:ms2a-P;CONVERSION:N_V-P;MENTO:mento:mt1:ms1;;
 
 Morph in overlaps with previous morpheme in lexeme rinnegazione with entry 68725;RINNEGAZIONE;NEGARE:vrb_th;2IN:in:mt1:ms2b-P;RI:ri:mt2:ms2a-P;ZIONE:zione:mt1:ms1;;;
 
@@ -1102,25 +1096,9 @@ Morph nemico overlaps with previous morpheme in lexeme inimicare with entry 4213
 
 Morph oso overlaps with previous morpheme in lexeme innervosire with entry 42200;INNERVOSIRE;NERVO:root;OSO:oso:mt1:ms2a;2IN:in:mt1:ms1-P;CONVERSION:A_V-P;;;
 
-Morph brivido overlaps with previous morpheme in lexeme rabbrividire with entry 66041;RABBRIVIDIRE;BRIVIDO:root;RI:ri:mt4:ms1-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
-
-Morph dritto overlaps with previous morpheme in lexeme raddrizzare with entry 66125;RADDRIZZARE;DRITTO:root;IZZARE:izzare:mt5:ms1;RI:ri:mt4:ms2b-P;ACons:ad:mt1:ms1-P;;;
-
 Morph izzare overlaps with previous morpheme in lexeme raddrizzare with entry 66125;RADDRIZZARE;DRITTO:root;IZZARE:izzare:mt5:ms1;RI:ri:mt4:ms2b-P;ACons:ad:mt1:ms1-P;;;
 
-Morph freddo overlaps with previous morpheme in lexeme raffreddare with entry 66267;RAFFREDDARE;FREDDO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
-
-Morph grano overlaps with previous morpheme in lexeme raggranellare with entry 66316;RAGGRANELLARE;GRANO:root;ELLO:ello:mt1:ms1;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;
-
-Morph grinza overlaps with previous morpheme in lexeme raggrinzire with entry 66319;RAGGRINZIRE;GRINZA:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
-
-Morph grumo overlaps with previous morpheme in lexeme raggrumare with entry 66321;RAGGRUMARE;GRUMO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
-
-Morph gruppo overlaps with previous morpheme in lexeme raggruppare with entry 66324;RAGGRUPPARE;GRUPPO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:N_V-P;;;
-
 Morph allegro overlaps with previous morpheme in lexeme rallegrare with entry 66416;RALLEGRARE;ALLEGRO:root;RI:ri:mt4:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
-
-Morph triste overlaps with previous morpheme in lexeme rattristare with entry 66762;RATTRISTARE;TRISTE:root;RI:ri:mt1:ms2b-P;ACons:ad:mt2:ms1-P;CONVERSION:A_V-P;;;
 
 Morph in overlaps with previous morpheme in lexeme rimbalzare with entry 68564;RIMBALZARE;BALZARE:vrb_th;2IN:in:mt2:ms2b-P;RI:ri:mt2:ms1-P;;;;
 
@@ -1164,15 +1142,9 @@ Morph incontrare overlaps with previous morpheme in lexeme rincontrare with entr
 
 Morph in overlaps with previous morpheme in lexeme rinfoderare with entry 68690;RINFODERARE;FODERA:root;2IN:in:mt1:ms1;RI:ri:mt2:ms1;;;;
 
-Morph franco overlaps with previous morpheme in lexeme rinfrancare with entry 68698;RINFRANCARE;FRANCO:root;RI:ri:mt1:ms1-P;2IN:in:mt1:ms1-P;CONVERSION:N_V-P;;;
-
-Morph fresco overlaps with previous morpheme in lexeme rinfrescare with entry 68702;RINFRESCARE;FRESCO:root;RI:ri:mt2:ms1-P;2IN:in:mt1:ms1-P;CONVERSION:A_V-P;;;
-
 Morph in overlaps with previous morpheme in lexeme ringiovanire with entry 68717;RINGIOVANIRE;GIOVANE:root;2IN:in:mt1:ms1-P;CONVERSION:A_V-P;RI:ri:mt2:ms1-P;;;
 
 Morph in overlaps with previous morpheme in lexeme ringranare with entry 68719;RINGRANARE;BASELESS:unrec;2IN:in:mt8:ms3a;RI:ri:mt2:ms1;;;;
-
-Morph grazia overlaps with previous morpheme in lexeme ringraziare with entry 68721;RINGRAZIARE;GRAZIA:root;RI:ri:mt2:ms2a-P;2IN:in:mt1:ms2a-P;CONVERSION:N_V-P;;;
 
 Morph in overlaps with previous morpheme in lexeme rintracciare with entry 68745;RINTRACCIARE;TRACCIA:root;2IN:in:mt1:ms2b-P;CONVERSION:N_V-P;RI:ri:mt1:ms1-P;;;
 

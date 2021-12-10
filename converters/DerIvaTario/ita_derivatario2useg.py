@@ -199,11 +199,10 @@ allomorph_set = {
 "tora":{"tora","ora"},
 "ora":{"tora","ora"},
 "zione":{"zione","gione","ione","sion","sione"},
-"ione":{"zione","gione","ione","sion","sione"}
+"ione":{"zione","gione","ione","sion","sione"},
+"nza":{"nza"} #This is just because "NZA" is sometimes annotated with "object" as allomorph
 }
 
-
-# print(choose_allomorph_boundaries("iabedaismo", allomorph_set["ismo"], req_start=0, is_prefix=False))
 
 
 upos_assignment = initialize_all_upos()
@@ -216,7 +215,7 @@ for line in infile:
     root = entries[2].split(":")
 
 
-    # if lexeme!="ribassista".lower():
+    # if lexeme!="RACCAPEZZARE".lower():
         # continue
 
     if len(root) < 2:
@@ -268,7 +267,7 @@ for line in infile:
         # print("info_morpheme ", info_morphemes)
         # print("morpheme_seq ", morpheme_seq)
         # print("ordering ", ordering)
-        # # print("conv length ", conversion_lengths)
+        # print("conv length ", conversion_lengths)
 
         start = 0
         root_not_found = False
@@ -309,27 +308,33 @@ for line in infile:
                 root_not_found = True
                 continue
 
-            if is_root:
+            morpheme = info_morpheme.split(":")[0]
+            if morpheme in prefixes:
+                is_prefix = True
+
+            if is_root: #handing NZA:object annotation
                 allomorph = info_morpheme.split(":")[0]
             else:
                 allomorph = info_morpheme.split(":")[1]
 
-            morpheme = info_morpheme.split(":")[0]
-            if morpheme in prefixes:
-                is_prefix = True
 
             current_allomorph_set = {allomorph}
             if morpheme in allomorph_set:
                 current_allomorph_set = current_allomorph_set.union(allomorph_set[morpheme])
 
+            # HANDLING PRE-S/RI-S RE-ORDERING OF PREFIXES BY SIMPLE HEURISTIC
+            set_start = start
+            if allomorph in ["s", "ri"] and lexeme.startswith(allomorph[0]):
+                set_start = 0
+                #This works because there are no other prefixes that start with "s"
+                #Specifically, there are none that cause a prefix re-ordering ("ri", "pre")
+                #Since the prefix must be before the root, if we know that the prefix "s"
+                #exists in the word, and the first letter is "s", that must be the prefix.
+                #Similar argument for "ri"
 
-            morph_start, morph_end = choose_allomorph_boundaries(lexeme, current_allomorph_set, start, is_last, is_prefix)
+            morph_start, morph_end = choose_allomorph_boundaries(lexeme, current_allomorph_set, set_start, is_last, is_prefix)
 
-            # print("New field: ")
-            # print(info_morpheme)
-            # print("Search with start: ", start)
             # print(morpheme, allomorph, morph_start, morph_end)
-
             #POSSIBLE ISSUES
             if morph_start == -1:
                 if is_root:
@@ -352,6 +357,11 @@ for line in infile:
                     morph_end = morph_end+1
                     doubling = True
 
+
+            # print("New field: ")
+            # print(info_morpheme)
+            # print("Search with start: ", start)
+            # print("Final ", morpheme, allomorph, morph_start, morph_end)
             #ADD INTERFIX/STEM IF REQUIRED
             if morph_start > start:
                 if root_not_found:
@@ -395,7 +405,7 @@ for line in infile:
 
             lexicon.add_contiguous_morpheme(lex_id, annot_name, morph_start, morph_end, features)
 
-            # print(lexeme, start, end, allomorph)
+
             start = max(start, morph_end)
 
             #post_root only true if current morph was root, if not, it needs to be falsified
