@@ -5,7 +5,7 @@ import string
 import sys
 sys.path.append('../../src/')
 from useg import SegLex
-
+from collections import defaultdict
 
 import logging
 
@@ -28,6 +28,40 @@ if len(sys.argv) != 3:
     sys.stderr.write("Usage:\n  "+__file__+" Hindi-SSF-file.csv converted-file.useg\n\n")
 
 gen_issues.info(f"Converting {sys.argv[1]} to {sys.argv[2]}")
+
+def find_morph_boundaries(lexeme, morph, req_start = -1):
+    '''Finds morph boundaries'''
+
+    # if req_start==0:
+    #     return 0, longest_common_prefix(lexeme, morph)
+
+    for i in range(len(morph)):
+        # print(i)
+        # print(morph[:len(morph)-i])
+        # morph_start = lexeme.find(morph[:len(morph)-i])
+        shortened_morph = morph[:len(morph)-i]
+
+        best_start, best_end = -1, -1
+
+        for match in re.finditer(shortened_morph, lexeme):
+            current_start, current_end = -1, -1
+            morph_start, morph_end = match.start(), match.end()
+
+            allowed_interfix_len = len(lexeme)
+            if morph_start <= req_start + allowed_interfix_len:
+                current_start, current_end = morph_start, morph_end
+                #If more than 1 matches for same length, choose the one closest to req_start
+                if best_start == -1:
+                    best_start, best_end = current_start, current_end
+
+                if current_start != -1 and abs(current_start - req_start) < abs(best_start - req_start):
+                    best_start, best_end = current_start, current_end
+
+        if best_start != -1 and best_start != best_end:
+            return best_start, best_end
+
+    return -1,-1
+
 
 lexicon = SegLex()
 
@@ -131,6 +165,15 @@ def longest_common_prefix(s, t):
 annot_name = "kcis"
 infile = open(sys.argv[1])
 
+irregular = {"जा", "यह", "वह", "तुम"}
+
+allomorph_set = defaultdict(lambda: set())
+allomorphs = {"ए":{"े"},
+"एं":{"े"},
+"ओ":{"ो"},
+"को":{"से"}}
+allomorph_set.update(allomorphs)
+
 for line in infile:
     entries = line.strip().split("\t")
     wordform = entries[0].strip("'\"").strip()
@@ -163,29 +206,29 @@ for line in infile:
             lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, len(wordform)-len(suffixes[0])-len(suffixes[1]), features={"type":"root"})
             continue
         root = af[0]
-        root_length = longest_common_prefix(wordform, root)
-        if root_length==0:
-            seg_issues.warning("Root %s not in wordform %s ", root, wordform)
+        root_not_found = False
+        if root in irregular: #We will first find suffix
+            root_not_found = True
+            morph_end = 0
+        else:
+            morph_start, morph_end = find_morph_boundaries(wordform, root, req_start=0)
+            if morph_start == -1:
+                seg_issues.warning("Root %s not in wordform %s ", root, wordform)
+                continue
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, morph_start, morph_end, features={"type":"root"})
+
+        for allomorph in {suffixes[0]}.union(allomorph_set[suffixes[0]]):
+            morph_start, morph_end = find_morph_boundaries(wordform, allomorph, req_start = morph_end)
+            if morph_start != -1:
+                break
+        if morph_start == -1:
+            seg_issues.warning("Suffix %s not found in wordform %s ", suffixes[0], wordform)
             continue
-        lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, root_length, features={"type":"root"})
-        lexicon.add_contiguous_morpheme(lex_id, annot_name, root_length, len(wordform), features={"type":"suffix", "morpheme":suffixes[0]})
+        lexicon.add_contiguous_morpheme(lex_id, annot_name, morph_start, len(wordform), features={"type":"suffix", "morpheme":suffixes[0]})
 
+        if root_not_found:
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, morph_start, features={"type":"root", "morpheme":root, "irregular":True})
 
-        # end = len(wordform)
-        # # if len(suffixes)>1:
-        #     # suffixes = suffixes[:-1]
-        # for suffix in suffixes:
-        #     features = {"info":""}
-        #     start = len(wordform[:end]) - len(suffix)
-        #     if not wordform[:end].endswith(suffix):
-        #         seg_issues.warning("Suffix %s not at position %s, %s, of wordform %s, af: %s", suffix, start, end, wordform, af)
-        #         # print(wordform, suffix, af)
-        #         # print(start, end)
-        #         continue
-        #
-        #     lexicon.add_contiguous_morpheme(lex_id, annot_name, start, end, features)
-        #     end = start
-        # lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, end, features={"type":"root"})
 
 
 outfile = open(sys.argv[2], 'w')
