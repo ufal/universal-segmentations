@@ -18,6 +18,7 @@ convert:
 #	wc -l $(OUT_DIR)$/frc_demonette.useg
 	cat $(OUT_DIR)$/frc_demonette.useg | grep "derif" > $(OUT_DIR)$/frc_demonette.derif.useg
 	cat $(OUT_DIR)$/frc_demonette.useg | grep "demonette" > $(OUT_DIR)$/frc_demonette.demonette.useg
+	cat $(OUT_DIR)$/frc_demonette.useg | grep -v "demonette" | grep -v "derif" > $(OUT_DIR)$/frc_demonette.other.useg
 	rm $(OUT_DIR)$/with_duplicates.useg
 	rm $(OUT_DIR)$/frc_demonette.useg
 

@@ -3,7 +3,7 @@
 import sys
 sys.path.append('../../src/')
 from useg import SegLex
-
+from collections import defaultdict
 
 import logging
 logging.basicConfig(filename="unsolved.log", level=logging.WARNING)
@@ -27,6 +27,7 @@ def assign_upos(grace_tag):
 
 def get_lexeme_features(root, grace_tag, morph_process, annot_name):
     '''Builds features JSON for lexeme'''
+    features = {}
     features["root"] = root
 
     gender = {"f":"fem", "m":"masc", "-":"none"}
@@ -41,7 +42,7 @@ def get_lexeme_features(root, grace_tag, morph_process, annot_name):
     degree = {"p":"positive", "c":"comparative", "s":"superlative"}
 
     upos = assign_upos(grace_tag)
-    features = {}
+
     if upos=="NOUN" or upos=="PROPN":
         features["gender"] = gender[grace_tag[2]]
         features["number"] = number[grace_tag[3]]
@@ -67,28 +68,48 @@ def get_lexeme_features(root, grace_tag, morph_process, annot_name):
 
     return features
 
-
+allomorph_set = defaultdict(lambda: set())
+allomorph_known = {"aille" : {"ailles"},
+"ment":{"ments"},
+"aison":{"ison"},
+"erie":{"irie"},
+"if":{"ive"},
+"ure":{"ûre"}
+}
+allomorph_set.update(allomorph_known)
 
 def add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root, annot_name):
     '''Adds lexeme to lexicon object'''
+    # if lexeme!="bien-faire":
+        # return
     upos = assign_upos(grace_tag)
     features = get_lexeme_features(root, grace_tag, morph_process, annot_name)
 
     # for prev_lex_id in lexicon.iter_lexemes(form=lexeme, lemma=lexeme, pos=upos):
     #     return
     lex_id = lexicon.add_lexeme(lexeme, lexeme, upos, features=features)
+    # print(lex_id)
 
     start_of_interfix = 0
     end_of_interfix = len(lexeme)
 
-    if root != "":
-        assert suffix!=0
+    if "-" in lexeme:
+        prefix = lexeme.split("-")[0]
+        lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, len(prefix), features={"type":"prefix"})
+        lexicon.add_contiguous_morpheme(lex_id, annot_name, len(prefix), len(prefix)+1, features={"type":"hyphen"})
+
+    if root != "" and lexeme.startswith(root):
+        assert suffix not in ["0", ""]
         lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, len(root), features={"type":"root"})
         start_of_interfix = len(root)
 
-    if suffix != "":
+    if suffix not in ["0", ""]:
+        for allomorph in {suffix}.union(allomorph_set[suffix]):
+            if lexeme.endswith(allomorph):
+                suffix = allomorph
+                break
         stem = lexeme[:-len(suffix)]
-        if lexeme[-len(suffix):]!=suffix: #TODO Handle allomorphy
+        if lexeme[-len(suffix):]!=suffix:
             logging.warning("Suffix %s not contained at the end of wordform %s", suffix, lexeme)
             lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_interfix, end_of_interfix, features={"type":"root"})
             return
@@ -99,7 +120,7 @@ def add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root, annot_na
         lexicon.add_contiguous_morpheme(lex_id, annot_name, len(stem), len(lexeme), features={"type":"suffix"})
         end_of_interfix = len(stem)
 
-    if start_of_interfix != 0 and end_of_interfix != len(lexeme):
+    if start_of_interfix != 0 and end_of_interfix != len(lexeme): #we've found some root and suffix
         if start_of_interfix != end_of_interfix:
             lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_interfix, end_of_interfix, features={"type":"interfix"})
 
