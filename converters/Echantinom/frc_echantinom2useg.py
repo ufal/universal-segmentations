@@ -6,7 +6,7 @@ from useg import SegLex
 from collections import defaultdict
 
 import logging
-logging.basicConfig(filename="unsolved.log", level=logging.WARNING)
+logging.basicConfig(filename="unsolved.log", filemode = "w", level=logging.WARNING)
 
 if len(sys.argv) != 3:
     sys.stderr.write("Usage:\n  "+__file__+" French-Échantinom-file.csv converted-file.useg\n\n")
@@ -27,9 +27,19 @@ pos2upos = {"A":"ADJ", "ADV":"ADV",
             "NUM":"NUM"}
 
 allomorphs = defaultdict(lambda: set())
-allomorphs["en"] = {"em"}
-allomorphs["re"] = {"r"}
-allomorphs["in"] = {"im"}
+allomorphs_known = {"en":{"em"},
+"re": {"r"},
+"in": {"im", "il"},
+"vice":{"vic"},
+"iste":{"yste"},
+"erie":{"irie"},
+"sous": {"sou"},
+"ière":{"ère"},
+"entre":{"entr"},
+"ette":{"ettes"}
+}
+allomorphs.update(allomorphs_known)
+
 
 start_line = True
 for line in infile:
@@ -46,8 +56,8 @@ for line in infile:
     conversion_type = entries[10]
     suffix = entries[11]
     suffix_morpheme = entries[12]
-    root = entries[13]
-    root_pos = entries[14]
+    base = entries[13]
+    base_pos = entries[14]
     suffix_allomorph = entries[17]
 
 
@@ -61,11 +71,11 @@ for line in infile:
     if conversion_type!="0":
         features["conversion_from"] = pos2upos[conversion_type]
 
-    if root!="NA":
-        features["root"] = root
+    if base!="NA":
+        features["base"] = base
 
-    if root_pos!="NA":
-        features["root_pos"] = pos2upos[root_pos]
+    if base_pos!="NA":
+        features["base_pos"] = pos2upos[base_pos]
 
     lex_id = lexicon.add_lexeme(lexeme, lexeme, upos, features)
 
@@ -75,15 +85,15 @@ for line in infile:
 
         prefix_set = {prefix}.union(allomorphs[prefix])
 
-        for prefix in prefix_set:
-            if lexeme.startswith(prefix):
-                lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, len(prefix), features={"type":"prefix", "morpheme":prefix})
-                start_of_stem = len(prefix)
+        for pref in prefix_set:
+            if lexeme.startswith(pref):
+                lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, len(pref), features={"type":"prefix", "morpheme":prefix})
+                start_of_stem = len(pref)
 
         if start_of_stem == 0:
             logging.warning("Prefix %s not contained at the beginning of wordform %s", prefix, lexeme)
-            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"stem"})
-            continue
+            # lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"stem"})
+            # continue
 
 
     if suffix!="0":
@@ -94,37 +104,39 @@ for line in infile:
             suff_features["morpheme_gender"] = suffix[-1]
             suffix = suffix[:-1]
             # print(suffix)
-
-        if lexeme[-len(suffix):] != suffix:
-            logging.warning("Suffix %s not contained at the end of wordform %s", suffix, lexeme)
-            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"stem"})
-            continue
-
-        if suffix not in lexeme:
-            logging.warning("Suffix %s not contained in wordform %s", suffix, lexeme)
-            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"stem"})
-            continue
+        if suffix[-1]=="2":
+            suffix = suffix[:-1]
 
         if suffix_allomorph!="NA":
             suff_features["allomorph"] = suffix_allomorph
 
-        lexicon.add_contiguous_morpheme(lex_id, annot_name, len(lexeme)-len(suffix), len(lexeme), features=suff_features)
-        end_of_stem = len(lexeme)-len(suffix)
+
+        suffix_set = {suffix}.union(allomorphs[suffix])
+
+        for suff in suffix_set:
+            if lexeme.endswith(suff):
+                lexicon.add_contiguous_morpheme(lex_id, annot_name, len(lexeme)-len(suff), len(lexeme), features=suff_features)
+                end_of_stem = len(lexeme)-len(suff)
+
+
+        if end_of_stem == len(lexeme):
+            logging.warning("Suffix %s not contained at the end of wordform %s", suffix, lexeme)
+
 
     #Add processes for compounds
     if morph_process=="native_compound":
         if "-" in lexeme:
-            features1 = {"type":"stem1"}
-            features2 = {"type":"stem2"}
+            features1 = {"type":"root1"}
+            features2 = {"type":"root2"}
             if "-" in compound_type:
                 stems_tags = compound_type.split("-")
                 features1["upos"] = stems_tags[0]
                 features2["upos"] = stems_tags[1]
-            lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, lexeme.index("-"), features=features1)
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, lexeme.index("-"), features=features1)
             lexicon.add_contiguous_morpheme(lex_id, annot_name, lexeme.index("-"), lexeme.index("-")+1, features={"type":"hyphen"} )
-            lexicon.add_contiguous_morpheme(lex_id, annot_name, lexeme.index("-")+1, len(lexeme), features=features2)
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, lexeme.index("-")+1, end_of_stem, features=features2)
     else:
-        lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"stem"})
+        lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"root", "morpheme":base})
 
 outfile = open(sys.argv[2], 'w')
 lexicon.save(outfile)

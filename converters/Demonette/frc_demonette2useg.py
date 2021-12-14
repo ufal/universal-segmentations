@@ -6,7 +6,7 @@ from useg import SegLex
 from collections import defaultdict
 
 import logging
-logging.basicConfig(filename="unsolved.log", level=logging.WARNING)
+logging.basicConfig(filename="unsolved.log", filemode = "w", level=logging.WARNING)
 
 if len(sys.argv) != 3:
     sys.stderr.write("Usage:\n  "+__file__+" French-demonette-file.csv converted-file.useg\n\n")
@@ -18,7 +18,7 @@ lexicon = SegLex()
 infile = open(sys.argv[1])
 
 def assign_upos(grace_tag):
-    '''Finds UPOS tag corresponding to GRACE tag'''
+    '''Finds UPOS tag corresponding to GRACE tag based on first letter'''
     grace2upos = {"N":"NOUN", "V":"VERB", "A":"ADJ"}
     if grace_tag[:2]=="Np":
         return "PROPN"
@@ -68,6 +68,7 @@ def get_lexeme_features(root, grace_tag, morph_process, annot_name):
 
     return features
 
+# Building allomorph set based on observation of allomorphy occurence from corpus
 allomorph_set = defaultdict(lambda: set())
 allomorph_known = {"aille" : {"ailles"},
 "ment":{"ments"},
@@ -80,23 +81,27 @@ allomorph_set.update(allomorph_known)
 
 def add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root, annot_name):
     '''Adds lexeme to lexicon object'''
-    # if lexeme!="bien-faire":
-        # return
+
     upos = assign_upos(grace_tag)
     features = get_lexeme_features(root, grace_tag, morph_process, annot_name)
 
-    # for prev_lex_id in lexicon.iter_lexemes(form=lexeme, lemma=lexeme, pos=upos):
-    #     return
     lex_id = lexicon.add_lexeme(lexeme, lexeme, upos, features=features)
-    # print(lex_id)
 
+    # ASSUMPTION: There is at most one root and suffix. This is true for the Demonette dataset.
+    # In case there is some interfix, we will find its start and end boundary by shifting these two pointers
+    # forwards and backwards depending on the found root and suffix.
+    # We label anything between the root and suffix as an interfix.
     start_of_interfix = 0
     end_of_interfix = len(lexeme)
 
+    # Handling hyphenated words. There are only 5 such words in Demonette; of the structure <prefix>-<root>...
+    # We therefore label the first part as prefix.
+    # Hyphens are annotated as hyphen morphs
     if "-" in lexeme:
         prefix = lexeme.split("-")[0]
         lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, len(prefix), features={"type":"prefix"})
         lexicon.add_contiguous_morpheme(lex_id, annot_name, len(prefix), len(prefix)+1, features={"type":"hyphen"})
+
 
     if root != "" and lexeme.startswith(root):
         assert suffix not in ["0", ""]
@@ -113,10 +118,10 @@ def add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root, annot_na
             logging.warning("Suffix %s not contained at the end of wordform %s", suffix, lexeme)
             lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_interfix, end_of_interfix, features={"type":"root"})
             return
-        if suffix not in lexeme:
-            logging.warning("Suffix %s not contained in wordform %s", suffix, lexeme)
-            lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_interfix, end_of_interfix, features={"type":"root"})
-            return
+        # if suffix not in lexeme:
+        #     logging.warning("Suffix %s not contained in wordform %s", suffix, lexeme)
+        #     lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_interfix, end_of_interfix, features={"type":"root"})
+        #     return
         lexicon.add_contiguous_morpheme(lex_id, annot_name, len(stem), len(lexeme), features={"type":"suffix"})
         end_of_interfix = len(stem)
 
