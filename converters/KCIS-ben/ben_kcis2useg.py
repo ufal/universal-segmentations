@@ -30,6 +30,43 @@ gen_issues.info(f"Converting {sys.argv[1]} to {sys.argv[2]}")
 
 lexicon = SegLex()
 
+def find_morph_boundaries(lexeme, morph, req_start = -1):
+    '''Finds morph boundaries'''
+
+    # if req_start==0:
+    #     return 0, longest_common_prefix(lexeme, morph)
+
+    for i in range(len(morph)):
+        # print(i)
+        # print(morph[:len(morph)-i])
+        # morph_start = lexeme.find(morph[:len(morph)-i])
+        # shortened_morph = morph[:len(morph)-i]
+        shortened_morph = morph[i:]
+
+        best_start, best_end = -1, -1
+
+        for match in re.finditer(shortened_morph, lexeme):
+            current_start, current_end = -1, -1
+            morph_start, morph_end = match.start(), match.end()
+
+            allowed_interfix_len = len(lexeme)
+            if morph_start <= req_start + allowed_interfix_len:
+                current_start, current_end = morph_start, morph_end
+                #If more than 1 matches for same length, choose the one closest to req_start
+                if best_start == -1:
+                    best_start, best_end = current_start, current_end
+
+                if current_start != -1 and abs(current_start - req_start) < abs(best_start - req_start):
+                    best_start, best_end = current_start, current_end
+
+        if best_start != -1 and best_start != best_end:
+            return best_start, best_end
+
+    return -1,-1
+
+
+
+
 def isascii(str):
     '''Returns True if English'''
     alphabet = list(string.ascii_lowercase)
@@ -80,7 +117,7 @@ def assign_upos(pos):
 
 def get_lemma(wordform, pos, fs):
     '''Returns lemma'''
-    return wordform
+    return "UNK"
 
 def get_lexeme_features(af, pos):
     '''Extracts and translates features from af'''
@@ -137,7 +174,13 @@ for line in infile:
     pos = entries[1].strip()
     fs = entries[2].strip()
 
+    if re.match("\d",lexeme):
+        continue
     if isascii(lexeme):
+        continue
+    if len(lexeme)<2:
+        continue
+    if "af" not in fs:
         continue
 
     af = fs.strip("<>").split(" ")[1].split("=")[1].strip("''").split(",")
@@ -161,31 +204,32 @@ for line in infile:
         suffix = af[7]
         root = af[0]
 
-        s_len = longest_common_prefix(lexeme[::-1], suffix[::-1])
-
-        # print(lexeme, suffix, af)
-        # for c in lexeme:
-        #     print(c, ucd.name(c))
-        # print("\n\n")
-        # for c in suffix:
-        #     print(c, ucd.name(c))
+        # s_len = longest_common_prefix(lexeme[::-1], suffix[::-1])
         #
-        # print("LCP ", s_len)
+        # if s_len != 0:
+        #     start = len(lexeme) - s_len
+        #     assert lexeme[-s_len:] == suffix[-s_len:]
+        #     features = {"type":"suffix"}
+        #     lexicon.add_contiguous_morpheme(lex_id, annot_name, start, len(lexeme), features)
+        #
+        #     features = {"type":"root"}
+        #     lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, start, features)
+        # else:
+        #     seg_issues.warning("Suffix %s not at end of wordform %s, af: %s", suffix, lexeme, af)
 
-        if s_len != 0:
-            start = len(lexeme) - s_len
-            assert lexeme[-s_len:] == suffix[-s_len:]
+        morph_start, morph_end = find_morph_boundaries(lexeme, suffix, req_start=len(lexeme))
+
+        if morph_start != -1:
+            # start = len(lexeme) - s_len
+            # assert lexeme[-s_len:] == suffix[-s_len:]
             features = {"type":"suffix"}
-            lexicon.add_contiguous_morpheme(lex_id, annot_name, start, len(lexeme), features)
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, morph_start, morph_end, features)
 
             features = {"type":"root"}
-            lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, start, features)
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, morph_start, features)
         else:
             seg_issues.warning("Suffix %s not at end of wordform %s, af: %s", suffix, lexeme, af)
-            # if suffix in allomorph_sets:
-            #     for allomorph in allomorph_sets[suffix]:
-            #         if wordform[:end].endswith(allomorph):
-            #             morph = allomorph
+
 
 outfile = open(sys.argv[2], 'w')
 lexicon.save(outfile)

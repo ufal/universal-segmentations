@@ -115,7 +115,7 @@ def isascii(str):
 
 def get_lemma(wordform, pos, fs):
     '''Returns lemma'''
-    return wordform
+    return "UNK"
 
 def get_lexeme_features(af, pos):
     '''Extracts and translates features from af'''
@@ -177,6 +177,15 @@ allomorph_set.update(allomorphs)
 for line in infile:
     entries = line.strip().split("\t")
     wordform = entries[0].strip("'\"").strip()
+    if re.match("\d",wordform):
+        continue
+    if isascii(wordform):
+        continue
+    if len(wordform)==0:
+        continue
+    if "af" not in fs:
+        continue
+
     pos = entries[1].strip()
     fs = entries[2].strip()
 
