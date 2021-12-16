@@ -364,6 +364,11 @@ for line in infile:
             # print("Final ", morpheme, allomorph, morph_start, morph_end)
             #ADD INTERFIX/STEM IF REQUIRED
             if morph_start > start:
+                if lexeme[start]=="-":
+                    lexicon.add_contiguous_morpheme(lex_id, annot_name, start, start+1, features={"type":"hyphen"})
+                    start += 1
+
+            if morph_start > start:
                 if root_not_found:
                     #ADD WARNING HERE?
                     features = {"type":"root", "ordering":0}

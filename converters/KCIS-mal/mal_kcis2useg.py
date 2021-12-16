@@ -32,6 +32,14 @@ gen_issues.info(f"Converting {sys.argv[1]} to {sys.argv[2]}")
 
 lexicon = SegLex()
 
+def isascii(str):
+    '''Returns True if English'''
+    alphabet = list(string.ascii_lowercase)
+    for l in alphabet:
+        if l in str:
+            return True
+    return False
+
 def get_char_equivalences():
     '''Equivalence classes for vowels'''
     letter_file = open("mal_characters.txt", "r")
@@ -140,31 +148,40 @@ def find_allomorphs(morpheme):
     yield m_rv
     yield remove_start_vowel(m_rv)
 
-    m_twr = switch_letters(morpheme, "ട", "റ") #TTA, RRA
-    yield m_twr
-    yield remove_start_vowel(m_twr)
-    yield remove_viramas(m_twr)
+    switch_pairs = {("ട", "റ"), ( "ര", "റ"), ("ത", "ട"), ("ര", "റ"), ("ക", "ങ")}
+    #(TTA, RRA), (TA, RRA), (TA, TTA), (RA, RRA), (KA, NGA)
 
-    m_twr = switch_letters(morpheme, "ര", "റ") #TA, RRA
-    yield m_twr
-    yield remove_start_vowel(m_twr)
-    yield remove_viramas(m_twr)
+    for s_pair in switch_pairs:
+        m_s = switch_letters(morpheme, s_pair[0], s_pair[1])
+        yield m_s
+        yield remove_start_vowel(m_s)
+        yield remove_viramas(m_s)
 
-    m_twt = switch_letters(morpheme, "ത", "ട") #TA, TTA
-    yield m_twt
-    yield remove_start_vowel(m_twt)
-    yield remove_viramas(m_twt)
-
-    m_rwr = switch_letters(morpheme, "ര", "റ") #RA, RRA
-    yield m_rwr
-    yield remove_start_vowel(m_rwr)
-    yield remove_viramas(m_rwr)
-
-
-    m_kwn = switch_letters(morpheme, "ക", "ങ") #KA, NGA
-    yield m_kwn
-    yield remove_start_vowel(m_kwn)
-    yield remove_viramas(m_kwn)
+    # m_twr = switch_letters(morpheme, "ട", "റ") #TTA, RRA
+    # yield m_twr
+    # yield remove_start_vowel(m_twr)
+    # yield remove_viramas(m_twr)
+    #
+    # m_twr = switch_letters(morpheme, "ര", "റ") #TA, RRA
+    # yield m_twr
+    # yield remove_start_vowel(m_twr)
+    # yield remove_viramas(m_twr)
+    #
+    # m_twt = switch_letters(morpheme, "ത", "ട") #TA, TTA
+    # yield m_twt
+    # yield remove_start_vowel(m_twt)
+    # yield remove_viramas(m_twt)
+    #
+    # m_rwr = switch_letters(morpheme, "ര", "റ") #RA, RRA
+    # yield m_rwr
+    # yield remove_start_vowel(m_rwr)
+    # yield remove_viramas(m_rwr)
+    #
+    #
+    # m_kwn = switch_letters(morpheme, "ക", "ങ") #KA, NGA
+    # yield m_kwn
+    # yield remove_start_vowel(m_kwn)
+    # yield remove_viramas(m_kwn)
 
 
 
@@ -274,7 +291,7 @@ def assign_upos(pos):
 
 def get_lemma(lexeme, pos, fs):
     '''Returns lemma'''
-    return lexeme
+    return "UNK"
 
 def get_lexeme_features(af, pos):
     '''Extracts and translates features from af'''
@@ -312,14 +329,16 @@ for line in infile:
     lexeme = entries[0].strip("'\"").strip()
     if re.match("\d",lexeme):
         continue
-
-    pos = entries[1].strip()
-    fs = entries[2].strip()
-
+    if isascii(lexeme):
+        continue
     if len(lexeme)==0:
         continue
     if "af" not in fs:
         continue
+
+    pos = entries[1].strip()
+    fs = entries[2].strip()
+
     af = fs.strip("<>").split(" ")[1].split("=")[1].strip("''").split(",")
 
 

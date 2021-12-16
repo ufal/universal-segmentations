@@ -81,7 +81,7 @@ def assign_upos(pos):
 
 def get_lemma(wordform, pos, fs):
     '''Returns lemma'''
-    return wordform
+    return "UNK"
 
 def get_lexeme_features(af, pos):
     '''Extracts and translates features from af'''
@@ -125,13 +125,19 @@ infile = open(sys.argv[1])
 
 allomorph_eq_sets = [{"चा", "ची", "चे", "चं", "च", "च्या"},
 {"ला", "ली", "ले", "लं", "ल", "ल्या"},
-{"ता", "ती", "ते", "तं", "त्या", "तात" }]
+{"ता","तो", "ती", "ते", "तं", "त्या", "तात" }]
 
 allomorph_sets = {morph:morph_set for morph_set in allomorph_eq_sets for morph in morph_set}
 
 for line in infile:
     entries = line.strip().split("\t")
     wordform = entries[0].strip("'\"").strip()
+    if re.match("\d",wordform):
+        continue
+    if isascii(wordform):
+        continue
+    if len(wordform)==0:
+        continue
     pos = entries[1].strip()
     fs = entries[2].strip()
 
@@ -151,6 +157,9 @@ for line in infile:
         gen_issues.warning("Wordform %s has af: %s without enough fields", wordform, af)
         continue
 
+    if af[7]=="3": #Odd annotating anomaly
+        continue
+
     if af[7] != "" and isascii(af[7])==False:
         suffixes = af[7].split("_")
         suffixes.reverse()
@@ -159,6 +168,8 @@ for line in infile:
         # print(suffixes)
 
         for suffix in suffixes:
+            if suffix in ["", " "]:
+                continue
 
             morph = ""
 
@@ -171,11 +182,16 @@ for line in infile:
                             morph = allomorph
 
 
-            if morph == "" and morph != suffix:
-                seg_issues.warning("Suffix %s not at end position %s, of wordform %s, af: %s", suffix, end, wordform, af)
-                continue
-                print(wordform, suffix, af)
-                print(start, end)
+            if morph == "":
+                for suff in {suffix}.union(allomorph_sets.get(suffix, set())):
+                    match = re.search(suff, wordform)
+                    if match:
+                        start, end = match.start(), match.end()
+                        morph = suff
+                        break
+                if morph == "":
+                    seg_issues.warning("Suffix %s not at end position %s, of wordform %s, af: %s", suffix, end, wordform, af)
+                    continue
 
 
             start = len(wordform[:end]) - len(morph)

@@ -32,6 +32,15 @@ gen_issues.info(f"Converting {sys.argv[1]} to {sys.argv[2]}")
 
 lexicon = SegLex()
 
+def isascii(str):
+    '''Returns True if English'''
+    alphabet = list(string.ascii_lowercase)
+    for l in alphabet:
+        if l in str:
+            return True
+    return False
+
+
 def get_char_equivalences():
     '''Equivalence classes for vowels'''
     letter_file = open("kan_characters.txt", "r")
@@ -213,7 +222,7 @@ def assign_upos(pos):
 
 def get_lemma(lexeme, pos, fs):
     '''Returns lemma'''
-    return lexeme
+    return "UNK"
 
 def get_lexeme_features(af, pos):
     '''Extracts and translates features from af'''
@@ -245,14 +254,17 @@ for line in infile:
     lexeme = entries[0].strip("'\"").strip()
     if re.match("\d",lexeme):
         continue
-
-    pos = entries[1].strip()
-    fs = entries[2].strip()
-
+    if isascii(lexeme):
+        continue
     if len(lexeme)==0:
         continue
     if "af" not in fs:
         continue
+
+    pos = entries[1].strip()
+    fs = entries[2].strip()
+
+
     af = fs.strip("<>").split(" ")[1].split("=")[1].strip("''").split(",")
 
 
@@ -287,7 +299,7 @@ for line in infile:
             continue
 
         morph_start, morph_end = choose_allomorph_boundaries(lexeme_eq, morpheme, req_start = start)
-        #Reassign for special morph
+        #Reassign for special morph "a"
         if morpheme=="ಅ":
             morph_start, morph_end = start - 1, start
 
