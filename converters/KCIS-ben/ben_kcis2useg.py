@@ -6,6 +6,7 @@ import sys
 sys.path.append('../../src/')
 from useg import SegLex
 import unicodedata as ucd
+from collections import defaultdict
 
 import logging
 
@@ -30,6 +31,71 @@ gen_issues.info(f"Converting {sys.argv[1]} to {sys.argv[2]}")
 
 lexicon = SegLex()
 
+def get_char_equivalences():
+    '''Equivalence classes for vowels'''
+    letter_file = open("ben_characters.txt", "r")
+    eq2letter = defaultdict(lambda: [])
+    for line in letter_file:
+        description, letter = line.split("\t")[1], line.split("\t")[2]
+        eq2letter[description.split(" ")[-2]].append(letter)
+
+    # print("FIRST \n", eq2letter, "\n\n\n")
+    del eq2letter["MARK"]
+    # del eq2letter["CANDRABINDU"]
+    eq2letter = {v[0]:v for k,v in eq2letter.items() if len(v)>1}
+    # print("ONLY DOUBLES \n", eq2letter, "\n\n\n")
+    letter2eq = {eq_char:k for k,v in eq2letter.items() for eq_char in v}
+    # print("letter2eq\n", letter2eq, "\n\n\n")
+
+    return letter2eq
+
+
+def get_vowel_classes():
+    '''Return set of long and short vowels'''
+
+    vowels = "aeiou"
+    short_vowels = set()
+    long_vowels = set()
+    dipthongs = set()
+
+    letter_file = open("ben_characters.txt", "r")
+    for line in letter_file:
+        description, letter = line.split("\t")[1], line.split("\t")[2]
+        translit_letter = description.split(" ")[-2].lower()
+
+        translit_letter_vow = [c for c in translit_letter if c in vowels]
+        if len(translit_letter_vow) < len(translit_letter):
+            continue
+
+        if len(translit_letter)==1:
+            short_vowels.add(letter)
+        elif len(translit_letter)==2 and translit_letter[0]==translit_letter[1]:
+            long_vowels.add(letter)
+        else:
+            dipthongs.add(letter)
+
+    # print("SHORT: ", short_vowels)
+    # print("LONG: ", long_vowels)
+    # print("DIPTHONGS: ", dipthongs)
+
+    return short_vowels, long_vowels, dipthongs
+
+
+def normalize_chars(str):
+    '''Replace character with representative of equivalence set'''
+    str_original = str
+    for ch, member in eq_sets.items():
+        if ch in str:
+            str = re.sub(ch, member, str)
+
+    assert len(str)==len(str_original)
+
+    return str
+
+short_vowels, long_vowels, dipthongs = get_vowel_classes()
+eq_sets = get_char_equivalences()
+# print(eq_sets)
+
 def find_morph_boundaries(lexeme, morph, req_start = -1):
     '''Finds morph boundaries'''
 
@@ -40,8 +106,8 @@ def find_morph_boundaries(lexeme, morph, req_start = -1):
         # print(i)
         # print(morph[:len(morph)-i])
         # morph_start = lexeme.find(morph[:len(morph)-i])
-        # shortened_morph = morph[:len(morph)-i]
-        shortened_morph = morph[i:]
+        shortened_morph = morph[:len(morph)-i]
+        # shortened_morph = morph[i:]
 
         best_start, best_end = -1, -1
 
@@ -167,8 +233,14 @@ infile = open(sys.argv[1])
 
 
 # allomorph_sets = {morph:morph_set for morph_set in allomorph_eq_sets for morph in morph_set}
+allomorph_set = defaultdict(lambda: set())
+allomorphs = {"মএ":{"এ"},
+"এর":{"ইর"}}
+allomorph_set.update(allomorphs)
+
 
 for line in infile:
+
     entries = line.strip().split("\t")
     lexeme = entries[0].strip("'\"").strip()
     pos = entries[1].strip()
@@ -189,20 +261,23 @@ for line in infile:
     lemma = get_lemma(lexeme, pos, fs)
     features = get_lexeme_features(af, pos)
 
-    lex_id = lexicon.add_lexeme(lexeme, lemma, upos, features=features)
 
-    # if lexeme!= "হাতে":
-    #     continue
-    #
+    # if lexeme != "উড়এ":
+        # continue
+    lex_id = lexicon.add_lexeme(lexeme, lemma, upos, features=features)
 
     if len(af)!=8:
         gen_issues.warning("Lexeme %s has af: %s without enough fields", lexeme, af)
         continue
 
+
     if af[7] not in ["", "0"]:
 
         suffix = af[7]
         root = af[0]
+
+        lexeme = normalize_chars(lexeme)
+        suffix = normalize_chars(suffix)
 
         # s_len = longest_common_prefix(lexeme[::-1], suffix[::-1])
         #
@@ -216,8 +291,12 @@ for line in infile:
         #     lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, start, features)
         # else:
         #     seg_issues.warning("Suffix %s not at end of wordform %s, af: %s", suffix, lexeme, af)
-
-        morph_start, morph_end = find_morph_boundaries(lexeme, suffix, req_start=len(lexeme))
+        morph_start, morph_end = find_morph_boundaries(lexeme, suffix, req_start = len(lexeme))
+        if morph_start == -1:
+            for allomorph in allomorph_set[suffix]:
+                morph_start, morph_end = find_morph_boundaries(lexeme, normalize_chars(allomorph), req_start = len(lexeme))
+                if morph_start != -1:
+                    break
 
         if morph_start != -1:
             # start = len(lexeme) - s_len
@@ -229,6 +308,19 @@ for line in infile:
             lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, morph_start, features)
         else:
             seg_issues.warning("Suffix %s not at end of wordform %s, af: %s", suffix, lexeme, af)
+
+        # if morph_start == -1:
+        #     issues+=1
+        #     print(lexeme, suffix)
+        #     print(lexeme, suffix)
+        #     for i, c in enumerate(lexeme):
+        #         print(c, ucd.name(c, "unknown"), i)
+        #     print("\n")
+        #     for c in suffix:
+        #         print(c, ucd.name(c, "unknown"))
+        #     print("\n")
+        #
+        #     print(morph_start, morph_end)
 
 
 outfile = open(sys.argv[2], 'w')
