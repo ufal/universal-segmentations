@@ -298,7 +298,7 @@ for line in infile:
                 if morph_start != -1:
                     break
 
-        if morph_start != -1:
+        if morph_start != -1 and morph_end == len(lexeme):
             # start = len(lexeme) - s_len
             # assert lexeme[-s_len:] == suffix[-s_len:]
             features = {"type":"suffix"}
