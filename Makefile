@@ -1,4 +1,4 @@
-.PHONY: all lint profile test test-all clean
+.PHONY: all lint profile test test-all stats clean
 .SECONDARY:
 .SUFFIXES:
 
@@ -33,6 +33,11 @@ htmlcov/index.html: .coverage
 
 README.xhtml: README.adoc
 	asciidoc --backend=xhtml11 -o '$@' '$<'
+
+stats: stats-left.tex stats-right.tex
+
+stats-%.tex: src/stats.py
+	cd data/converted && $(abspath src/stats.py) --printer tex --threads 8 --only '$*' */*.useg > $(abspath $@)
 
 stats.tex: src/stats.py
 	cd data/converted && $(abspath src/stats.py) --printer tex --threads 8 */*.useg > $(abspath $@)
