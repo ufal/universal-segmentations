@@ -1,0 +1,49 @@
+* Community: Language Resources
+
+* Institution: LINDAT/CLARIAH-CZ Data & Tools
+
+* Type: Lexical conceptual
+
+* Title: Universal Segmentations v0.1 (UniSegs 0.1)
+
+* Project URL: https://ufal.mff.cuni.cz/universal-segmentations (TODO)
+
+* Demo URL: ---
+
+* Referenced by: TechRep [https://ufal.mff.cuni.cz/techrep/tr69.pdf]; ... (TODO)
+
+* Data issued: 2022-01-10
+
+* Authors: Vidra, Jonáš; ... (TODO)
+
+* Publisher: Charles University, Faculty of Mathematics and Physics, Institute of Formal and Applied Linguistics (UFAL)
+
+* Contact person's given name: Jonáš
+
+* Contact person's surname: Vidra
+
+* Contact person's email: vidra@ufal.mff.cuni.cz
+
+* Contact person's insitution name: Charles University, Faculty of Mathematics and Physics, Institute of Formal and Applied Linguistics (UFAL)
+
+* Funding type: National; National; National; National; National; National
+
+* Funding grant no.: 19-14534S; START/HUM/010; 1176219; SVV 260 453; LM2015071; LM2018101
+
+* Funding organization: Grantová agentura České Republiky; Charles University; Charles University Grant Agency; Univerzita Karlova (mimo GAUK); Ministerstvo školství, mládeže a tělovýchovy České republiky; Ministerstvo školství, mládeže a tělovýchovy České republiky
+
+* Funding project name: Popis slovotvorné struktury českých slov na základě jazykových dat; A data-based approach to competition in word-formation: selected semantic categories across seven languages; Tvorba derivačních sítí pro více jazyků; Specifický vysokoškolský výzkum; LINDAT/CLARIN: Institut pro analýzu, zpracování a distribuci lingvistických dat; LINDAT/CLARIAH-CZ: Digitální výzkumná infrastruktura pro jazykové technologie, umění a humanitní vědy
+
+* Description: (TODO)
+
+* Language: (TODO)
+
+* Subject keywords: unisegs; morphological segmentation; segmentation; universal segmentations; morphology; morphemes; morphological dictionary
+
+* Size: (TODO)
+
+* Media type: text
+
+* Detailed type: lexicon
+
+* License: Universal Segmentations v0.1 License Agreement

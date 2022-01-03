@@ -1,0 +1,24 @@
+Universal Segmentations v0.1 License Terms
+
+Universal Segmentations v0.1 (referred to as “UniSegs” in the rest of this document) is a collection of linguistic data. Each of the resource has its own license terms and you (the “User”) are responsible for complying with the license terms applicable to those parts of UniSegs which you use. If you do not agree with the license terms, you must stop using UniSegs and destroy all copies of UniSegs data that you have obtained.
+
+You are specifically reminded that some of the resources permit only non-commercial usage.
+
+The license for every resource included in the release is also specified in the appropriate language/resource directory.
+
+Overview of the resources and their license terms
+Resource | License
+... | ...
+... | ...
+
+
+Licenses
+License | URL
+Apache-2.0 | https://www.apache.org/licenses/LICENSE-2.0.txt
+CC BY-NC-SA 4.0 | https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+CC BY 4.0 | https://creativecommons.org/licenses/by/4.0/legalcode
+CC BY-NC 4.0 | https://creativecommons.org/licenses/by-nc/4.0/legalcode
+CC BY-NC-SA 3.0 | https://creativecommons.org/licenses/by-nc-sa/3.0/legalcode
+CC BY-SA 3.0 | https://creativecommons.org/licenses/by-sa/3.0/legalcode
+CC BY-SA 4.0 | https://creativecommons.org/licenses/by-sa/4.0/legalcode
+MIT | https://opensource.org/licenses/MIT
