@@ -327,6 +327,9 @@ for line in infile:
         continue
     entries = line.strip().split("\t")
     lexeme = entries[0].strip("'\"").strip()
+    pos = entries[1].strip()
+    fs = entries[2].strip()
+
     if re.match("\d",lexeme):
         continue
     if isascii(lexeme):
@@ -336,10 +339,10 @@ for line in infile:
     if "af" not in fs:
         continue
 
-    pos = entries[1].strip()
-    fs = entries[2].strip()
-
-    af = fs.strip("<>").split(" ")[1].split("=")[1].strip("''").split(",")
+    try:
+        af = fs.strip("<>").split(" ")[1].split("=")[1].strip("''").split(",")
+    except:
+        print(fs)
 
 
     # if "അക്കാരണങ്ങളാല്" not in lexeme:

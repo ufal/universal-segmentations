@@ -254,6 +254,8 @@ for line in infile:
         continue
     entries = line.strip().split("\t")
     lexeme = entries[0].strip("'\"").strip()
+    pos = entries[1].strip()
+    fs = entries[2].strip()
     if re.match("\d",lexeme):
         continue
     if isascii(lexeme):
@@ -263,11 +265,8 @@ for line in infile:
     if "af" not in fs:
         continue
 
-    pos = entries[1].strip()
-    fs = entries[2].strip()
-
-
     af = fs.strip("<>").split(" ")[1].split("=")[1].strip("''").split(",")
+
 
 
     # if lexeme != "ಆಕರ್ಷಿಸಿಸುತ್ತದೆ":

@@ -177,6 +177,11 @@ allomorph_set.update(allomorphs)
 for line in infile:
     entries = line.strip().split("\t")
     wordform = entries[0].strip("'\"").strip()
+    pos = entries[1].strip()
+    fs = entries[2].strip()
+
+
+
     if re.match("\d",wordform):
         continue
     if isascii(wordform):
@@ -185,9 +190,6 @@ for line in infile:
         continue
     if "af" not in fs:
         continue
-
-    pos = entries[1].strip()
-    fs = entries[2].strip()
 
     af = fs.strip("<>").split(" ")[1].split("=")[1].strip("''").split(",")
 
