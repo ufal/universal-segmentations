@@ -256,7 +256,7 @@ for line in infile:
         continue
 
     af = fs.strip("<>").split(" ")[1].split("=")[1].strip("''").split(",")
-
+    print(lexeme)
     upos = assign_upos(pos)
     lemma = get_lemma(lexeme, pos, fs)
     features = get_lexeme_features(af, pos)
