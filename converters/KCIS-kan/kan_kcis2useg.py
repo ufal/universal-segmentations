@@ -6,7 +6,7 @@ sys.path.append('../../src/')
 from useg import SegLex
 from collections import defaultdict
 import unicodedata as ucd
-
+import string
 
 import logging
 
@@ -103,6 +103,8 @@ def normalize_chars(str):
     return str
 
 short_vowels, long_vowels, dipthongs = get_vowel_classes()
+eq_sets = get_char_equivalences()
+
 def find_allomorphs(morpheme):
     '''Make modifications from most to least conservative'''
     #No modification
@@ -245,7 +247,7 @@ def get_lexeme_features(af, pos):
 annot_name = "kcis"
 infile = open(sys.argv[1])
 
-eq_sets = get_char_equivalences()
+
 
 for line in infile:
     if line == "\n" or line == " ":

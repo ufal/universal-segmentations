@@ -6,7 +6,7 @@ sys.path.append('../../src/')
 from useg import SegLex
 from collections import defaultdict
 import unicodedata as ucd
-
+import string
 
 import logging
 
