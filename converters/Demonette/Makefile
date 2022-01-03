@@ -12,13 +12,12 @@ download: # and unpack, if needed
 
 convert:
 	mkdir -p $(OUT_DIR)
-	./frc_demonette2useg.py $(IN_DIR)/demonette-1.2.csv  $(OUT_DIR)$/with_duplicates.useg
+	./fra_demonette2useg.py $(IN_DIR)/demonette-1.2.csv  $(OUT_DIR)$/with_duplicates.useg
 #	wc -l $(OUT_DIR)$/with_duplicates.useg
 	cat $(OUT_DIR)$/with_duplicates.useg | sort | uniq > $(OUT_DIR)$/fra_demonette.useg
-#	wc -l $(OUT_DIR)$/frc_demonette.useg
+#	wc -l $(OUT_DIR)$/fra_demonette.useg
 	cat $(OUT_DIR)$/fra_demonette.useg | grep "derif" > $(OUT_DIR)$/fra_demonette.derif.useg
 	cat $(OUT_DIR)$/fra_demonette.useg | grep "demonette" > $(OUT_DIR)$/fra_demonette.demonette.useg
 	cat $(OUT_DIR)$/fra_demonette.useg | grep -v "demonette" | grep -v "derif" > $(OUT_DIR)$/fra_demonette.other.useg
 	rm $(OUT_DIR)$/with_duplicates.useg
 	rm $(OUT_DIR)$/fra_demonette.useg
-

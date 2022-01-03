@@ -339,10 +339,7 @@ for line in infile:
     if "af" not in fs:
         continue
 
-    try:
-        af = fs.strip("<>").split(" ")[1].split("=")[1].strip("''").split(",")
-    except:
-        print(fs)
+    af = fs.strip("<>").split(" ")[1].split("=")[1].strip("''").split(",")
 
 
     # if "അക്കാരണങ്ങളാല്" not in lexeme:

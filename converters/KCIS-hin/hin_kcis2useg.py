@@ -180,8 +180,6 @@ for line in infile:
     pos = entries[1].strip()
     fs = entries[2].strip()
 
-
-
     if re.match("\d",wordform):
         continue
     if isascii(wordform):

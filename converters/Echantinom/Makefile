@@ -11,5 +11,4 @@ download: # and unpack, if needed
 
 convert:
 	mkdir -p $(OUT_DIR)
-	./frc_echantinom2useg.py $(IN_DIR)/Echantinom.csv  $(OUT_DIR)$/fra_echantinom.useg
-
+	./fra_echantinom2useg.py $(IN_DIR)/Echantinom.csv  $(OUT_DIR)$/fra_echantinom.useg
