@@ -23,7 +23,7 @@ def parse_args():
 
 
 class TypeTokenStats(object):
-    __slots__ = ("_types", "_tokens", "_min", "_max", "_length")
+    __slots__ = ("_types", "_tokens", "_min", "_max", "_length", "_length_counts")
 
     def __init__(self):
         self._types = set()
@@ -33,13 +33,22 @@ class TypeTokenStats(object):
         self._max = 0
         self._length = 0
 
+        self._length_counts = {}
+
     def record(self, string):
         self._types.add(string)
         self._tokens += 1
 
-        self._min = min(self._min, len(string))
-        self._max = max(self._max, len(string))
-        self._length += len(string)
+        l = len(string)
+
+        self._min = min(self._min, l)
+        self._max = max(self._max, l)
+        self._length += l
+
+        if l in self._length_counts:
+            self._length_counts[l] += 1
+        else:
+            self._length_counts[l] = 1
 
     def type_count(self):
         return len(self._types)
@@ -57,6 +66,42 @@ class TypeTokenStats(object):
         if self._tokens == 0:
             return 0.0
         return self._length / self._tokens
+
+    def count_of_length(self, l):
+        """
+        Return how many tokens have length of `l`.
+        """
+        return self._length_counts.get(l, 0)
+
+    def count_of_length_ge(self, min_l):
+        """
+        Return how many tokens have length of at least `min_l`.
+        """
+        total = 0
+        for l, c in self._length_counts.items():
+            if l >= min_l:
+                total += l
+        return total
+
+    def freq_of_length(self, l):
+        """
+        Return the proportion of tokens which have length of `l`.
+        """
+        tokens = self.token_count()
+        if tokens == 0:
+            return 0
+
+        return self.count_of_length(l) / tokens
+
+    def freq_of_length_ge(self, min_l):
+        """
+        Return the proportion of tokens which have length of at least `min_l`.
+        """
+        tokens = self.token_count()
+        if tokens == 0:
+            return 0
+
+        return self.count_of_length_ge(min_l) / tokens
 
 
 def morph(form, morpheme):
@@ -150,6 +195,8 @@ def process_file(filename):
         resource_name = dirname
 
     annot_cnt = annot_stats.token_count()
+
+    #print("Length counts for {}:".format(resource_name), morph_stats._length_counts, file=sys.stderr)
 
     return (
         resource_name,
