@@ -217,15 +217,15 @@ def main(args):
         if args.only == "both":
             print(r"\begin{tabular}{lr|rrrr|rrrrr} \toprule")
             print(r"              &      & \multicolumn{4}{c}{Morpheme count} & Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
-            print(r"Resource name & Size & 1 & 2 & 3 & 4+                     & per lex & avg. len & lexeme & per lexeme & per lex \midrule \\")
+            print(r"Resource name & Size & 1 & 2 & 3 & 4+                     & per lex & avg. len & lexeme & per lexeme & per lex \\ \midrule")
         elif args.only == "left":
             print(r"\begin{tabular}{lr|rrrr} \toprule")
             print(r"              &      & \multicolumn{4}{c}{Morpheme count} \\")
-            print(r"Resource name & Size & 1 & 2 & 3 & 4+ \midrule \\")
+            print(r"Resource name & Size & 1 & 2 & 3 & 4+ \\ \midrule")
         elif args.only == "right":
             print(r"\begin{tabular}{rrrrr} \toprule")
             print(r"Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
-            print(r"per lex & avg. len & lexeme & per lexeme & per lex \midrule \\")
+            print(r"per lex & avg. len & lexeme & per lexeme & per lex \\ \midrule")
     else:
         to_print = []
         if args.only in {"left", "both"}:
