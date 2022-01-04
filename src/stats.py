@@ -153,9 +153,9 @@ def process_file(filename):
 
     return (
         resource_name,
-        #lexeme_cnt,
+        lexeme_cnt,
         #segmented_lexeme_cnt,
-        form_stats.type_count(),
+        #form_stats.type_count(),
         #lemma_stats.type_count(),
         #pos_stats.type_count(),
 
