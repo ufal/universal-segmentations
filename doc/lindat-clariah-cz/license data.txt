@@ -8,8 +8,57 @@ The license for every resource included in the release is also specified in the 
 
 Overview of the resources and their license terms
 Resource | License
-... | ...
-... | ...
+cat-MorphyNet | CC BY-SA 3.0
+ces-DeriNet | CC BY-NC-SA 3.0
+ces-MorphyNet | CC BY-SA 3.0
+ces-RetrogradeDictionary | --
+deu-CELEX | --
+deu-DerivBaseDE | CC BY-SA 3.0
+deu-MorphoChallenge | ?
+deu-MorphyNet | CC BY-SA 3.0
+eng-CELEX | --
+eng-MorphoChallenge | ?
+eng-MorphoChallenge | ?
+eng-MorphoLEX | CC BY 4.0
+eng-MorphyNet | CC BY-SA 3.0
+fas-PersianMorphSegLex | CC BY-NC-SA 4.0
+fas-PersianMorphSegLex | CC BY-NC-SA 4.0
+fin-MorphoChallenge | ?
+fin-MorphoChallenge | ?
+fin-MorphyNet | CC BY-SA 3.0
+fra-MorphoLEX | CC BY 4.0
+fra-MorphyNet | CC BY-SA 3.0
+fra-Demonette | CC BY-NC-SA 3.0
+fra-Demonette | CC BY-NC-SA 3.0
+fra-Echantinom | CC BY 4.0
+hbs-MorphyNet | CC BY-SA 3.0
+hin-KCIS | CC BY-NC 4.0
+hrv-CroDeriV | CC BY-SA 3.0
+hun-MorphyNet | CC BY-SA 3.0
+hye-Uniparser | MIT
+ita-DerIvaTario | CC BY-SA 4.0
+ita-MorphyNet | CC BY-SA 3.0
+kan-KCIS | CC BY-NC 4.0
+kpv-Uniparser | MIT
+lat-WordFormationLatin | CC BY-NC-SA 4.0
+mal-KCIS | CC BY-NC 4.0
+mar-KCIS | CC BY-NC 4.0
+mdf-Uniparser | MIT
+mhr-Uniparser | MIT
+mon-MorphyNet | CC BY-SA 3.0
+myv-Uniparser | MIT
+nld-CELEX | --
+pol-MorphyNet | CC BY-SA 3.0
+por-MorphyNet | CC BY-SA 3.0
+rus-DerivBaseRU | Apache-2.0
+rus-MorphoDictKE | 
+rus-MorphyNet | CC BY-SA 3.0
+spa-MorphyNet | CC BY-SA 3.0
+swe-MorphyNet | CC BY-SA 3.0
+tgk-Uniparser | MIT
+tur-MorphoChallenge | ?
+tur-MorphoChallenge | ?
+udm-Uniparser | MIT
 
 
 Licenses
