@@ -145,16 +145,17 @@ def process_file(filename):
 
     return (
         resource_name,
-        lexeme_cnt,
-        segmented_lexeme_cnt,
+        #lexeme_cnt,
+        #segmented_lexeme_cnt,
         form_stats.type_count(),
-        lemma_stats.type_count(),
+        #lemma_stats.type_count(),
         #pos_stats.type_count(),
 
-        morph_stats.type_count(),
-        root_stats.type_count(),
-        prefix_stats.type_count(),
-        suffix_stats.type_count(),
+        #morph_stats.type_count(),
+        #root_stats.type_count(),
+        #prefix_stats.type_count(),
+        #suffix_stats.type_count(),
+
         #morph_stats.token_count(),
         #root_stats.token_count(),
         #prefix_stats.token_count(),
@@ -200,13 +201,12 @@ def main(args):
 
     if args.printer == "tex":
         if args.only == "both":
-            print(r"\begin{tabular}{lrrrrrrrr|rrrrr} \toprule")
-            print(r"              &         &              &          \multicolumn{6}{c}{Type counts}              & Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
-            print(r"Resource name & Lexemes & Seg. lexemes & Forms & Lemmas & Morphs & Roots & Prefixes & Suffixes & per lex & avg. len & lexeme & per lexeme & per lex \midrule \\")
+            print(r"\begin{tabular}{lr|rrrrr} \toprule")
+            print(r"              &      & Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
+            print(r"Resource name & Size & per lex & avg. len & lexeme & per lexeme & per lex \midrule \\")
         elif args.only == "left":
-            print(r"\begin{tabular}{lrrrrrrrr} \toprule")
-            print(r"              &         &              &          \multicolumn{6}{c}{Type counts}              \\")
-            print(r"Resource name & Lexemes & Seg. lexemes & Forms & Lemmas & Morphs & Roots & Prefixes & Suffixes \midrule \\")
+            print(r"\begin{tabular}{lr} \toprule")
+            print(r"Resource name & Size \midrule \\")
         elif args.only == "right":
             print(r"\begin{tabular}{rrrrr} \toprule")
             print(r"Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
@@ -216,16 +216,17 @@ def main(args):
         if args.only in {"left", "both"}:
             to_print += [
                 "Resource name",
-                "Lexemes",
-                "Segmented lexemes",
-                "Forms",
-                "Lemmas",
+                #"Lexemes",
+                #"Segmented lexemes",
+                "Size", #"Forms",
+                #"Lemmas",
                 #"POSes",
 
-                "Morph types",
-                "Root types",
-                "Prefix types",
-                "Suffix types",
+                #"Morph types",
+                #"Root types",
+                #"Prefix types",
+                #"Suffix types",
+
                 #"Morph tokens",
                 #"Root tokens",
                 #"Prefix tokens",
@@ -262,9 +263,9 @@ def main(args):
             if args.only == "both":
                 prn(*ret)
             elif args.only == "left":
-                prn(*ret[:9])
+                prn(*ret[:2])
             elif args.only == "right":
-                prn(*ret[9:])
+                prn(*ret[2:])
             else:
                 raise ValueError("Unknown `only` {}".format(args.only))
 
