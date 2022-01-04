@@ -107,6 +107,8 @@ def process_file(filename):
                          "prefix": prefix_stats,
                          "suffix": suffix_stats}
 
+    morph_count_counts = {}
+
     for lex_id in seg_lex.iter_lexemes():
         lexeme_cnt += 1
         form_stats.record(seg_lex.form(lex_id))
@@ -132,6 +134,12 @@ def process_file(filename):
 
                 if "type" in morpheme.features and isinstance(morpheme.features["type"], str) and morpheme.features["type"] in morph_stats_types:
                     morph_stats_types[morpheme.features["type"]].record(morph_string)
+
+            morph_count = len(morphemes)
+            if morph_count in morph_count_counts:
+                morph_count_counts[morph_count] += 1
+            else:
+                morph_count_counts[morph_count] = 1
 
         if is_segmented:
             segmented_lexeme_cnt += 1
@@ -160,6 +168,12 @@ def process_file(filename):
         #root_stats.token_count(),
         #prefix_stats.token_count(),
         #suffix_stats.token_count(),
+
+        #morph_count_counts.get(0, 0),
+        morph_count_counts.get(1, 0),
+        morph_count_counts.get(2, 0),
+        morph_count_counts.get(3, 0),
+        sum([cc for c, cc in morph_count_counts.items() if c >= 4]),
 
         #form_stats.mean_length(),
 
@@ -201,12 +215,13 @@ def main(args):
 
     if args.printer == "tex":
         if args.only == "both":
-            print(r"\begin{tabular}{lr|rrrrr} \toprule")
-            print(r"              &      & Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
-            print(r"Resource name & Size & per lex & avg. len & lexeme & per lexeme & per lex \midrule \\")
+            print(r"\begin{tabular}{lr|rrrr|rrrrr} \toprule")
+            print(r"              &      & \multicolumn{4}{c}{Morpheme count} & Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
+            print(r"Resource name & Size & 1 & 2 & 3 & 4+                     & per lex & avg. len & lexeme & per lexeme & per lex \midrule \\")
         elif args.only == "left":
-            print(r"\begin{tabular}{lr} \toprule")
-            print(r"Resource name & Size \midrule \\")
+            print(r"\begin{tabular}{lr|rrrr} \toprule")
+            print(r"              &      & \multicolumn{4}{c}{Morpheme count} \\")
+            print(r"Resource name & Size & 1 & 2 & 3 & 4+ \midrule \\")
         elif args.only == "right":
             print(r"\begin{tabular}{rrrrr} \toprule")
             print(r"Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
@@ -231,6 +246,11 @@ def main(args):
                 #"Root tokens",
                 #"Prefix tokens",
                 #"Suffix tokens",
+
+                "Words with 1 morpheme",
+                "Words with 2 morphemes",
+                "Words with 3 morphemes",
+                "Words with 4+ morphemes",
             ]
         if args.only in {"right", "both"}:
             to_print += [
@@ -263,9 +283,9 @@ def main(args):
             if args.only == "both":
                 prn(*ret)
             elif args.only == "left":
-                prn(*ret[:2])
+                prn(*ret[:6])
             elif args.only == "right":
-                prn(*ret[2:])
+                prn(*ret[6:])
             else:
                 raise ValueError("Unknown `only` {}".format(args.only))
 
