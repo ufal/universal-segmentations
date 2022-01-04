@@ -37,7 +37,7 @@ README.xhtml: README.adoc
 stats: stats-left.tex stats-right.tex
 
 stats-%.tex: src/stats.py
-	cd data/converted && $(abspath src/stats.py) --printer tex --threads 8 --only '$*' */*.useg > $(abspath $@)
+	cd data/converted && find * -name '*.useg' '!' '(' -path '*-UniMorph*' -o -path '*frc-*' -o -path '*RetrogradeDictionary*' ')' -exec $(abspath src/stats.py) --printer tex --threads 8 --only '$*' '{}' '+' > $(abspath $@)
 
 stats.tex: src/stats.py
 	cd data/converted && $(abspath src/stats.py) --printer tex --threads 8 */*.useg > $(abspath $@)
