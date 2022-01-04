@@ -11,12 +11,9 @@ Resource | License
 cat-MorphyNet | CC BY-SA 3.0
 ces-DeriNet | CC BY-NC-SA 3.0
 ces-MorphyNet | CC BY-SA 3.0
-ces-RetrogradeDictionary | --
-deu-CELEX | --
 deu-DerivBaseDE | CC BY-SA 3.0
 deu-MorphoChallenge | ?
 deu-MorphyNet | CC BY-SA 3.0
-eng-CELEX | --
 eng-MorphoChallenge | ?
 eng-MorphoChallenge | ?
 eng-MorphoLEX | CC BY 4.0
@@ -47,7 +44,6 @@ mdf-Uniparser | MIT
 mhr-Uniparser | MIT
 mon-MorphyNet | CC BY-SA 3.0
 myv-Uniparser | MIT
-nld-CELEX | --
 pol-MorphyNet | CC BY-SA 3.0
 por-MorphyNet | CC BY-SA 3.0
 rus-DerivBaseRU | Apache-2.0

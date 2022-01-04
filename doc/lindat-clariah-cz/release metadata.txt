@@ -14,7 +14,7 @@
 
 * Data issued: 2022-01-10
 
-* Authors: Vidra, Jonáš; Bafna, Nyati; Bodnár, Jan; Kyjánek, Lukáš; Svoboda, Emil; Žabokrtský, Zdeněk; Ševčíková, Magda; Filko, Matea; Šojat, Krešimir; Štefanec, Vanja; Hathout, Nabil; Namer, Fiammetta; Talamo, Luigi; Celata, Chiara; Bertinetto, Pier Marco; Zeller, Britta; Šnajder, Jan; Padó, Sebastian; Vodolazsky, Daniil; Bonami, Olivier; Tribout, Delphine; Ansari, Ebrahim; Haghdoost, Hamid; Nikravesh, Mahshid; Arkhangelskiy, Timofey; Medvedeva, Maria; Vydrin, Arseniy; Khomchenkova, Irina; Zakirova, Aigul; Potapov, Mihail; Fedorenko, Alexei; Khurshudyan, Victoria; Polyakov, Alexey; ?UniMorph?; ?MorphoChallenge?;  (TODO; order?)
+* Authors: Vidra, Jonáš; Bafna, Nyati; Bodnár, Jan; Kyjánek, Lukáš; Svoboda, Emil; Žabokrtský, Zdeněk; Ševčíková, Magda; Filko, Matea; Šojat, Krešimir; Štefanec, Vanja; Hathout, Nabil; Namer, Fiammetta; Talamo, Luigi; Celata, Chiara; Bertinetto, Pier Marco; Zeller, Britta; Šnajder, Jan; Padó, Sebastian; Vodolazsky, Daniil; Bonami, Olivier; Tribout, Delphine; Ansari, Ebrahim; Haghdoost, Hamid; Nikravesh, Mahshid; Arkhangelskiy, Timofey; Fedorenko, Alexei;  Khurshudyan, Victoria; Polyakov, Alexey; Khomchenkova, Irina; Zakirova, Aigul; Potapov, Mihail; Vydrin, Arseniy; Medvedeva, Maria; (TODO)
 
 * Publisher: Charles University, Faculty of Mathematics and Physics, Institute of Formal and Applied Linguistics (UFAL)
 
