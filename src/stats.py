@@ -222,11 +222,12 @@ def process_file(filename):
         morph_count_counts.get(3, 0),
         sum([cc for c, cc in morph_count_counts.items() if c >= 4]),
 
-        #form_stats.mean_length(),
+        form_stats.mean_length(),
+        morph_stats.mean_length(),
 
         morph_stats.token_count() / annot_cnt if annot_cnt > 0 else 0.0,
         #morph_stats.min_length(),
-        morph_stats.mean_length(),
+        #morph_stats.mean_length(),  # Already above
         #morph_stats.max_length(),
 
         root_stats.token_count() / annot_cnt if annot_cnt > 0 else 0.0,
@@ -262,17 +263,17 @@ def main(args):
 
     if args.printer == "tex":
         if args.only == "both":
-            print(r"\begin{tabular}{lr|rrrr|rrrrr} \toprule")
-            print(r"              &      & \multicolumn{4}{c}{Morpheme count} & Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
-            print(r"Resource name & Size & 1 & 2 & 3 & 4+                     & per lex & avg. len & lexeme & per lexeme & per lex \\ \midrule")
+            print(r"\begin{tabular}{lr|rrrr|rrrrrrr} \toprule")
+            print(r"              &      & \multicolumn{4}{c}{Morpheme count} & Mean word & Mean morph & Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
+            print(r"Resource name & Size & 1 & 2 & 3 & 4+                     & length    & length     & per lex & avg. len & lexeme & per lexeme & per lex \\ \midrule")
         elif args.only == "left":
-            print(r"\begin{tabular}{lr|rrrr} \toprule")
-            print(r"              &      & \multicolumn{4}{c}{Morpheme count} \\")
-            print(r"Resource name & Size & 1 & 2 & 3 & 4+ \\ \midrule")
+            print(r"\begin{tabular}{lr|rrrr|rr} \toprule")
+            print(r"              &      & \multicolumn{4}{c}{Morpheme count} & Mean word & Mean morph \\")
+            print(r"Resource name & Size & 1 & 2 & 3 & 4+                     & length    & length \\ \midrule")
         elif args.only == "right":
-            print(r"\begin{tabular}{rrrrr} \toprule")
-            print(r"Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
-            print(r"per lex & avg. len & lexeme & per lexeme & per lex \\ \midrule")
+            print(r"\begin{tabular}{rrrr} \toprule")
+            print(r"Morphs  & Roots per & Prefixes  & Suffixes \\")
+            print(r"per lex & lexeme   & per lexeme & per lex \\ \midrule")
     else:
         to_print = []
         if args.only in {"left", "both"}:
@@ -298,14 +299,15 @@ def main(args):
                 "Words with 2 morphemes",
                 "Words with 3 morphemes",
                 "Words with 4+ morphemes",
+
+                "Mean word len",
+                "Mean morph len",
             ]
         if args.only in {"right", "both"}:
             to_print += [
-                #"Form avg.",
-
                 "Morphs per lexeme",
                 #"Morph min",
-                "Morph avg.",
+                #"Morph avg.", # Already above
                 #"Morph max",
 
                 "Roots per lexeme",
@@ -330,9 +332,9 @@ def main(args):
             if args.only == "both":
                 prn(*ret)
             elif args.only == "left":
-                prn(*ret[:6])
+                prn(*ret[:8])
             elif args.only == "right":
-                prn(*ret[6:])
+                prn(*ret[8:])
             else:
                 raise ValueError("Unknown `only` {}".format(args.only))
 
