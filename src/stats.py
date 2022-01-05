@@ -272,16 +272,16 @@ def main(args):
     if args.printer == "tex":
         if args.only == "both":
             print(r"\begin{tabular}{llr|rrrr|rrrrrrr} \toprule")
-            print(r"              & Segmented &      & \multicolumn{4}{c}{Morpheme count} & Mean word & Mean morph & Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
-            print(r"Resource name & unit      & Size & 1 & 2 & 3 & 4+                     & length    & length     & per lex & avg. len & lexeme & per lexeme & per lex \\ \midrule")
+            print(r"              & Segmented & Size    & \multicolumn{4}{c}{Morpheme count} & Mean unit & Mean morph & Morphs   & Morph  & Roots per & Prefixes & Suffixes \\")
+            print(r"Resource name & unit      & [units] & 1 & 2 & 3 & 4+                     & length    & length     & per unit & avg. len & unit    & per unit & per unit \\ \midrule")
         elif args.only == "left":
             print(r"\begin{tabular}{llr|rrrr|rr} \toprule")
-            print(r"              & Segmented &      & \multicolumn{4}{c}{Morpheme count} & Mean word     & Mean morph \\")
-            print(r"Resource name & unit      & Size & 1 & 2 & 3 & 4+                     & length [char] & length [char] \\ \midrule")
+            print(r"              & Segmented & Size    & \multicolumn{4}{c}{Morpheme count} & Mean unit     & Mean morph \\")
+            print(r"Resource name & unit      & [units] & 1 & 2 & 3 & 4+                     & length [char] & length [char] \\ \midrule")
         elif args.only == "right":
             print(r"\begin{tabular}{rrrr} \toprule")
-            print(r"Morphs  & Roots per & Prefixes  & Suffixes \\")
-            print(r"per lex & lexeme   & per lexeme & per lex \\ \midrule")
+            print(r"Morphs & Roots per & Prefixes & Suffixes \\")
+            print(r"per unit & unit    & per unit & per unit \\ \midrule")
     else:
         to_print = []
         if args.only in {"left", "both"}:
@@ -304,32 +304,32 @@ def main(args):
                 #"Prefix tokens",
                 #"Suffix tokens",
 
-                "Words with 1 morpheme",
-                "Words with 2 morphemes",
-                "Words with 3 morphemes",
-                "Words with 4+ morphemes",
+                "Units with 1 morpheme",
+                "Units with 2 morphemes",
+                "Units with 3 morphemes",
+                "Units with 4+ morphemes",
 
-                "Mean word len",
+                "Mean unit len",
                 "Mean morph len",
             ]
         if args.only in {"right", "both"}:
             to_print += [
-                "Morphs per lexeme",
+                "Morphs per unit",
                 #"Morph min",
                 #"Morph avg.", # Already above
                 #"Morph max",
 
-                "Roots per lexeme",
+                "Roots per unit",
                 #"Root min",
                 #"Root avg.",
                 #"Root max",
 
-                "Prefixes per lexeme",
+                "Prefixes per unit",
                 #"Prefix min",
                 #"Prefix avg.",
                 #"Prefix max",
 
-                "Suffixes per lexeme",
+                "Suffixes per unit",
                 #"Suffix min",
                 #"Suffix avg.",
                 #"Suffix max",
