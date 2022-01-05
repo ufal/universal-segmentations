@@ -154,11 +154,18 @@ def process_file(filename):
 
     morph_count_counts = {}
 
+    # Whether the resource contains only lemmas, or inflected forms as well.
+    only_lemmas = True
+
     for lex_id in seg_lex.iter_lexemes():
         lexeme_cnt += 1
         form_stats.record(seg_lex.form(lex_id))
         lemma_stats.record(seg_lex.lemma(lex_id))
         pos_stats.record(seg_lex.pos(lex_id))
+
+        if seg_lex.form(lex_id) != seg_lex.lemma(lex_id):
+            # The resource lists inflected forms in addition to pure lemmas.
+            only_lemmas = False
 
         is_segmented = False
 
@@ -200,6 +207,7 @@ def process_file(filename):
 
     return (
         resource_name,
+        "lemmas" if only_lemmas else "forms",
         lexeme_cnt,
         #segmented_lexeme_cnt,
         #form_stats.type_count(),
@@ -263,13 +271,13 @@ def main(args):
 
     if args.printer == "tex":
         if args.only == "both":
-            print(r"\begin{tabular}{lr|rrrr|rrrrrrr} \toprule")
-            print(r"              &      & \multicolumn{4}{c}{Morpheme count} & Mean word & Mean morph & Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
-            print(r"Resource name & Size & 1 & 2 & 3 & 4+                     & length    & length     & per lex & avg. len & lexeme & per lexeme & per lex \\ \midrule")
+            print(r"\begin{tabular}{llr|rrrr|rrrrrrr} \toprule")
+            print(r"              & Segmented &      & \multicolumn{4}{c}{Morpheme count} & Mean word & Mean morph & Morphs  & Morph  & Roots per & Prefixes  & Suffixes \\")
+            print(r"Resource name & unit      & Size & 1 & 2 & 3 & 4+                     & length    & length     & per lex & avg. len & lexeme & per lexeme & per lex \\ \midrule")
         elif args.only == "left":
-            print(r"\begin{tabular}{lr|rrrr|rr} \toprule")
-            print(r"              &      & \multicolumn{4}{c}{Morpheme count} & Mean word     & Mean morph \\")
-            print(r"Resource name & Size & 1 & 2 & 3 & 4+                     & length [char] & length [char] \\ \midrule")
+            print(r"\begin{tabular}{llr|rrrr|rr} \toprule")
+            print(r"              & Segmented &      & \multicolumn{4}{c}{Morpheme count} & Mean word     & Mean morph \\")
+            print(r"Resource name & unit      & Size & 1 & 2 & 3 & 4+                     & length [char] & length [char] \\ \midrule")
         elif args.only == "right":
             print(r"\begin{tabular}{rrrr} \toprule")
             print(r"Morphs  & Roots per & Prefixes  & Suffixes \\")
@@ -279,6 +287,7 @@ def main(args):
         if args.only in {"left", "both"}:
             to_print += [
                 "Resource name",
+                "Segmented unit",
                 #"Lexemes",
                 #"Segmented lexemes",
                 "Size", #"Forms",
@@ -332,9 +341,9 @@ def main(args):
             if args.only == "both":
                 prn(*ret)
             elif args.only == "left":
-                prn(*ret[:8])
+                prn(*ret[:9])
             elif args.only == "right":
-                prn(*ret[8:])
+                prn(*ret[9:])
             else:
                 raise ValueError("Unknown `only` {}".format(args.only))
 
