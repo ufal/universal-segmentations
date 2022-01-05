@@ -207,7 +207,7 @@ def process_file(filename):
 
     return (
         resource_name,
-        "lemmas" if only_lemmas else "forms",
+        "l" if only_lemmas else "f",
         lexeme_cnt,
         #segmented_lexeme_cnt,
         #form_stats.type_count(),
@@ -272,12 +272,12 @@ def main(args):
     if args.printer == "tex":
         if args.only == "both":
             print(r"\begin{tabular}{llr|rrrr|rrrrrrr} \toprule")
-            print(r"              & Segmented & Size    & \multicolumn{4}{c}{Histogram of morphs per unit [\%]} & Mean unit & Mean morph & Morphs   & Morph  & Roots per & Prefixes & Suffixes \\")
-            print(r"Resource name & unit      & [units] & 1 & 2 & 3 & 4+                     & length    & length     & per unit & avg. len & unit    & per unit & per unit \\ \midrule")
+            print(r"              & Seg. & Size    & \multicolumn{4}{c}{Histogram of morphs per unit [\%]} & Mean unit & Mean morph & Morphs   & Morph  & Roots per & Prefixes & Suffixes \\")
+            print(r"Resource name & unit & [units] & 1 & 2 & 3 & 4+                                        & length    & length     & per unit & avg. len & unit    & per unit & per unit \\ \midrule")
         elif args.only == "left":
             print(r"\begin{tabular}{llr|rrrr|rr} \toprule")
-            print(r"              & Segmented & Size    & \multicolumn{4}{c}{Histogram of morphs per unit [\%]} & Mean unit     & Mean morph \\")
-            print(r"Resource name & unit      & [units] & 1 & 2 & 3 & 4+                     & length [char] & length [char] \\ \midrule")
+            print(r"              & Seg. & Size    & \multicolumn{4}{c}{Histogram of morphs per unit [\%]} & Mean unit     & Mean morph \\")
+            print(r"Resource name & unit & [units] & 1 & 2 & 3 & 4+                                        & length [char] & length [char] \\ \midrule")
         elif args.only == "right":
             print(r"\begin{tabular}{rrrr} \toprule")
             print(r"Morphs & Roots per & Prefixes & Suffixes \\")
