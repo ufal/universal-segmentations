@@ -22,7 +22,7 @@ for line in fin:
     if(line==""):
         continue
     line=line.replace("/","")
-    morphs=line.split("-")
+    morphs=line.split(" ")
     word="".join(morphs)
     data.append([word,morphs])
 
