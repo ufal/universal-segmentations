@@ -225,10 +225,10 @@ def process_file(filename):
         #suffix_stats.token_count(),
 
         #morph_count_counts.get(0, 0),
-        morph_count_counts.get(1, 0),
-        morph_count_counts.get(2, 0),
-        morph_count_counts.get(3, 0),
-        sum([cc for c, cc in morph_count_counts.items() if c >= 4]),
+        morph_count_counts.get(1, 0) * 100.0 / segmented_lexeme_cnt if segmented_lexeme_cnt > 0 else 0.0,
+        morph_count_counts.get(2, 0) * 100.0 / segmented_lexeme_cnt if segmented_lexeme_cnt > 0 else 0.0,
+        morph_count_counts.get(3, 0) * 100.0 / segmented_lexeme_cnt if segmented_lexeme_cnt > 0 else 0.0,
+        sum([cc for c, cc in morph_count_counts.items() if c >= 4]) * 100.0 / segmented_lexeme_cnt if segmented_lexeme_cnt > 0 else 0.0,
 
         form_stats.mean_length(),
         morph_stats.mean_length(),
@@ -272,11 +272,11 @@ def main(args):
     if args.printer == "tex":
         if args.only == "both":
             print(r"\begin{tabular}{llr|rrrr|rrrrrrr} \toprule")
-            print(r"              & Segmented & Size    & \multicolumn{4}{c}{Histogram of morph count in unit} & Mean unit & Mean morph & Morphs   & Morph  & Roots per & Prefixes & Suffixes \\")
+            print(r"              & Segmented & Size    & \multicolumn{4}{c}{Histogram of morph count in unit [\%]} & Mean unit & Mean morph & Morphs   & Morph  & Roots per & Prefixes & Suffixes \\")
             print(r"Resource name & unit      & [units] & 1 & 2 & 3 & 4+                     & length    & length     & per unit & avg. len & unit    & per unit & per unit \\ \midrule")
         elif args.only == "left":
             print(r"\begin{tabular}{llr|rrrr|rr} \toprule")
-            print(r"              & Segmented & Size    & \multicolumn{4}{c}{Histogram of morph count in unit} & Mean unit     & Mean morph \\")
+            print(r"              & Segmented & Size    & \multicolumn{4}{c}{Histogram of morph count in unit [\%]} & Mean unit     & Mean morph \\")
             print(r"Resource name & unit      & [units] & 1 & 2 & 3 & 4+                     & length [char] & length [char] \\ \midrule")
         elif args.only == "right":
             print(r"\begin{tabular}{rrrr} \toprule")
