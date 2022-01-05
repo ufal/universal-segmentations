@@ -272,11 +272,11 @@ def main(args):
     if args.printer == "tex":
         if args.only == "both":
             print(r"\begin{tabular}{llr|rrrr|rrrrrrr} \toprule")
-            print(r"              & Segmented & Size    & \multicolumn{4}{c}{Morpheme count} & Mean unit & Mean morph & Morphs   & Morph  & Roots per & Prefixes & Suffixes \\")
+            print(r"              & Segmented & Size    & \multicolumn{4}{c}{Histogram of morph count in unit} & Mean unit & Mean morph & Morphs   & Morph  & Roots per & Prefixes & Suffixes \\")
             print(r"Resource name & unit      & [units] & 1 & 2 & 3 & 4+                     & length    & length     & per unit & avg. len & unit    & per unit & per unit \\ \midrule")
         elif args.only == "left":
             print(r"\begin{tabular}{llr|rrrr|rr} \toprule")
-            print(r"              & Segmented & Size    & \multicolumn{4}{c}{Morpheme count} & Mean unit     & Mean morph \\")
+            print(r"              & Segmented & Size    & \multicolumn{4}{c}{Histogram of morph count in unit} & Mean unit     & Mean morph \\")
             print(r"Resource name & unit      & [units] & 1 & 2 & 3 & 4+                     & length [char] & length [char] \\ \midrule")
         elif args.only == "right":
             print(r"\begin{tabular}{rrrr} \toprule")
