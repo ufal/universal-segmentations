@@ -208,7 +208,7 @@ def process_file(filename):
     return (
         resource_name,
         "l" if only_lemmas else "f",
-        lexeme_cnt,
+        round(segmented_lexeme_cnt / 1000),
         #segmented_lexeme_cnt,
         #form_stats.type_count(),
         #lemma_stats.type_count(),
@@ -272,12 +272,12 @@ def main(args):
     if args.printer == "tex":
         if args.only == "both":
             print(r"\begin{tabular}{llr|rrrrr|rrrrrrr} \toprule")
-            print(r"              & Seg. & Size    & \multicolumn{4}{c}{Histogram of morphs per unit [\%]} & Mean morphs & Mean unit & Mean morph & Morph  & Roots per & Prefixes & Suffixes \\")
-            print(r"Resource name & unit & [units] & 1 & 2 & 3 & 4+                                        & per unit    & length    & length     & avg. len & unit    & per unit & per unit \\ \midrule")
+            print(r"              & Seg. & Size      & \multicolumn{4}{c}{Histogram of morphs per unit [\%]} & Mean morphs & Mean unit & Mean morph & Morph  & Roots per & Prefixes & Suffixes \\")
+            print(r"Resource name & unit & [1000 u.] & 1 & 2 & 3 & 4+                                        & per unit    & length    & length     & avg. len & unit    & per unit & per unit \\ \midrule")
         elif args.only == "left":
             print(r"\begin{tabular}{llr|rrrrr|rr} \toprule")
-            print(r"              & Seg. & Size    & \multicolumn{4}{c}{Histogram of morphs per unit [\%]} & Mean morphs & Mean unit     & Mean morph \\")
-            print(r"Resource name & unit & [units] & 1 & 2 & 3 & 4+                                        & per unit    & length [char] & length [char] \\ \midrule")
+            print(r"              & Seg. & Size      & \multicolumn{4}{c}{Histogram of morphs per unit [\%]} & Mean morphs & Mean unit     & Mean morph \\")
+            print(r"Resource name & unit & [1000 u.] & 1 & 2 & 3 & 4+                                        & per unit    & length [char] & length [char] \\ \midrule")
         elif args.only == "right":
             print(r"\begin{tabular}{rrr} \toprule")
             print(r"Roots per & Prefixes & Suffixes \\")
@@ -290,7 +290,7 @@ def main(args):
                 "Segmented unit",
                 #"Lexemes",
                 #"Segmented lexemes",
-                "Size", #"Forms",
+                "Size (thousands)", #"Forms",
                 #"Lemmas",
                 #"POSes",
 
