@@ -230,13 +230,13 @@ def process_file(filename):
         "{:,.0f}".format(morph_count_counts.get(3, 0) * 100.0 / segmented_lexeme_cnt if segmented_lexeme_cnt > 0 else 0.0),
         "{:,.0f}".format(sum([cc for c, cc in morph_count_counts.items() if c >= 4]) * 100.0 / segmented_lexeme_cnt if segmented_lexeme_cnt > 0 else 0.0),
 
-        form_stats.mean_length(),
-        morph_stats.mean_length(),
-
         morph_stats.token_count() / annot_cnt if annot_cnt > 0 else 0.0,
         #morph_stats.min_length(),
         #morph_stats.mean_length(),  # Already above
         #morph_stats.max_length(),
+
+        form_stats.mean_length(),
+        morph_stats.mean_length(),
 
         root_stats.token_count() / annot_cnt if annot_cnt > 0 else 0.0,
         #root_stats.min_length(),
@@ -271,17 +271,17 @@ def main(args):
 
     if args.printer == "tex":
         if args.only == "both":
-            print(r"\begin{tabular}{llr|rrrr|rrrrrrr} \toprule")
-            print(r"              & Seg. & Size    & \multicolumn{4}{c}{Histogram of morphs per unit [\%]} & Mean unit & Mean morph & Morphs   & Morph  & Roots per & Prefixes & Suffixes \\")
-            print(r"Resource name & unit & [units] & 1 & 2 & 3 & 4+                                        & length    & length     & per unit & avg. len & unit    & per unit & per unit \\ \midrule")
+            print(r"\begin{tabular}{llr|rrrrr|rrrrrrr} \toprule")
+            print(r"              & Seg. & Size    & \multicolumn{4}{c}{Histogram of morphs per unit [\%]} & Mean morphs & Mean unit & Mean morph & Morph  & Roots per & Prefixes & Suffixes \\")
+            print(r"Resource name & unit & [units] & 1 & 2 & 3 & 4+                                        & per unit    & length    & length     & avg. len & unit    & per unit & per unit \\ \midrule")
         elif args.only == "left":
-            print(r"\begin{tabular}{llr|rrrr|rr} \toprule")
-            print(r"              & Seg. & Size    & \multicolumn{4}{c}{Histogram of morphs per unit [\%]} & Mean unit     & Mean morph \\")
-            print(r"Resource name & unit & [units] & 1 & 2 & 3 & 4+                                        & length [char] & length [char] \\ \midrule")
+            print(r"\begin{tabular}{llr|rrrrr|rr} \toprule")
+            print(r"              & Seg. & Size    & \multicolumn{4}{c}{Histogram of morphs per unit [\%]} & Mean morphs & Mean unit     & Mean morph \\")
+            print(r"Resource name & unit & [units] & 1 & 2 & 3 & 4+                                        & per unit    & length [char] & length [char] \\ \midrule")
         elif args.only == "right":
-            print(r"\begin{tabular}{rrrr} \toprule")
-            print(r"Morphs & Roots per & Prefixes & Suffixes \\")
-            print(r"per unit & unit    & per unit & per unit \\ \midrule")
+            print(r"\begin{tabular}{rrr} \toprule")
+            print(r"Roots per & Prefixes & Suffixes \\")
+            print(r"unit    & per unit & per unit \\ \midrule")
     else:
         to_print = []
         if args.only in {"left", "both"}:
@@ -309,16 +309,16 @@ def main(args):
                 "Units with 3 morphemes",
                 "Units with 4+ morphemes",
 
-                "Mean unit len",
-                "Mean morph len",
-            ]
-        if args.only in {"right", "both"}:
-            to_print += [
                 "Morphs per unit",
                 #"Morph min",
                 #"Morph avg.", # Already above
                 #"Morph max",
 
+                "Mean unit len",
+                "Mean morph len",
+            ]
+        if args.only in {"right", "both"}:
+            to_print += [
                 "Roots per unit",
                 #"Root min",
                 #"Root avg.",
@@ -341,9 +341,9 @@ def main(args):
             if args.only == "both":
                 prn(*ret)
             elif args.only == "left":
-                prn(*ret[:9])
+                prn(*ret[:10])
             elif args.only == "right":
-                prn(*ret[9:])
+                prn(*ret[10:])
             else:
                 raise ValueError("Unknown `only` {}".format(args.only))
 
