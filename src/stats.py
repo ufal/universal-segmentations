@@ -268,8 +268,8 @@ def main(args):
             print(r"Resource name & Size & 1 & 2 & 3 & 4+                     & length    & length     & per lex & avg. len & lexeme & per lexeme & per lex \\ \midrule")
         elif args.only == "left":
             print(r"\begin{tabular}{lr|rrrr|rr} \toprule")
-            print(r"              &      & \multicolumn{4}{c}{Morpheme count} & Mean word & Mean morph \\")
-            print(r"Resource name & Size & 1 & 2 & 3 & 4+                     & length    & length \\ \midrule")
+            print(r"              &      & \multicolumn{4}{c}{Morpheme count} & Mean word     & Mean morph \\")
+            print(r"Resource name & Size & 1 & 2 & 3 & 4+                     & length [char] & length [char] \\ \midrule")
         elif args.only == "right":
             print(r"\begin{tabular}{rrrr} \toprule")
             print(r"Morphs  & Roots per & Prefixes  & Suffixes \\")
