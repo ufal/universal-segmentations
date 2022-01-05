@@ -225,10 +225,10 @@ def process_file(filename):
         #suffix_stats.token_count(),
 
         #morph_count_counts.get(0, 0),
-        morph_count_counts.get(1, 0) * 100.0 / segmented_lexeme_cnt if segmented_lexeme_cnt > 0 else 0.0,
-        morph_count_counts.get(2, 0) * 100.0 / segmented_lexeme_cnt if segmented_lexeme_cnt > 0 else 0.0,
-        morph_count_counts.get(3, 0) * 100.0 / segmented_lexeme_cnt if segmented_lexeme_cnt > 0 else 0.0,
-        sum([cc for c, cc in morph_count_counts.items() if c >= 4]) * 100.0 / segmented_lexeme_cnt if segmented_lexeme_cnt > 0 else 0.0,
+        "{:,.0f}".format(morph_count_counts.get(1, 0) * 100.0 / segmented_lexeme_cnt if segmented_lexeme_cnt > 0 else 0.0),
+        "{:,.0f}".format(morph_count_counts.get(2, 0) * 100.0 / segmented_lexeme_cnt if segmented_lexeme_cnt > 0 else 0.0),
+        "{:,.0f}".format(morph_count_counts.get(3, 0) * 100.0 / segmented_lexeme_cnt if segmented_lexeme_cnt > 0 else 0.0),
+        "{:,.0f}".format(sum([cc for c, cc in morph_count_counts.items() if c >= 4]) * 100.0 / segmented_lexeme_cnt if segmented_lexeme_cnt > 0 else 0.0),
 
         form_stats.mean_length(),
         morph_stats.mean_length(),
@@ -258,7 +258,7 @@ def prn_tsv(*args):
     print(*args, sep="\t", end="\n")
 
 def prn_tex(*args):
-    print(*("{:,.2f}".format(arg) if isinstance(arg, float) else "{:,}".format(arg) if isinstance(arg, int) else str(arg).replace("_", r"\_") for arg in args), sep=" & ", end=" \\\\\n")
+    print(*("{:,.1f}".format(arg) if isinstance(arg, float) else "{:,}".format(arg) if isinstance(arg, int) else str(arg).replace("_", r"\_") for arg in args), sep=" & ", end=" \\\\\n")
 
 def get_prn(t):
     if t == "tsv":
