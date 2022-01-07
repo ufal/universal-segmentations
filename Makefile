@@ -45,6 +45,17 @@ stats.tex: src/stats.py
 stats-non-unimorph.tex: src/stats.py
 	cd data/converted && find * -name '*.useg' -not -path '*UniMorph*' -exec $(abspath src/stats.py) --printer tex --threads 8 '{}' '+' > $(abspath $@)
 
+poses.txt:
+	find data/converted -name '*.useg' -exec cut -f3 '{}' '+' | sort -u > '$@'
+
+pos-examples: poses.txt
+	while IFS= read -r pos; do \
+		printf '\n%s:\n' "$${pos}" && \
+		for f in `find data/converted -name '*.useg'`; do \
+			cut -f3 "$${f}" | fgrep -xqe "$${pos}" && printf '	%s\n' "$${f}"; \
+		done; \
+	done < '$<'
+
 clean:
 	rm -f README.xhtml
 	rm -f .coverage htmlcov/index.html
