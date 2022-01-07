@@ -207,7 +207,7 @@ def process_file(filename):
 
     return (
         resource_name,
-        "{:,} {}".format(round(segmented_lexeme_cnt / 1000), "kl" if only_lemmas else "kf"),
+        "{:,} {}".format(round(segmented_lexeme_cnt / 1000), "kL" if only_lemmas else "kW"),
         #segmented_lexeme_cnt,
         #form_stats.type_count(),
         #lemma_stats.type_count(),
