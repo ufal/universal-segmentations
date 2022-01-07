@@ -54,6 +54,7 @@ def gr_to_upos(morpho_tags):
         return gr_upos_table[gr_pos]
     else:
         print("Unknown POS tag '{}'".format(gr_pos), file=sys.stderr)
+        return "X"
 
 def fix_gloss(gloss, affixes):
     morphs = gloss.split("-")
