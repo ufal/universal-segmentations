@@ -326,7 +326,7 @@ for entry, segmentation in new_segmented_lemmas.items():
     for morph, label in zip(morphs, labels):
         lexicon.add_contiguous_morpheme(
             lex_id=lexeme,
-            annot_name='?TODO?',
+            annot_name='DerivBase.Ru-1.0',
             start=start,
             end=start + len(morph),
             features={'type': 'unsegmented' if label == 'STEM' else parse_type.get(label[0], '')}

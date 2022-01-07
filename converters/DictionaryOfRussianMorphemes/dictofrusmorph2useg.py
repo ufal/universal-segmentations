@@ -41,7 +41,7 @@ with open(sys.argv[1], mode='r', encoding='U8') as infile:
                     seen_stem = True
                     lexicon.add_contiguous_morpheme(
                         lex_id=lexeme,
-                        annot_name='?TODO?',
+                        annot_name='Dictionary of Russian Morphemes',
                         start=init_index,
                         end=init_index + len(morph),
                         features={'type': 'root'}
@@ -49,7 +49,7 @@ with open(sys.argv[1], mode='r', encoding='U8') as infile:
                 elif not seen_stem:
                     lexicon.add_contiguous_morpheme(
                         lex_id=lexeme,
-                        annot_name='?TODO?',
+                        annot_name='Dictionary of Russian Morphemes',
                         start=init_index,
                         end=init_index + len(morph),
                         features={'type': 'prefix'}
@@ -58,7 +58,7 @@ with open(sys.argv[1], mode='r', encoding='U8') as infile:
                     if len(lemma) == init_index + len(morph):
                         lexicon.add_contiguous_morpheme(
                         lex_id=lexeme,
-                        annot_name='?TODO?',
+                        annot_name='Dictionary of Russian Morphemes',
                         start=init_index,
                         end=init_index + len(morph),
                         features={'type': 'suffix'}
@@ -66,7 +66,7 @@ with open(sys.argv[1], mode='r', encoding='U8') as infile:
                     else:
                         lexicon.add_contiguous_morpheme(
                             lex_id=lexeme,
-                            annot_name='?TODO?',
+                            annot_name='Dictionary of Russian Morphemes',
                             start=init_index,
                             end=init_index + len(morph),
                             features={'type': 'suffix'}
@@ -80,7 +80,7 @@ with open(sys.argv[1], mode='r', encoding='U8') as infile:
                     seen_stem = True
                     lexicon.add_contiguous_morpheme(
                         lex_id=lexeme,
-                        annot_name='?TODO?',
+                        annot_name='Dictionary of Russian Morphemes',
                         start=init_index,
                         end=init_index + len(morph),
                         features={'type': 'root'}
@@ -88,7 +88,7 @@ with open(sys.argv[1], mode='r', encoding='U8') as infile:
                 elif not seen_stem and not between_stems:
                     lexicon.add_contiguous_morpheme(
                         lex_id=lexeme,
-                        annot_name='?TODO?',
+                        annot_name='Dictionary of Russian Morphemes',
                         start=init_index,
                         end=init_index + len(morph),
                         features={'type': 'prefix'}
@@ -97,7 +97,7 @@ with open(sys.argv[1], mode='r', encoding='U8') as infile:
                     if len(lemma) == init_index + len(morph):
                         lexicon.add_contiguous_morpheme(
                         lex_id=lexeme,
-                        annot_name='?TODO?',
+                        annot_name='Dictionary of Russian Morphemes',
                         start=init_index,
                         end=init_index + len(morph),
                         features={'type': 'suffix'}
@@ -105,7 +105,7 @@ with open(sys.argv[1], mode='r', encoding='U8') as infile:
                     else:
                         lexicon.add_contiguous_morpheme(
                             lex_id=lexeme,
-                            annot_name='?TODO?',
+                            annot_name='Dictionary of Russian Morphemes',
                             start=init_index,
                             end=init_index + len(morph),
                             features={'type': 'suffix'}
@@ -113,7 +113,7 @@ with open(sys.argv[1], mode='r', encoding='U8') as infile:
                 else:
                     lexicon.add_contiguous_morpheme(
                         lex_id=lexeme,
-                        annot_name='?TODO?',
+                        annot_name='Dictionary of Russian Morphemes',
                         start=init_index,
                         end=init_index + len(morph),
                         features={'type': 'interfix'}

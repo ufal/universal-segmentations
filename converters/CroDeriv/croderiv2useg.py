@@ -58,7 +58,7 @@ for item, _ in entries:
         try:
             lexicon.add_contiguous_morpheme(
                 lex_id=lexeme,
-                annot_name='?TODO?',
+                annot_name='CroDeriV-1.0',
                 start=start,
                 end=start + len(morph),
                 features={'type': label.lower()}

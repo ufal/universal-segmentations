@@ -372,7 +372,7 @@ for entry, segmentation in new_segmented_lemmas.items():
             seen_stem = True
             lexicon.add_contiguous_morpheme(
                 lex_id=lexeme,
-                annot_name='?TODO?',
+                annot_name='DErivBase-2.0',
                 start=start,
                 end=start + len(morph),
                 features={'type': 'unsegmented' if label == 'STEM' else label}
@@ -380,7 +380,7 @@ for entry, segmentation in new_segmented_lemmas.items():
         elif not seen_stem:
             lexicon.add_contiguous_morpheme(
                 lex_id=lexeme,
-                annot_name='?TODO?',
+                annot_name='DErivBase-2.0',
                 start=start,
                 end=start + len(morph),
                 features={'type': 'prefix'}
@@ -388,7 +388,7 @@ for entry, segmentation in new_segmented_lemmas.items():
         else:
             lexicon.add_contiguous_morpheme(
                 lex_id=lexeme,
-                annot_name='?TODO?',
+                annot_name='DErivBase-2.0',
                 start=start,
                 end=start + len(morph),
                 features={'type': 'suffix'}
