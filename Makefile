@@ -54,8 +54,9 @@ clean:
 
 
 
-PUBLIC_DIR=data/release/UniSegs-0.1-public/data
-PRIVATE_DIR=data/release/UniSegs-0.1-private/data
+PUBLIC_DIR=data/release/UniSegs-1.0-public/data
+PUBLIC_DIR_DOC=data/release/UniSegs-1.0-public/doc
+PRIVATE_DIR=data/release/UniSegs-1.0-private/data
 prepare-release:
 	rm -rf data/release
 	mkdir data/release
@@ -137,3 +138,7 @@ prepare-release:
 		cp -r "$$data_directory" $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
 		cp -r LICENCE $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done;
+	mkdir -p $(PUBLIC_DIR_DOC)
+	cp doc/readmes/readme-1-0.txt $(PUBLIC_DIR_DOC)/README.md
+	cp doc/lindat-clariah-cz/license-data.txt $(PUBLIC_DIR_DOC)/LICENSE
+	wget https://ufal.mff.cuni.cz/techrep/tr69.pdf -O $(PUBLIC_DIR_DOC)/Towards-Universal-Segmentations-Survey-of-Existing-Morphosegmentation-Resources.pdf
