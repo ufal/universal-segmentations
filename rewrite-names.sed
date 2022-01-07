@@ -6,6 +6,7 @@ s/-DerIvaTario /-\\derivatario /
 s/-DerivBaseDE /-\\derivbasede /
 s/-DerivBaseRU /-\\derivbaseru /
 s/-MorphoDictKE /-\\morphodictke /
+s/-DictionaryOfRussianMorphemes /-\\morphodictke /
 s/-Echantinom /-\\echantinom /
 s/-KCIS /-\\kcis /
 s/-MorphoChallenge /-\\morphochallenge /
