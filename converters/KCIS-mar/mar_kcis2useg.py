@@ -62,7 +62,7 @@ def assign_upos(pos):
     if pos.startswith("RP"):
         upos = "PART"
     if pos.startswith("J"):
-        upos = "JJ"
+        upos = "ADJ"
     if pos.startswith("RB"):
         upos = "ADV"
     if pos.startswith("Q"):
@@ -75,13 +75,12 @@ def assign_upos(pos):
 
     if upos=="":
         pos_issues.warning("POS %s not assigned ", pos)
-        return "UNK"
 
     return upos
 
 def get_lemma(wordform, pos, fs):
     '''Returns lemma'''
-    return "UNK"
+    return ""
 
 def get_lexeme_features(af, pos):
     '''Extracts and translates features from af'''

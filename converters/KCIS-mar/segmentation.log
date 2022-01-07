@@ -44,8 +44,6 @@ Suffix े not at end position 4, of wordform चौथा, af: ['चौथा',
 Suffix ावरुन not at end position 7, of wordform छतावरून, af: ['छत', 'n', 'n', 'sg', '', 'd', '', 'ावरुन']
 Suffix ं not at end position 7, of wordform छत्र्या, af: ['छत्री', 'n', 'f', 'pl', '', 'o', 'ं', '्या_ं']
 Suffix ची not at end position 5, of wordform जपानी, af: ['जपान', 'n', 'm', 'sg', '', 'o', 'ची', 'ची']
-Suffix च्या not at end position 6, of wordform जमि<fs, af: ['जमिनीच्या', 'n', 'f', 'sg', '', 'o', 'च्या', 'ी_च्या']
-Suffix ी not at end position 6, of wordform जमि<fs, af: ['जमिनीच्या', 'n', 'f', 'sg', '', 'o', 'च्या', 'ी_च्या']
 Suffix चे not at end position 6, of wordform जवळजवळ, af: ['जवळजवळ', 'nst', '', '', '', '', 'चे', 'चे']
 Suffix चे not at end position 6, of wordform जवळजवळ, af: ['जवळजवळ', 'nst', '', '', '', '', 'चे', 'चे']
 Suffix ली not at end position 3, of wordform जात, af: ['कर', 'v', 'f', 'sg', '', 'd', 'ली', 'ली']
@@ -170,4 +168,3 @@ Suffix च्या not at end position 7, of wordform हॉटेलांश�
 Suffix च्या not at end position 6, of wordform होण्याजवळ, af: ['हो', 'v', 'n', 'sg', '', 'o', 'च्या_जवळ', 'ण्या_च्या_जवळ']
 Suffix ं not at end position 4, of wordform ह्या, af: ['हे', 'pn', 'n', 'pl', '', 'o', 'ं', '्या_ं']
 Suffix ्यां not at end position 4, of wordform ह्याच, af: ['ही', 'pn', 'f', 'pl', '', 'o', 'च', '्यां_च']
-Suffix लेले not at end position 3, of wordform <fs, af: ['अस', 'v', 'n', 'sg', '', 'd', 'लेले', 'लेले']

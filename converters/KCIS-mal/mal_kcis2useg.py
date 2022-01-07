@@ -278,7 +278,7 @@ def assign_upos(pos):
     if pos.startswith("RP"):
         upos = "PART"
     if pos.startswith("J"):
-        upos = "JJ"
+        upos = "ADJ"
     if pos.startswith("RB"):
         upos = "ADV"
     if pos.startswith("PR"):

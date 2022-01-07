@@ -211,7 +211,7 @@ def assign_upos(pos):
     if pos.startswith("RP"):
         upos = "PART"
     if pos.startswith("J"):
-        upos = "JJ"
+        upos = "ADJ"
     if pos.startswith("RB"):
         upos = "ADV"
     if pos.startswith("PR"):
@@ -224,7 +224,7 @@ def assign_upos(pos):
 
 def get_lemma(lexeme, pos, fs):
     '''Returns lemma'''
-    return "UNK"
+    return ""
 
 def get_lexeme_features(af, pos):
     '''Extracts and translates features from af'''

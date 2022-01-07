@@ -59,7 +59,7 @@ def assign_upos(lexeme, upos_assignment):
 
     if len(upos_assignment[lexeme])==0:
         pos_issues.warning("Lexeme %s not in UDer, POS not found", lexeme)
-        return "UNK", set()
+        return "", set()
     #RETURNING SOME CHOSEN POS AS WELL THE REMAINING ELEMENTS
     for pos in upos_assignment[lexeme]:
         break
