@@ -40,7 +40,7 @@ $(IN_DIR)/sqi_wordlist_analyzed.txt: | $(IN_DIR)
 	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-albanian/raw/master/wordlists/wordlist_analyzed.txt'
 
 $(IN_DIR)/tgk_wordlist_analyzed_fixed.txt: $(IN_DIR)/tgk_wordlist_analyzed.txt
-	sed -e 's/ trans_en=""//g; s/>__*/>/; s/__*</</; s/\(trans_ru="[^"]*" \)trans_ru="[^"]*"/\1/g' < '$<' > '$@'
+	sed -e 's/ trans_en=""//g; s/>__*/>/; s/__*</</; s/\(trans_ru="[^"]*" \)trans_ru="[^"]*"/\1/g; s/ N/N/' < '$<' > '$@'
 
 $(IN_DIR)/tgk_wordlist_analyzed.txt: | $(IN_DIR)
 	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-tajik/raw/master/wordlists/wordlist_analyzed.txt'
