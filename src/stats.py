@@ -271,12 +271,12 @@ def main(args):
     if args.printer == "tex":
         if args.only == "both":
             print(r"\begin{tabular}{lr|rrrrr|rrrrrrr} \toprule")
-            print(r"              &      & \multicolumn{4}{c}{Histogram of morphs per unit [\%]} & Mean morphs & Mean unit & Mean morph & Morph  & Roots per & Prefixes & Suffixes \\")
-            print(r"Resource name & Size & 1 & 2 & 3 & 4+                                        & per unit    & length    & length     & avg. len & unit    & per unit & per unit \\ \midrule")
+            print(r"              &      & \multicolumn{4}{c}{Distribution of morphs per unit [\%]} & Mean morphs & Mean unit & Mean morph & Morph  & Roots per & Prefixes & Suffixes \\")
+            print(r"Resource name & Size & 1 & 2 & 3 & 4+                                           & per unit    & length    & length     & avg. len & unit    & per unit & per unit \\ \midrule")
         elif args.only == "left":
             print(r"\begin{tabular}{lr|rrrrr|rr} \toprule")
-            print(r"              &      & \multicolumn{4}{c}{Histogram of morphs per unit [\%]} & Mean morphs & Mean unit     & Mean morph \\")
-            print(r"Resource name & Size & 1 & 2 & 3 & 4+                                        & per unit    & length [char] & length [char] \\ \midrule")
+            print(r"              &      & \multicolumn{4}{c}{Distribution of morphs per unit [\%]} & Mean morphs & Mean unit     & Mean morph \\")
+            print(r"Resource name & Size & 1 & 2 & 3 & 4+                                           & per unit    & length [char] & length [char] \\ \midrule")
         elif args.only == "right":
             print(r"\begin{tabular}{rrr} \toprule")
             print(r"Roots per & Prefixes & Suffixes \\")
