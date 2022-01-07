@@ -73,7 +73,7 @@ prepare-release:
 		cp -r "$$data_directory" $(PRIVATE_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
 		cp -r LICENCE $(PRIVATE_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
-	for data_directory in data/converted/*-MorphoDictKE; do \
+	for data_directory in data/converted/*-DictionaryOfRussianMorphemes; do \
 		cp -r "$$data_directory" $(PRIVATE_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
 		cp -r LICENCE $(PRIVATE_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
