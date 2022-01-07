@@ -117,7 +117,7 @@ prepare-release:
 		cp -r "$$data_directory" $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
 		cp -r LICENCE $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
-	for data_directory in data/converted/*-MorphoLEX; do \
+	for data_directory in data/converted/*-MorphoLex; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
 		cp -r LICENCE $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
