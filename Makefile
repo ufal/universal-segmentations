@@ -52,6 +52,13 @@ clean:
 
 
 
+convert-all:
+	for convertor in $$(ls -1 converters/); do \
+		cd converters/$$convertor/ ;\
+		$(MAKE) download ;\
+		$(MAKE) convert ;\
+		cd .. ;\
+	done
 
 
 PUBLIC_DIR=data/release/UniSegs-1.0-public/data
