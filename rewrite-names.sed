@@ -1,0 +1,17 @@
+s/-CELEX /-\\celex /
+s/-CroDeriV /-\\croderiv /
+s/-Demonette /-\\demonette /
+s/-DeriNet /-\\derinet /
+s/-DerIvaTario /-\\derivatario /
+s/-DerivBaseDE /-\\derivbasede /
+s/-DerivBaseRU /-\\derivbaseru /
+s/-MorphoDictKE /-\\morphodictke /
+s/-Echantinom /-\\echantinom /
+s/-KCIS /-\\kcis /
+s/-MorphoChallenge /-\\morphochallenge /
+s/-MorphoLex /-\\morpholex /
+s/-Tikhonov /-\\tikhonov /
+s/-MorphyNet /-\\morphynet /
+s/-PersianMorphSegLex /-\\perseglex /
+s/-Uniparser /-\\uniparser /
+s/-WordFormationLatin /-\\wfl /
