@@ -4,17 +4,20 @@
 
 * Type: Lexical conceptual
 
-* Title: Universal Segmentations v0.1 (UniSegs 0.1)
+* Title: Universal Segmentations 1.0 (UniSegments 1.0)
 
 * Project URL: https://ufal.mff.cuni.cz/universal-segmentations
 
 * Demo URL: ---
-
+ 
 * Referenced by: TechRep [https://ufal.mff.cuni.cz/techrep/tr69.pdf]
 
-* Data issued: 2022-01-10
+* Data issued: 2022-01-17
 
-* Authors: Vidra, Jonáš; Bafna, Nyati; Bodnár, Jan; Kyjánek, Lukáš; Svoboda, Emil; Žabokrtský, Zdeněk; Ševčíková, Magda; Filko, Matea; Šojat, Krešimir; Štefanec, Vanja; Hathout, Nabil; Namer, Fiammetta; Talamo, Luigi; Celata, Chiara; Bertinetto, Pier Marco; Zeller, Britta; Šnajder, Jan; Padó, Sebastian; Vodolazsky, Daniil; Bonami, Olivier; Tribout, Delphine; Ansari, Ebrahim; Haghdoost, Hamid; Nikravesh, Mahshid; Arkhangelskiy, Timofey; Fedorenko, Alexei; Khurshudyan, Victoria; Polyakov, Alexey; Khomchenkova, Irina; Zakirova, Aigul; Potapov, Mihail; Vydrin, Arseniy; Medvedeva, Maria; Litta, Eleonora; Passarotti, Marco; Batsuren, Khuyagbaatar; Bella, Gábor; Giunchiglia, Fausto; (TODO, so far ordered according to given consets with co-authorships)
+! TODO: add authors of MorphoChallenge - Creutz, Mathias; Kurimo, Mikko; Lagus, Krista; Turunen, Ville; Varjokallio, Matti; Virpioja, Sami; Arısoy, Ebru
+! TODO: add authors of MorphoLex - Mailhot, Hugo; Wilson, Maximiliano A.; Macoir, Joël; Deacon, S. Hélène; Sánchez-Gutiérrez, Claudia H.
+! TODO: change order of us (7 first authors)
+* Authors: Vidra, Jonáš; Bafna, Nyati; Bodnár, Jan; Kyjánek, Lukáš; Svoboda, Emil; Žabokrtský, Zdeněk; Ševčíková, Magda; Ansari, Ebrahim; Arkhangelskiy, Timofey; Batsuren, Khuyagbaatar; Bella, Gábor; Bertinetto, Pier Marco; Bonami, Olivier; Celata, Chiara; Fedorenko, Alexei; Filko, Matea; Giunchiglia, Fausto; Haghdoost, Hamid; Hathout, Nabil; Khomchenkova, Irina; Khurshudyan, Victoria; Litta, Eleonora; Medvedeva, Maria; Namer, Fiammetta; Nikravesh, Mahshid; Padó, Sebastian; Passarotti, Marco; Polyakov, Alexey; Potapov, Mihail; Šnajder, Jan; Šojat, Krešimir; Štefanec, Vanja; Talamo, Luigi; Tribout, Delphine; Vodolazsky, Daniil; Vydrin, Arseniy; Zakirova, Aigul; Zeller, Britta
 
 * Publisher: Charles University, Faculty of Mathematics and Physics, Institute of Formal and Applied Linguistics (UFAL)
 
@@ -34,13 +37,14 @@
 
 * Funding project name: Popis slovotvorné struktury českých slov na základě jazykových dat; A data-based approach to competition in word-formation: selected semantic categories across seven languages; Tvorba derivačních sítí pro více jazyků; Specifický vysokoškolský výzkum; LINDAT/CLARIN: Institut pro analýzu, zpracování a distribuci lingvistických dat; LINDAT/CLARIAH-CZ: Digitální výzkumná infrastruktura pro jazykové technologie, umění a humanitní vědy
 
-* Description: Universal Segmentations (UniSegs) is a collection of lexical resources capturing morphological segmentations harmonised into a cross-linguistically consistent annotation scheme for many languages. The annotation scheme consists of simple tab-separated columns that stores a word and its morphological segmentations, including pieces of information about the word and the segmented units, e.g., part-of-speech categories, type of morphs/morphemes etc. The current public version of the collection contains X harmonised resources covering 31 different languages.
+* Description: Universal Segmentations (UniSegments) is a collection of lexical resources capturing morphological segmentations harmonised into a cross-linguistically consistent annotation scheme for many languages. The annotation scheme consists of simple tab-separated columns that stores a word and its morphological segmentations, including pieces of information about the word and the segmented units, e.g., part-of-speech categories, type of morphs/morphemes etc. The current public version of the collection contains 37 harmonised resources covering 26 different languages.
 
 * Language: Catalan; Czech; German; English; Persian; Finnish; French; Serbo-Croatian; Hindi; Croatian; Hungarian; Armenian; Italian; Kannada; Komi-Zyrian; Latin; Malayalam; Marathi; Moksha; Mari; Mongolian; Erzya; Dutch; Polish; Portuguese; Russian; Spanish; Swedish; Tajik; Turkish; Udmurt
 
 * Subject keywords: unisegs; morphological segmentation; segmentation; universal segmentations; morphology; morphemes; morphological dictionary
 
-* Size: (TODO)
+! TODO: number of files
+* Size:
 
 * Media type: text
 

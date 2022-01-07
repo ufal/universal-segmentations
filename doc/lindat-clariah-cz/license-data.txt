@@ -1,6 +1,6 @@
-Universal Segmentations v0.1 License Terms
+Universal Segmentations 1.0 License Terms
 
-Universal Segmentations v0.1 (referred to as “UniSegs” in the rest of this document) is a collection of linguistic data. Each of the resource has its own license terms and you (the “User”) are responsible for complying with the license terms applicable to those parts of UniSegs which you use. If you do not agree with the license terms, you must stop using UniSegs and destroy all copies of UniSegs data that you have obtained.
+Universal Segmentations 1.0 (referred to as “UniSegs” in the rest of this document) is a collection of linguistic data. Each of the resource has its own license terms and you (the “User”) are responsible for complying with the license terms applicable to those parts of UniSegs which you use. If you do not agree with the license terms, you must stop using UniSegs and destroy all copies of UniSegs data that you have obtained.
 
 You are specifically reminded that some of the resources permit only non-commercial usage.
 
@@ -12,16 +12,16 @@ cat-MorphyNet | CC BY-SA 3.0
 ces-DeriNet | CC BY-NC-SA 3.0
 ces-MorphyNet | CC BY-SA 3.0
 deu-DerivBaseDE | CC BY-SA 3.0
-deu-MorphoChallenge | ?
+deu-MorphoChallenge | CC BY-NC-SA 4.0
 deu-MorphyNet | CC BY-SA 3.0
-eng-MorphoChallenge | ?
-eng-MorphoChallenge | ?
+eng-MorphoChallenge | CC BY-NC-SA 4.0
+eng-MorphoChallenge | CC BY-NC-SA 4.0
 eng-MorphoLEX | CC BY 4.0
 eng-MorphyNet | CC BY-SA 3.0
 fas-PersianMorphSegLex | CC BY-NC-SA 4.0
 fas-PersianMorphSegLex | CC BY-NC-SA 4.0
-fin-MorphoChallenge | ?
-fin-MorphoChallenge | ?
+fin-MorphoChallenge | CC BY-NC-SA 4.0
+fin-MorphoChallenge | CC BY-NC-SA 4.0
 fin-MorphyNet | CC BY-SA 3.0
 fra-MorphoLEX | CC BY 4.0
 fra-MorphyNet | CC BY-SA 3.0
@@ -52,8 +52,8 @@ rus-MorphyNet | CC BY-SA 3.0
 spa-MorphyNet | CC BY-SA 3.0
 swe-MorphyNet | CC BY-SA 3.0
 tgk-Uniparser | MIT
-tur-MorphoChallenge | ?
-tur-MorphoChallenge | ?
+tur-MorphoChallenge | CC BY-NC-SA 4.0
+tur-MorphoChallenge | CC BY-NC-SA 4.0
 udm-Uniparser | MIT
 
 
