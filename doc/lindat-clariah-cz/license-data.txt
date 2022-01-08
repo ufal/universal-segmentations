@@ -16,14 +16,14 @@ deu-MorphoChallenge | CC BY-NC-SA 4.0
 deu-MorphyNet | CC BY-SA 3.0
 eng-MorphoChallenge | CC BY-NC-SA 4.0
 eng-MorphoChallenge | CC BY-NC-SA 4.0
-eng-MorphoLEX | CC BY 4.0
+eng-MorphoLex | CC BY-NC-SA 4.0
 eng-MorphyNet | CC BY-SA 3.0
 fas-PersianMorphSegLex | CC BY-NC-SA 4.0
 fas-PersianMorphSegLex | CC BY-NC-SA 4.0
 fin-MorphoChallenge | CC BY-NC-SA 4.0
 fin-MorphoChallenge | CC BY-NC-SA 4.0
 fin-MorphyNet | CC BY-SA 3.0
-fra-MorphoLEX | CC BY 4.0
+fra-MorphoLex | CC BY-NC-SA 4.0
 fra-MorphyNet | CC BY-SA 3.0
 fra-Demonette | CC BY-NC-SA 3.0
 fra-Demonette | CC BY-NC-SA 3.0
@@ -47,7 +47,6 @@ myv-Uniparser | MIT
 pol-MorphyNet | CC BY-SA 3.0
 por-MorphyNet | CC BY-SA 3.0
 rus-DerivBaseRU | Apache-2.0
-rus-MorphoDictKE | 
 rus-MorphyNet | CC BY-SA 3.0
 spa-MorphyNet | CC BY-SA 3.0
 swe-MorphyNet | CC BY-SA 3.0

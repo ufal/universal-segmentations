@@ -15,9 +15,7 @@
 * Data issued: 2022-01-17
 
 ! TODO: add authors of MorphoChallenge - Creutz, Mathias; Kurimo, Mikko; Lagus, Krista; Turunen, Ville; Varjokallio, Matti; Virpioja, Sami; Arısoy, Ebru
-! TODO: add authors of MorphoLex - Mailhot, Hugo; Wilson, Maximiliano A.; Macoir, Joël; Deacon, S. Hélène; Sánchez-Gutiérrez, Claudia H.
-! TODO: change order of us (7 first authors)
-* Authors: Vidra, Jonáš; Bafna, Nyati; Bodnár, Jan; Kyjánek, Lukáš; Svoboda, Emil; Žabokrtský, Zdeněk; Ševčíková, Magda; Ansari, Ebrahim; Arkhangelskiy, Timofey; Batsuren, Khuyagbaatar; Bella, Gábor; Bertinetto, Pier Marco; Bonami, Olivier; Celata, Chiara; Fedorenko, Alexei; Filko, Matea; Giunchiglia, Fausto; Haghdoost, Hamid; Hathout, Nabil; Khomchenkova, Irina; Khurshudyan, Victoria; Litta, Eleonora; Medvedeva, Maria; Namer, Fiammetta; Nikravesh, Mahshid; Padó, Sebastian; Passarotti, Marco; Polyakov, Alexey; Potapov, Mihail; Šnajder, Jan; Šojat, Krešimir; Štefanec, Vanja; Talamo, Luigi; Tribout, Delphine; Vodolazsky, Daniil; Vydrin, Arseniy; Zakirova, Aigul; Zeller, Britta
+* Authors: Žabokrtský, Zdeněk; Bafna, Nyati; Bodnár, Jan; Kyjánek, Lukáš; Svoboda, Emil; Ševčíková, Magda; Vidra, Jonáš; Ansari, Ebrahim; Arkhangelskiy, Timofey; Batsuren, Khuyagbaatar; Bella, Gábor; Bertinetto, Pier Marco; Bonami, Olivier; Celata, Chiara; Fedorenko, Alexei; Filko, Matea; Giunchiglia, Fausto; Haghdoost, Hamid; Hathout, Nabil; Khomchenkova, Irina; Khurshudyan, Victoria; Litta, Eleonora; Medvedeva, Maria; Namer, Fiammetta; Nikravesh, Mahshid; Padó, Sebastian; Passarotti, Marco; Polyakov, Alexey; Potapov, Mihail; Šnajder, Jan; Šojat, Krešimir; Štefanec, Vanja; Talamo, Luigi; Tribout, Delphine; Vodolazsky, Daniil; Vydrin, Arseniy; Zakirova, Aigul; Zeller, Britta
 
 * Publisher: Charles University, Faculty of Mathematics and Physics, Institute of Formal and Applied Linguistics (UFAL)
 
