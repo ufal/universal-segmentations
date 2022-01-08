@@ -1,6 +1,6 @@
 DATADIR=../../data/
-IN_DIR=$(DATADIR)/original/DictionaryOfRussianMorphemes/
-OUT_DIR=$(DATADIR)/converted/rus-DictionaryOfRussianMorphemes/
+IN_DIR=$(DATADIR)/original/KuznetsEfremDict/
+OUT_DIR=$(DATADIR)/converted/rus-KuznetsEfremDict/
 
 SHELL = bash
 
@@ -16,7 +16,7 @@ download: # and unpack, if needed
 
 convert:
 	mkdir -p $(OUT_DIR)
-	./dictofrusmorph2useg.py $(IN_DIR)morphodictKE1985.txt $(OUT_DIR)DictionaryOfRussianMorphemes.useg > $(OUT_DIR)conversion.log
+	./dictofrusmorph2useg.py $(IN_DIR)morphodictKE1985.txt $(OUT_DIR)KuznetsEfremDict.useg > $(OUT_DIR)conversion.log
 
 clean:
 	rm -rf $(IN_DIR)
