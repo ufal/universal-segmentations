@@ -36,7 +36,7 @@ README.xhtml: README.adoc
 
 stats: stats-left.tex stats-right.tex
 
-stats-%.tex: src/stats.py
+stats-%.tex: src/stats.py rewrite-names.sed
 	cd data/converted && find * -name '*.useg' '!' '(' -path '*-UniMorph*' -o -path '*frc-*' -o -path '*RetrogradeDictionary*' ')' -exec $(abspath src/stats.py) --printer tex --threads 8 --only '$*' '{}' '+' | sed -f '$(abspath rewrite-names.sed)' > '$(abspath $@)'
 
 stats.tex: src/stats.py
