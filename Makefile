@@ -56,6 +56,18 @@ pos-examples: poses.txt
 		done; \
 	done < '$<'
 
+check-annot-names:
+	for f in `find data/converted -name '*.useg'`; do \
+		annot_names=`cut -f5 "$${f}" | grep -o '"annot_name": "[^"]*"' | sort -u`; \
+		if [ -z "$${annot_names}" ]; then \
+			printf 'NONE %s\n' "$${f}"; \
+		elif [ "`printf '%s\n' "$${annot_names}" | wc -l`" -eq 1 ]; then \
+			printf 'OK %s: %s\n' "$${f}" "$${annot_names}"; \
+		else \
+			printf 'ERR %s: %s\n' "$${f}" "$${annot_names}"; \
+		fi; \
+	done
+
 clean:
 	rm -f README.xhtml
 	rm -f .coverage htmlcov/index.html
