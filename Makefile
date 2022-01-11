@@ -114,7 +114,7 @@ PUBLIC_DIR=$(RELEASE_DIR)/UniSegments-1.0-public/data
 PUBLIC_DIR_DOC=$(RELEASE_DIR)/UniSegments-1.0-public/doc
 PRIVATE_DIR=$(RELEASE_DIR)/UniSegments-1.0-private/data
 LICENCE_DIR=doc/licenses
-prepare-release:
+prepare-release: doc/licenses/Uniparser/.all
 	rm -rf '$(PUBLIC_DIR)'
 	rm -rf '$(PRIVATE_DIR)'
 	mkdir -p '$(RELEASE_DIR)'
@@ -185,8 +185,9 @@ prepare-release:
 		cp -r $(LICENCE_DIR)/cc-by-nc-sa-4-0.txt $(PUBLIC_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/license.txt;\
 	done; \
 	for data_directory in data/converted/*-Uniparser; do \
+		lang_iso=`printf '%s' "$${data_directory}" | sed -e 'sX.*/XX; sX-.*XX'`;\
 		cp -r "$$data_directory" $(PUBLIC_DIR)/;\
-		cp -r $(LICENCE_DIR)/mit.txt $(PUBLIC_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/license.txt;\
+		cp '$(LICENCE_DIR)'/Uniparser/"$${lang_iso}.txt" $(PUBLIC_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/license.txt;\
 	done; \
 	for data_directory in data/converted/*-WordFormationLatin; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/;\
