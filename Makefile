@@ -89,7 +89,7 @@ prepare-release:
 	done; \
 	for data_directory in data/converted/*-UniMorph; do \
 		cp -r "$$data_directory" $(PRIVATE_DIR)/;\
-		cp -r $(LICENCE_DIR)/cc-by-sa 3-0.txt $(PRIVATE_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/license.txt;\
+		cp -r $(LICENCE_DIR)/cc-by-sa-3-0.txt $(PRIVATE_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/license.txt;\
 	done; \
 	for data_directory in data/converted/*-MorphoLex; do \
 		cp -r "$$data_directory" $(PRIVATE_DIR)/;\
