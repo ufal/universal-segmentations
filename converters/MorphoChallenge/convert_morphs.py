@@ -37,7 +37,7 @@ for word,morphs in data:
 
 lexicon = SegLex()
 for word,morphs in data:
-    lexeme=lexicon.add_lexeme(form=word, lemma=word, pos="none")
+    lexeme=lexicon.add_lexeme(form=word, lemma=word, pos="X")
     morph_classes=morpheme_cl.Guess(morphs)
     idx=0
     for i,morph in enumerate(morphs):

@@ -1,6 +1,6 @@
 DATADIR=../../data
-IN_DIR=$(DATADIR)/original/RetrogradeDictionary
-OUT_DIR=$(DATADIR)/converted/ces-RetrogradeDictionary
+IN_DIR=$(DATADIR)/original/SlavickovaDict
+OUT_DIR=$(DATADIR)/converted/ces-SlavickovaDict
 
 SHELL = bash
 
@@ -11,4 +11,4 @@ download: # and unpack, if needed
 
 convert:
 	mkdir -p $(OUT_DIR)
-	python ./convert_morphs.py $(IN_DIR)/slav_verbs.txt $(OUT_DIR)/retrograde_dictionary.useg
+	python ./convert_morphs.py $(IN_DIR)/slav_verbs.txt $(OUT_DIR)/SlavickovaDict.useg

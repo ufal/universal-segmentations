@@ -61,89 +61,86 @@ convert-all:
 	done
 
 
-PUBLIC_DIR=data/release/UniSegs-1.0-public/data
-PUBLIC_DIR_DOC=data/release/UniSegs-1.0-public/doc
-PRIVATE_DIR=data/release/UniSegs-1.0-private/data
+PUBLIC_DIR=data/release/UniSegments-1.0-public/data
+PUBLIC_DIR_DOC=data/release/UniSegments-1.0-public/doc
+PRIVATE_DIR=data/release/UniSegments-1.0-private/data
+LICENCE_DIR=doc/licenses
 prepare-release:
 	rm -rf data/release
 	mkdir data/release
 	mkdir -p $(PUBLIC_DIR)
 	mkdir -p $(PRIVATE_DIR)
+	echo PRIVATE DATASETS:; \
 	for data_directory in data/converted/*-CELEX; do \
 		cp -r "$$data_directory" $(PRIVATE_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
-		cp -r LICENCE $(PRIVATE_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
 	for data_directory in data/converted/*-KuznetsEfremDict; do \
 		cp -r "$$data_directory" $(PRIVATE_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
-		cp -r LICENCE $(PRIVATE_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
 	for data_directory in data/converted/*-KCIS; do \
 		cp -r "$$data_directory" $(PRIVATE_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
-		cp -r LICENCE $(PRIVATE_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
-	for data_directory in data/converted/*-Tikhonov; do \
+	for data_directory in data/converted/*-TichonovDict; do \
 		cp -r "$$data_directory" $(PRIVATE_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
-		cp -r LICENCE $(PRIVATE_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
-	for data_directory in data/converted/*-RetrogradeDictionary; do \
+	for data_directory in data/converted/*-SlavickovaDict; do \
 		cp -r "$$data_directory" $(PRIVATE_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
-		cp -r LICENCE $(PRIVATE_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
 	for data_directory in data/converted/*-UniMorph; do \
 		cp -r "$$data_directory" $(PRIVATE_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
-		cp -r LICENCE $(PRIVATE_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
+		cp -r $(LICENCE_DIR)/cc-by-sa 3-0.txt $(PRIVATE_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
+	for data_directory in data/converted/*-MorphoLex; do \
+		cp -r "$$data_directory" $(PRIVATE_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
+	done; \
+	echo PUBLIC DATASETS:; \
 	for data_directory in data/converted/*-DeriNet; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
-		cp -r LICENCE $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
+		cp -r $(LICENCE_DIR)/cc-by-nc-sa-3-0.txt $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
 	for data_directory in data/converted/*-CroDeriV; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
-		cp -r LICENCE $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
+		cp -r $(LICENCE_DIR)/cc-by-sa-3-0.txt $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
 	for data_directory in data/converted/*-Demonette; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
-		cp -r LICENCE $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
+		cp -r $(LICENCE_DIR)/cc-by-nc-sa-3-0.txt $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
 	for data_directory in data/converted/*-DerIvaTario; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
-		cp -r LICENCE $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
+		cp -r $(LICENCE_DIR)/cc-by-sa-4-0.txt $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
 	for data_directory in data/converted/*-DerivBaseDE; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
-		cp -r LICENCE $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
+		cp -r $(LICENCE_DIR)/cc-by-sa-3-0.txt $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
 	for data_directory in data/converted/*-DerivBaseRU; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
-		cp -r LICENCE $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
+		cp -r $(LICENCE_DIR)/apache-2-0.txt $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
 	for data_directory in data/converted/*-Echantinom; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
-		cp -r LICENCE $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
+		cp -r $(LICENCE_DIR)/cc-by-4.0.txt $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
 	for data_directory in data/converted/*-MorphoChallenge; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
 		cp -r LICENCE $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
-	for data_directory in data/converted/*-MorphoLex; do \
-		cp -r "$$data_directory" $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
-		cp -r LICENCE $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
-	done; \
 	for data_directory in data/converted/*-MorphyNet; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
-		cp -r LICENCE $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
+		cp -r $(LICENCE_DIR)/cc-by-sa-3-0.txt $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
 	for data_directory in data/converted/*-PersianMorphSegLex; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
-		cp -r LICENCE $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
+		cp -r $(LICENCE_DIR)/cc-by-nc-sa-4-0.txt $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
 	for data_directory in data/converted/*-Uniparser; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
-		cp -r LICENCE $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
+		cp -r $(LICENCE_DIR)/mit.txt $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done; \
 	for data_directory in data/converted/*-WordFormationLatin; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')";\
-		cp -r LICENCE $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
+		cp -r $(LICENCE_DIR)/cc-by-nc-sa-4-0.txt $(PUBLIC_DIR)/"$$(echo $$(data_directory) | sed -r 's-.*/--')"/license.txt;\
 	done;
 	mkdir -p $(PUBLIC_DIR_DOC)
 	cp doc/readmes/readme-1-0.txt $(PUBLIC_DIR_DOC)/README.md

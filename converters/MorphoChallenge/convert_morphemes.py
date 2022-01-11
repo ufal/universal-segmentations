@@ -110,7 +110,7 @@ for word, morphs, morphemes, uncertainty_level in solved_words+solved_in_2010:
 
 lexicon = SegLex()
 for word,morphs,morphemes,level in solved_words:
-    lexeme=lexicon.add_lexeme(form=word, lemma=word, pos="none")
+    lexeme=lexicon.add_lexeme(form=word, lemma=word, pos="X")
     morph_classes=morpheme_cl.Guess(morphs)
     idx=0
     for i in range(len(morphs)):
@@ -119,7 +119,7 @@ for word,morphs,morphemes,level in solved_words:
         len_=len(morph)
         lexicon.add_contiguous_morpheme(
             lex_id=lexeme,
-            annot_name="MorphoChallenge",
+            annot_name="MorphoChallenge070809",
             start=idx,
             end=idx+len_,
             features={"morph": morph, "morpheme":morpheme, "type":morph_classes[i]},
@@ -127,7 +127,7 @@ for word,morphs,morphemes,level in solved_words:
         idx+=len_
 
 for word,morphs,morphemes,level in solved_in_2010:
-    lexeme=lexicon.add_lexeme(form=word, lemma=word, pos="none")
+    lexeme=lexicon.add_lexeme(form=word, lemma=word, pos="X")
     morph_classes=morpheme_cl.Guess(morphs)
     idx=0
     for i in range(len(morphs)):

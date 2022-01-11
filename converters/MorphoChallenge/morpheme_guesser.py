@@ -153,7 +153,7 @@ def guess_morphs(word, morphemes, morpheme2morph={}, virtual_morpheme2morph={}, 
 
 
 
-def create_morpheme2morph_mapping(data_new,data_old, language):
+def create_morpheme2morph_mapping(data_new,data_old, language=LANG_GER):
     morpheme2morph=defaultdict(Counter)
     virtual_morpheme2morph=defaultdict(Counter)
 
