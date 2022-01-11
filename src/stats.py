@@ -139,6 +139,7 @@ def process_file(filename):
     segmented_lexeme_cnt = 0
 
     form_stats = TypeTokenStats()
+    segmented_form_stats = TypeTokenStats()
     lemma_stats = TypeTokenStats()
     pos_stats = TypeTokenStats()
     morpheme_stats = TypeTokenStats()
@@ -194,6 +195,7 @@ def process_file(filename):
                 morph_count_counts[morph_count] = 1
 
         if is_segmented:
+            segmented_form_stats.record(seg_lex.form(lex_id))
             segmented_lexeme_cnt += 1
 
     resource_name = filename
@@ -234,7 +236,7 @@ def process_file(filename):
         #morph_stats.mean_length(),  # Already above
         #morph_stats.max_length(),
 
-        form_stats.mean_length(),
+        segmented_form_stats.mean_length(),
         morph_stats.mean_length(),
 
         root_stats.token_count() / annot_cnt if annot_cnt > 0 else 0.0,
