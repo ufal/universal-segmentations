@@ -141,7 +141,7 @@ prepare-release: doc/licenses/Uniparser/.all
 		cp -r "$$data_directory" $(PRIVATE_DIR)/;\
 		cp -r $(LICENCE_DIR)/cc-by-sa-3-0.txt $(PRIVATE_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/license.txt;\
 	done; \
-	for data_directory in data/converted/*-MorphoLex; do \
+	for data_directory in data/converted/*-MorphoChallenge; do \
 		cp -r "$$data_directory" $(PRIVATE_DIR)/;\
 	done; \
 	echo PUBLIC DATASETS:; \
@@ -173,9 +173,9 @@ prepare-release: doc/licenses/Uniparser/.all
 		cp -r "$$data_directory" $(PUBLIC_DIR)/;\
 		cp -r $(LICENCE_DIR)/cc-by-4-0.txt $(PUBLIC_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/license.txt;\
 	done; \
-	for data_directory in data/converted/*-MorphoChallenge; do \
+	for data_directory in data/converted/*-MorphoLex; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/;\
-		cp -r LICENCE $(PUBLIC_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/license.txt;\
+		cp -r $(LICENCE_DIR)/cc-by-nc-sa-4-0.txt $(PUBLIC_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/license.txt;\
 	done; \
 	for data_directory in data/converted/*-MorphyNet; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/;\
