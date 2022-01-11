@@ -67,6 +67,5 @@ We would like to thank all researchers who made their derivational resources pub
 This work was supported by:
 - the Grant No. GA19-14534S of the Czech Science Foundation,
 - the Grant No. START/HUM/010 of Grant schemes at Charles University (reg. No. CZ.02.2.69/0.0/0.0/19_073/0016935),
-- the Grant No. 1176219 of the Charles University Grant Agency,
 - the Grant No. SVV260575 of the Charles University,
 - the LINDAT/CLARIAH CZ project (No. LM2015071, No. LM2018101) of the Ministry of Education, Youth and Sports of the Czech Republic.
