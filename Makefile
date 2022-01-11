@@ -84,14 +84,15 @@ convert-all:
 	done
 
 
-PUBLIC_DIR=data/release/UniSegments-1.0-public/data
-PUBLIC_DIR_DOC=data/release/UniSegments-1.0-public/doc
-PRIVATE_DIR=data/release/UniSegments-1.0-private/data
+RELEASE_DIR=data/release
+PUBLIC_DIR=$(RELEASE_DIR)/UniSegments-1.0-public/data
+PUBLIC_DIR_DOC=$(RELEASE_DIR)/UniSegments-1.0-public/doc
+PRIVATE_DIR=$(RELEASE_DIR)/UniSegments-1.0-private/data
 LICENCE_DIR=doc/licenses
 prepare-release:
 	rm -rf '$(PUBLIC_DIR)'
 	rm -rf '$(PRIVATE_DIR)'
-	mkdir -p data/release
+	mkdir -p '$(RELEASE_DIR)'
 	mkdir -p '$(PUBLIC_DIR)'
 	mkdir -p '$(PRIVATE_DIR)'
 	echo PRIVATE DATASETS:; \
