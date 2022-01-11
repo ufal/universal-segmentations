@@ -6,12 +6,14 @@ s/-DerIvaTario /-\\derivatario /
 s/-DerivBaseDE /-\\derivbasede /
 s/-DerivBaseRU /-\\derivbaseru /
 s/-MorphoDictKE /-\\textit{\\morphodictke} /
+s/-KuznetsEfremDict /-\\textit{\\morphodictke} /
 s/-DictionaryOfRussianMorphemes /-\\textit{\\morphodictke} /
 s/-Echantinom /-\\echantinom /
 s/-KCIS /-\\kcis /
 s/-MorphoChallenge /-\\morphochallenge /
 s/-MorphoLex /-\\morpholex /
 s/-Tikhonov /-\\textit{\\tikhonov} /
+s/-TichonovDict /-\\textit{\\tikhonov} /
 s/-MorphyNet /-\\morphynet /
 s/-PersianMorphSegLex /-\\perseglex /
 s/-Uniparser /-\\uniparser /
