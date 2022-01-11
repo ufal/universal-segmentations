@@ -89,11 +89,11 @@ PUBLIC_DIR_DOC=data/release/UniSegments-1.0-public/doc
 PRIVATE_DIR=data/release/UniSegments-1.0-private/data
 LICENCE_DIR=doc/licenses
 prepare-release:
-	rm -rf $(PUBLIC_DIR)
-	rm -rf $(PRIVATE_DIR)
+	rm -rf '$(PUBLIC_DIR)'
+	rm -rf '$(PRIVATE_DIR)'
 	mkdir -p data/release
-	mkdir -p $(PUBLIC_DIR)
-	mkdir -p $(PRIVATE_DIR)
+	mkdir -p '$(PUBLIC_DIR)'
+	mkdir -p '$(PRIVATE_DIR)'
 	echo PRIVATE DATASETS:; \
 	for data_directory in data/converted/*-CELEX; do \
 		cp -r "$$data_directory" $(PRIVATE_DIR)/;\
