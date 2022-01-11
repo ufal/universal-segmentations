@@ -120,6 +120,7 @@ prepare-release: doc/licenses/Uniparser/.all
 	mkdir -p '$(RELEASE_DIR)'
 	mkdir -p '$(PUBLIC_DIR)'
 	mkdir -p '$(PRIVATE_DIR)'
+	set -e; \
 	echo PRIVATE DATASETS:; \
 	for data_directory in data/converted/*-CELEX; do \
 		cp -r "$$data_directory" $(PRIVATE_DIR)/;\
