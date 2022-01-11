@@ -16,31 +16,31 @@ download: $(LANGS:%=$(IN_DIR)/%_wordlist_analyzed_fixed.txt) $(IN_DIR)/tgk_affix
 $(IN_DIR)/udm_wordlist_analyzed_fixed.txt: $(IN_DIR)/udm_wordlist_analyzed.txt
 	# There are some spurious underscores in some word forms;
 	#  get rid of them. Also, fix STEMSTEM -> STEM
-	sed -e 's/__//; s/_</</; s/"STEMSTEM"/"STEM"/; s/<\(ӥськ\|он\|н\|ыт\|м\|эм\|ем\|ськ\|иськ\|т\|ск\|PASS\|VN\|CAUS\|PTCP\.PST\)>/\&lt;\1\&gt;/g' < '$<' > '$@'
+	sed -e 's/__//; s/_</</; s/"STEMSTEM"/"STEM"/; s/<\(ӥськ\|он\|н\|ыт\|м\|эм\|ем\|ськ\|иськ\|т\|ск\|PASS\|VN\|CAUS\|PTCP\.PST\)>/\&lt;\1\&gt;/g' < '$<' | LC_COLLATE=POSIX sort -u > '$@'
 
 $(IN_DIR)/udm_wordlist_analyzed.txt: | $(IN_DIR)
 	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-udm/raw/master/wordlists/wordlist_analyzed.txt'
 
 $(IN_DIR)/kpv_wordlist_analyzed_fixed.txt: $(IN_DIR)/kpv_wordlist_analyzed.txt
-	sed -e 's/<\(с\|ыс\|ӧд\|ысс\|сс\|CAUS\|PASS\)>/\&lt;\1\&gt;/g' < '$<' > '$@'
+	sed -e 's/<\(с\|ыс\|ӧд\|ысс\|сс\|CAUS\|PASS\)>/\&lt;\1\&gt;/g' < '$<' | LC_COLLATE=POSIX sort -u > '$@'
 
 $(IN_DIR)/kpv_wordlist_analyzed.txt: | $(IN_DIR)
 	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-komi-zyrian/raw/master/wordlists/wordlist_analyzed.txt'
 
 $(IN_DIR)/mdf_wordlist_analyzed_fixed.txt: $(IN_DIR)/mdf_wordlist_analyzed.txt
-	sed -e 's/<\(фт\|CAUS\)>/\&lt;\1\&gt;/g' < '$<' > '$@'
+	sed -e 's/<\(фт\|CAUS\)>/\&lt;\1\&gt;/g' < '$<' | LC_COLLATE=POSIX sort -u > '$@'
 
 $(IN_DIR)/mdf_wordlist_analyzed.txt: | $(IN_DIR)
 	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-moksha/raw/master/wordlists/wordlist_analyzed.txt'
 
 $(IN_DIR)/%_wordlist_analyzed_fixed.txt: $(IN_DIR)/%_wordlist_analyzed.txt
-	cp '$<' '$@'
+	LC_COLLATE=POSIX sort -u '$<' > '$@'
 
 $(IN_DIR)/sqi_wordlist_analyzed.txt: | $(IN_DIR)
 	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-albanian/raw/master/wordlists/wordlist_analyzed.txt'
 
 $(IN_DIR)/tgk_wordlist_analyzed_fixed.txt: $(IN_DIR)/tgk_wordlist_analyzed.txt
-	sed -e 's/ trans_en=""//g; s/>__*/>/; s/__*</</; s/\(trans_ru="[^"]*" \)trans_ru="[^"]*"/\1/g; s/ N/N/' < '$<' > '$@'
+	sed -e 's/ trans_en=""//g; s/>__*/>/; s/__*</</; s/\(trans_ru="[^"]*" \)trans_ru="[^"]*"/\1/g; s/ N/N/' < '$<' | LC_COLLATE=POSIX sort -u > '$@'
 
 $(IN_DIR)/tgk_wordlist_analyzed.txt: | $(IN_DIR)
 	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-tajik/raw/master/wordlists/wordlist_analyzed.txt'
@@ -58,19 +58,19 @@ $(IN_DIR)/aii_wordlist_analyzed.txt: | $(IN_DIR)
 	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-urmi/raw/master/wordlists/wordlist_analyzed.txt'
 
 $(IN_DIR)/mhr_wordlist_analyzed_fixed.txt: $(IN_DIR)/mhr_wordlist_analyzed.txt
-	sed -e 's/>__*/>/; s/__*</</' < '$<' > '$@'
+	sed -e 's/>__*/>/; s/__*</</' < '$<' | LC_COLLATE=POSIX sort -u > '$@'
 
 $(IN_DIR)/mhr_wordlist_analyzed.txt: | $(IN_DIR)
 	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-meadow-mari/raw/master/wordlists/wordlist_analyzed.txt'
 
 $(IN_DIR)/myv_wordlist_analyzed_fixed.txt: $(IN_DIR)/myv_wordlist_analyzed.txt
-	sed -e 's/<\(ез\|з\|вт\|оз\|в\|кшн\|н\|эз\|из\|ов\|зев\|ев\|окшн\|PTCP\.PST\|CAUS\|PASS\|ITER\|MULT\|INCH\)>/\&lt;\1\&gt;/g; s/"STEMSTEM"/"STEM"/' < '$<' > '$@'
+	sed -e 's/<\(ез\|з\|вт\|оз\|в\|кшн\|н\|эз\|из\|ов\|зев\|ев\|окшн\|PTCP\.PST\|CAUS\|PASS\|ITER\|MULT\|INCH\)>/\&lt;\1\&gt;/g; s/"STEMSTEM"/"STEM"/' < '$<' | LC_COLLATE=POSIX sort -u > '$@'
 
 $(IN_DIR)/myv_wordlist_analyzed.txt: | $(IN_DIR)
 	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-erzya/raw/master/wordlists/wordlist_analyzed.txt'
 
 $(IN_DIR)/hye_wordlist_analyzed_fixed.txt: $(IN_DIR)/hye_wordlist_analyzed.txt
-	sed -e 's/"Ramkavar"/\&quot;Ramkavar\&quot;/g' < '$<' > '$@'
+	sed -e 's/"Ramkavar"/\&quot;Ramkavar\&quot;/g' < '$<' | LC_COLLATE=POSIX sort -u > '$@'
 
 $(IN_DIR)/hye_wordlist_analyzed.txt: | $(IN_DIR)
 	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-eastern-armenian/raw/master/wordlists/eanc_wordlist_analyzed.txt'
