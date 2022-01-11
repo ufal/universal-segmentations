@@ -74,6 +74,31 @@ clean:
 	rm -f stats.tex stats-non-unimorph.tex
 
 
+doc/licenses/Uniparser/aii.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-urmi/raw/master/LICENSE'
+doc/licenses/Uniparser/hye.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-eastern-armenian/raw/master/LICENSE'
+doc/licenses/Uniparser/kpv.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-komi-zyrian/raw/master/LICENSE'
+doc/licenses/Uniparser/mdf.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-moksha/raw/master/LICENSE'
+doc/licenses/Uniparser/mhr.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-meadow-mari/raw/master/LICENSE'
+doc/licenses/Uniparser/myv.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-erzya/raw/master/LICENSE'
+doc/licenses/Uniparser/sqi.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-albanian/raw/master/LICENSE'
+doc/licenses/Uniparser/tgk.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-tajik/raw/master/LICENSE.md'
+doc/licenses/Uniparser/tru.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/margisk/uniparser-grammar-turoyo/raw/master/LICENSE'
+doc/licenses/Uniparser/udm.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-udm/raw/master/LICENSE'
+doc/licenses/Uniparser:
+	mkdir -p '$@'
+doc/licenses/Uniparser/.all: doc/licenses/Uniparser/aii.txt doc/licenses/Uniparser/hye.txt doc/licenses/Uniparser/kpv.txt doc/licenses/Uniparser/mdf.txt doc/licenses/Uniparser/mhr.txt doc/licenses/Uniparser/myv.txt doc/licenses/Uniparser/sqi.txt doc/licenses/Uniparser/tgk.txt doc/licenses/Uniparser/tru.txt doc/licenses/Uniparser/udm.txt
+	touch '$@'
+
 
 convert-all:
 	for convertor in $$(ls -1 converters/); do \
