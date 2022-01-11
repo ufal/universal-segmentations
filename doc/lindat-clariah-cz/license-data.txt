@@ -12,34 +12,23 @@ cat-MorphyNet | CC BY-SA 3.0
 ces-DeriNet | CC BY-NC-SA 3.0
 ces-MorphyNet | CC BY-SA 3.0
 deu-DerivBaseDE | CC BY-SA 3.0
-deu-MorphoChallenge | CC BY-NC-SA 4.0
 deu-MorphyNet | CC BY-SA 3.0
-eng-MorphoChallenge | CC BY-NC-SA 4.0
-eng-MorphoChallenge | CC BY-NC-SA 4.0
 eng-MorphoLex | CC BY-NC-SA 4.0
 eng-MorphyNet | CC BY-SA 3.0
 fas-PersianMorphSegLex | CC BY-NC-SA 4.0
-fas-PersianMorphSegLex | CC BY-NC-SA 4.0
-fin-MorphoChallenge | CC BY-NC-SA 4.0
-fin-MorphoChallenge | CC BY-NC-SA 4.0
 fin-MorphyNet | CC BY-SA 3.0
-fra-MorphoLex | CC BY-NC-SA 4.0
-fra-MorphyNet | CC BY-SA 3.0
-fra-Demonette | CC BY-NC-SA 3.0
 fra-Demonette | CC BY-NC-SA 3.0
 fra-Echantinom | CC BY 4.0
+fra-MorphoLex | CC BY-NC-SA 4.0
+fra-MorphyNet | CC BY-SA 3.0
 hbs-MorphyNet | CC BY-SA 3.0
-hin-KCIS | CC BY-NC 4.0
 hrv-CroDeriV | CC BY-SA 3.0
 hun-MorphyNet | CC BY-SA 3.0
 hye-Uniparser | MIT
 ita-DerIvaTario | CC BY-SA 4.0
 ita-MorphyNet | CC BY-SA 3.0
-kan-KCIS | CC BY-NC 4.0
 kpv-Uniparser | MIT
 lat-WordFormationLatin | CC BY-NC-SA 4.0
-mal-KCIS | CC BY-NC 4.0
-mar-KCIS | CC BY-NC 4.0
 mdf-Uniparser | MIT
 mhr-Uniparser | MIT
 mon-MorphyNet | CC BY-SA 3.0
@@ -51,8 +40,6 @@ rus-MorphyNet | CC BY-SA 3.0
 spa-MorphyNet | CC BY-SA 3.0
 swe-MorphyNet | CC BY-SA 3.0
 tgk-Uniparser | MIT
-tur-MorphoChallenge | CC BY-NC-SA 4.0
-tur-MorphoChallenge | CC BY-NC-SA 4.0
 udm-Uniparser | MIT
 
 
@@ -61,7 +48,6 @@ License | URL
 Apache-2.0 | https://www.apache.org/licenses/LICENSE-2.0.txt
 CC BY-NC-SA 4.0 | https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
 CC BY 4.0 | https://creativecommons.org/licenses/by/4.0/legalcode
-CC BY-NC 4.0 | https://creativecommons.org/licenses/by-nc/4.0/legalcode
 CC BY-NC-SA 3.0 | https://creativecommons.org/licenses/by-nc-sa/3.0/legalcode
 CC BY-SA 3.0 | https://creativecommons.org/licenses/by-sa/3.0/legalcode
 CC BY-SA 4.0 | https://creativecommons.org/licenses/by-sa/4.0/legalcode
