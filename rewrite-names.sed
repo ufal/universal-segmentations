@@ -10,7 +10,7 @@ s/\(...\)-KuznetsEfremDict /\\textit{\1-\\morphodictke} /
 s/\(...\)-DictionaryOfRussianMorphemes /\\textit{\1-\\morphodictke} /
 s/-Echantinom /-\\echantinom /
 s/-KCIS /-\\kcis /
-s/-MorphoChallenge /-\\morphochallenge /
+s/\(...\)-MorphoChallenge /\\textit{\1-\\morphochallenge} /
 s/-MorphoLex /-\\morpholex /
 s/\(...\)-Tikhonov /\\textit{\1-\\tikhonov} /
 s/\(...\)-TichonovDict /\\textit{\1-\\tikhonov} /
