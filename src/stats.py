@@ -275,8 +275,9 @@ def main(args):
             print(r"Resource name & Size & 1 & 2 & 3 & 4+                                           & per unit    & length    & length     & avg. len & unit    & per unit & per unit \\ \midrule")
         elif args.only == "left":
             print(r"\begin{tabular}{lrrrrrrrr} \toprule")
-            print(r"              &      & \multicolumn{4}{c}{Distribution of morphs per unit [\%]} & Mean morphs & Mean unit     & Mean morph \\")
-            print(r"Resource name & Size & 1 & 2 & 3 & 4+                                           & per unit    & length [char] & length [char] \\ \midrule")
+            print(r"              &      & \multicolumn{4}{c}{Distribution of}      & Mean     & Mean unit & Mean \\")
+            print(r"              &      & \multicolumn{4}{c}{morphs per unit [\%]} & morphs   & length    & morph \\")
+            print(r"Resource name & Size & 1 & 2 & 3 & 4+                           & per unit & [char]    & len [char] \\ \midrule")
         elif args.only == "right":
             print(r"\begin{tabular}{rrr} \toprule")
             print(r"Roots per & Prefixes & Suffixes \\")
