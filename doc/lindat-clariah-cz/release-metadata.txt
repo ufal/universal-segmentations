@@ -18,13 +18,13 @@
 
 * Publisher: Charles University, Faculty of Mathematics and Physics, Institute of Formal and Applied Linguistics (UFAL)
 
-* Contact person's given name: Zdeněk
+* Contact person's given name: Jonáš; Zdeněk
 
-* Contact person's surname: Žabokrtský
+* Contact person's surname: Vidra; Žabokrtský
 
-* Contact person's email: zabokrtsky@ufal.mff.cuni.cz
+* Contact person's email: vidra@ufal.mff.cuni.cz; zabokrtsky@ufal.mff.cuni.cz
 
-* Contact person's insitution name: Charles University, Faculty of Mathematics and Physics, Institute of Formal and Applied Linguistics (UFAL)
+* Contact person's insitution name: Charles University, Faculty of Mathematics and Physics, Institute of Formal and Applied Linguistics (UFAL); Charles University, Faculty of Mathematics and Physics, Institute of Formal and Applied Linguistics (UFAL)
 
 * Funding type: National; National; National; National; National
 
@@ -38,7 +38,7 @@
 
 * Language: Catalan; Czech; German; English; Persian; Finnish; French; Serbo-Croatian; Croatian; Hungarian; Armenian; Italian; Kannada; Komi-Zyrian; Latin; Moksha; Mari; Mongolian; Erzya; Polish; Portuguese; Russian; Spanish; Swedish; Tajik; Udmurt
 
-* Subject keywords: unisegs; morphological segmentation; segmentation; universal segmentations; morphology; morphemes; morphological dictionary
+* Subject keywords: unisegments; morphological segmentation; segmentation; universal segmentations; morphology; morphemes; morphological dictionary
 
 * Size: 33 files
 
