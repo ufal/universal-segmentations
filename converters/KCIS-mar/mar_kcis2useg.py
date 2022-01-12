@@ -196,7 +196,7 @@ for line in infile:
 
             features = {"type": "suffix"}
 
-            if morph == "ा" and end != len(wordform):
+            if morph in ["ा", "ां"] and end != len(wordform):
                 features["type"] = "interfix"
 
             lexicon.add_contiguous_morpheme(lex_id, annot_name, start, end, features)
