@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 
-import re
-import string
+import logging
 import sys
+import string
+import re
+
 sys.path.append('../../src/')
 from useg import SegLex
-
-
-import logging
 
 def setup_logger(logger_name, log_file, level=logging.INFO):
     l = logging.getLogger(logger_name)
     fileHandler = logging.FileHandler(log_file, mode='w')
     l.setLevel(level)
     l.addHandler(fileHandler)
+
 
 setup_logger('gen_issues', r'general.log')
 setup_logger('seg_issues', r'segmentation.log')
@@ -30,6 +30,7 @@ if len(sys.argv) != 3:
 gen_issues.info(f"Converting {sys.argv[1]} to {sys.argv[2]}")
 
 lexicon = SegLex()
+
 
 def isascii(str):
     '''Returns True if English'''
@@ -72,15 +73,16 @@ def assign_upos(pos):
     if pos.startswith("INTF"):
         upos = "ADV"
 
-
-    if upos=="":
+    if upos == "":
         pos_issues.warning("POS %s not assigned ", pos)
 
     return upos
 
+
 def get_lemma(wordform, pos, fs):
     '''Returns lemma'''
     return ""
+
 
 def get_lexeme_features(af, pos):
     '''Extracts and translates features from af'''
@@ -90,7 +92,7 @@ def get_lexeme_features(af, pos):
     if isascii(af[0]):
         del features["root"]
 
-    if len(af)!=8:
+    if len(af) != 8:
         return features
 
     lcats = {"n", "adj", "avy", "adv", "num", "psp", "v", "any"}
@@ -98,7 +100,6 @@ def get_lexeme_features(af, pos):
     numbers = {"sg", "pl", "any"}
     persons = {"1", "2", "3", "1h", "2h", "3h" "any"}
     cases = {"d", "o", "any"}
-
 
     features["lcat"] = af[1] if af[1] in lcats else ""
     features["gender"] = af[2] if af[2] in genders else ""
@@ -113,7 +114,7 @@ def get_lexeme_features(af, pos):
 
     features["AnnCorra_tag"] = pos
 
-    features = {k:v for k,v in features.items() if v!=""}
+    features = {k: v for k, v in features.items() if v != ""}
 
     return features
 
@@ -123,19 +124,19 @@ infile = open(sys.argv[1])
 
 
 allomorph_eq_sets = [{"चा", "ची", "चे", "चं", "च", "च्या"},
-{"ला", "ली", "ले", "लं", "ल", "ल्या"},
-{"ता","तो", "ती", "ते", "तं", "त्या", "तात" }]
+                     {"ला", "ली", "ले", "लं", "ल", "ल्या"},
+                     {"ता", "तो", "ती", "ते", "तं", "त्या", "तात"}]
 
-allomorph_sets = {morph:morph_set for morph_set in allomorph_eq_sets for morph in morph_set}
+allomorph_sets = {morph: morph_set for morph_set in allomorph_eq_sets for morph in morph_set}
 
 for line in infile:
     entries = line.strip().split("\t")
     wordform = entries[0].strip("'\"").strip()
-    if re.match("\d",wordform):
+    if re.match("\d", wordform):
         continue
     if isascii(wordform):
         continue
-    if len(wordform)==0:
+    if len(wordform) == 0:
         continue
     pos = entries[1].strip()
     fs = entries[2].strip()
@@ -151,15 +152,14 @@ for line in infile:
     # if wordform!= "अमेरीकेला":
     #     continue
 
-
-    if len(af)!=8:
+    if len(af) != 8:
         gen_issues.warning("Wordform %s has af: %s without enough fields", wordform, af)
         continue
 
-    if af[7]=="3": #Odd annotating anomaly
+    if af[7] == "3":  # Odd annotating anomaly
         continue
 
-    if af[7] != "" and isascii(af[7])==False:
+    if af[7] != "" and isascii(af[7]) == False:
         suffixes = af[7].split("_")
         suffixes.reverse()
         end = len(wordform)
@@ -180,7 +180,6 @@ for line in infile:
                         if wordform[:end].endswith(allomorph):
                             morph = allomorph
 
-
             if morph == "":
                 for suff in {suffix}.union(allomorph_sets.get(suffix, set())):
                     match = re.search(suff, wordform)
@@ -189,20 +188,24 @@ for line in infile:
                         morph = suff
                         break
                 if morph == "":
-                    seg_issues.warning("Suffix %s not at end position %s, of wordform %s, af: %s", suffix, end, wordform, af)
+                    seg_issues.warning(
+                        "Suffix %s not at end position %s, of wordform %s, af: %s", suffix, end, wordform, af)
                     continue
-
 
             start = len(wordform[:end]) - len(morph)
 
-            features = {"type":"suffix"}
+            features = {"type": "suffix"}
+
+            if morph == "ा" and end != len(wordform):
+                features["type"] = "interfix"
+
             lexicon.add_contiguous_morpheme(lex_id, annot_name, start, end, features)
 
             end = start
             # print(morph, start, end)
             # print("new end, ", end, wordform[:end])
 
-        lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, end, features={"type":"root"})
+        lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, end, features={"type": "root"})
 
 
 outfile = open(sys.argv[2], 'w')
