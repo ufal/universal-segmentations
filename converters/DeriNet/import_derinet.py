@@ -19,6 +19,25 @@ def parse_args():
     parser.add_argument("--annot-name", required=True, help="The name to use for storing the segmentation annotation.")
     return parser.parse_args()
 
+upos_tags = {'ADJ',
+             'ADP',
+             'ADV',
+             'AUX',
+             'CCONJ',
+             'SCONJ|CCONJ',
+             'DET',
+             'INTJ',
+             'NOUN',
+             'NUM',
+             'PART',
+             'PRON',
+             'PROPN',
+             'PUNCT',
+             'SCONJ',
+             'SYM',
+             'VERB',
+             'X'}
+
 def main(args):
     der_lexicon = Lexicon()
     der_lexicon.load(sys.stdin, on_err="continue")
@@ -26,7 +45,12 @@ def main(args):
     seg_lexicon = SegLex()
 
     for der_lexeme in der_lexicon.iter_lexemes(sort=False):
-        seg_lexeme = seg_lexicon.add_lexeme(der_lexeme.lemma, der_lexeme.lemma, pos=der_lexeme.pos, features=der_lexeme.feats)
+        if der_lexeme.pos in upos_tags:
+            pos = der_lexeme.pos
+        else:
+            pos = "X"
+
+        seg_lexeme = seg_lexicon.add_lexeme(der_lexeme.lemma, der_lexeme.lemma, pos=pos, features=der_lexeme.feats)
         for morpheme in der_lexeme.segmentation:
             features = {k: v for k, v in morpheme.items() if k not in {"Start", "End", "Type", "Morph"}}
 
