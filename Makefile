@@ -46,7 +46,7 @@ stats-non-unimorph.tex: src/stats.py
 	cd data/converted && find * -name '*.useg' -not -path '*UniMorph*' -exec $(abspath src/stats.py) --printer tex --threads 8 '{}' '+' > $(abspath $@)
 
 poses.txt:
-	find data/converted -name '*.useg' -exec cut -f3 '{}' '+' | sort -u > '$@'
+	find data/converted -name '*.useg' -exec cut -f3 '{}' '+' | grep -Fxve 'ADJ' -e 'ADP' -e 'ADV' -e 'AUX' -e 'CCONJ' -e 'DET' -e 'INTJ' -e 'NOUN' -e 'NUM' -e 'PART' -e 'PRON' -e 'PROPN' -e 'PUNCT' -e 'SCONJ' -e 'SYM' -e 'VERB' -e 'X' -e '' -e 'SCONJ|CCONJ' | sort -u > '$@'
 
 pos-examples: poses.txt
 	while IFS= read -r pos; do \
