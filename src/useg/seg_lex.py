@@ -78,16 +78,29 @@ class SegLex:
 
     def _simple_seg(self, lex_id, annot_name):
         simple_seg = []
-        last_morpheme = self.morpheme(lex_id, annot_name, 0)
+        last_morphemes = self.morphemes(lex_id, annot_name, sort=False, position=0)
         morph_str = ""
         for i, char in enumerate(self.form(lex_id)):
-            morpheme = self.morpheme(lex_id, annot_name, i)
-            if morpheme is last_morpheme:
+            morphemes = self.morphemes(lex_id, annot_name, sort=False, position=i)
+
+            morpheme_lists_identical = True
+
+            if len(morphemes) != len(last_morphemes):
+                morpheme_lists_identical = False
+            else:
+                # Check the morpheme lists item by item for equality.
+                for morpheme, last_morpheme in zip(morphemes, last_morphemes):
+                    if morpheme is not last_morpheme:
+                        morpheme_lists_identical = False
+                        break
+
+            if morpheme_lists_identical:
                 morph_str += char
             else:
-                last_morpheme = morpheme
+                last_morphemes = morphemes
                 simple_seg.append(morph_str)
                 morph_str = char
+
         simple_seg.append(morph_str)
         return simple_seg
 
