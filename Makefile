@@ -13,8 +13,8 @@ lint:
 #	snakeviz '$@'
 
 test:
-	@if command -v pytest > /dev/null; then \
-		PYTHONPATH=src/ pytest test/ ; \
+	@if python3 -m pytest --version > /dev/null 2>&1; then \
+		PYTHONPATH=src/ python3 -m pytest test/ ; \
 	else \
 		PYTHONPATH=src/ python3 -m unittest discover test/ ; \
 	fi
