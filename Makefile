@@ -16,7 +16,7 @@ test:
 	@if command -v pytest > /dev/null; then \
 		PYTHONPATH=src/ pytest test/ ; \
 	else \
-		PYTHONPATH=src/ python -m unittest discover test/ ; \
+		PYTHONPATH=src/ python3 -m unittest discover test/ ; \
 	fi
 
 test-all: data/converted/udm-Uniparser/all.useg test test/test_round_trip.sh test/test_round_trip.py
