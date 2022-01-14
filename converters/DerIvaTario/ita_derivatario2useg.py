@@ -91,6 +91,7 @@ def find_morph_boundaries(lexeme, morph, req_start = -1, is_last = False, is_pre
             current_start, current_end = -1, -1
 
             morph_start, morph_end = match.start(), match.end()
+            # print(is_last, morph, morph_start, morph_end)
 
             if morph_start != -1:
 
@@ -132,9 +133,11 @@ def choose_allomorph_boundaries(lexeme, allomorph_set = set(), req_start = -1, i
     best_boundary = dict()
 
     for morph in allomorph_set:
-        morph_start, morph_end = find_morph_boundaries(lexeme, morph, req_start, root_not_found, is_prefix)
+        morph_start, morph_end = find_morph_boundaries(lexeme, morph, req_start, is_last, is_prefix)
         if morph_start != -1:
             best_boundary[morph] = (morph_start, morph_end)
+
+    # print(best_boundary)
 
     #Choose allomorph with best boundary
     if len(best_boundary) == 0:
@@ -213,10 +216,12 @@ for line in infile:
     colfis_id = entries[0]
     lexeme = entries[1]
     root = entries[2].split(":")
+    simul_type = None
 
+    # if lexeme=="abbordaggio".lower():
+        # print(line)
 
-    # if lexeme!="RACCAPEZZARE".lower():
-        # continue
+    # continue
 
     if len(root) < 2:
         gen_issues.warning("Root %s does not have 2 fields", root)
@@ -251,16 +256,17 @@ for line in infile:
         # Arranging morphemes according to order in wordform
         morpheme_seq = []
         ordering = list()
+        type_record = dict()
         for idx, info_morpheme in enumerate(info_morphemes):
             if info_morpheme.split(":")[0] in prefixes:
                 morpheme_seq = [info_morpheme] + morpheme_seq
                 ordering = [idx] + ordering
+                type_record[idx] = "prefix"
             else:
                 morpheme_seq = morpheme_seq + [info_morpheme]
                 ordering = ordering + [idx]
-
-            # if info_morpheme.split(":")[0] == "conversion":
-                # conversion_lengths.append(sum([len(m.split(":")[1]) for m in morpheme_seq]))
+                type_record[idx] = "suffix" #does not differentiate between root and suffix because we only
+                #need this to find conversion type, which is either prefix or suffix
 
 
         # print("lexeme ", lexeme)
@@ -272,6 +278,8 @@ for line in infile:
         start = 0
         root_not_found = False
         post_root = False
+        is_prefix = False
+
         for info_morpheme_idx, info_morpheme in enumerate(morpheme_seq):
             is_last = info_morpheme_idx == len(morpheme_seq)-1
 
@@ -284,9 +292,14 @@ for line in infile:
                 # print(conversion_lengths, info_morpheme)
                 # length = conversion_lengths[0]
                 # conversion_lengths = conversion_lengths[1:]
-                features = {"type":"conversion", "ordering":order}
+
+                features = {"type":"suffix", "process_type":"conversion", "ordering":order}
+                # features["type"] = type_record[order-1]
+
                 if info_morpheme.endswith("-p"):
                     features["order_info"] = "simultaneous"
+                    # if simul_type:
+                    #     features["type"] = simul_type
                     info_morpheme = info_morpheme[:-2]
                 if info_morpheme.endswith("-g"):
                     features["order_info"] = "undecided"
@@ -296,6 +309,8 @@ for line in infile:
                 lexicon.add_contiguous_morpheme(lex_id, annot_name, start, start, features)
 
                 continue
+
+
 
             if len(info_morpheme.split(":")) < 2:
                 seg_issues.warning("Empty morph information %s of lexeme %s with desc %s", info_morpheme, lexeme, line)
@@ -334,7 +349,7 @@ for line in infile:
 
             morph_start, morph_end = choose_allomorph_boundaries(lexeme, current_allomorph_set, set_start, is_last, is_prefix)
 
-            # print(morpheme, allomorph, morph_start, morph_end)
+            # print(morpheme, allomorph, morph_start, morph_end, is_last)
             #POSSIBLE ISSUES
             if morph_start == -1:
                 if is_root:
@@ -365,13 +380,14 @@ for line in infile:
             #ADD INTERFIX/STEM IF REQUIRED
             if morph_start > start:
                 if lexeme[start]=="-":
-                    lexicon.add_contiguous_morpheme(lex_id, annot_name, start, start+1, features={"type":"hyphen"})
+                    lexicon.add_contiguous_morpheme(lex_id, annot_name, start, start+1, features={"type":"connector"})
                     start += 1
 
             if morph_start > start:
                 if root_not_found:
                     #ADD WARNING HERE?
                     features = {"type":"root", "ordering":0}
+
                     features["morpheme"] = lex_features["root"]
                     if "root_type" in lex_features:
                         features["root_type"] = lex_features["root_type"]
@@ -380,7 +396,7 @@ for line in infile:
                     lexicon.add_contiguous_morpheme(lex_id, annot_name, start, morph_start, features)
                     root_not_found = False
                 elif post_root:
-                    lexicon.add_contiguous_morpheme(lex_id, annot_name, start, morph_start, features={"type":"part_of_root","ordering":0})
+                    lexicon.add_contiguous_morpheme(lex_id, annot_name, start, morph_start, features={"type":"interfix","ordering":0})
                 else:
                     lexicon.add_contiguous_morpheme(lex_id, annot_name, start, morph_start, features={"type":"interfix","ordering":order})
             #ADD MORPH
@@ -388,14 +404,21 @@ for line in infile:
             features = {"morpheme":morpheme, "ordering":order}
             if is_root == True:
                 features["type"] = "root"
+                # type_record[0] = "root"
                 if "root_type" in lex_features:
                     features["root_type"] = lex_features["root_type"]
                 if "complex_type" in lex_features:
                     features["complex_type"] = lex_features["complex_type"]
             else:
+                if is_prefix:
+                    features["type"] = "prefix"
+                else:
+                    features["type"] = "suffix"
+                # type_record[order] = features["type"]
                 if info_morpheme.endswith("-p"):
                     features["order_info"] = "simultaneous"
                     info_morpheme = info_morpheme[:-2]
+                    simul_type = features["type"]
                 if info_morpheme.endswith("-g"):
                     features["order_info"] = "undecided"
                     info_morpheme = info_morpheme[:-2]

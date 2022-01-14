@@ -1,7 +1,5 @@
 Morph ismo overlaps with previous morpheme in lexeme accademismo with entry 4240;ACCADEMISMO;ACCADEMIA:root;ISMO:ismo:mt1:ms1;;;;;
 
-Morph mento overlaps with previous morpheme in lexeme addormentamento with entry 4780;ADDORMENTAMENTO;DORMIRE:presp;CONVERSION:V_A;ACons:ad:mt7:ms2a;CONVERSION:A_V;MENTO:mento:mt1:ms1;;
-
 Morph ico overlaps with previous morpheme in lexeme dermatologico with entry 25868;DERMATOLOGICO;DERMATOLOGIA:root:neocl_cmp;ICO:ico:mt1:ms1;;;;;
 
 Morph tore overlaps with previous morpheme in lexeme agricoltore with entry 5438;AGRICOLTORE;BASELESS:unrec;TURA:tura:mt8:ms3a;TORE:tore:mt6:ms1;;;;
@@ -2240,8 +2238,6 @@ Morph izzare overlaps with previous morpheme in lexeme simpatizzare with entry 7
 
 Morph ale overlaps with previous morpheme in lexeme regolarizzare with entry 67263;REGOLARIZZARE;REGOLA:root;ALE:ale:mt1:ms2b;IZZARE:izzare:mt1:ms2a;;;;
 
-Morph izzare overlaps with previous morpheme in lexeme razionalizzare with entry 66830;RAZIONALIZZARE;RAGIONE:suppl;ALE:ale:mt1:ms2b;IZZARE:izzare:mt1:ms1;;;;
-
 Morph ico overlaps with previous morpheme in lexeme autobiografico with entry 10370;AUTOBIOGRAFICO;BIOGRAFIA:root:neocl_cmp;AUTO:auto:mt1:ms1;ICO:ico:mt1:ms1;;;;
 
 Morph ale overlaps with previous morpheme in lexeme personalizzare with entry 60906;PERSONALIZZARE;PERSONA:root;ALE:ale:mt1:ms1;IZZARE:izzare:mt1:ms1;;;;
@@ -2256,8 +2252,6 @@ Morph izzare overlaps with previous morpheme in lexeme monopolizzare with entry 
 
 Morph izzare overlaps with previous morpheme in lexeme metabolizzare with entry 51933;METABOLIZZARE;METABOL:unrec:parad;ICO:ico:mt8:ms2a;IZZARE:izzare:mt5:ms1;;;;
 
-Morph izzare overlaps with previous morpheme in lexeme localizzare with entry 48075;LOCALIZZARE;LUOGO:suppl;ALE:ale:mt7:ms1;IZZARE:izzare:mt1:ms1;;;;
-
 Morph izzare overlaps with previous morpheme in lexeme ironizzare with entry 43396;IRONIZZARE;IRONIA:root;IZZARE:izzare:mt1:ms1;;;;;
 
 Morph izzare overlaps with previous morpheme in lexeme informatizzare with entry 41958;INFORMATIZZARE;INFORMATICA:root:cmp;CONVERSION:N_A;IZZARE:izzare:mt5:ms1;;;;
@@ -2267,10 +2261,6 @@ Morph izzare overlaps with previous morpheme in lexeme gentilonizzare with entry
 Morph izzare overlaps with previous morpheme in lexeme galvanizzare with entry 34952;GALVANIZZARE;GALVANI:root;IZZARE:izzare:mt1:ms2b;;;;;
 
 Morph ale overlaps with previous morpheme in lexeme formalizzare with entry 33531;FORMALIZZARE;FORMA:root;ALE:ale:mt1:ms1;IZZARE:izzare:mt1:ms1;;;;
-
-Morph izzare overlaps with previous morpheme in lexeme focalizzare with entry 33218;FOCALIZZARE;FUOCO:suppl;ALE:ale:mt7:ms2b;IZZARE:izzare:mt1:ms1;;;;
-
-Morph izzare overlaps with previous morpheme in lexeme familiarizzare with entry 31382;FAMILIARIZZARE;FAMIGLIA:suppl;ALE:are:mt7:ms2a;IZZARE:izzare:mt1:ms1;;;;
 
 Morph izzare overlaps with previous morpheme in lexeme enfatizzare with entry 29659;ENFATIZZARE;ENFASI:dnt_root;ICO:ico:mt1:ms1;IZZARE:izzare:mt5:ms1;;;;
 

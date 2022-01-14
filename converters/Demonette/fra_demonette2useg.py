@@ -100,7 +100,7 @@ def add_lexeme(lexicon, lexeme, grace_tag, morph_process, suffix, root, annot_na
     if "-" in lexeme:
         prefix = lexeme.split("-")[0]
         lexicon.add_contiguous_morpheme(lex_id, annot_name, 0, len(prefix), features={"type":"prefix"})
-        lexicon.add_contiguous_morpheme(lex_id, annot_name, len(prefix), len(prefix)+1, features={"type":"hyphen"})
+        lexicon.add_contiguous_morpheme(lex_id, annot_name, len(prefix), len(prefix)+1, features={"type":"connector"})
 
 
     if root != "" and lexeme.startswith(root):

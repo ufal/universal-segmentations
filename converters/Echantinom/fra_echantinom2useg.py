@@ -126,14 +126,14 @@ for line in infile:
     #Add processes for compounds
     if morph_process=="native_compound":
         if "-" in lexeme:
-            features1 = {"type":"root1"}
-            features2 = {"type":"root2"}
+            features1 = {"type":"root"}
+            features2 = {"type":"root"}
             if "-" in compound_type:
                 stems_tags = compound_type.split("-")
                 features1["upos"] = stems_tags[0]
                 features2["upos"] = stems_tags[1]
             lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, lexeme.index("-"), features=features1)
-            lexicon.add_contiguous_morpheme(lex_id, annot_name, lexeme.index("-"), lexeme.index("-")+1, features={"type":"hyphen"} )
+            lexicon.add_contiguous_morpheme(lex_id, annot_name, lexeme.index("-"), lexeme.index("-")+1, features={"type":"connector"} )
             lexicon.add_contiguous_morpheme(lex_id, annot_name, lexeme.index("-")+1, end_of_stem, features=features2)
     else:
         lexicon.add_contiguous_morpheme(lex_id, annot_name, start_of_stem, end_of_stem, features={"type":"root", "morpheme":base})

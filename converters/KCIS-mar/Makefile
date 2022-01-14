@@ -11,10 +11,10 @@ download: # and unpack, if needed
 
 convert:
 	mkdir -p $(OUT_DIR)
-	cat $(IN_DIR)/aggregated.txt | cut -f2- | grep fs | grep -v "((\|PUNC" |  sort | uniq > $(IN_DIR)/simplified_ssf.txt
+	cat $(IN_DIR)/aggregated.txt | cut -f2- | grep fs | grep -v "((\|PUNC" | sort | uniq > $(IN_DIR)/simplified_ssf.txt
 	
 	./mar_kcis2useg.py $(IN_DIR)/simplified_ssf.txt  $(OUT_DIR)$/with_duplicates.useg
 
-	cat $(OUT_DIR)$/with_duplicates.useg | sort | uniq > $(OUT_DIR)$/mar_kcis.useg
+	cat $(OUT_DIR)$/with_duplicates.useg | LC_COLLATE=POSIX sort | uniq > $(OUT_DIR)$/mar_kcis.useg
 	rm $(OUT_DIR)$/with_duplicates.useg
 	rm $(IN_DIR)/simplified_ssf.txt
