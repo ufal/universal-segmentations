@@ -12,7 +12,7 @@ class MorphemeClassifier:
         if(len_<1):
             return None
         elif(len_==1):
-            return ["ROOT"]
+            return ["root"]
 
         min_id =0
         min_cnt=self.morph_cntr.get(morph_list[0],0)
@@ -28,10 +28,10 @@ class MorphemeClassifier:
         i=0
         while i<len_:
             if(i<min_id):
-                class_list.append("PREFIX")
+                class_list.append("prefix")
             elif(i==min_id):
-                class_list.append("ROOT")
+                class_list.append("root")
             else:
-                class_list.append("SUFFIX")
+                class_list.append("suffix")
             i+=1
         return class_list
