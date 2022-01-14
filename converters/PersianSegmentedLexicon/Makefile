@@ -11,7 +11,5 @@ download: # and unpack, if needed
 
 convert:
 	mkdir -p $(OUT_DIR)
-	for FILE in train dev test ; do \
-	    ./persian2useg.py $(IN_DIR)$${FILE}.txt  $(OUT_DIR)$${FILE}.useg ; \
-	done
+	python ./persian2useg.py $(IN_DIR)train.txt $(IN_DIR)dev.txt $(IN_DIR)test.txt  $(OUT_DIR)fas-PersianMorphSegLex.useg
 
