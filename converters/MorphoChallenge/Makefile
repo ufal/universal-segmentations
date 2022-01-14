@@ -38,9 +38,8 @@ convert:
 
 	for lang in eng fin tur; do \
 		python ./convert_morphs.py $(IN_DIR)/morphs_2005_"$$lang".txt $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge05_"$$lang".useg 2>/dev/stdout | tee $(OUT_DIR)/"$$lang"-MorphoChallenge/logs/05_"$$lang"_log.txt; \
-		cat $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge05_"$$lang".useg >> $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge_"$$lang".useg; \
+		cat $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge05_"$$lang".useg $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge_"$$lang".useg | sort -u > $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge_"$$lang"_.useg;\
 		rm $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge05_"$$lang".useg; \
-		LC_COLLATE=POSIX sort;\
-		cat $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge_"$$lang".useg | sort -u > $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge_"$$lang"_.useg
-		mv $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge_"$$lang"_.useg $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge_"$$lang".useg
+		PYTHONPATH=../../src python ./do_round_trip.py $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge_"$$lang"_.useg $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge_"$$lang".useg ;\
+		rm $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge_"$$lang"_.useg;\
 	done
