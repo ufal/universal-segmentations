@@ -41,4 +41,5 @@ convert:
 		cat $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge05_"$$lang".useg $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge_"$$lang".useg | sort -u > $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge_"$$lang"_.useg;\
 		rm $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge05_"$$lang".useg; \
 		PYTHONPATH=../../src python ./do_round_trip.py $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge_"$$lang"_.useg $(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge_"$$lang".useg ;\
+		$(OUT_DIR)/"$$lang"-MorphoChallenge/MorphoChallenge_"$$lang"_.useg;\
 	done
