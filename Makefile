@@ -182,7 +182,7 @@ prepare-release: doc/licenses/Uniparser/.all
 		cp -r "$$data_directory" $(PUBLIC_DIR)/;\
 		cp -r $(LICENCE_DIR)/cc-by-sa-3-0.txt $(PUBLIC_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/LICENSE.TXT;\
 	done; \
-	for data_directory in data/converted/*-PersianMorphSegLex; do \
+	for data_directory in data/converted/*-PerSegLex; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/;\
 		cp -r $(LICENCE_DIR)/cc-by-nc-sa-4-0.txt $(PUBLIC_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/LICENSE.TXT;\
 	done; \

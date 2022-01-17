@@ -1,6 +1,6 @@
 DATADIR=../../data/
-IN_DIR=$(DATADIR)/original/PersianMorphSegLex/
-OUT_DIR=$(DATADIR)/converted/fas-PersianMorphSegLex/
+IN_DIR=$(DATADIR)/original/PerSegLex/
+OUT_DIR=$(DATADIR)/converted/fas-PerSegLex/
 
 SHELL = bash
 
@@ -11,5 +11,5 @@ download: # and unpack, if needed
 
 convert:
 	mkdir -p $(OUT_DIR)
-	python ./persian2useg.py $(IN_DIR)train.txt $(IN_DIR)dev.txt $(IN_DIR)test.txt  $(OUT_DIR)fas-PersianMorphSegLex.useg
+	python ./persian2useg.py $(IN_DIR)train.txt $(IN_DIR)dev.txt $(IN_DIR)test.txt  $(OUT_DIR)fas-PerSegLex.useg
 
