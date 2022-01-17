@@ -36,7 +36,7 @@
 
 * Description: Universal Segmentations (UniSegments) is a collection of lexical resources capturing morphological segmentations harmonised into a cross-linguistically consistent annotation scheme for many languages. The annotation scheme consists of simple tab-separated columns that stores a word and its morphological segmentations, including pieces of information about the word and the segmented units, e.g., part-of-speech categories, type of morphs/morphemes etc. The current public version of the collection contains 38 harmonised segmentation datasets covering 30 different languages.
 
-* Language: Catalan; Czech; German; English; Persian; Finnish; French; Serbo-Croatian; Croatian; Hungarian; Armenian; Italian; Kannada; Komi-Zyrian; Latin; Moksha; Mari; Mongolian; Erzya; Polish; Portuguese; Russian; Spanish; Swedish; Tajik; Udmurt
+* Language: Catalan; Czech; German; English; Persian; Finnish; French; Serbo-Croatian; Croatian; Hungarian; Armenian; Italian; Kannada; Komi-Zyrian; Latin; Moksha; Mari; Mongolian; Erzya; Polish; Portuguese; Russian; Spanish; Swedish; Tajik; Udmurt; Bengali; Hindi; Malayalam; Marathi
 
 * Subject keywords: unisegments; morphological segmentation; segmentation; universal segmentations; morphology; morphemes; morphological dictionary
 
