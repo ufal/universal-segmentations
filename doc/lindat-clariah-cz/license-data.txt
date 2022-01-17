@@ -1,6 +1,6 @@
 Universal Segmentations 1.0 License Terms
 
-Universal Segmentations 1.0 (referred to as “UniSegmes” in the rest of this document) is a collection of linguistic data. Each of the resource has its own license terms and you (the “User”) are responsible for complying with the license terms applicable to those parts of UniSegments which you use. If you do not agree with the license terms, you must stop using UniSegments and destroy all copies of UniSegments data that you have obtained.
+Universal Segmentations 1.0 (referred to as “UniSegments” in the rest of this document) is a collection of linguistic data. Each of the resource has its own license terms and you (the “User”) are responsible for complying with the license terms applicable to those parts of UniSegments which you use. If you do not agree with the license terms, you must stop using UniSegments and destroy all copies of UniSegments data that you have obtained.
 
 You are specifically reminded that some of the resources permit only non-commercial usage.
 
