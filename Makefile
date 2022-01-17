@@ -110,6 +110,7 @@ convert-all:
 
 
 RELEASE_DIR=data/release
+RELEASE_FILE=$(RELEASE_DIR)/UniSegments-1.0-public.tar.gz
 PUBLIC_DIR=$(RELEASE_DIR)/UniSegments-1.0-public/data
 PUBLIC_DIR_DOC=$(RELEASE_DIR)/UniSegments-1.0-public/doc
 PRIVATE_DIR=$(RELEASE_DIR)/UniSegments-1.0-private/data
@@ -208,3 +209,4 @@ prepare-release: doc/licenses/Uniparser/.all
 	cp doc/readmes/readme-1-0.txt $(PUBLIC_DIR_DOC)/README.md
 	cp doc/lindat-clariah-cz/license-data.txt $(PUBLIC_DIR_DOC)/LICENSE
 	wget https://ufal.mff.cuni.cz/techrep/tr69.pdf -O $(PUBLIC_DIR_DOC)/Towards-Universal-Segmentations-Survey-of-Existing-Morphosegmentation-Resources.pdf
+	tar -czvf $(RELEASE_FILE) $(PUBLIC_DIR)
