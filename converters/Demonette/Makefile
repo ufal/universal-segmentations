@@ -14,7 +14,7 @@ convert:
 	mkdir -p $(OUT_DIR)
 	./fra_demonette2useg.py $(IN_DIR)/demonette-1.2.csv  $(OUT_DIR)$/with_duplicates.useg
 #	wc -l $(OUT_DIR)$/with_duplicates.useg
-	cat $(OUT_DIR)$/with_duplicates.useg | LC_COLLATE=POSIX sort | uniq > $(OUT_DIR)$/fra_demonette.useg
+	cat $(OUT_DIR)$/with_duplicates.useg | uniq > $(OUT_DIR)$/fra_demonette.useg
 #	wc -l $(OUT_DIR)$/fra_demonette.useg
 #	cat $(OUT_DIR)$/fra_demonette.useg | grep "derif" > $(OUT_DIR)$/fra_demonette.derif.useg
 #	cat $(OUT_DIR)$/fra_demonette.useg | grep "demonette" > $(OUT_DIR)$/fra_demonette.demonette.useg
