@@ -8,6 +8,8 @@ class MorphemeClassifier:
 
     #returns list of morph classes. It has the same order as the provided morph list
     def Guess(self, morph_list):
+        return ["X" for i in morph_list] #we have decided to disable the guessing for now.
+
         len_=len(morph_list)
         if(len_<1):
             return None
