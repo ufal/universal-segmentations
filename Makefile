@@ -144,6 +144,7 @@ prepare-release: doc/licenses/Uniparser/.all
 	echo PUBLIC DATASETS:; \
 	for data_directory in data/converted/*-KCIS; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/;\
+		cp -r $(LICENCE_DIR)/cc-by-nc-4-0.txt $(PUBLIC_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/LICENSE.TXT;\
 	done; \
 	for data_directory in data/converted/*-DeriNet; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/;\
