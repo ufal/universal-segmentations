@@ -14,7 +14,7 @@
 
 * Data issued: 2022-01-17
 
-* Authors: Žabokrtský, Zdeněk; Bafna, Nyati; Bodnár, Jan; Kyjánek, Lukáš; Svoboda, Emil; Ševčíková, Magda; Vidra, Jonáš; Ansari, Ebrahim; Arkhangelskiy, Timofey; Batsuren, Khuyagbaatar; Bella, Gábor; Bertinetto, Pier Marco; Bonami, Olivier; Celata, Chiara; Fedorenko, Alexei; Filko, Matea; Giunchiglia, Fausto; Haghdoost, Hamid; Hathout, Nabil; Khomchenkova, Irina; Khurshudyan, Victoria; Litta, Eleonora; Medvedeva, Maria; Namer, Fiammetta; Nikravesh, Mahshid; Padó, Sebastian; Passarotti, Marco; Polyakov, Alexey; Potapov, Mihail; Šnajder, Jan; Šojat, Krešimir; Štefanec, Vanja; Talamo, Luigi; Tribout, Delphine; Vodolazsky, Daniil; Vydrin, Arseniy; Zakirova, Aigul; Zeller, Britta
+* Authors: Žabokrtský, Zdeněk; Bafna, Nyati; Bodnár, Jan; Kyjánek, Lukáš; Svoboda, Emil; Ševčíková, Magda; Vidra, Jonáš; Angle, Sachi; Ansari, Ebrahim; Arkhangelskiy, Timofey; Atmakuri, Shriya; Batsuren, Khuyagbaatar; Bella, Gábor; Bertinetto, Pier Marco; Bhattacharyya, Pushpak; Bonami, Olivier; Celata, Chiara; Fedorenko, Alexei; Filko, Matea; Ghag, Nandini; Giunchiglia, Fausto; Haghdoost, Hamid; Hathout, Nabil; Joshi, Nilesh; Khomchenkova, Irina; Khurshudyan, Victoria; Kulkarni, Malhar; Litta, Eleonora; Medvedeva, Maria; Mishra, Pruthwik; Muralikrishna, S. N.; Namer, Fiammetta; Nayak, Ashalatha; Nikravesh, Mahshid; Padó, Sebastian; Paranjape, Jai; Passarotti, Marco; Polyakov, Alexey; Potapov, Mihail; Rao B, Ashwath; Redkar, Hanumant; Shahi, Bhavya; Sharma, Dipti Misra; Singh, Sandhya; Šnajder, Jan; Šojat, Krešimir; Štefanec, Vanja; Talamo, Luigi; Tandon, Juhi; Todi, Ketan Kumar ; Tribout, Delphine; Vodolazsky, Daniil; Vydrin, Arseniy; Zakirova, Aigul; Zeller, Britta
 
 * Publisher: Charles University, Faculty of Mathematics and Physics, Institute of Formal and Applied Linguistics (UFAL)
 
@@ -34,13 +34,13 @@
 
 * Funding project name: Popis slovotvorné struktury českých slov na základě jazykových dat; A data-based approach to competition in word-formation: selected semantic categories across seven languages; Specifický vysokoškolský výzkum; LINDAT/CLARIN: Institut pro analýzu, zpracování a distribuci lingvistických dat; LINDAT/CLARIAH-CZ: Digitální výzkumná infrastruktura pro jazykové technologie, umění a humanitní vědy
 
-* Description: Universal Segmentations (UniSegments) is a collection of lexical resources capturing morphological segmentations harmonised into a cross-linguistically consistent annotation scheme for many languages. The annotation scheme consists of simple tab-separated columns that stores a word and its morphological segmentations, including pieces of information about the word and the segmented units, e.g., part-of-speech categories, type of morphs/morphemes etc. The current public version of the collection contains 33 harmonised segmentation datasets covering 25 different languages.
+* Description: Universal Segmentations (UniSegments) is a collection of lexical resources capturing morphological segmentations harmonised into a cross-linguistically consistent annotation scheme for many languages. The annotation scheme consists of simple tab-separated columns that stores a word and its morphological segmentations, including pieces of information about the word and the segmented units, e.g., part-of-speech categories, type of morphs/morphemes etc. The current public version of the collection contains 38 harmonised segmentation datasets covering 30 different languages.
 
 * Language: Catalan; Czech; German; English; Persian; Finnish; French; Serbo-Croatian; Croatian; Hungarian; Armenian; Italian; Kannada; Komi-Zyrian; Latin; Moksha; Mari; Mongolian; Erzya; Polish; Portuguese; Russian; Spanish; Swedish; Tajik; Udmurt
 
 * Subject keywords: unisegments; morphological segmentation; segmentation; universal segmentations; morphology; morphemes; morphological dictionary
 
-* Size: 33 files
+* Size: 38 files
 
 * Media type: text
 
