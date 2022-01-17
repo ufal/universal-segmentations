@@ -131,9 +131,6 @@ prepare-release: doc/licenses/Uniparser/.all
 	for data_directory in data/converted/*-KuznetsEfremDict; do \
 		cp -r "$$data_directory" $(PRIVATE_DIR)/;\
 	done; \
-	for data_directory in data/converted/*-KCIS; do \
-		cp -r "$$data_directory" $(PRIVATE_DIR)/;\
-	done; \
 	for data_directory in data/converted/*-TichonovDict; do \
 		cp -r "$$data_directory" $(PRIVATE_DIR)/;\
 	done; \
@@ -145,6 +142,8 @@ prepare-release: doc/licenses/Uniparser/.all
 		cp -r $(LICENCE_DIR)/cc-by-sa-3-0.txt $(PRIVATE_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/LICENSE.TXT;\
 	done; \
 	echo PUBLIC DATASETS:; \
+	for data_directory in data/converted/*-KCIS; do \
+		cp -r "$$data_directory" $(PUBLIC_DIR)/;\
 	done; \
 	for data_directory in data/converted/*-DeriNet; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/;\
