@@ -258,14 +258,36 @@ def process_file(filename):
 def prn_tsv(*args):
     print(*args, sep="\t", end="\n")
 
-def prn_tex(*args):
-    print(*("{:,.1f}".format(arg) if isinstance(arg, float) else "{:,}".format(arg) if isinstance(arg, int) else str(arg).replace("_", r"\_") for arg in args), sep=" & ", end=" \\\\\n")
+def prn_tex():
+    last_language = None
+
+    def inner(*args):
+        nonlocal last_language
+        language = args[0][:3]
+
+        if last_language is None:
+            prefix = ""
+        elif last_language == language:
+            prefix = " \\\\[-0.8mm]\n"
+        else:
+            prefix = " \\\\[0.3mm]\n"
+
+        last_language = language
+
+        formatted_args = ["{:,.1f}".format(arg) if isinstance(arg, float) else "{:,}".format(arg) if isinstance(arg, int) else str(arg).replace("_", r"\_") for arg in args]
+
+        print(prefix,
+              " & ".join(formatted_args),
+              sep="",
+              end="")
+
+    return inner
 
 def get_prn(t):
     if t == "tsv":
         return prn_tsv
     elif t == "tex":
-        return prn_tex
+        return prn_tex()
 
 def main(args):
     prn = get_prn(args.printer)
@@ -349,7 +371,7 @@ def main(args):
                 raise ValueError("Unknown `only` {}".format(args.only))
 
     if args.printer == "tex":
-        print("\\bottomrule\n\\end{tabular}")
+        print(" \\\\\n\\bottomrule\n\\end{tabular}")
 
 
 if __name__ == "__main__":
