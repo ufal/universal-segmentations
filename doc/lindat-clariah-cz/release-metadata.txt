@@ -14,35 +14,33 @@
 
 * Data issued: 2022-01-17
 
-! TODO: add authors of MorphoChallenge - Creutz, Mathias; Kurimo, Mikko; Lagus, Krista; Turunen, Ville; Varjokallio, Matti; Virpioja, Sami; Arısoy, Ebru
 * Authors: Žabokrtský, Zdeněk; Bafna, Nyati; Bodnár, Jan; Kyjánek, Lukáš; Svoboda, Emil; Ševčíková, Magda; Vidra, Jonáš; Ansari, Ebrahim; Arkhangelskiy, Timofey; Batsuren, Khuyagbaatar; Bella, Gábor; Bertinetto, Pier Marco; Bonami, Olivier; Celata, Chiara; Fedorenko, Alexei; Filko, Matea; Giunchiglia, Fausto; Haghdoost, Hamid; Hathout, Nabil; Khomchenkova, Irina; Khurshudyan, Victoria; Litta, Eleonora; Medvedeva, Maria; Namer, Fiammetta; Nikravesh, Mahshid; Padó, Sebastian; Passarotti, Marco; Polyakov, Alexey; Potapov, Mihail; Šnajder, Jan; Šojat, Krešimir; Štefanec, Vanja; Talamo, Luigi; Tribout, Delphine; Vodolazsky, Daniil; Vydrin, Arseniy; Zakirova, Aigul; Zeller, Britta
 
 * Publisher: Charles University, Faculty of Mathematics and Physics, Institute of Formal and Applied Linguistics (UFAL)
 
-* Contact person's given name: Jonáš
+* Contact person's given name: Zdeněk
 
-* Contact person's surname: Vidra
+* Contact person's surname: Žabokrtský
 
-* Contact person's email: vidra@ufal.mff.cuni.cz
+* Contact person's email: zabokrtsky@ufal.mff.cuni.cz
 
 * Contact person's insitution name: Charles University, Faculty of Mathematics and Physics, Institute of Formal and Applied Linguistics (UFAL)
 
-* Funding type: National; National; National; National; National; National
+* Funding type: National; National; National; National; National
 
-* Funding grant no.: 19-14534S; START/HUM/010; 1176219; SVV 260 453; LM2015071; LM2018101
+* Funding grant no.: 19-14534S; START/HUM/010; SVV 260 453; LM2015071; LM2018101
 
-* Funding organization: Grantová agentura České Republiky; Charles University; Charles University Grant Agency; Univerzita Karlova (mimo GAUK); Ministerstvo školství, mládeže a tělovýchovy České republiky; Ministerstvo školství, mládeže a tělovýchovy České republiky
+* Funding organization: Grantová agentura České Republiky; Charles University; Univerzita Karlova (mimo GAUK); Ministerstvo školství, mládeže a tělovýchovy České republiky; Ministerstvo školství, mládeže a tělovýchovy České republiky
 
-* Funding project name: Popis slovotvorné struktury českých slov na základě jazykových dat; A data-based approach to competition in word-formation: selected semantic categories across seven languages; Tvorba derivačních sítí pro více jazyků; Specifický vysokoškolský výzkum; LINDAT/CLARIN: Institut pro analýzu, zpracování a distribuci lingvistických dat; LINDAT/CLARIAH-CZ: Digitální výzkumná infrastruktura pro jazykové technologie, umění a humanitní vědy
+* Funding project name: Popis slovotvorné struktury českých slov na základě jazykových dat; A data-based approach to competition in word-formation: selected semantic categories across seven languages; Specifický vysokoškolský výzkum; LINDAT/CLARIN: Institut pro analýzu, zpracování a distribuci lingvistických dat; LINDAT/CLARIAH-CZ: Digitální výzkumná infrastruktura pro jazykové technologie, umění a humanitní vědy
 
-* Description: Universal Segmentations (UniSegments) is a collection of lexical resources capturing morphological segmentations harmonised into a cross-linguistically consistent annotation scheme for many languages. The annotation scheme consists of simple tab-separated columns that stores a word and its morphological segmentations, including pieces of information about the word and the segmented units, e.g., part-of-speech categories, type of morphs/morphemes etc. The current public version of the collection contains 37 harmonised resources covering 26 different languages.
+* Description: Universal Segmentations (UniSegments) is a collection of lexical resources capturing morphological segmentations harmonised into a cross-linguistically consistent annotation scheme for many languages. The annotation scheme consists of simple tab-separated columns that stores a word and its morphological segmentations, including pieces of information about the word and the segmented units, e.g., part-of-speech categories, type of morphs/morphemes etc. The current public version of the collection contains 33 harmonised resources covering 26 different languages.
 
-* Language: Catalan; Czech; German; English; Persian; Finnish; French; Serbo-Croatian; Hindi; Croatian; Hungarian; Armenian; Italian; Kannada; Komi-Zyrian; Latin; Malayalam; Marathi; Moksha; Mari; Mongolian; Erzya; Dutch; Polish; Portuguese; Russian; Spanish; Swedish; Tajik; Turkish; Udmurt
+* Language: Catalan; Czech; German; English; Persian; Finnish; French; Serbo-Croatian; Croatian; Hungarian; Armenian; Italian; Kannada; Komi-Zyrian; Latin; Moksha; Mari; Mongolian; Erzya; Polish; Portuguese; Russian; Spanish; Swedish; Tajik; Udmurt
 
 * Subject keywords: unisegs; morphological segmentation; segmentation; universal segmentations; morphology; morphemes; morphological dictionary
 
-! TODO: number of files
-* Size:
+* Size: 33 files
 
 * Media type: text
 

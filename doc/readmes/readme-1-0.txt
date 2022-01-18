@@ -7,13 +7,13 @@ Universal Segmentations (UniSegments) is a collection of lexical resources captu
 
 ## Authors
 
-Vidra, Jonáš
+Žabokrtský, Zdeněk
 Bafna, Nyati
 Bodnár, Jan
 Kyjánek, Lukáš
 Svoboda, Emil
-Žabokrtský, Zdeněk
 Ševčíková, Magda
+Vidra, Jonáš
 Ansari, Ebrahim
 Arkhangelskiy, Timofey
 Batsuren, Khuyagbaatar
@@ -53,7 +53,7 @@ If you use the collection in your research or need to cite it for any reason, pl
 ```
 @MISC{UniSegments-data,
     title      = {Universal Segmentations 1.0},
-    author     = {Vidra, Jonáš and Bafna, Nyati and Bodnár, Jan and Kyjánek, Lukáš and Svoboda, Emil and Žabokrtský, Zdeněk and Ševčíková, Magda and Ansari, Ebrahim and Arkhangelskiy, Timofey and Batsuren, Khuyagbaatar and Bella, Gábor and Bertinetto, Pier Marco and Bonami, Olivier and Celata, Chiara and Fedorenko, Alexei and Filko, Matea and Giunchiglia, Fausto and Haghdoost, Hamid and Hathout, Nabil and Khomchenkova, Irina and Khurshudyan, Victoria and Litta, Eleonora and Medvedeva, Maria and Namer, Fiammetta and Nikravesh, Mahshid and Padó, Sebastian and Passarotti, Marco and Polyakov, Alexey and Potapov, Mihail and Šnajder, Jan and Šojat, Krešimir and Štefanec, Vanja and Talamo, Luigi and Tribout, Delphine and Vodolazsky, Daniil and Vydrin, Arseniy and Zakirova, Aigul and Zeller, Britta},
+    author     = {Žabokrtský, Zdeněk and Bafna, Nyati and Bodnár, Jan and Kyjánek, Lukáš and Svoboda, Emil and Ševčíková, Magda and Vidra, Jonáš and Ansari, Ebrahim and Arkhangelskiy, Timofey and Batsuren, Khuyagbaatar and Bella, Gábor and Bertinetto, Pier Marco and Bonami, Olivier and Celata, Chiara and Fedorenko, Alexei and Filko, Matea and Giunchiglia, Fausto and Haghdoost, Hamid and Hathout, Nabil and Khomchenkova, Irina and Khurshudyan, Victoria and Litta, Eleonora and Medvedeva, Maria and Namer, Fiammetta and Nikravesh, Mahshid and Padó, Sebastian and Passarotti, Marco and Polyakov, Alexey and Potapov, Mihail and Šnajder, Jan and Šojat, Krešimir and Štefanec, Vanja and Talamo, Luigi and Tribout, Delphine and Vodolazsky, Daniil and Vydrin, Arseniy and Zakirova, Aigul and Zeller, Britta},
     url        = {http://hdl.handle.net/11234/1-3247},
     note       = {{LINDAT}/{CLARIAH}-{CZ} digital library at the Institute of Formal and Applied Linguistics ({ÚFAL}), Faculty of Mathematics and Physics, Charles University},
     copyright  = {Universal Segmentations 1.0 License Agreement},
@@ -67,6 +67,5 @@ We would like to thank all researchers who made their derivational resources pub
 This work was supported by:
 - the Grant No. GA19-14534S of the Czech Science Foundation,
 - the Grant No. START/HUM/010 of Grant schemes at Charles University (reg. No. CZ.02.2.69/0.0/0.0/19_073/0016935),
-- the Grant No. 1176219 of the Charles University Grant Agency,
 - the Grant No. SVV260575 of the Charles University,
 - the LINDAT/CLARIAH CZ project (No. LM2015071, No. LM2018101) of the Ministry of Education, Youth and Sports of the Czech Republic.

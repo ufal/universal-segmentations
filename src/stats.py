@@ -139,6 +139,7 @@ def process_file(filename):
     segmented_lexeme_cnt = 0
 
     form_stats = TypeTokenStats()
+    segmented_form_stats = TypeTokenStats()
     lemma_stats = TypeTokenStats()
     pos_stats = TypeTokenStats()
     morpheme_stats = TypeTokenStats()
@@ -194,6 +195,7 @@ def process_file(filename):
                 morph_count_counts[morph_count] = 1
 
         if is_segmented:
+            segmented_form_stats.record(seg_lex.form(lex_id))
             segmented_lexeme_cnt += 1
 
     resource_name = filename
@@ -234,7 +236,7 @@ def process_file(filename):
         #morph_stats.mean_length(),  # Already above
         #morph_stats.max_length(),
 
-        form_stats.mean_length(),
+        segmented_form_stats.mean_length(),
         morph_stats.mean_length(),
 
         root_stats.token_count() / annot_cnt if annot_cnt > 0 else 0.0,
@@ -270,13 +272,14 @@ def main(args):
 
     if args.printer == "tex":
         if args.only == "both":
-            print(r"\begin{tabular}{lr|rrrrr|rrrrrrr} \toprule")
+            print(r"\begin{tabular}{lrrrrrrrrrrrrr} \toprule")
             print(r"              &      & \multicolumn{4}{c}{Distribution of morphs per unit [\%]} & Mean morphs & Mean unit & Mean morph & Morph  & Roots per & Prefixes & Suffixes \\")
             print(r"Resource name & Size & 1 & 2 & 3 & 4+                                           & per unit    & length    & length     & avg. len & unit    & per unit & per unit \\ \midrule")
         elif args.only == "left":
-            print(r"\begin{tabular}{lr|rrrrr|rr} \toprule")
-            print(r"              &      & \multicolumn{4}{c}{Distribution of morphs per unit [\%]} & Mean morphs & Mean unit     & Mean morph \\")
-            print(r"Resource name & Size & 1 & 2 & 3 & 4+                                           & per unit    & length [char] & length [char] \\ \midrule")
+            print(r"\begin{tabular}{lrrrrrrrr} \toprule")
+            print(r"              &      & \multicolumn{4}{c}{Distribution of}      & Mean     & Mean unit & Mean \\")
+            print(r"              &      & \multicolumn{4}{c}{morphs per unit [\%]} & morphs   & length    & morph \\")
+            print(r"Resource name & Size & 1 & 2 & 3 & 4+                           & per unit & [char]    & len [char] \\ \midrule")
         elif args.only == "right":
             print(r"\begin{tabular}{rrr} \toprule")
             print(r"Roots per & Prefixes & Suffixes \\")

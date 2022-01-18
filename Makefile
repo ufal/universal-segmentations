@@ -36,8 +36,8 @@ README.xhtml: README.adoc
 
 stats: stats-left.tex stats-right.tex
 
-stats-%.tex: src/stats.py
-	cd data/converted && find * -name '*.useg' '!' '(' -path '*-UniMorph*' -o -path '*frc-*' -o -path '*RetrogradeDictionary*' ')' -exec $(abspath src/stats.py) --printer tex --threads 8 --only '$*' '{}' '+' > $(abspath $@)
+stats-%.tex: src/stats.py rewrite-names.sed
+	cd data/converted && find * -name '*.useg' '!' '(' -path '*-UniMorph*' -o -path '*frc-*' -o -path '*RetrogradeDictionary*' -o -path '*ces-SlavickovaDict*' ')' -exec $(abspath src/stats.py) --printer tex --threads 8 --only '$*' '{}' '+' | sed -f '$(abspath rewrite-names.sed)' > '$(abspath $@)'
 
 stats.tex: src/stats.py
 	cd data/converted && $(abspath src/stats.py) --printer tex --threads 8 */*.useg > $(abspath $@)
@@ -45,11 +45,59 @@ stats.tex: src/stats.py
 stats-non-unimorph.tex: src/stats.py
 	cd data/converted && find * -name '*.useg' -not -path '*UniMorph*' -exec $(abspath src/stats.py) --printer tex --threads 8 '{}' '+' > $(abspath $@)
 
+poses.txt:
+	find data/converted -name '*.useg' -exec cut -f3 '{}' '+' | sort -u > '$@'
+
+pos-examples: poses.txt
+	while IFS= read -r pos; do \
+		printf '\n%s:\n' "$${pos}" && \
+		for f in `find data/converted -name '*.useg'`; do \
+			cut -f3 "$${f}" | fgrep -xqe "$${pos}" && printf '	%s\n' "$${f}"; \
+		done; \
+	done < '$<'
+
+check-annot-names:
+	for f in `find data/converted -name '*.useg'`; do \
+		annot_names=`cut -f5 "$${f}" | grep -o '"annot_name": "[^"]*"' | sort -u`; \
+		if [ -z "$${annot_names}" ]; then \
+			printf 'NONE %s\n' "$${f}"; \
+		elif [ "`printf '%s\n' "$${annot_names}" | wc -l`" -eq 1 ]; then \
+			printf 'OK %s: %s\n' "$${f}" "$${annot_names}"; \
+		else \
+			printf 'ERR %s: %s\n' "$${f}" "$${annot_names}"; \
+		fi; \
+	done
+
 clean:
 	rm -f README.xhtml
 	rm -f .coverage htmlcov/index.html
 	rm -f stats.tex stats-non-unimorph.tex
 
+
+doc/licenses/Uniparser/aii.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-urmi/raw/master/LICENSE'
+doc/licenses/Uniparser/hye.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-eastern-armenian/raw/master/LICENSE'
+doc/licenses/Uniparser/kpv.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-komi-zyrian/raw/master/LICENSE'
+doc/licenses/Uniparser/mdf.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-moksha/raw/master/LICENSE'
+doc/licenses/Uniparser/mhr.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-meadow-mari/raw/master/LICENSE'
+doc/licenses/Uniparser/myv.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-erzya/raw/master/LICENSE'
+doc/licenses/Uniparser/sqi.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-albanian/raw/master/LICENSE'
+doc/licenses/Uniparser/tgk.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-tajik/raw/master/LICENSE.md'
+doc/licenses/Uniparser/tru.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/margisk/uniparser-grammar-turoyo/raw/master/LICENSE'
+doc/licenses/Uniparser/udm.txt: | doc/licenses/Uniparser
+	curl --location --compressed -o '$@' 'https://github.com/timarkh/uniparser-grammar-udm/raw/master/LICENSE'
+doc/licenses/Uniparser:
+	mkdir -p '$@'
+doc/licenses/Uniparser/.all: doc/licenses/Uniparser/aii.txt doc/licenses/Uniparser/hye.txt doc/licenses/Uniparser/kpv.txt doc/licenses/Uniparser/mdf.txt doc/licenses/Uniparser/mhr.txt doc/licenses/Uniparser/myv.txt doc/licenses/Uniparser/sqi.txt doc/licenses/Uniparser/tgk.txt doc/licenses/Uniparser/tru.txt doc/licenses/Uniparser/udm.txt
+	touch '$@'
 
 
 convert-all:
@@ -61,16 +109,18 @@ convert-all:
 	done
 
 
-PUBLIC_DIR=data/release/UniSegments-1.0-public/data
-PUBLIC_DIR_DOC=data/release/UniSegments-1.0-public/doc
-PRIVATE_DIR=data/release/UniSegments-1.0-private/data
+RELEASE_DIR=data/release
+PUBLIC_DIR=$(RELEASE_DIR)/UniSegments-1.0-public/data
+PUBLIC_DIR_DOC=$(RELEASE_DIR)/UniSegments-1.0-public/doc
+PRIVATE_DIR=$(RELEASE_DIR)/UniSegments-1.0-private/data
 LICENCE_DIR=doc/licenses
-prepare-release:
-	rm -rf $(PUBLIC_DIR)
-	rm -rf $(PRIVATE_DIR)
-	mkdir -p data/release
-	mkdir -p $(PUBLIC_DIR)
-	mkdir -p $(PRIVATE_DIR)
+prepare-release: doc/licenses/Uniparser/.all
+	rm -rf '$(PUBLIC_DIR)'
+	rm -rf '$(PRIVATE_DIR)'
+	mkdir -p '$(RELEASE_DIR)'
+	mkdir -p '$(PUBLIC_DIR)'
+	mkdir -p '$(PRIVATE_DIR)'
+	set -e; \
 	echo PRIVATE DATASETS:; \
 	for data_directory in data/converted/*-MorphoChallenge; do \
 		cp -r "$$data_directory" $(PRIVATE_DIR)/;\
@@ -95,9 +145,6 @@ prepare-release:
 		cp -r $(LICENCE_DIR)/cc-by-sa-3-0.txt $(PRIVATE_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/LICENSE.TXT;\
 	done; \
 	echo PUBLIC DATASETS:; \
-	for data_directory in data/converted/*-MorphoLex; do \
-		cp -r "$$data_directory" $(PUBLIC_DIR)/;\
-		cp -r $(LICENCE_DIR)/cc-by-sa-3-0.txt $(PUBLIC_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/LICENSE.TXT;\
 	done; \
 	for data_directory in data/converted/*-DeriNet; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/;\
@@ -127,6 +174,10 @@ prepare-release:
 		cp -r "$$data_directory" $(PUBLIC_DIR)/;\
 		cp -r $(LICENCE_DIR)/cc-by-4-0.txt $(PUBLIC_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/LICENSE.TXT;\
 	done; \
+	for data_directory in data/converted/*-MorphoLex; do \
+		cp -r "$$data_directory" $(PUBLIC_DIR)/;\
+		cp -r $(LICENCE_DIR)/cc-by-nc-sa-4-0.txt $(PUBLIC_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/LICENSE.TXT;\
+	done; \
 	for data_directory in data/converted/*-MorphyNet; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/;\
 		cp -r $(LICENCE_DIR)/cc-by-sa-3-0.txt $(PUBLIC_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/LICENSE.TXT;\
@@ -136,8 +187,9 @@ prepare-release:
 		cp -r $(LICENCE_DIR)/cc-by-nc-sa-4-0.txt $(PUBLIC_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/LICENSE.TXT;\
 	done; \
 	for data_directory in data/converted/*-Uniparser; do \
+		lang_iso=`printf '%s' "$${data_directory}" | sed -e 'sX.*/XX; sX-.*XX'`;\
 		cp -r "$$data_directory" $(PUBLIC_DIR)/;\
-		cp -r $(LICENCE_DIR)/mit.txt $(PUBLIC_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/LICENSE.TXT;\
+		cp '$(LICENCE_DIR)'/Uniparser/"$${lang_iso}.txt" $(PUBLIC_DIR)/"$$(echo $$data_directory | sed -r 's-.*/--')"/LICENSE.TXT;\
 	done; \
 	for data_directory in data/converted/*-WordFormationLatin; do \
 		cp -r "$$data_directory" $(PUBLIC_DIR)/;\

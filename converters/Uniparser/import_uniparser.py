@@ -25,20 +25,27 @@ gr_upos_table = {
     # See http://udmurt.web-corpora.net/index_en.html
     "A": "ADJ",
     "ADJ": "ADJ",
+    "ADJ.N": "ADJ", # tgk
     "ADJPRO": "DET", # See https://universaldependencies.org/u/pos/PRON.html
     "ADV": "ADV",
+    "ADV.ADJ": "ADV", # tgk
     "ADVPRO": "X", # TODO
     "CNJ": "CCONJ", # TODO or SCONJ as well?
+    "CONJ": "CCONJ", # tgk; TODO or SCONJ as well?
     "IMIT": "ADV", # See https://universaldependencies.org/u/pos/ADV.html
     "INTRJ": "INTJ",
+    "INTJ": "INTJ", # tgk
     "N": "NOUN",
     "NUM": "NUM",
     "PARENTH": "X", # TODO
     "PART": "PART",
+    "PART.PRS": "PART", # tgk
+    "PART.PST": "PART", # tgkk
     "POST": "ADP",
     "PREDIC": "X", # TODO
     "PREP": "ADP",
     "PRO": "PRON",
+    "PRON": "PRON", # tgk
     "V": "VERB",
 }
 
@@ -54,6 +61,7 @@ def gr_to_upos(morpho_tags):
         return gr_upos_table[gr_pos]
     else:
         print("Unknown POS tag '{}'".format(gr_pos), file=sys.stderr)
+        return "X"
 
 def fix_gloss(gloss, affixes):
     morphs = gloss.split("-")
