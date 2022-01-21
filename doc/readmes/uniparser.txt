@@ -1,0 +1,15 @@
+# UniParser
+
+## Reference
+
+@inproceedings{UniParser,
+    title = "The Creation of Large-Scale Annotated Corpora of Minority Languages using {U}ni{P}arser and the {EANC} platform",
+    author = "Arkhangelskiy, Timofey and Belyaev, Oleg and Vydrin, Arseniy",
+    booktitle = "Proceedings of {COLING} 2012: Posters",
+    month = dec,
+    year = "2012",
+    address = "Mumbai, India",
+    publisher = "The COLING 2012 Organizing Committee",
+    url = "https://aclanthology.org/C12-2009",
+    pages = "83-92",
+}

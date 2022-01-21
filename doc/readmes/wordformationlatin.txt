@@ -1,0 +1,10 @@
+# Word Formation Latin
+
+## Reference
+
+@inproceedings{WFL,
+    title={Formatio formosa est. {B}uilding a Word Formation Lexicon for {L}atin.},
+    author={Litta, Eleonora and Passarotti, Marco and Culy, Chris},
+    booktitle={Proceedings of Third Italian Conference on Computational Linguistics ({CLiC-it})},
+    year={2016}
+}

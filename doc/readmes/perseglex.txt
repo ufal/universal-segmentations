@@ -1,0 +1,11 @@
+# Persian Morphologically Segmented Lexicon
+
+## Reference
+
+@misc{PerSegLex,
+    title = {{Persian Morphologically Segmented Lexicon 0.5}},
+    author = {Ansari, Ebrahim and \v{Z}abokrtsk\'{y}, Zden\v{e}k and Haghdoost, Hamid and Nikravesh, Mahshid},
+    url = {https://hdl.handle.net/11234/1-3011},
+    note = {{LINDAT}/{CLARIN} digital library at the Institute of Formal and Applied Linguistics ({{\'U}FAL}), Faculty of Mathematics and Physics, Charles University},
+    year = {2019}
+}

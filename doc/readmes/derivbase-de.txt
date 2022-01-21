@@ -1,0 +1,14 @@
+# DErivBase
+
+## Reference
+
+@inproceedings{DErivBase,
+    author = {Zeller, Britta and {\v{S}}najder, Jan and Pad{\'o}, Sebastian},
+    booktitle = {{Proceedings of the 51st Annual Meeting of the Association for Computational Linguistics}},
+    pages = {1201--1211},
+    publisher = {ACL},
+    title = {{DErivBase}: Inducing and Evaluating a Derivational Morphology Resource for {G}erman},
+    volume = {1},
+    url = {https://www.aclweb.org/anthology/P13-1118},
+    year = {2013}
+}

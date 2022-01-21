@@ -1,0 +1,12 @@
+# Échantinom
+
+## Reference
+
+@misc{Echantinom,
+  title={Echantinom},
+  url={osf.io/rdxqk},
+  publisher={OSF},
+  author={Bonami, Olivier and Tribout, Delphine},
+  year={2021},
+  month={Sep}
+}

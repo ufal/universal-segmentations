@@ -1,0 +1,31 @@
+# MorphoLex
+
+## Reference
+
+@article{MorphoLex-en,
+    title={{MorphoLex}: A derivational morphological database for 70,000 {E}nglish words},
+    author={Sánchez-Gutiérrez, Claudia H. and Mailhot, Hugo and Deacon, S. Hélène and Wilson, Maximiliano A.},
+    year = {2018},
+    month = aug,
+    pages = {1568-1580},
+    doi = {10.3758/s13428-017-0981-8},
+    journal = {Behavior Research Methods},
+    volume = {50},
+    number = {4},
+    publisher = {Springer},
+    issn = {1554-3528}
+}
+
+@article{MorphoLex-fr,
+    title={{MorphoLex-FR}: A derivational morphological database for 38,840 {F}rench words},
+    author={Mailhot, Hugo and Wilson, Maximiliano A. and Macoir, Joël and Deacon, S. Hélène and Sánchez-Gutiérrez, Claudia H.},
+    year = {2020},
+    month = jun,
+    pages = {1008-1025},
+    doi = {10.3758/s13428-019-01297-z},
+    journal = {Behavior Research Methods},
+    volume = {52},
+    number = {3},
+    publisher = {Springer},
+    issn = {1554-3528}
+}

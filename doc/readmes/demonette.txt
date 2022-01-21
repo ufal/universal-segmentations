@@ -1,0 +1,13 @@
+# Démonette
+
+## Reference
+
+@article{Demonette,
+    author = {Hathout, Nabil and Namer, Fiammetta},
+    journal = {Linguistic Issues in Language Technology},
+    pages = {125--162},
+    title = {{Démonette, a French Derivational Morpho-Semantic Network}},
+    volume = {11},
+    url = {http://redac.univ-tlse2.fr/lexiques/demonette/2014\_LILT\_Hathout\_Namer.pdf},
+    year = {2014}
+}

@@ -1,0 +1,30 @@
+# KCIS
+
+## Reference
+
+@article{KCIS-Rao,
+    title={Developing a Dependency Treebank for Kannada},
+    author={Rao, Ashwath B and Murali Krishna, SN and Nayak, Ashalatha},
+    journal={International Journal of Engineering Sciences and Research},
+    volume={15},
+    pages={5--7},
+    year={2014},
+    publisher={PBPC-TechnicalJournals}
+}
+
+@incollection{KCIS-Bhat,
+    title={The Hindi/Urdu treebank project},
+    author={Bhat, Riyaz Ahmad and Bhatt, Rajesh and Farudi, Annahita and Klassen, Prescott and Narasimhan, Bhuvana and Palmer, Martha and Rambow, Owen and Sharma, Dipti Misra and Vaidya, Ashwini and Vishnu, Sri Ramagurumurthy and others},
+    booktitle={Handbook of Linguistic Annotation},
+    pages={659--697},
+    year={2017},
+    publisher={Springer}
+}
+
+@inproceedings{KCIS-Tandon,
+    title={Unity in Diversity: A unified parsing strategy for major Indian languages},
+    author={Tandon, Juhi and Sharma, Dipti Misra},
+    booktitle={Proceedings of the Fourth International Conference on Dependency Linguistics (Depling 2017)},
+    pages={255--265},
+    year={2017}
+}

@@ -1,0 +1,15 @@
+# CroDeriV
+
+## Reference
+
+@inproceedings{CroDeriv2014,
+    title = {{CroDeriV: A New Resource for Processing Croatian Morphology}},
+    author = {{\v{S}}ojat, Kre{\v{s}}imir and Sreba{\v{c}}i{\'{c}}, Matea and Paveli{\'{c}}, Tin and Tadi{\'{c}}, Marko},
+    booktitle = {{Proceedings of the Language Resources and Evaluation (LREC-2014)}},
+    volume = {14},
+    pages = {3366-3370},
+    year = {2014},
+    isbn = {978-2-9517408-8-4},
+    address = {Reykjavik},
+    publisher = {Citeseer}
+}

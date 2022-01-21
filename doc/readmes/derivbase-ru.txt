@@ -1,0 +1,13 @@
+# DerivBase.Ru
+
+## Reference
+
+@inproceedings{DerivBaseRu,
+    address = {Marseille, France},
+    author = {Vodolazsky, Daniil},
+    booktitle = {{Proceedings of the Language Resources and Evaluation (LREC-2020)}},
+    pages = {3930--3936},
+    title = {{DerivBase.Ru}: A Derivational Morphology Resource for {R}ussian},
+    volume = {20},
+    year = {2020}
+}

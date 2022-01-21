@@ -1,0 +1,16 @@
+# MorphyNet
+
+## Reference
+
+@inproceedings{MorphyNet,
+    title = "{M}orphy{N}et: a Large Multilingual Database of Derivational and Inflectional Morphology",
+    author = "Batsuren, Khuyagbaatar and Bella, G{\'a}bor and Giunchiglia, Fausto",
+    booktitle = "Proceedings of the 18th SIGMORPHON Workshop on Computational Research in Phonetics, Phonology, and Morphology",
+    month = aug,
+    year = "2021",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2021.sigmorphon-1.5",
+    doi = "10.18653/v1/2021.sigmorphon-1.5",
+    pages = "39--48"
+}

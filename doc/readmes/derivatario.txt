@@ -1,0 +1,16 @@
+# DerIvaTario
+
+## Reference
+
+@article{DerIvaTario,
+    address = {Edinburgh},
+    author = {Talamo, Luigi and Celata, Chiara and Bertinetto, Pier Marco},
+    doi = {10.3366/word.2016.0087},
+    journal = {{Word Structure}},
+    number = {1},
+    pages = {72-102},
+    publisher = {Edinburgh University Press},
+    title = {{DerIvaTario: An Annotated Lexicon of Italian Derivatives}},
+    volume = {9},
+    year = {2016}
+}
