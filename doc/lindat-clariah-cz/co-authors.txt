@@ -1,46 +1,35 @@
 Angle, Sachi
 Ansari, Ebrahim
 Arkhangelskiy, Timofey
-Atmakuri, Shriya
 Batsuren, Khuyagbaatar
 Bella, Gábor
 Bertinetto, Pier Marco
-Bhattacharyya, Pushpak
 Bonami, Olivier
 Celata, Chiara
 Fedorenko, Alexei
 Filko, Matea
-Ghag, Nandini
 Giunchiglia, Fausto
 Haghdoost, Hamid
 Hathout, Nabil
-Joshi, Nilesh
 Khomchenkova, Irina
 Khurshudyan, Victoria
-Kulkarni, Malhar
 Litta, Eleonora
 Medvedeva, Maria
-Mishra, Pruthwik
-Muralikrishna, S. N.
+Muralikrishna,  S. N.
 Namer, Fiammetta
-Nayak, Ashalatha
 Nikravesh, Mahshid
 Padó, Sebastian
-Paranjape, Jai
 Passarotti, Marco
 Polyakov, Alexey
 Potapov, Mihail
+Pruthwik, Mishra
 Rao B, Ashwath
-Redkar, Hanumant
-Shahi, Bhavya
+Samar Husain
 Sharma, Dipti Misra
-Singh, Sandhya
 Šnajder, Jan
 Šojat, Krešimir
 Štefanec, Vanja
 Talamo, Luigi
-Tandon, Juhi
-Todi, Ketan Kumar 
 Tribout, Delphine
 Vodolazsky, Daniil
 Vydrin, Arseniy
