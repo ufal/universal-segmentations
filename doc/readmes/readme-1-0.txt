@@ -22,6 +22,7 @@ Bella, Gábor
 Bertinetto, Pier Marco
 Bonami, Olivier
 Celata, Chiara
+Daniel, Michael
 Fedorenko, Alexei
 Filko, Matea
 Giunchiglia, Fausto
@@ -29,6 +30,7 @@ Haghdoost, Hamid
 Hathout, Nabil
 Khomchenkova, Irina
 Khurshudyan, Victoria
+Levonian, Dmitri
 Litta, Eleonora
 Medvedeva, Maria
 Muralikrishna,  S. N.
@@ -36,11 +38,13 @@ Namer, Fiammetta
 Nikravesh, Mahshid
 Padó, Sebastian
 Passarotti, Marco
+Plungian, Vladimir
 Polyakov, Alexey
 Potapov, Mihail
 Pruthwik, Mishra
 Rao B, Ashwath
-Samar Husain
+Rubakov, Sergei
+Samar, Husain
 Sharma, Dipti Misra
 Šnajder, Jan
 Šojat, Krešimir
@@ -59,7 +63,7 @@ If you use the collection in your research or need to cite it for any reason, pl
 ```
 @MISC{UniSegments-data,
     title      = {Universal Segmentations 1.0},
-    author     = {Žabokrtský, Zdeněk and Bafna, Nyati and Bodnár, Jan and Kyjánek, Lukáš and Svoboda, Emil and Ševčíková, Magda and Vidra, Jonáš and Angle, Sachi and Ansari, Ebrahim and Arkhangelskiy, Timofey and Batsuren, Khuyagbaatar and Bella, Gábor and Bertinetto, Pier Marco and Bonami, Olivier and Celata, Chiara and Fedorenko, Alexei and Filko, Matea and Giunchiglia, Fausto and Haghdoost, Hamid and Hathout, Nabil and Khomchenkova, Irina and Khurshudyan, Victoria and Litta, Eleonora and Medvedeva, Maria and Muralikrishna,  S. N. and Namer, Fiammetta and Nikravesh, Mahshid and Padó, Sebastian and Passarotti, Marco and Polyakov, Alexey and Potapov, Mihail and Pruthwik, Mishra and Rao B, Ashwath and Samar Husain and Sharma, Dipti Misra and Šnajder, Jan and Šojat, Krešimir and Štefanec, Vanja and Talamo, Luigi and Tribout, Delphine and Vodolazsky, Daniil and Vydrin, Arseniy and Zakirova, Aigul and Zeller, Britta},
+    author     = {Žabokrtský, Zdeněk and Bafna, Nyati and Bodnár, Jan and Kyjánek, Lukáš and Svoboda, Emil and Ševčíková, Magda and Vidra, Jonáš and Angle, Sachi and Ansari, Ebrahim and Arkhangelskiy, Timofey and Batsuren, Khuyagbaatar and Bella, Gábor and Bertinetto, Pier Marco and Bonami, Olivier and Celata, Chiara and Daniel, Michael and Fedorenko, Alexei and Filko, Matea and Giunchiglia, Fausto and Haghdoost, Hamid and Hathout, Nabil and Khomchenkova, Irina and Khurshudyan, Victoria and Levonian, Dmitri and Litta, Eleonora and Medvedeva, Maria and Muralikrishna,  S. N. and Namer, Fiammetta and Nikravesh, Mahshid and Padó, Sebastian and Passarotti, Marco and Plungian, Vladimir and Polyakov, Alexey and Potapov, Mihail and Pruthwik, Mishra and Rao B, Ashwath and Rubakov, Sergei and Samar, Husain and Sharma, Dipti Misra and Šnajder, Jan and Šojat, Krešimir and Štefanec, Vanja and Talamo, Luigi and Tribout, Delphine and Vodolazsky, Daniil and Vydrin, Arseniy and Zakirova, Aigul and Zeller, Britta},
     url        = {http://hdl.handle.net/11234/1-3247},
     note       = {{LINDAT}/{CLARIAH}-{CZ} digital library at the Institute of Formal and Applied Linguistics ({ÚFAL}), Faculty of Mathematics and Physics, Charles University},
     copyright  = {Universal Segmentations 1.0 License Agreement},

@@ -6,6 +6,7 @@ Bella, Gábor
 Bertinetto, Pier Marco
 Bonami, Olivier
 Celata, Chiara
+Daniel, Michael
 Fedorenko, Alexei
 Filko, Matea
 Giunchiglia, Fausto
@@ -13,6 +14,7 @@ Haghdoost, Hamid
 Hathout, Nabil
 Khomchenkova, Irina
 Khurshudyan, Victoria
+Levonian, Dmitri
 Litta, Eleonora
 Medvedeva, Maria
 Muralikrishna,  S. N.
@@ -20,11 +22,13 @@ Namer, Fiammetta
 Nikravesh, Mahshid
 Padó, Sebastian
 Passarotti, Marco
+Plungian, Vladimir
 Polyakov, Alexey
 Potapov, Mihail
 Pruthwik, Mishra
 Rao B, Ashwath
-Samar Husain
+Rubakov, Sergei
+Samar, Husain
 Sharma, Dipti Misra
 Šnajder, Jan
 Šojat, Krešimir
