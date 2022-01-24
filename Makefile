@@ -212,7 +212,7 @@ prepare-release: doc/licenses/Uniparser/.all
 	done;
 	#cleanup:
 	echo deleting:
-	find $(PUBLIC_DIR) $(PRIVATE_DIR) -type f ! -name LICENSE.TXT ! -name *.useg -delete
+	find $(PUBLIC_DIR) $(PRIVATE_DIR) -type f ! -name LICENSE.TXT ! -name README.TXT ! -name *.useg -delete
 	find $(PUBLIC_DIR) $(PRIVATE_DIR) -type d -empty -delete
 	for data_directory in $(PUBLIC_DIR)/* $(PRIVATE_DIR)/*; do \
 		for useg_file in $$data_directory/*.useg; do\
