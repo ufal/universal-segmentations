@@ -292,6 +292,13 @@ class SegLex:
         """
         return "{}({}#{})".format(self.form(lex_id), self.lemma(lex_id), self.pos(lex_id))
 
+    def print_simple_segmentation(self, lex_id, annot_name):
+        """
+        Returns a simple string representation of the segmentation of the
+        lexeme.
+        """
+        return " + ".join(self._simple_seg(lex_id, annot_name))
+
     def add_contiguous_morpheme(self, lex_id, annot_name, start, end, features=None):
         """
         Subdivide the lexeme with `lex_id` using a new morpheme starting
@@ -413,22 +420,13 @@ class SegLex:
 
         return None
 
-    def morph(self, lex_id, annot_name, position):
+    @staticmethod
+    def morpheme_to_string(morpheme, form):
         """
-        Return the string form of one of the morphemes found at
-        `position` of annotation layer `annot_name` in lexeme `lex_id`,
-        or None if no such morpheme exists.
-
-        FIXME this API is really unwieldy, come up with something
-        better? Maybe introduce morpheme IDs, like we have lex IDs?
+        Return the string form of the morph of morpheme `morpheme` as
+        found in lexeme with word form `form`.
         """
-        morpheme = self.morpheme(lex_id, annot_name, position)
-
-        if morpheme is None:
-            return None
-
         if morpheme.span:
-            form = self.form(lex_id)
             span = sorted(morpheme.span)
 
             last_idx = span[0]
@@ -446,3 +444,20 @@ class SegLex:
         else:
             # Empty morpheme spans are weird, but support them anyway.
             return ""
+
+    def morph(self, lex_id, annot_name, position):
+        """
+        Return the string form of one of the morphemes found at
+        `position` of annotation layer `annot_name` in lexeme `lex_id`,
+        or None if no such morpheme exists.
+
+        FIXME this API is really unwieldy, come up with something
+        better? Maybe introduce morpheme IDs, like we have lex IDs?
+        """
+        morpheme = self.morpheme(lex_id, annot_name, position)
+
+        if morpheme is None:
+            return None
+
+        form = self.form(lex_id)
+        return self.morpheme_to_string(morpheme, form)
