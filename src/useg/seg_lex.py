@@ -115,7 +115,7 @@ class SegLex:
                 assert "segmentation" not in lexeme.features and "annot_name" not in lexeme.features
                 yield seg_tsv.SegRecord(lexeme.form, lexeme.lemma, lexeme.pos, [], lexeme.features)
 
-            for annot_name in lexeme.morphemes:
+            for annot_name in sorted(lexeme.morphemes.keys()):
                 annot = lexeme.features.copy()
                 assert "segmentation" not in annot and "annot_name" not in annot
                 annot["annot_name"] = annot_name
